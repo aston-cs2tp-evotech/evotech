@@ -1,0 +1,43 @@
+name: Test and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'  # Change this to your PHP version
+
+    - name: Install Dependencies
+      run: composer install
+
+    - name: Run Syntax Check
+      run: php -l index.php  # Adjust this command based on your project structure
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.5
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to Server
+      run: |
+        ssh user@your-server 'cd ~/public_html && git pull origin main'
