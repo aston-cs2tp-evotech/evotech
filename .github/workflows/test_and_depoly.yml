@@ -35,11 +35,12 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.8.0     
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
     - name: Deploy to Server
       run: |
-        ssh u-220098548@cs2410-web01pvm.aston.ac.uk 'cd ~/public_html && git pull origin main'
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no u-220098548@cs2410-web01pvm.aston.ac.uk 'cd ~/public_html && git pull origin main'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  
