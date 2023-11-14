@@ -34,10 +34,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.5
+      uses: webfactory/ssh-agent@v0.8.0     
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Deploy to Server
       run: |
-        ssh user@your-server 'cd ~/public_html && git pull origin main'
+        ssh u-220098548@cs2410-web01pvm.aston.ac.uk 'cd ~/public_html && git pull origin main'
