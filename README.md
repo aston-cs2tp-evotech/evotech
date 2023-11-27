@@ -68,7 +68,7 @@ Team Project for the CS2TP module
 3. Start Apache and MySQL in XAMPP
 
 . Open the following links in your browser:
-    - http://localhost/evotech/phpmyadmin
+    - http://localhost/phpmyadmin
     - http://localhost/evotech
 
 # Credits
