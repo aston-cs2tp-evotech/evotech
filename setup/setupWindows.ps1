@@ -4,15 +4,21 @@
 
 #>
 
+# Halts the script if an error occurs
+$ErrorActionPreference = "Stop"
+
 # Change the working directory to the parent directory of this scripts directory
+Write-Host "Changing the working directory to the parent directory of this scripts directory"
 Set-Location $PSScriptRoot/..
 
 # Delete the config file if it exists
 if (Test-Path config.php) {
+    Write-Host "Deleting the config file"
     Remove-Item config.php
 }
 
 # Copy the example config file to the config file
+Write-Host "Copying the example config file to the config file"
 Copy-Item setup/example_config.php config.php
 
 # Prompt the user for the database username
@@ -31,6 +37,11 @@ do {
     # Convert the secure strings to plain text
     $db_password = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($db_password))
     $db_password_confirm = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($db_password_confirm))
+
+    # Prompt when passwords don't match
+    if ($db_password -ne $db_password_confirm) {
+        Write-Host "Passwords do not match. Please try again."
+    }
 
 } while ($db_password -ne $db_password_confirm)
 
@@ -56,3 +67,15 @@ if ($db_server -eq "") {
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "your_password"', "= `"$db_password`""} | Set-Content config.php
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "your_database_name"', "= `"$db_database_name`""} | Set-Content config.php
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "localhost"', "= `"$db_server`""} | Set-Content config.php
+
+# Start the apache and mysql services using the batch files
+Write-Host "Starting the apache and mysql services"
+Start-Process -FilePath "C:\xampp\apache_start.bat"
+Start-Process -FilePath "C:\xampp\mysql_start.bat"
+
+# Launch the browser to the website and phpmyadmin in the default browser
+Write-Host "Launching the pages..."
+Start-Process -FilePath "http://localhost/"
+Start-Process -FilePath "http://localhost/phpmyadmin"
+
+Write-Host "Setup complete!"
