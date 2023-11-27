@@ -53,7 +53,7 @@ Team Project for the CS2TP module
 
 1. Install XAMPP
     ```bash
-    wget https://www.apachefriends.org/xampp-files/8.2.12/xampp-linux-x64-8.2.12-0-installer.run
+    wget "https://sourceforge.net/projects/xampp/files/XAMPP%20Linux/8.2.12/xampp-linux-x64-8.2.12-0-installer.run"
     chmod +x xampp-linux-x64-8.2.12-0-installer.run
     sudo ./xampp-linux-x64-8.2.12-0-installer.run
     ```
