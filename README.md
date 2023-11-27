@@ -58,16 +58,18 @@ Team Project for the CS2TP module
     sudo ./xampp-linux-x64-8.2.12-0-installer.run
     ```
 
-2. Clone the repository using `git clone`
+2. Clone repository into `/opt/lampp/htdocs`
+    1. Change directory to `/opt/lampp/htdocs`
+        ```bash
+        cd /opt/lampp/htdocs
+        ```
+    2. Clone repository using `git clone`
 
-3. Change the DocumentRoot in `/opt/lampp/etc/httpd.conf` from `/opt/lampp/htdocs` to the root of the repository
-    - There are two instances of DocumentRoot in the file, change both
+3. Start Apache and MySQL in XAMPP
 
-4. Start Apache and MySQL in XAMPP
-
-5. Open the following links in your browser:
-    - http://localhost/phpmyadmin
-    - http://localhost
+. Open the following links in your browser:
+    - http://localhost/evotech/phpmyadmin
+    - http://localhost/evotech
 
 # Credits
 
