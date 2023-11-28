@@ -89,6 +89,11 @@ function RegisterUser($details) {
                             //checks if email is taken
                             if (!Customer->getInfoByEmail($details["email"])) {
                                 //if here, then all checks have passed
+
+                                //hashes password
+                                $temp = $details["password"];
+                                $details["password"] = password_hash($temp, PASSWORD_DEFAULT);
+                                
                                 //inverting response will show if there was a failure adding customer to db
                                 if (!Customer->registerCustomer($details)) return "Database error occured, please try registering again.";
                                 else return true;
