@@ -42,22 +42,26 @@ function CheckLoggedIn() {
 
 /**
  * Attempts to log the user in using supplied credentials
- * @param string $username Customer's username
- * @param string $pass Customer's hashed password
+ * @param string $user Customer's username or email
+ * @param string $pass Customer's password
  * @return boolean True if login succeeded, otherwise false
  */
-function AttemptLogin($username, $pass) {
-    $details = Customer->getInfoByUName($username);
-    //assumes pass is hashed
-    if (password_verify($pass, $details["pass"])) {
+function AttemptLogin($user, $pass) {
+    //attempts to fetch details via username
+    $details = Customer->getInfoByUName($user);
+    if (!checkExists($details)) {
+        //falls back to fetching via email
+        $details = Customer->getInfoByEmail($user);
+        if (!checkExists($details)) return false;
+    }
+    //checks passwords match
+    if (password_verify(password_hash($pass, PASSWORD_DEFAULT), $details["pass"])) {
         $_SESSION["uid"] = $details["uid"];
         unset($details);
         ReLogInUser();
         return true;
     }
-    else {
-        return false;
-    }
+    else return false;
 }
 
 /**
