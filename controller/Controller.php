@@ -89,9 +89,9 @@ function RegisterUser($details) {
                                 $temp = $details["password"];
                                 $details["password"] = password_hash($temp, PASSWORD_DEFAULT);
                                 
-                                //inverting response will show if there was a failure adding customer to db
-                                if (!Customer->registerCustomer($details)) return "Database error occured, please try registering again.";
-                                else return true;
+                                //any response will evaluate to true
+                                if (Customer->registerCustomer($details)) return "";
+                                else return "Database error occured, please try registering again.";
                             } 
                             else return "Email is already in use, please use another one";
                         }
