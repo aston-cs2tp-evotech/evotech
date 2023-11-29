@@ -15,7 +15,7 @@ $userInfo = Array();
  * @return boolean True if $var is safe and exists, otherwise false
  */
 function checkExists($var) {
-    return (isset($var) && !empty($var)) ? true : false;
+    return (isset($var) && !empty($var));
 }
 
 /** 
@@ -37,12 +37,7 @@ function ReLogInUser() {
  */
 function CheckLoggedIn() {
     global $userInfo;
-    if (checkExists($_SESSION["uid"]) && checkExists($userInfo)) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return (checkExists($_SESSION["uid"]) && checkExists($userInfo));
 }
 
 /**
@@ -85,7 +80,7 @@ function RegisterUser($details) {
                         //these checks are left to the end to minimise the number of potential pointless queries
 
                         //checks if username exists (returns false if it doesn't)
-                        if (!Customer->getInfoByUname($details["username"])) {
+                        if (!Customer->getInfoByUName($details["username"])) {
                             //checks if email is taken
                             if (!Customer->getInfoByEmail($details["email"])) {
                                 //if here, then all checks have passed
