@@ -1,3 +1,7 @@
 <?php
-echo "evotech;";
+
+include 'config/database.php';
+
+echo "<h1>evotech;</h1>";
+
 ?>
