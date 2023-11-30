@@ -22,17 +22,17 @@ Write-Host "Copying the example config file to the config file"
 Copy-Item setup/example_config.php config.php
 
 # Prompt the user for the database username
-$db_username = Read-Host "Enter the database username (Default: your_username)"
+$db_username = Read-Host "Enter the database username (Default: root)"
 
 # Set the default database username if the user did not enter one
 if ($db_username -eq "") {
-    $db_username = "your_username"
+    $db_username = "root"
 }
 
 # Get password and confirm password from the user, using secure input, loop until they match
 do {
-    $db_password = Read-Host "Enter the database password (Default: your_password)" -AsSecureString
-    $db_password_confirm = Read-Host "Confirm the database password (Default: your_password)" -AsSecureString
+    $db_password = Read-Host "Enter the database password (Default: none)" -AsSecureString
+    $db_password_confirm = Read-Host "Confirm the database password (Default: none)" -AsSecureString
 
     # Convert the secure strings to plain text
     $db_password = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($db_password))
@@ -45,13 +45,16 @@ do {
 
 } while ($db_password -ne $db_password_confirm)
 
+# Concateneate username with _db to get default database name
+$db_database_name = $db_username + "_db"
+
 # Prompt the user for the database name
-$db_database_name = Read-Host "Enter the database name (Default: your_database_name)"
+$db_database_name = Read-Host "Enter the database name (Default: $db_database_name)"
 
 # Set the default database name if the user did not enter one
 
 if ($db_database_name -eq "") {
-    $db_database_name = "your_database_name"
+    $db_database_name = $db_username + "_db"
 }
 
 # Prompt the user for the database server
@@ -68,10 +71,20 @@ if ($db_server -eq "") {
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "your_database_name"', "= `"$db_database_name`""} | Set-Content config.php
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "localhost"', "= `"$db_server`""} | Set-Content config.php
 
+# Change  instances of DocumentRoot and Directory in the apache config file to the current directory
+
+Write-Host "Changing the apache config file to use the current directory"
+(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace 'DocumentRoot "C:/xampp/htdocs"', "DocumentRoot `"$PSScriptRoot`""} | Set-Content C:\xampp\apache\conf\httpd.conf
+(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace '<Directory "C:/xampp/htdocs">', "<Directory `"$PSScriptRoot`">"} | Set-Content C:\xampp\apache\conf\httpd.conf
+
 # Start the apache and mysql services using the batch files
 Write-Host "Starting the apache and mysql services"
 Start-Process -FilePath "C:\xampp\apache_start.bat"
 Start-Process -FilePath "C:\xampp\mysql_start.bat"
+
+# Create the database if it does not exist
+Write-Host "Creating the database if it does not exist"
+Start-Process -FilePath "C:\xampp\mysql\bin\mysql.exe" -ArgumentList "-u$db_username -p$db_password -e`"CREATE DATABASE IF NOT EXISTS $db_database_name;`""
 
 # Launch the browser to the website and phpmyadmin in the default browser
 Write-Host "Launching the pages..."
