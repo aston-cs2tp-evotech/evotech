@@ -27,7 +27,7 @@ function ReLogInUser() {
     if (checkExists($_SESSION["uid"])) {
         $uid = $_SESSION["uid"];
         //querys the database to get user info
-        $userInfo = Customer->getInfoByUID($uid);
+        $userInfo = Customer->getCustomerByUID($uid);
     } 
 }
 
@@ -48,10 +48,10 @@ function CheckLoggedIn() {
  */
 function AttemptLogin($user, $pass) {
     //attempts to fetch details via username
-    $details = Customer->getInfoByUName($user);
+    $details = Customer->getCustomerByUsername($user);
     if (!checkExists($details)) {
         //falls back to fetching via email
-        $details = Customer->getInfoByEmail($user);
+        $details = Customer->getCustomerByEmail($user);
         if (!checkExists($details)) return false;
     }
     //checks passwords match
@@ -76,7 +76,7 @@ function RegisterUser($details) {
         //regex for username (also checks if length > 0)
         if (checkExists($details["username"]) && preg_match("/[a-zA-Z0-9]+/", $details["username"])) {
             //TODO: add constraints to address
-            if (checkExists($details["address"])) {
+            if (checkExists($details["customer_address"])) {
                 //check first pass is good and longer than 7
                 if (checkExists($details["password"]) && strlen($details["password"]) > 7) {
                     //checks confirmation is good
@@ -84,14 +84,13 @@ function RegisterUser($details) {
                         //these checks are left to the end to minimise the number of potential pointless queries
 
                         //checks if username exists (returns false if it doesn't)
-                        if (!Customer->getInfoByUName($details["username"])) {
+                        if (!Customer->getCustomerByUsername($details["username"])) {
                             //checks if email is taken
-                            if (!Customer->getInfoByEmail($details["email"])) {
+                            if (!Customer->getCustomerByEmail($details["email"])) {
                                 //if here, then all checks have passed
 
                                 //hashes password
-                                $temp = $details["password"];
-                                $details["password"] = password_hash($temp, PASSWORD_DEFAULT);
+                                $details["password_hash"] = password_hash($details["password"], PASSWORD_DEFAULT);
                                 
                                 //any response will evaluate to true
                                 if (Customer->registerCustomer($details)) return "";
