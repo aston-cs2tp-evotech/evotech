@@ -10,14 +10,22 @@ Team Project for the CS2TP module
     winget install -e --id ApacheFriends.Xampp.8.2
     ```
 
-2. Clone the repository using `git clone`
+2. Clone the repository using `git clone` and change directory to the root of the repository
+    ```powershell
+    cd evotech
+    ```
 
-3. Change the DocumentRoot in `C:\xampp\apache\conf\httpd.conf` from `C:/xampp/htdocs` to the root of the repository
-    - There are two instances of DocumentRoot in the file, change both
+3. Run the setup script for Windows
+    ```powershell
+    .\setup\setupWindows.ps1
+    ```
+    - This will also start Apache and MySQL in XAMPP and launch the sites
 
-4. Start Apache and MySQL in XAMPP
+The script will have configured everything so in the future if you need to run locally again:
 
-5. Open the following links in your browser:
+1. Start Apache and MySQL in XAMPP
+
+2. Open the following links in your browser:
     - http://localhost/phpmyadmin
     - http://localhost
 
@@ -37,16 +45,21 @@ Team Project for the CS2TP module
     brew install --cask xampp
     ```
     
-4. Clone the repository using `git clone`
+4. Clone the repository using `git clone` and change directory to the root of the repository
+    ```bash
+    cd evotech
+    ```
+5. Run the setup script for macOS
+    ```bash
+    ./setup/setupMac.sh
+    ```
+    - This will also start Apache and MySQL in XAMPP and launch the sites
 
-5. Change the DocumentRoot in `/Applications/XAMPP/xamppfiles/etc/httpd.conf` from `/Applications/XAMPP/xamppfiles/htdocs` to the root of the repository
-    - There are two instances of DocumentRoot in the file, change both
+The script will have configured everything so in the future if you need to run locally again:
 
-6. Change the User in `/Applications/XAMPP/xamppfiles/etc/httpd.conf` from `daemon` to your username
+1. Start Apache and MySQL in XAMPP
 
-7. Start Apache and MySQL in XAMPP
-
-8. Open the following links in your browser:
+2. Open the following links in your browser:
     - http://localhost/phpmyadmin
     - http://localhost
 
@@ -61,16 +74,19 @@ Team Project for the CS2TP module
 
 2. Clone the repository using `git clone`
 
-3. Change the DocumentRoot in `/opt/lampp/etc/httpd.conf` from `/opt/lampp/htdocs` to the root of the repository
-    - There are two instances of DocumentRoot in the file, change both
+3. Run the setup script for Linux
+    ```bash
+    ./setup/setupLinux.sh
+    ```
+    - This will also start Apache and MySQL in XAMPP and launch the sites
 
-4. Change the User and Group in `/opt/lampp/etc/httpd.conf` from `daemon` to your username
+The script will have configured everything so in the future if you need to run locally again:
 
-5. Start Apache and MySQL in XAMPP
+1. Start Apache and MySQL in XAMPP
 
-6. Open the following links in your browser:
+2. Open the following links in your browser:
     - http://localhost/phpmyadmin
-    - http://localhost/evotech
+    - http://localhost
 
 # Credits
 
