@@ -70,9 +70,8 @@ function AttemptLogin($user, $pass) {
  * @return string Empty if succeeds (ie. evaluates to false), or a string to indicate where it failed
  */
 function RegisterUser($details) {
-    //TODO: NEEDS FIXING!!!! regex for email
-    //needs support for symbols and 3rd level domains
-    if (checkExists($details["email"]) && preg_match("/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+/", $details["email"])){
+    //email validation
+    if (checkExists($details["email"]) && filter_var($details["email"], FILTER_VALIDATE_EMAIL)){
         //regex for username (also checks if length > 0)
         if (checkExists($details["username"]) && preg_match("/[a-zA-Z0-9]+/", $details["username"])) {
             //TODO: add constraints to address
