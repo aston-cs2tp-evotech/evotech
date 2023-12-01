@@ -115,7 +115,7 @@ class CustomerModel {
         // Validate $field to prevent SQL injection
         $allowedFields = ['Email', 'Username', 'CustomerAddress', 'PasswordHash'];
         if (!in_array($field, $allowedFields)) {
-            return false; // Invalid field
+            return false; 
         }
 
         $query = "UPDATE `Customers` SET `$field` = :value WHERE `CustomerID` = :customerID";
@@ -126,7 +126,6 @@ class CustomerModel {
         try {
             return $statement->execute();
         } catch (PDOException $e) {
-            // Handle the exception, log or return false as needed
             return false;
         }
     }
