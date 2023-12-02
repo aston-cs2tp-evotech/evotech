@@ -102,6 +102,33 @@ class CustomerModel {
 
         return $insertStatement->execute() ? $this->getCustomerByEmail($userData['email']) : null;
     }
+
+    /**
+     * Update a customer's details.
+     *
+     * @param int $UID The unique identifier of the customer.
+     * @param string $field The field to update.
+     * @param string $value The new value.
+     * @return bool True if the update is successful, false otherwise.
+     */
+    public function updateCustomerDetail($UID, $field, $value) {
+        // Validate $field to prevent SQL injection
+        $allowedFields = ['Email', 'Username', 'CustomerAddress', 'PasswordHash'];
+        if (!in_array($field, $allowedFields)) {
+            return false; 
+        }
+
+        $query = "UPDATE `Customers` SET `$field` = :value WHERE `CustomerID` = :customerID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':value', $value, PDO::PARAM_STR);
+        $statement->bindParam(':customerID', $UID, PDO::PARAM_INT);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 
 ?>
