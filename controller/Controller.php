@@ -7,7 +7,7 @@
 /**
  * @var array Global variable to store customer info (username, address etc)
  */
-$userInfo = Array();
+global $userInfo;
 
 /**
  * Check if a variable is safe to evaluate
@@ -22,12 +22,12 @@ function checkExists($var) {
  * Puts all relevent user info into the global userInfo array
 */
 function ReLogInUser() {
-    global $userInfo;
+    global $userInfo, $Customer;
     //checks if it is set and not false
     if (checkExists($_SESSION["uid"])) {
         $uid = $_SESSION["uid"];
         //querys the database to get user info
-        $userInfo = Customer->getCustomerByUID($uid);
+        $userInfo = $Customer->getCustomerByUID($uid);
     } 
 }
 
@@ -47,11 +47,12 @@ function CheckLoggedIn() {
  * @return boolean True if login succeeded, otherwise false
  */
 function AttemptLogin($user, $pass) {
+    global $Customer;
     //attempts to fetch details via username
-    $details = Customer->getCustomerByUsername($user);
+    $details = $Customer->getCustomerByUsername($user);
     if (!checkExists($details)) {
         //falls back to fetching via email
-        $details = Customer->getCustomerByEmail($user);
+        $details = $Customer->getCustomerByEmail($user);
         if (!checkExists($details)) return false;
     }
     //checks passwords match
@@ -70,6 +71,7 @@ function AttemptLogin($user, $pass) {
  * @return string Empty if succeeds (ie. evaluates to false), or a string to indicate where it failed
  */
 function RegisterUser($details) {
+    global $Customer;
     //email validation
     if (checkExists($details["email"]) && filter_var($details["email"], FILTER_VALIDATE_EMAIL)){
         //regex for username (also checks if length > 0)
@@ -83,16 +85,16 @@ function RegisterUser($details) {
                         //these checks are left to the end to minimise the number of potential pointless queries
 
                         //checks if username exists (returns false if it doesn't)
-                        if (!Customer->getCustomerByUsername($details["username"])) {
+                        if (!$Customer->getCustomerByUsername($details["username"])) {
                             //checks if email is taken
-                            if (!Customer->getCustomerByEmail($details["email"])) {
+                            if (!$Customer->getCustomerByEmail($details["email"])) {
                                 //if here, then all checks have passed
 
                                 //hashes password
                                 $details["password_hash"] = password_hash($details["password"], PASSWORD_DEFAULT);
                                 
                                 //any response will evaluate to true
-                                if (Customer->registerCustomer($details)) return "";
+                                if ($Customer->registerCustomer($details)) return "";
                                 else return "Database error occured, please try registering again.";
                             } 
                             else return "Email is already in use, please use another one";
@@ -114,6 +116,7 @@ function RegisterUser($details) {
  * Unsets both global arrays and destroys the session
  */
 function LogOut() {
+    global $userInfo;
     unset($userInfo);
     unset($_SESSION);
     session_destroy();
