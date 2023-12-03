@@ -5,7 +5,7 @@
 
     <head>
         
-        <link rel="stylesheet" type="text/css" href="css/signup_login_style.css"/>
+        <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
         
         <title>
             Log in
@@ -23,7 +23,7 @@
 
             <h2>Log in to your account</h2>
 
-            <form id="login">
+            <form>
                 <p><b>Enter your email address</b></p>
                 <input type="email" name="email" placeholder="Email" required/>
                 <p><b>Enter your password</b></p>
@@ -31,7 +31,7 @@
             <br>
             <br>
             <br>
-                <input id="login" type="submit" value="Log in"/>
+                <input type="submit" value="Log in"/>
             </form>
 
             <br>
