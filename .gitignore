@@ -3,3 +3,6 @@
 
 # Ignore config.php
 config.php
+
+# Ignore macOS hidden file
+.DS_Store
