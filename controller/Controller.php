@@ -83,6 +83,8 @@ function RegisterUser($details) {
     $details["password_hash"] = password_hash($details["password"], PASSWORD_DEFAULT);
     if (!$Customer->registerCustomer($details)) return "Database Error";
     //if here, then success
+    $_SESSION["uid"] = $Customer->getCustomerByUsername($details["username"])["CustomerID"];
+    ReLogInUser();
     return "";
 }
 
