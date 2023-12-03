@@ -113,6 +113,68 @@ function RegisterUser($details) {
 }
 
 /**
+ * Updates a specified field in the database for a customer 
+ * @param array $details Associative array containing field to change, new value and other relevant info
+ * @return string Empty if succeeded, or a string to indicate where it failed
+ */
+function UpdateCustomerDetail($details) {
+    global $Customer;
+    $details["field"] = strtolower($details["field"]);
+    //preliminary checks
+    if (!CheckLoggedIn()) return "Not logged in";
+    if (!checkExists($details["field"]) || !checkExists($details["value"])) return "Invalid request";
+
+    switch ($details["field"]) {
+        case "username":
+            //username check
+            if (!preg_match("/[a-zA-Z0-9]+/", $details["value"])) return "Invalid username";
+
+            //if username is not in use
+            $user = $Customer->getCustomerByUsername($details["value"]);
+            if (!$user) {
+                if ($Customer->updateCustomerDetail($_SESSION["uid"], "Username", $details["value"])) return "";
+                else return "Database Error";
+            }
+            else return "Username already taken";
+
+        case "email":
+            //email check
+            if (!filter_var($details["value"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
+            
+            //if email is not in use
+            $user = $Customer->getCustomerByEmail($details["value"]);
+            if (!$user) {
+                if ($Customer->updateCustomerDetail($_SESSION["uid"], "Email", $details["value"])) return "";
+                else return "Database Error";
+            }
+            else return "Email already in use";
+
+        case "address":
+            //address check
+            if (!preg_match("/[a-zA-Z0-9.,]+/", $details["value"])) return "Invalid address";
+
+            if ($Customer->updateCustomerDetail($_SESSION["uid"], "CustomerAddress", $details["value"])) return "";
+            else return "Database Error";
+
+        case "password":
+            //password uses additional fields so those need checking too
+            if (!checkExists($details["newPassword"]) || !checkExists($details["confirmPassword"])) return "Invalid request";
+            //checks that can be done before queries
+            if (strlen($details["newPassword"]) < 7) return "New password should be longer than 7 characters";
+            if ($details["newPassword"] != $details["confirmPassword"]) return "New and confirmation passwords should match";
+            
+            $user = $Customer->getCustomerByUID($_SESSION["uid"]);
+            if (!password_verify($details["value"], $user["PasswordHash"])) return "Current password is incorrect";
+
+            if($Customer->updateCustomerDetail($_SESSION["uid"], "PasswordHash", password_hash($details["newPassword"], PASSWORD_DEFAULT))) return "";
+            else return "Database Error";
+
+        default:
+            return "Invalid field";
+    }
+}
+
+/**
  * Unsets both global arrays and destroys the session
  */
 function LogOut() {
