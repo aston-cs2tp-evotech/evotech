@@ -5,7 +5,7 @@
 
     <head>
 
-        <link rel="stylesheet" type="text/css" href="css/stylesheet.css"/>
+        <link rel="stylesheet" type="text/css" href="css/signup_login_style.css"/>
         
         <title>
             Register
