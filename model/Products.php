@@ -137,7 +137,88 @@ class ProductModel {
         }
     }
 
+        /**
+     * Retrieve compatibility types for a product.
+     *
+     * @param int $productID The unique identifier of the product.
+     * @return array|null An array of compatibility types or null if not found.
+     */
+    public function getProductCompatibility($productID) {
+        $query = "SELECT `Compatibility`.`CompatibilityName`, `ProductCompatibility`.`SlotType`
+                  FROM `Compatibility`
+                  JOIN `ProductCompatibility` ON `Compatibility`.`CompatibilityID` = `ProductCompatibility`.`CompatibilityID`
+                  WHERE `ProductCompatibility`.`ProductID` = :productID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $compatibility = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $compatibility ? $compatibility : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
+     * Retrieve slot types for a product.
+     *
+     * @param int $productID The unique identifier of the product.
+     * @return array|null An array of slot types or null if not found.
+     */
+    public function getProductSlots($productID) {
+        $query = "SELECT `SlotType` FROM `ProductSlots` WHERE `ProductID` = :productID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $slots = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $slots ? $slots : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
+     * Add compatibility for a product.
+     *
+     * @param int $productID The unique identifier of the product.
+     * @param int $compatibilityID The unique identifier of the compatibility type.
+     * @param string $slotType The type of slot compatibility (e.g., USB, PCIe).
+     * @return bool True if the addition is successful, false otherwise.
+     */
+    public function addProductCompatibility($productID, $compatibilityID, $slotType) {
+        $insertQuery = "INSERT INTO `ProductCompatibility` (`ProductID`, `CompatibilityID`, `SlotType`) VALUES (:productID, :compatibilityID, :slotType)";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $insertStatement->bindParam(':compatibilityID', $compatibilityID, PDO::PARAM_INT);
+        $insertStatement->bindParam(':slotType', $slotType, PDO::PARAM_STR);
+
+        try {
+            return $insertStatement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Add slot type for a product.
+     *
+     * @param int $productID The unique identifier of the product.
+     * @param string $slotType The type of slot compatibility (e.g., USB, PCIe).
+     * @return bool True if the addition is successful, false otherwise.
+     */
+    public function addProductSlot($productID, $slotType) {
+        $insertQuery = "INSERT INTO `ProductSlots` (`ProductID`, `SlotType`) VALUES (:productID, :slotType)";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $insertStatement->bindParam(':slotType', $slotType, PDO::PARAM_STR);
+
+        try {
+            return $insertStatement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
     
 }
-
 ?>
