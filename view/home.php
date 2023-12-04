@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" type="text/css" href="css/home.css">
+    <link rel="stylesheet" type="text/css" href="view/css/home.css">
     <title>EvoTech</title>
     <ion-icon name="desktop-outline"></ion-icon>
 
@@ -18,7 +18,7 @@
 <body>
     <nav class="navbar navbar-expand-lg  fixed-top py-1">
         <div class="container-fluid">
-            <img src="images/Picture1.png" style="width: 50px; height: 50px;" alt="EvoTech logo">
+            <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="EvoTech logo">
             <a class="navbar-brand me-auto" href="#">EvoTech</a>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
@@ -32,7 +32,7 @@
                             <a class="nav-link active" aria-current="page" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="aboutus.php">About</a>
+                            <a class="nav-link" href="aboutus">About</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Products</a>
@@ -50,7 +50,7 @@
 
                 </div>
             </div>
-            <a href="login.php" class="login-button">Login</a>
+            <a href="login" class="login-button">Login</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -75,7 +75,7 @@
                     </p>
                     <button class="btn btn-primary btn-md"> Shop now</button>
                 </div>
-               <img class="img-fluid w-10" src="images/Picture1.png"alt="EvoTech"> 
+               <img class="img-fluid w-10" src="view/images/Picture1.png"alt="EvoTech"> 
             </div>
         </div>
 
