@@ -1,37 +1,35 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<meta charset="utf-8"/>
-
     <head>
-        
-        <link rel="stylesheet" type="text/css" href="css/signup_login_style.css"/>
-        
-        <title>
-            Log in
-        
-        </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Log in</title>
+        <link rel="stylesheet" type="text/css" href="css/login_register.css"/>
+    
     </head>
-
     <body>
+
+        <header>
+            <h1>Log in</h1>
+        </header>
 
         <main>
 
-            <h1>evotech;</h1>
+        <div class="container">
 
-            <div class="login" style="text-align:center">
-
-            <h2>Log in to your account</h2>
+	    <h2>Log in to your Evotech account</h2>
 
             <form>
                 <p><b>Enter your email address</b></p>
                 <input type="email" name="email" placeholder="Email" required/>
+                <br>
                 <p><b>Enter your password</b></p>
                 <input type="password" name="password" placeholder="Password" required/>
             <br>
             <br>
             <br>
                 <input type="submit" value="Log in"/>
+            <br>
             </form>
 
             <br>
