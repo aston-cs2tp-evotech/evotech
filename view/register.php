@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register</title>
-        <link rel="stylesheet" type="text/css" href="css/login_register.css"/>
+        <link rel="stylesheet" type="text/css" href="view/css/login_register.css"/>
 
     </head>
     <body>
@@ -43,7 +43,7 @@
 
             <br>
             <h2>Already have an account?</h2>
-            <a href="login.html">Log in</a>
+            <a href="login">Log in</a>
 
             </div>
 

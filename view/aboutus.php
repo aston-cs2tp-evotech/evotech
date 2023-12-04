@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
-    <link rel="stylesheet" href="css/aboutus.css">
+    <link rel="stylesheet" href="view/css/aboutus.css">
     
 </head>
 <body>
@@ -62,7 +62,7 @@
             </div>
           </div>
         <h2>Get In Touch</h2>
-        <p>If you have any questions or concerns, <a href="contact.html">contact us</a>. Evotech is for Everyone.</p>
+        <p>If you have any questions or concerns, <a href="contact">contact us</a>. Evotech is for Everyone.</p>
     </div>
 
 </body>
