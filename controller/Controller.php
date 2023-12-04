@@ -56,7 +56,7 @@ function AttemptLogin($user, $pass) {
         if (!checkExists($details)) return false;
     }
     //checks passwords match
-    if (password_verify(password_hash($pass, PASSWORD_DEFAULT), $details["PasswordHash"])) {
+    if (password_verify($pass, $details["PasswordHash"])) {
         $_SESSION["uid"] = $details["CustomerID"];
         unset($details);
         ReLogInUser();
