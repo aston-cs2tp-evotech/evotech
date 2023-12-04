@@ -74,8 +74,13 @@ if ($db_server -eq "") {
 # Change  instances of DocumentRoot and Directory in the apache config file to the current directory
 
 Write-Host "Changing the apache config file to use the current directory"
-(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace 'DocumentRoot "C:/xampp/htdocs"', "DocumentRoot `"$PSScriptRoot`""} | Set-Content C:\xampp\apache\conf\httpd.conf
-(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace '<Directory "C:/xampp/htdocs">', "<Directory `"$PSScriptRoot`">"} | Set-Content C:\xampp\apache\conf\httpd.conf
+$evotechPath = "C:\Users\Reece\evotech"
+(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace 'DocumentRoot "C:/xampp/htdocs"', "DocumentRoot `"$evotechPath`""} | Set-Content C:\xampp\apache\conf\httpd.conf
+(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace '<Directory "C:/xampp/htdocs">', "<Directory `"$evotechPath`">"} | Set-Content C:\xampp\apache\conf\httpd.conf
+
+
+(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace 'DocumentRoot "C:/xampp/htdocs"', "DocumentRoot `"$evotechPath`""} | Set-Content C:\xampp\apache\conf\httpd.conf
+(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace '<Directory "C:/xampp/htdocs">', "<Directory `"$evotechPath`">"} | Set-Content C:\xampp\apache\conf\httpd.conf
 
 # Start the apache and mysql services using the batch files
 Write-Host "Starting the apache and mysql services"
