@@ -1,18 +1,6 @@
 <?php
 // Include the config.php file
-$configPath = __DIR__ . '/../config.php';
-if (file_exists($configPath)) {
-    include $configPath;
-
-    // Check if $config is an array before extracting
-    if (is_array($config)) {
-        extract($config);
-    } else {
-        die("Configuration is not an array in $configPath");
-    }
-} else {
-    die("Config file not found at $configPath");
-}
+include __DIR__ . '/../config.php';
 
 // PDO database connection
 try {
