@@ -71,14 +71,10 @@ if ($db_server -eq "") {
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "your_database_name"', "= `"$db_database_name`""} | Set-Content config.php
 (Get-Content config.php) | ForEach-Object {$_ -replace '= "localhost"', "= `"$db_server`""} | Set-Content config.php
 
-# Change  instances of DocumentRoot and Directory in the apache config file to the current directory
+# Get the parent directory of the script root
+$evotechPath = (Get-Item $PSScriptRoot).Parent.FullName
 
-Write-Host "Changing the apache config file to use the current directory"
-$evotechPath = "C:\Users\Reece\evotech"
-(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace 'DocumentRoot "C:/xampp/htdocs"', "DocumentRoot `"$evotechPath`""} | Set-Content C:\xampp\apache\conf\httpd.conf
-(Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace '<Directory "C:/xampp/htdocs">', "<Directory `"$evotechPath`">"} | Set-Content C:\xampp\apache\conf\httpd.conf
-
-
+# Update DocumentRoot and Directory paths in httpd.conf
 (Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace 'DocumentRoot "C:/xampp/htdocs"', "DocumentRoot `"$evotechPath`""} | Set-Content C:\xampp\apache\conf\httpd.conf
 (Get-Content C:\xampp\apache\conf\httpd.conf) | ForEach-Object {$_ -replace '<Directory "C:/xampp/htdocs">', "<Directory `"$evotechPath`">"} | Set-Content C:\xampp\apache\conf\httpd.conf
 
