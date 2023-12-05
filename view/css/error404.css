@@ -17,17 +17,7 @@ header {
 header img {
     width: 100%;
     height: auto;
-    border-radius: 8px 8px 0 0; /* Add rounded corners only to the top */
-}
-
-.banner-container h1 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    font-size: 2em;
-    z-index: 1; /* Ensures the title is above the image */
+    border-radius: 8px 8px 0 0; 
 }
 
 .container {
