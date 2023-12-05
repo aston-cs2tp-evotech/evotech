@@ -20,19 +20,19 @@
         <h2>Register an Evotech account</h2>
 
             <form>
-                <p><b>Enter your first name</b></p>
-                <input type="text" name="first_name" placeholder="First name" required/>   
-                <br>
-                <p><b>Enter your surname</b></p>  
-                <input type="text" name="surname" placeholder="Surname" required/>
-                <br>
-                <p><b>Enter your email address</b></p>
+                <label for="email">Enter your email address</label>
                 <input type="email" name="email" placeholder="Email" required/>
                 <br>
-                <p><b>Enter a secure password</b></p>
+                <label for="email">Enter a username</label>
+                <input type="text" name="username" placeholder="Username" required/>
+                <br>
+                <label for="address">Enter your address</label>
+                <textarea name="address" placeholder="Address" rows="6" required></textarea>
+                <br>
+                <label for="password">Enter your password</label>
                 <input type="password" name="password" placeholder="Password" required/>
                 <br>
-                <p><b>Re-enter password</b></p>
+                <label for="password_confirmation">Re-enter password</label>
                 <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm password" required/>
             <br>
             <br>
@@ -48,7 +48,3 @@
             </div>
 
         </main>
-
-    </body>
-
-</html>
