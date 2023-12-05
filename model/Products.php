@@ -137,7 +137,8 @@ class ProductModel {
         }
     }
 
-        /**
+    
+    /**
      * Retrieve compatibility types for a product.
      *
      * @param int $productID The unique identifier of the product.
@@ -154,6 +155,30 @@ class ProductModel {
         if ($statement->execute()) {
             $compatibility = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $compatibility ? $compatibility : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    
+    /**
+     * Retrieve all products that are compatible with a product.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @return array|null An array of compatible products or null if not found.
+     */
+    public function getAllCompatibleProducts($productID) {
+        $query = "SELECT `Products`.* FROM `Products`
+                  JOIN `ProductCompatibility` ON `Products`.`ProductID` = `ProductCompatibility`.`ProductID`
+                  WHERE `ProductCompatibility`.`CompatibilityID` IN (
+                      SELECT `CompatibilityID` FROM `ProductCompatibility` WHERE `ProductID` = :productID
+                  ) AND `Products`.`ProductID` != :productID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $products ? $products : null;
         } else {
             return null; // Failed to execute query
         }
