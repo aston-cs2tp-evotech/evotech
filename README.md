@@ -1,8 +1,11 @@
 # evotech
 Team Project for the CS2TP module
 
-# Running locally
+# Contributing
+For information on how to contribute to the project, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
+# Running locally
+These instructions will guide you through setting up the project to run locally on your machine for development and testing purposes.
 ## Windows
 
 1. Install XAMPP
