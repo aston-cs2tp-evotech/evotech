@@ -3,7 +3,7 @@ p {
     text-align: left;
 }
 
-h3, input, button {
+input, button {
     float: left;
 }
 
