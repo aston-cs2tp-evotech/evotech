@@ -2,7 +2,6 @@
     /**
      * TODO List
      * 
-     * - updateOrder (for any changes to the order like status changes)
      * - deleteOrder 
      * - createOrderLine (for when an item is added to the cart)
      * - updateOrderLine (for when the item quantity is changed)
@@ -147,6 +146,32 @@ class OrdersModel {
         return $insertStatement->execute() ? $this->database->lastInsertId() : null;
      }
 
-     
+     /**
+      * Update an existing Order.
+      * 
+      * @param int $orderID The unique identifier of the Order.
+      * @param string $field The field to update.
+      * @param string $value The new value.
+      * @return bool True if successful, false otherwise.
+      */
+    public function updateOrderDetails($orderID, $field, $value) {
+        // Validate $field to prevent SQL injection
+        $allowedFields = array('CustomerID', 'TotalAmount', 'OrderStatusID');
+        if (!in_array($field, $allowedFields)) {
+            return false;
+        }
+
+        $query = "UPDATE `Orders` SET `$field` = :value WHERE `OrderID` = :orderID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':value', $value, PDO::PARAM_STR);
+        $statement->bindParam(':orderID', $orderID, PDO::PARAM_INT);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
 }
 ?>
