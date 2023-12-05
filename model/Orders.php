@@ -2,7 +2,6 @@
     /**
      * TODO List
      * 
-     * - deleteOrder 
      * - createOrderLine (for when an item is added to the cart)
      * - updateOrderLine (for when the item quantity is changed)
      * - deleteOrderLine (for when an item is removed from the cart)
@@ -172,6 +171,26 @@ class OrdersModel {
             return false;
         }
     }
+
+    /**
+     * Delete an existing Order.
+     * 
+     * @param int $orderID The unique identifier of the Order.
+     * @return bool True if successful, false otherwise.
+     */
+    public function deleteOrder($orderID) {
+        $query = "DELETE FROM `Orders` WHERE `OrderID` = :orderID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':orderID', $orderID, PDO::PARAM_INT);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    
 
 }
 ?>
