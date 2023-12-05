@@ -1,53 +1,50 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<meta charset="utf-8"/>
-
     <head>
-
-        <link rel="stylesheet" type="text/css" href="css/signup_login_style.css"/>
-        
-        <title>
-            Register
-        </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Register</title>
+        <link rel="stylesheet" type="text/css" href="view/css/login_register_checkout.css"/>
 
     </head>
-
     <body>
+
+        <header>
+            <h1>Register</h1>
+        </header>
 
         <main>
 
-            <h1>evotech;</h1>
+        <div class="container">
 
-            <div style="text-align:center">
-
-            <h2>Create an account</h2>
+        <h2>Register an Evotech account</h2>
 
             <form>
-                <p><b>Enter your first name</b></p>
-                <input type="text" name="first_name" placeholder="First name" required/>   
-                <p><b>Enter your surname</b></p>  
-                <input type="text" name="surname" placeholder="Surname" required/>
-                <p><b>Enter your email address</b></p>
+                <label for="email">Enter your email address</label>
                 <input type="email" name="email" placeholder="Email" required/>
-                <p><b>Enter a secure password</b></p>
+                <br>
+                <label for="email">Enter a username</label>
+                <input type="text" name="username" placeholder="Username" required/>
+                <br>
+                <label for="address">Enter your address</label>
+                <textarea name="address" placeholder="Address" rows="6" required></textarea>
+                <br>
+                <label for="password">Enter your password</label>
                 <input type="password" name="password" placeholder="Password" required/>
-                <p><b>Re-enter password</b></p>
+                <br>
+                <label for="password_confirmation">Re-enter password</label>
                 <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm password" required/>
             <br>
             <br>
             <br>
                 <input type="submit" value="Register"/>
+            <br>
             </form>
 
             <br>
             <h2>Already have an account?</h2>
-            <a href="login.html">Log in</a>
+            <a href="login">Log in</a>
 
             </div>
 
         </main>
-
-    </body>
-
-</html>
