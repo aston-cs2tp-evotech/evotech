@@ -1,12 +1,5 @@
 <?php
-    /**
-     * TODO List
-     * 
-     * - createOrderLine (for when an item is added to the cart)
-     * - updateOrderLine (for when the item quantity is changed)
-     * - deleteOrderLine (for when an item is removed from the cart)
-     * 
-     */
+
 class OrdersModel {
 
     private $database;
@@ -190,7 +183,74 @@ class OrdersModel {
         }
     }
 
-    
+    /**
+     * Creates a new OrderLine.
+     * 
+     * @param array $orderLineDetails The OrderLine details
+     * @return int|null The OrderLineID or null if failed to create.
+     */
+    public function createOrderLine($orderLineDetails) {
+        $insertQuery = "INSERT INTO 'OrderLines' (
+                        'OrderID',
+                        'ProductID',
+                        'Quantity',
+                    ) VALUES (
+                        :orderID,
+                        :productID,
+                        :quantity,
+                    )";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':orderID', $orderLineDetails['orderID'], PDO::PARAM_INT);
+        $insertStatement->bindParam(':productID', $orderLineDetails['productID'], PDO::PARAM_INT);
+        $insertStatement->bindParam(':quantity', $orderLineDetails['quantity'], PDO::PARAM_INT);
+        
+        return $insertStatement->execute() ? $this->database->lastInsertId() : null;
+    }
 
+    /**
+     * Update an existing OrderLine.
+     * 
+     * @param int $orderLineID The unique identifier of the OrderLine.
+     * @param string $field The field to update.
+     * @param string $value The new value.
+     * @return bool True if successful, false otherwise.
+     */
+    public function updateOrderLine($orderLineID, $field, $value) {
+        // Validate $field to prevent SQL injection
+        $allowedFields = array('OrderID', 'ProductID', 'Quantity');
+        if (!in_array($field, $allowedFields)) {
+            return false;
+        }
+
+
+        $query = "UPDATE `OrderLines` SET `$field` = :value WHERE `OrderLineID` = :orderLineID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':value', $value, PDO::PARAM_STR);
+        $statement->bindParam(':orderLineID', $orderLineID, PDO::PARAM_INT);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    
+    /**
+     * Delete an existing OrderLine.
+     * 
+     * @param int $orderLineID The unique identifier of the OrderLine.
+     * @return bool True if successful, false otherwise.
+     */
+    public function deleteOrderLine($orderLineID) {
+        $query = "DELETE FROM `OrderLines` WHERE `OrderLineID` = :orderLineID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':orderLineID', $orderLineID, PDO::PARAM_INT);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 ?>
