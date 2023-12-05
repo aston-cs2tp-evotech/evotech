@@ -20,6 +20,10 @@ switch ($request) {
         require __DIR__ . '/view/register.php';
         break;
     
+    case '/contactpage':
+        require __DIR__ . '/view/contactspage.php';
+        break;
+    
     default:
         require __DIR__ . '/view/home.php';
         break;
