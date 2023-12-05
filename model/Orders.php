@@ -84,7 +84,8 @@ class OrdersModel {
     public function getAllOrdersByOrderStatusNameAndCustomerID($orderStatusName, $customerID) {
         $query = "SELECT * FROM `Orders` WHERE `OrderStatusID` = :orderStatusID AND `CustomerID` = :customerID";
         $statement = $this->database->prepare($query);
-        $statement->bindParam(':orderStatusID', $this->getOrderStatusIDByName($orderStatusName), PDO::PARAM_INT);
+        $orderStatusID = $this->getOrderStatusIDByName($orderStatusName);
+        $statement->bindParam(':orderStatusID', $orderStatusID, PDO::PARAM_INT);
         $statement->bindParam(':customerID', $customerID, PDO::PARAM_INT);
 
         if ($statement->execute()) {
