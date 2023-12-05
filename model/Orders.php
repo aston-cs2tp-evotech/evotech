@@ -1,5 +1,14 @@
 <?php
-
+    /**
+     * TODO List
+     * 
+     * - updateOrder (for any changes to the order like status changes)
+     * - deleteOrder 
+     * - createOrderLine (for when an item is added to the cart)
+     * - updateOrderLine (for when the item quantity is changed)
+     * - deleteOrderLine (for when an item is removed from the cart)
+     * 
+     */
 class OrdersModel {
 
     private $database;
@@ -13,7 +22,8 @@ class OrdersModel {
     public function __construct($database) {
         $this->database = $database;
 
-    
+    }
+
     /**
      * Retrieve Order details by OrderID.
      * 
@@ -114,15 +124,29 @@ class OrdersModel {
     }
 
     /**
-     * TODO List
+     * Creates a new Order.
      * 
-     * - createOrder (for when a user adds an item to the cart. takes in customerID a)
-     * - updateOrder (for any changes to the order like status changes)
-     * - deleteOrder 
-     * - createOrderLine (for when an item is added to the cart)
-     * - updateOrderLine (for when the item quantity is changed)
-     * - deleteOrderLine (for when an item is removed from the cart)
-     * 
+     * @param array $orderDetails The Order details
+     * @return int|null The OrderID or null if failed to create.
      */
+     public function createOrder($orderDetails) {
+        $insertQuery = "INSERT INTO 'Orders' (
+                        'CustomerID',
+                        'TotalAmount',
+                        'OrderStatusID'
+                    ) VALUES (
+                        :customerID,
+                        :totalAmount,
+                        :orderStatusID
+                    )";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':customerID', $orderDetails['customerID'], PDO::PARAM_INT);
+        $insertStatement->bindParam(':totalAmount', $orderDetails['totalAmount'], PDO::PARAM_STR);
+        $insertStatement->bindParam(':orderStatusID', $orderDetails['orderStatusID'], PDO::PARAM_INT);
+        
+        return $insertStatement->execute() ? $this->database->lastInsertId() : null;
+     }
+
+     
 }
 ?>
