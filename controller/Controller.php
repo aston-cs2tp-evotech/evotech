@@ -1,8 +1,10 @@
 <?php
 
-// This file currently stores functions made for authentication
-// Alone it does not work, and will only be merged once the skeleton for the site exists
-// Ordering of the functions will come later
+// ---------------------------------------------
+//
+// FUNCTIONS RELATING TO CUSTOMER AND MAIN PAGE
+//
+// ---------------------------------------------
 
 /**
  * @var array Global variable to store customer info (username, address etc)
@@ -161,5 +163,87 @@ function LogOut() {
     //route back to main page or page that responds that user logged out
 }
 
+// ---------------------------------------------
+//
+// FUNCTIONS RELATING TO ORDERS 
+//
+// ---------------------------------------------
+
+/**
+ * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
+ * @param int $productID PID of product
+ * @param int $quantity Quantity of product
+ * @param Array $product Array to hold the product being checked
+ * @return boolean True if succeeded, otherwise false
+ */
+function productAndQuantityCheck($productID, $quantity, $product){
+    global $Product;
+    //check legitimate quantity
+    if (!checkExists($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
+    //check PID is int (no SQL injection allowed here sorry)
+    if (!checkExists($productID) || !(gettype($productID) == "integer")) return false;
+    //check product is legit
+    $product = $Product->getProductByID($productID);
+    if (!$product) return false;
+    //check product has enough stock
+    if ($product["Stock"] < $quantity) return false;
+    //passed all checks
+    return true;
+}
+
+/**
+ * Adds specified product to user's cart
+ * @param int $productID PID of the product
+ * @param int $quantity Quantity of specified product to add to cart
+ * @return boolean True if succeeded, otherwise false
+ */
+function addProductToCart($productID, $quantity) {
+    global $Order;
+    //check login
+    if (!CheckLoggedIn()) return false;
+    //init array for product
+    $product = Array();
+    if (!productAndQuantityCheck($productID, $quantity, $product)) return false;
+    //quantity needs additional check to make sure it isnt 0
+    if ($quantity === 0) return false;
+
+    //create basket if none found, otherwise add item to it
+    //(also checks for ownership of basket)
+    $basket = $Order->getOrdersByStatus($_SESSION["uid"], "Basket");
+    if (!$basket) return $Order->createOrder($_SESSION["uid"], ($quantity * $product["Price"]), "Basket", $product["ProductID"], $quantity);
+    //                                                    ||                   Calculate new price                ||             
+    else return $Order->appendToOrder($basket["OrderID"], ($basket["TotalAmount"] + ($quantity * $product["Price"])), $product["ProductID"], $quantity);
+}
+
+/**
+ * Changes quantity of specified product in user's cart
+ * @param int $productID PID of the product
+ * @param int $quantity New quantity
+ * @return boolean True if succeeded, otherwise false
+ */
+function modifyProductQuantityInCart($productID, $quantity) {
+    global $Order;
+    //check login
+    if (!CheckLoggedIn()) return false;
+    //init array for product
+    $product = Array();
+    if (!productAndQuantityCheck($productID, $quantity, $product)) return false;
+
+    //gets basket to update (also checks ownership)
+    $basket = $Order->getOrderByStatus($_SESSION["uid"], "Basket");
+    if (!$basket) return false;
+    //gets order line of product to check it is in cart
+    $oldProd = $Order->getOrderLineByProductID($basket["OrderID"], $product["ProductID"]);
+    if (!$oldProd) return false;
+    if ($quantity === 0) {
+        //calculate price without specified product
+        $newPrice = $basket["TotalAmount"] - ($oldProd["Quantity"] * $product["Price"]);
+        return $Order->removeProductFromOrder($basket["OrderID"], $product["ProductID"], $newPrice);
+    }
+    else {
+        $newPrice = $basket["TotalAmount"] - ($oldProd["Quantity"] * $product["Price"]) + ($product["Price"] * $quantity);
+        return $Order->updateProductInOrder($basket["OrderID"], $product["ProductID"], $quantity, $newPrice);
+    }
+}
 
 ?>
