@@ -123,7 +123,7 @@
     
     <!-- Spacing issue still needs to be fixed-->
     <section class="d-md-flex flex-md-equal my-md-3 ps-md-3">
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="width: 50%;">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1" >
             <div class="my-3 p-3">
                 <h2 class="Components">Components</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -131,7 +131,7 @@
             <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             </div>
         </div>
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden" style="width:50%;">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Components">CPUs</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -143,7 +143,7 @@
     </section>
 
     <section class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden"style="width: 50%;">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Components">Graphics Cards</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -151,7 +151,7 @@
             <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             </div>
         </div>
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden"style="width: 50%;">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Cases">Cases</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -162,7 +162,7 @@
     </section>
 
     <section class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden"style="width: 50%;">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Components">Storage</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -170,7 +170,7 @@
             <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             </div>
         </div>
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden"style="width: 50%;">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1" >
             <div class="my-3 p-3">
                 <h2 class="Components">Memory</h2>
                 <p class="Shop-now">Shop Now.</p>
