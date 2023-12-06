@@ -199,12 +199,12 @@ function productAndQuantityCheck($productID, $quantity, $product){
 }
 
 /**
- * Adds specified product to user's cart
+ * Adds specified product to user's basket
  * @param int $productID PID of the product
- * @param int $quantity Quantity of specified product to add to cart
+ * @param int $quantity Quantity of specified product to add to basket
  * @return boolean True if succeeded, otherwise false
  */
-function addProductToCart($productID, $quantity) {
+function addProductToBasket($productID, $quantity) {
     global $Order;
     //check login
     if (!checkLoggedIn()) return false;
@@ -216,10 +216,26 @@ function addProductToCart($productID, $quantity) {
 
     //create basket if none found, otherwise add item to it
     //(also checks for ownership of basket)
-    $basket = $Order->getOrdersByStatus($_SESSION["uid"], "Basket");
-    if (!$basket) return $Order->createOrder($_SESSION["uid"], ($quantity * $product["Price"]), "Basket", $product["ProductID"], $quantity);
-    //                                                    ||                   Calculate new price                ||             
-    else return $Order->appendToOrder($basket["OrderID"], ($basket["TotalAmount"] + ($quantity * $product["Price"])), $product["ProductID"], $quantity);
+    $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $prodPrice = $product["Price"] * $quantity;
+    if (!$basket) {
+        //basket doesn't exist so it makes a new one
+        $orderStatID = $Order->createOrderStatus("Basket");
+        if (!$orderStatID) return false;
+        $orderID = $Order->createOrder(Array("customerID"=>$_SESSION["uid"], "totalAmount"=>$prodPrice,"orderStatusID"=>$orderStatID));
+        if (!$orderID) return false;
+        return $Order->createOrderLine(Array("orderID"=>$orderID, "productID"=>$productID, "quantity"=>$quantity));
+    }
+    //check if product is already in basket
+    $orderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
+    if (!$orderLines) return false;
+    foreach ($orderLines as $orderLine) if ($orderLine["ProductID"] == $productID) return modifyProductQuantityInBasket($productID, $orderLine["Quantity"]+$quantity);
+
+    //product not in basket, appending
+    if ($Order->createOrderLine(Array("orderID"=>$basket["OrderID"], "productID"=>$productID, "quantity"=>$quantity))) {
+        return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]+$prodPrice);
+    }
+    else return false;
 }
 
 /**
