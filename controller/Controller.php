@@ -172,6 +172,10 @@ function LogOut() {
 //
 // ---------------------------------------------
 
+//TODO: rework functions to match actual stuff in Order.php
+//      add function to checkout user's cart
+//      add function to view previous orders (marked as Delivered or Completed idk yet)
+
 /**
  * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
  * @param int $productID PID of product
