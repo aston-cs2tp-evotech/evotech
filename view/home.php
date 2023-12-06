@@ -61,7 +61,7 @@
     <!--Empty box to fix formatting error 
         Creates an empty above content to prevent main content  being covered by navbar
     -->
-    <section class="bg-dark text-light p-5 text-center text-sm-start py-5">
+    <section class="bg-success text-light p-5 text-center text-sm-start py-5">
 
     </section>
 
