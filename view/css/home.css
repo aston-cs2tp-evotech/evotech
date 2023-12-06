@@ -5,13 +5,13 @@
   
   
   .navbar{
-    background-color: grey;
+    background-color: #333;
     
     
   }
   
   .login-button{
-    background-color: green;
+    background-color: rgb(122, 122, 122);
     color: white;
     font-size: 12px;
     padding: 10px 20px;
@@ -19,7 +19,7 @@
     transition: 0.4s background-color;;
   }
   .login-button:hover{
-    background-color: chartreuse;
+    background-color: rgb(27, 27, 27);
   }
   
   .navbar-toggler{
@@ -39,14 +39,14 @@
   }
   
   .bi {
-    color: black;
+    color: #333;
     font-weight:  500px; ;
     position: relative;
   
   
   }
   .nav-link:hover, .nav-link.active{
-    color: white;
+    color: rgb(157, 157, 157);
   
   }
   
@@ -66,6 +66,8 @@
     flex: 1;
   }
   
+   
   
-  
-  
+  .login{
+    text-decoration: none;
+  }

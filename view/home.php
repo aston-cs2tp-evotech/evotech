@@ -8,7 +8,7 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="view/css/home.css">
-    <title>EvoTech</title>
+    <title>Evotech</title>
     <ion-icon name="desktop-outline"></ion-icon>
 
 
@@ -18,18 +18,18 @@
 <body>
     <nav class="navbar navbar-expand-lg  fixed-top py-1">
         <div class="container-fluid">
-            <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="EvoTech logo">
-            <a class="navbar-brand me-auto" href="#">EvoTech</a>
+            <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
+            <a class="navbar-brand me-auto" href="home">Evotech</a>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">EvoTech</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Evotech</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="home">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="aboutus">About</a>
@@ -38,12 +38,12 @@
                             <a class="nav-link" href="#">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="contactpage">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <i class="bi bi-basket">
-                                    basket
+                                    Basket
                                 </i>
                             </a>
                         </li>
@@ -65,17 +65,17 @@
 
     </section>
 
-    <section class="bg-dark text-light p-5 text-center text-sm-start py-5">
+    <section class="bg-success text-light p-5 text-center text-sm-start py-5">
         <div class="container">
             <div class="d-sm-flex allign-items-center justify-content-between">
                 <div>
-                    <h2>Evotech</h2>
+                    <h2>Evolve Your Gear</h2>
                     <p class="lead my-3">
-                        Shop the latest technology at evotech
+                    
                     </p>
-                    <button class="btn btn-primary btn-md"> Shop now</button>
+                    <button class="btn btn-primary btn-md">Shop Now</button>
                 </div>
-               <img class="img-fluid w-10" src="view/images/Picture1.png"alt="EvoTech"> 
+               <img class="img-fluid w-10" src="view/images/Picture1.png"alt="Evotech"> 
             </div>
         </div>
 
@@ -91,7 +91,7 @@
                         <i class="bi bi-truck" style="font-size: 80px;"></i>
                         <div class="card-body">
                           <h5 class="card-title">Free Delivery</h5>
-                          <p class="card-text">Insert text.</p>
+                          <p class="card-text">Across UK and Global Orders</p>
                         </div>
                         
                     </div>
@@ -100,8 +100,8 @@
                     <div class="card bg-light text-dark" >
                         <i class="bi bi-lightning-charge-fill" style="font-size: 80px;"></i>
                         <div class="card-body">
-                          <h5 class="card-title">Extended Warrenty</h5>
-                          <p class="card-text">Insert text.</p>
+                          <h5 class="card-title">Extended Warranty</h5>
+                          <p class="card-text">12 Month Quality Guarantee</p>
                         </div>
                     </div>   
 
@@ -110,8 +110,8 @@
                    <div class="card bg-light text-dark" >
                       <i class="bi bi-person-circle" style="font-size: 80px;"></i>
                       <div class="card-body">
-                        <h5 class="card-title">Insert text</h5>
-                        <p class="card-text">Insert text.</p>
+                        <h5 class="card-title">User Choices</h5>
+                        <p class="card-text">'Reviewed and Rated' by Real Users</p>
                       </div>  
                     </div>
 
@@ -185,41 +185,46 @@
     <!-- faq -->
     <section id="Faq" class="p-4">
         <div class="container">
-            <h2 class="text-center mb-4">Frequently Asked questions</h2>
+            <h2 class="text-center mb-4">Frequently Asked Questions</h2>
             <div class="accordion" id="accordionExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Accordion Item #1
+                        <strong> 
+                            What is Evotech?
+                        </strong>
                     </button>
                   </h2>
                   <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <strong>This is the first item's accordion body.</strong> 
+                      <h3>Evotech is a collective of engineers, artists, and creators. We built Evotech, an e-commerce platform that recommends and sells optimum solutions for real-world problems.</h3> 
                     </div>
                   </div>
                 </div>
                 <div class="accordion-item">
                   <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                      Accordion Item #2
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> <strong>
+                      What solutions does Evotech sell?
+                    </strong>
                     </button>
                   </h2>
                   <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <strong>This is the second item's accordion body.</strong> 
+                      <h3>If there's a problem, we have the technology for you. Check our Shop to view the CPU's, Accessories, Monitors and other Components that we sell.</h3> 
                     </div>
                   </div>
                 </div>
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                      Accordion Item #3
+                      <strong>
+                        I have further questions, where can I get in touch?
+                    </strong>  
                     </button>
                   </h2>
                   <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <strong>This is the third item's accordion body.</strong> 
+                      <h3>You can Contact Us, for further questions. </h3> 
                     </div>
                   </div>
                 </div>
