@@ -23,7 +23,7 @@ function checkExists($var) {
 /** 
  * Puts all relevent user info into the global userInfo array
 */
-function ReLogInUser() {
+function reLogInUser() {
     global $userInfo, $Customer;
     //checks if it is set and not false
     if (checkExists($_SESSION["uid"])) {
@@ -37,7 +37,7 @@ function ReLogInUser() {
  * Checks if the user is logged in
  * @return boolean True if logged in, false if not
  */
-function CheckLoggedIn() {
+function checkLoggedIn() {
     global $userInfo;
     return (checkExists($_SESSION["uid"]) && checkExists($userInfo));
 }
@@ -48,7 +48,7 @@ function CheckLoggedIn() {
  * @param string $pass Customer's password
  * @return boolean True if login succeeded, otherwise false
  */
-function AttemptLogin($user, $pass) {
+function attemptLogin($user, $pass) {
     global $Customer;
     if (!checkExists($user) || !(gettype($user) == "string")) return false;
     if (!checkExists($pass) || !(gettype($pass) == "string")) return false;
@@ -64,7 +64,7 @@ function AttemptLogin($user, $pass) {
     if (password_verify($pass, $details["PasswordHash"])) {
         $_SESSION["uid"] = $details["CustomerID"];
         unset($details);
-        ReLogInUser();
+        reLogInUser();
         return true;
     }
     else return false;
@@ -75,7 +75,7 @@ function AttemptLogin($user, $pass) {
  * @param array $details Associative array with relevent info (most likely just $_POST)
  * @return string Empty if succeeds (ie. evaluates to false), or a string to indicate where it failed
  */
-function RegisterUser($details) {
+function registerUser($details) {
     global $Customer;
     if (!checkExists($details["email"]) || !filter_var($details["email"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
     if (!checkExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
@@ -89,7 +89,7 @@ function RegisterUser($details) {
     if (!$Customer->registerCustomer($details)) return "Database Error";
     //if here, then success
     $_SESSION["uid"] = $Customer->getCustomerByUsername($details["username"])["CustomerID"];
-    ReLogInUser();
+    reLogInUser();
     return "";
 }
 
@@ -98,11 +98,11 @@ function RegisterUser($details) {
  * @param array $details Associative array containing field to change, new value and other relevant info
  * @return string Empty if succeeded, or a string to indicate where it failed
  */
-function UpdateCustomerDetail($details) {
+function updateCustomerDetail($details) {
     global $Customer;
     $details["field"] = strtolower($details["field"]);
     //preliminary checks
-    if (!CheckLoggedIn()) return "Not logged in";
+    if (!checkLoggedIn()) return "Not logged in";
     if (!checkExists($details["field"]) || !checkExists($details["value"]) || !(gettype($details["value"]) == "string")) return "Invalid request";
 
     switch ($details["field"]) {
@@ -158,7 +158,7 @@ function UpdateCustomerDetail($details) {
 /**
  * Unsets both global arrays and destroys the session
  */
-function LogOut() {
+function logOut() {
     global $userInfo;
     unset($userInfo);
     unset($_SESSION);
@@ -207,7 +207,7 @@ function productAndQuantityCheck($productID, $quantity, $product){
 function addProductToCart($productID, $quantity) {
     global $Order;
     //check login
-    if (!CheckLoggedIn()) return false;
+    if (!checkLoggedIn()) return false;
     //init array for product
     $product = Array();
     if (!productAndQuantityCheck($productID, $quantity, $product)) return false;
@@ -231,7 +231,7 @@ function addProductToCart($productID, $quantity) {
 function modifyProductQuantityInCart($productID, $quantity) {
     global $Order;
     //check login
-    if (!CheckLoggedIn()) return false;
+    if (!checkLoggedIn()) return false;
     //init array for product
     $product = Array();
     if (!productAndQuantityCheck($productID, $quantity, $product)) return false;
