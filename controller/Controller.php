@@ -1,5 +1,9 @@
 <?php
 
+require("/model/Customer.php");
+require("/model/Products.php");
+require("/model/Orders.php");
+
 // ---------------------------------------------
 //
 // FUNCTIONS RELATING TO CUSTOMER AND MAIN PAGE
@@ -10,6 +14,26 @@
  * @var array Global variable to store customer info (username, address etc)
  */
 global $userInfo;
+
+/**
+ * @var PDO The database connection
+ */
+global $pdo;
+
+/**
+ * @var CustomerModel The customer model for interacting with the database
+ */
+$Customer = new CustomerModel($pdo);
+
+/**
+ * @var ProductModel The product model for interacting with the database
+ */
+$Product = new ProductModel($pdo);
+
+/**
+ * @var OrdersModel The orders model for interacting with the database
+ */
+$Order = new OrdersModel($pdo);
 
 /**
  * Check if a variable is safe to evaluate
