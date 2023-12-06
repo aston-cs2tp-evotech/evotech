@@ -257,5 +257,61 @@ class OrdersModel {
             return false;
         }
     }
+
+    /**
+     * Retrieve all OrderStatuses.
+     * 
+     * @return array|null The OrderStatuses or null if not found.
+     */
+    
+    public function getAllOrderStatuses() {
+        $query = "SELECT * FROM `OrderStatus`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $orderStatuses = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $orderStatuses ? $orderStatuses : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
+     * Creates a new OrderStatus.
+     * 
+     * @param string $orderStatusName The name of the OrderStatus.
+     * @return int|null The ID of the newly created OrderStatus or null if failed to create.
+     */
+    public function createOrderStatus($orderStatusName) {
+        $insertQuery = "INSERT INTO 'OrderStatus' (
+                        'Name'
+                    ) VALUES (
+                        :orderStatusName
+                    )";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':orderStatusName', $orderStatusName, PDO::PARAM_STR);
+        
+        return $insertStatement->execute() ? $this->database->lastInsertId() : null;
+    }
+
+    /**
+     * Update an existing OrderStatus.
+     * 
+     * @param int $orderStatusID The unique identifier of the OrderStatus.
+     * @param string $newStatusName The new name of the OrderStatus.
+     * @return bool True if successful, false otherwise.
+     */
+    public function updateOrderStatus($orderStatusID, $newStatusName) {
+        $query = "UPDATE `OrderStatus` SET `Name` = :newStatusName WHERE `OrderStatusID` = :orderStatusID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':newStatusName', $newStatusName, PDO::PARAM_STR);
+        $statement->bindParam(':orderStatusID', $orderStatusID, PDO::PARAM_INT);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
 ?>
