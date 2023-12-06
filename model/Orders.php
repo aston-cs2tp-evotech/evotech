@@ -188,7 +188,7 @@ class OrdersModel {
      * Creates a new OrderLine.
      * 
      * @param array $orderLineDetails The OrderLine details
-     * @return int|null The OrderLineID or null if failed to create.
+     * @return int|null The ID of the newly created OrderLine or null if failed to create.
      */
     public function createOrderLine($orderLineDetails) {
         $insertQuery = "INSERT INTO 'OrderLines' (
@@ -211,23 +211,24 @@ class OrdersModel {
     /**
      * Update an existing OrderLine.
      * 
-     * @param int $orderLineID The unique identifier of the OrderLine.
+     * @param int $orderID The unique identifier of the Order
+     * @param int $productID The unique identifier of the Product
      * @param string $field The field to update.
      * @param string $value The new value.
      * @return bool True if successful, false otherwise.
      */
-    public function updateOrderLine($orderLineID, $field, $value) {
+    public function updateOrderLineDetails($orderID, $productID, $field, $value) {
         // Validate $field to prevent SQL injection
-        $allowedFields = array('OrderID', 'ProductID', 'Quantity');
+        $allowedFields = array('Quantity');
         if (!in_array($field, $allowedFields)) {
             return false;
         }
 
-
-        $query = "UPDATE `OrderLines` SET `$field` = :value WHERE `OrderLineID` = :orderLineID";
+        $query = "UPDATE `OrderLines` SET `$field` = :value WHERE `OrderID` = :orderID AND `ProductID` = :productID";
         $statement = $this->database->prepare($query);
         $statement->bindParam(':value', $value, PDO::PARAM_STR);
-        $statement->bindParam(':orderLineID', $orderLineID, PDO::PARAM_INT);
+        $statement->bindParam(':orderID', $orderID, PDO::PARAM_INT);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
 
         try {
             return $statement->execute();
@@ -236,16 +237,19 @@ class OrdersModel {
         }
     }
     
+    
     /**
      * Delete an existing OrderLine.
      * 
-     * @param int $orderLineID The unique identifier of the OrderLine.
+     * @param int $orderID
+     * @param int $productID
      * @return bool True if successful, false otherwise.
      */
-    public function deleteOrderLine($orderLineID) {
-        $query = "DELETE FROM `OrderLines` WHERE `OrderLineID` = :orderLineID";
+    public function deleteOrderLine($orderID, $productID) {
+        $query = "DELETE FROM `OrderLines` WHERE `OrderID` = :orderID AND `ProductID` = :productID";
         $statement = $this->database->prepare($query);
-        $statement->bindParam(':orderLineID', $orderLineID, PDO::PARAM_INT);
+        $statement->bindParam(':orderID', $orderID, PDO::PARAM_INT);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
 
         try {
             return $statement->execute();
