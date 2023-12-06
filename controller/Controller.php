@@ -263,7 +263,10 @@ function modifyProductQuantityInBasket($productID, $quantity) {
     if (!$orderLine) return false;
 
     //check for orderLine deletion
-    if ($quantity == 0) return $Order->deleteOrderLine($basket["OrderID"], $product["ProductID"]);
+    if ($quantity == 0) {
+        if (!$Order->deleteOrderLine($basket["OrderID"], $product["ProductID"])) return false;
+        return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]-($orderLine["Quantity"]*$product["Price"]));
+    }
 
     //change quantity and update price to match
     $oldPrice = $orderLine["Quantity"] * $product["Price"];
