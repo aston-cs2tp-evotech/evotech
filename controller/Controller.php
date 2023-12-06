@@ -80,7 +80,7 @@ function RegisterUser($details) {
     if (!checkExists($details["email"]) || !filter_var($details["email"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
     if (!checkExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
     if (!checkExists($details["address"]) || !preg_match("/[a-zA-Z0-9.,]+/", $details["address"])) return "Invalid address";
-    if (!checkExists($details["password"]) || !($details["password"] == "string") || !(strlen($details["password"]) > 7)) return "Invalid password";
+    if (!checkExists($details["password"]) || !(gettype($details["password"] == "string")) || !(strlen($details["password"]) > 7)) return "Invalid password";
     if (!checkExists($details["password_confirmation"]) || !($details["password"] === $details["confirmpass"])) return "Confirmation password does not match";
     if ($Customer->getCustomerByUsername($details["username"])) return "Username is already taken";
     if ($Customer->getCustomerByEmail($details["email"])) return "Email is already in use";
