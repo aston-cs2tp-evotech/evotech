@@ -12,7 +12,7 @@
             <h1><strong>Error 404 - Page Not Found</strong></h1>
     </header>
         <p>Oops! The page you're looking for doesn't exist.</p>
-        <p>Return to <a href="home.php">home</a>.</p>
+        <p>Return to <a href="home">home</a>.</p>
     </div>
 
 </body>
