@@ -172,8 +172,7 @@ function logOut() {
 //
 // ---------------------------------------------
 
-//TODO: rework functions to match actual stuff in Order.php
-//      add function to checkout user's cart
+//TODO: add function to checkout user's cart
 //      add function to view previous orders (marked as Delivered or Completed idk yet)
 
 /**
@@ -239,12 +238,12 @@ function addProductToBasket($productID, $quantity) {
 }
 
 /**
- * Changes quantity of specified product in user's cart
+ * Changes quantity of specified product in user's basket, a quantity of 0 will delete product from basket
  * @param int $productID PID of the product
  * @param int $quantity New quantity
  * @return boolean True if succeeded, otherwise false
  */
-function modifyProductQuantityInCart($productID, $quantity) {
+function modifyProductQuantityInBasket($productID, $quantity) {
     global $Order;
     //check login
     if (!checkLoggedIn()) return false;
@@ -253,20 +252,25 @@ function modifyProductQuantityInCart($productID, $quantity) {
     if (!productAndQuantityCheck($productID, $quantity, $product)) return false;
 
     //gets basket to update (also checks ownership)
-    $basket = $Order->getOrderByStatus($_SESSION["uid"], "Basket");
+    $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
     if (!$basket) return false;
-    //gets order line of product to check it is in cart
-    $oldProd = $Order->getOrderLineByProductID($basket["OrderID"], $product["ProductID"]);
-    if (!$oldProd) return false;
-    if ($quantity === 0) {
-        //calculate price without specified product
-        $newPrice = $basket["TotalAmount"] - ($oldProd["Quantity"] * $product["Price"]);
-        return $Order->removeProductFromOrder($basket["OrderID"], $product["ProductID"], $newPrice);
-    }
-    else {
-        $newPrice = $basket["TotalAmount"] - ($oldProd["Quantity"] * $product["Price"]) + ($product["Price"] * $quantity);
-        return $Order->updateProductInOrder($basket["OrderID"], $product["ProductID"], $quantity, $newPrice);
-    }
+    $allOrderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
+    if (!$allOrderLines) return false;
+
+    //fetch orderLine with product in it
+    $orderLine = Array();
+    foreach ($allOrderLines as $curOrderLine) if ($curOrderLine["ProductID"] == $productID) $orderLine = $curOrderLine;
+    if (!$orderLine) return false;
+
+    //check for orderLine deletion
+    if ($quantity == 0) return $Order->deleteOrderLine($basket["OrderID"], $product["ProductID"]);
+
+    //change quantity and update price to match
+    $oldPrice = $orderLine["Quantity"] * $product["Price"];
+    $newPrice = $quantity * $product["Price"];
+    $newTotal = $basket["TotalAmount"] - $oldPrice + $newPrice;
+    if (!$Order->updateOrderLineDetails($basket["OrderID"], $product["ProductID"], "Quantity", $quantity)) return false;
+    return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $newTotal);
 }
 
 ?>
