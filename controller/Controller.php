@@ -173,7 +173,7 @@ function LogOut() {
  * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
  * @param int $productID PID of product
  * @param int $quantity Quantity of product
- * @param Array $product Array to hold the product being checked
+ * @param array $product Array to hold the product being checked
  * @return boolean True if succeeded, otherwise false
  */
 function productAndQuantityCheck($productID, $quantity, $product){
