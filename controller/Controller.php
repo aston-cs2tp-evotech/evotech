@@ -50,10 +50,13 @@ function CheckLoggedIn() {
  */
 function AttemptLogin($user, $pass) {
     global $Customer;
+    if (!checkExists($user) || !(gettype($user) == "string")) return false;
+    if (!checkExists($pass) || !(gettype($pass) == "string")) return false;
     //attempts to fetch details via username
     $details = $Customer->getCustomerByUsername($user);
     if (!checkExists($details)) {
         //falls back to fetching via email
+        if (!filter_var($user, FILTER_VALIDATE_EMAIL)) return false;
         $details = $Customer->getCustomerByEmail($user);
         if (!checkExists($details)) return false;
     }
@@ -77,7 +80,7 @@ function RegisterUser($details) {
     if (!checkExists($details["email"]) || !filter_var($details["email"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
     if (!checkExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
     if (!checkExists($details["customer_address"]) || !preg_match("/[a-zA-Z0-9.,]+/", $details["customer_address"])) return "Invalid address";
-    if (!checkExists($details["password"]) || !(strlen($details["password"]) > 7)) return "Invalid password";
+    if (!checkExists($details["password"]) || !($details["password"] == "string") || !(strlen($details["password"]) > 7)) return "Invalid password";
     if (!checkExists($details["password_confirmation"]) || !($details["password"] === $details["confirmpass"])) return "Confirmation password does not match";
     if ($Customer->getCustomerByUsername($details["username"])) return "Username is already taken";
     if ($Customer->getCustomerByEmail($details["email"])) return "Email is already in use";
@@ -100,7 +103,7 @@ function UpdateCustomerDetail($details) {
     $details["field"] = strtolower($details["field"]);
     //preliminary checks
     if (!CheckLoggedIn()) return "Not logged in";
-    if (!checkExists($details["field"]) || !checkExists($details["value"])) return "Invalid request";
+    if (!checkExists($details["field"]) || !checkExists($details["value"]) || !(gettype($details["value"]) == "string")) return "Invalid request";
 
     switch ($details["field"]) {
         case "username":
@@ -136,10 +139,10 @@ function UpdateCustomerDetail($details) {
 
         case "password":
             //password uses additional fields so those need checking too
-            if (!checkExists($details["newPassword"]) || !checkExists($details["confirmPassword"])) return "Invalid request";
+            if (!checkExists($details["newPassword"]) || !checkExists($details["confirmPassword"] ||  !(gettype($details["newPassword"] == "string")))) return "Invalid request";
             //checks that can be done before queries
             if (strlen($details["newPassword"]) < 7) return "New password should be longer than 7 characters";
-            if ($details["newPassword"] != $details["confirmPassword"]) return "New and confirmation passwords should match";
+            if ($details["newPassword"] !== $details["confirmPassword"]) return "New and confirmation passwords should match";
             
             $user = $Customer->getCustomerByUID($_SESSION["uid"]);
             if (!password_verify($details["value"], $user["PasswordHash"])) return "Current password is incorrect";
