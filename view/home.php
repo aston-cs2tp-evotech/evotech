@@ -18,8 +18,8 @@
 <body>
     <nav class="navbar navbar-expand-lg  fixed-top py-1">
         <div class="container-fluid">
-            <img src="images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
-            <a class="navbar-brand me-auto" href="home.php">Evotech</a>
+            <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
+            <a class="navbar-brand me-auto" href="home">Evotech</a>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
@@ -29,16 +29,16 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home.php">Home</a>
+                            <a class="nav-link active" aria-current="page" href="home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="aboutus.php">About</a>
+                            <a class="nav-link" href="aboutus">About</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="contactpage">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
@@ -75,7 +75,7 @@
                     </p>
                     <button class="btn btn-primary btn-md">Shop Now</button>
                 </div>
-               <img class="img-fluid w-10" src="images/Picture1.png"alt="Evotech"> 
+               <img class="img-fluid w-10" src="view/images/Picture1.png"alt="Evotech"> 
             </div>
         </div>
 
