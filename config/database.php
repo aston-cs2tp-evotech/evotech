@@ -1,9 +1,6 @@
 <?php
 // Include the config.php file
-include '../config.php';
-
-// Extract the configuration values
-extract($config);
+include __DIR__ . '/../config.php';
 
 // PDO database connection
 try {

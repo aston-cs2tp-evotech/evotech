@@ -1,9 +1,34 @@
 # evotech
-Team Project for the CS2TP module
+![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
+![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Apache](https://img.shields.io/badge/apache-%23D42029.svg?style=for-the-badge&logo=apache&logoColor=white)
 
-# Running locally
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/aston-cs2tp-evotech/evotech)
+![GitHub contributors](https://img.shields.io/github/contributors/aston-cs2tp-evotech/evotech)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/aston-cs2tp-evotech/evotech/test_and_depoly.yml)
 
-## Windows
+
+An e-commerce website for selling computer parts and accessories built using PHP, MariaDB, HTML, CSS and JavaScript.
+Built as part of the Aston University Computer Science Team Project module.
+
+## Table of Contents
+- [Contributing](#contributing)
+- [Running locally](#running-locally)
+    - [Windows](#windows)
+    - [macOS](#macos)
+    - [Linux](#linux)
+- [Credits](#credits)
+
+
+## Contributing
+For information on how to contribute to the project, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+## Running locally
+These instructions will guide you through setting up the project to run locally on your machine for development and testing purposes.
+### Windows
 
 1. Install XAMPP
     ```powershell
@@ -29,7 +54,7 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
-## macOS
+### macOS
 
 1. Install xcode command line tools
     ```bash
@@ -63,7 +88,7 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
-## Linux
+### Linux
 
 1. Install XAMPP
     ```bash
@@ -88,13 +113,13 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
-# Credits
+## Credits
 
-220064521 - Mohammed Kalam  
-220073925 - Viktor Dvornik  
-220043504 - Aaron Dosanjh  
-220095086 - Thomas Evans  
-220216876 - Reece Edwards  
-220164359 - Gurjot Dhillon  
-220070614 - Hanzalah Naguthane  
-220098548 - Mahdi Egal  
+- [220064521 - Mohammed Kalam](https://github.com/YourKalamity)
+- [220073925 - Viktor Dvornik](https://github.com/ToadallyStupid)
+- [220043504 - Aaron Dosanjh](https://github.com/Aaron3455454)
+- [220095086 - Thomas Evans](https://github.com/TomE134)
+- [220216876 - Reece Edwards](https://github.com/Reece-Edwards)
+- [220164359 - Gurjot Dhillon](https://github.com/gurjotsd)
+- [220070614 - Hanzalah Naguthane](https://github.com/realhanzalah)
+- [220098548 - Mahdi Egal](https://github.com/PhantomCodeing)
