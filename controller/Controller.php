@@ -306,9 +306,9 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
  * Checks out the basket (if it exists), of the logged in customer
  * @return boolean True if succeeded, otherwise false
  */
-function checkoutBasket() {
+function CheckoutBasket() {
     global $Order;
-    if (!checkLoggedIn()) return false;
+    if (!CheckLoggedIn()) return false;
     //fetch basket
     $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
     if (!$basket) return false;
