@@ -112,7 +112,7 @@ function RegisterUser($details) {
     $details["customer_address"] = $details["address"];
     //hashes password
     $details["password_hash"] = password_hash($details["password"], PASSWORD_DEFAULT);
-    if (!$Customer->registerUser($details)) return "Database Error";
+    if (!$Customer->registerCustomer($details)) return "Database Error";
     //if here, then success
     $_SESSION["uid"] = $Customer->getCustomerByUsername($details["username"])["CustomerID"];
     ReLogInUser();
@@ -241,7 +241,7 @@ function AddProductToBasket($productID, $quantity) {
 
     //create basket if none found, otherwise add item to it
     //(also checks for ownership of basket)
-    $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
     $prodPrice = $product["Price"] * $quantity;
     if (!$basket) {
         //basket doesn't exist so it makes a new one
@@ -278,7 +278,7 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     if (!ProductAndQuantityCheck($productID, $quantity, $product)) return false;
 
     //gets basket to update (also checks ownership)
-    $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
     if (!$basket) return false;
     $allOrderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
     if (!$allOrderLines) return false;
@@ -310,7 +310,7 @@ function CheckoutBasket() {
     global $Order;
     if (!CheckLoggedIn()) return false;
     //fetch basket
-    $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
     if (!$basket) return false;
 
     //check for multiple baskets (shouldn't happen but best be safe)
