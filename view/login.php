@@ -1,3 +1,16 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['uid'])) {
+    // Redirect to home page
+    header("Location:/");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
