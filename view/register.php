@@ -1,3 +1,16 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['uid'])) {
+    // Redirect to home page
+    header("Location:/");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,21 +32,29 @@
 
         <h2>Register an Evotech account</h2>
 
-            <form>
-                <label for="email">Enter your email address</label>
-                <input type="email" name="email" placeholder="Email" required/>
-                <br>
-                <label for="email">Enter a username</label>
-                <input type="text" name="username" placeholder="Username" required/>
-                <br>
-                <label for="address">Enter your address</label>
-                <textarea name="address" placeholder="Address" rows="6" required></textarea>
-                <br>
-                <label for="password">Enter your password</label>
-                <input type="password" name="password" placeholder="Password" required/>
-                <br>
-                <label for="password_confirmation">Re-enter password</label>
-                <input id="password_confirmation" type="password" name="password_confirmation" placeholder="Confirm password" required/>
+            <?php
+            // Check if there are any errors to display
+            if (isset($registrationResult) && $registrationResult !== "") {
+                echo "<p class='error'>$registrationResult</p>";
+            }
+            ?>
+
+            <form action="register" method="POST">
+            <label for="email">Enter your email address</label>
+            <input type="email" name="email" placeholder="Email" required/>
+            <br>
+            <label for="username">Enter a username</label>
+            <input type="text" name="username" placeholder="Username" required/>
+            <br>
+            <label for="customer_address">Enter your address</label>
+            <textarea name="customer_address" placeholder="Address" rows="6" required></textarea>
+            <br>
+            <label for="password">Enter your password</label>
+            <input type="password" name="password" placeholder="Password" required/>
+            <br>
+            <label for="confirmpass">Re-enter password</label>
+            <input id="password_confirmation" type="password" name="confirmpass" placeholder="Confirm password" required/>
+
             <br>
             <br>
             <br>

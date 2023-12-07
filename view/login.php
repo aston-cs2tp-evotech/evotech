@@ -1,3 +1,16 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['uid'])) {
+    // Redirect to home page
+    header("Location:/");
+    exit();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,9 +32,16 @@
 
 	    <h2>Log in to your Evotech account</h2>
 
-            <form>
-                <p><b>Enter your email address</b></p>
-                <input type="email" name="email" placeholder="Email" required/>
+            <?php
+            // Check if loginResult is False
+            if (isset($loginResult) && $loginResult === False) {
+                echo "<p class='error'>Incorrect username or password</p>";
+            }
+            ?>
+
+            <form action="login" method="POST">
+                <p><b>Enter your username or email</b></p>
+                <input type="text" name="usernameOrEmail" placeholder="usernameOrEmail" required/>
                 <br>
                 <p><b>Enter your password</b></p>
                 <input type="password" name="password" placeholder="Password" required/>
