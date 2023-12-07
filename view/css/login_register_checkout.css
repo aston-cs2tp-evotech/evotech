@@ -34,3 +34,7 @@ header {
     border-radius: 8px;
     text-align: center;
 }
+
+.error {
+    color: #ff0000;
+}
