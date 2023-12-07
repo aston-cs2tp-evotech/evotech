@@ -245,7 +245,7 @@ function AddProductToBasket($productID, $quantity) {
     $prodPrice = $product["Price"] * $quantity;
     if (!$basket) {
         //basket doesn't exist so it makes a new one
-        $orderStatID = $Order->createOrderStatus("Basket");
+        $orderStatID = $Order->getOrderStatusIDByName("Basket");
         if (!$orderStatID) return false;
         $orderID = $Order->createOrder(Array("customerID"=>$_SESSION["uid"], "totalAmount"=>$prodPrice,"orderStatusID"=>$orderStatID));
         if (!$orderID) return false;
