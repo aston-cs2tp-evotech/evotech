@@ -82,7 +82,7 @@ class CustomerModel {
      * @param array $userData The user data including email, username, address, and password hash.
      * @return array|null The registered customer details or null if registration fails.
      */
-    public function registerUser($userData) {
+    public function registerCustomer($userData) {
         $insertQuery = "INSERT INTO `Customers` (
                             `Email`, 
                             `Username`, 
