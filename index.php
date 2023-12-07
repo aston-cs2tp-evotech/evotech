@@ -39,6 +39,10 @@ switch ($requestPath) {
     case '/register':
         handleRegisterRequest();
         break;
+
+    case '/logout':
+        handleLogoutRequest();
+        break;
     
     case '/contactpage':
         handleContactPageRequest();
@@ -134,6 +138,16 @@ function handleRegisterRequest() {
     }
 }
 
+/**
+ * Handle logout requests
+ * 
+ * @return void
+ */
+function handleLogoutRequest() {
+    LogOut();
+    header("Location: /");
+    exit();
+}
 /**
  * Handle contact page requests
  * 
