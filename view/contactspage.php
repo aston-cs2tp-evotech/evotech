@@ -37,7 +37,7 @@
             <h2>Contact Information</h2>
             <p>Email: info@evotech.com</p>
             <p>Phone: 1234567891011</p>
-            <p>Address: Aston St, Birmingham B4 7ET</p>
+            <p>Address: Aston St, Birmingham B4 7ET.</p>
         </div>
     </section>
 
@@ -46,20 +46,20 @@
         <div class="customer-reviews">
             <div class="review-box">
                 <img src="customer1.jpg" alt="Customer 1">
-                <p>Great service! EvoTech really helped us with our project. Highly recommended.</p>
-                <p>Date: 2023-01-01</p>
+                <p>Great service! very good products and highly recommended.</p>
+                <p>Date: 01/01/2023</p>
             </div>
 
             <div class="review-box">
                 <img src="customer2.jpg" alt="Customer 2">
                 <p>Responsive team and excellent communication. We are satisfied with their work.</p>
-                <p>Date: 2023-02-15</p>
+                <p>Date: 15/02/2023</p>
             </div>
 
             <div class="review-box">
                 <img src="customer3.jpg" alt="Customer 3">
                 <p>EvoTech went above and beyond our expectations. Will definitely work with them again.</p>
-                <p>Date: 2023-03-30</p>
+                <p>Date: 13/06/2023</p>
             </div>
         </div>
     </section>
