@@ -19,6 +19,13 @@
 
 	    <h2>Log in to your Evotech account</h2>
 
+            <?php
+            // Check if there are any errors to display
+            if (isset($loginResult) && $loginResult !== "") {
+                echo "<p class='error'>$loginResult</p>";
+            }
+            ?>
+
             <form action="login" method="POST">
                 <p><b>Enter your username or email</b></p>
                 <input type="text" name="usernameOrEmail" placeholder="usernameOrEmail" required/>
