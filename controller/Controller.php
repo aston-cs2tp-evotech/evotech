@@ -1,5 +1,10 @@
 <?php
 
+//TODO: add function to view previous orders (marked as Delivered or Completed idk yet)
+//      add function to check contact form data
+//      add function to retrieve a single product's data
+//      add function to retrieve products by category
+
 require("/model/Customer.php");
 require("/model/Products.php");
 require("/model/Orders.php");
@@ -198,8 +203,6 @@ function LogOut() {
 //
 // ---------------------------------------------
 
-//TODO: add function to retrieve cart
-//      add function to view previous orders (marked as Delivered or Completed idk yet)
 
 /**
  * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
@@ -318,6 +321,41 @@ function CheckoutBasket() {
 
     //passed all checks, updating status
     return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("Processing"));
+}
+
+/**
+ * Retrieves the customer's basket
+ * @param string $totalAmount empty var when passed, holds total price for order if succeeds
+ * @return array|boolean 2d array (array[int][string]) if success, otherwise null
+ */
+function GetCustomerBasket($totalAmount) {
+    global $Product, $Order;
+    if (!CheckLoggedIn()) return false;
+
+    //retrieve order
+    $intOrder = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    if (!$intOrder) return false;
+    $intOrderLines = $Order->getAllOrderLinesByOrderID($intOrder["OrderID"]);
+    if (!$intOrderLines) return false;
+
+    //format return value
+    $basket = Array(Array());
+    for ($i=0; $i<count($intOrderLines); $i++) {
+        $product = $Product->getProductByID($intOrderLines[$i]["ProductID"]);
+        if (!$product) return false;
+
+        $basket[$i]["ProductID"] = $product["ProductID"];
+        $basket[$i]["ProductName"] = $product["Name"];
+        $basket[$i]["Quantity"] = $intOrderLines[$i]["Quantity"];
+        $basket[$i]["TotalStock"] = $product["Stock"];
+        $basket[$i]["UnitPrice"] = $product["Price"];
+        $basket[$i]["TotalPrice"] = $basket[$i]["UnitPrice"] * $basket[$i]["Quantity"];
+    }
+
+    //assign price and return
+    $totalAmount = $intOrder["TotalAmount"];
+    return $basket;
+
 }
 
 ?>
