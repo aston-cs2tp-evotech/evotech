@@ -88,7 +88,7 @@ function handleLoginRequest() {
             $loginResult = AttemptLogin($usernameOrEmail, $password);
 
             // Send the user back to the homepage if login was successful
-            if ($loginResult === "") {
+            if ($loginResult) {
                 header("Location: /");
                 exit();
             } else {

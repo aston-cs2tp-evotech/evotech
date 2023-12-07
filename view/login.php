@@ -20,9 +20,9 @@
 	    <h2>Log in to your Evotech account</h2>
 
             <?php
-            // Check if there are any errors to display
-            if (isset($loginResult) && $loginResult !== "") {
-                echo "<p class='error'>$loginResult</p>";
+            // Check if loginResult is False
+            if (isset($loginResult) && $loginResult === False) {
+                echo "<p class='error'>Incorrect username or password</p>";
             }
             ?>
 
