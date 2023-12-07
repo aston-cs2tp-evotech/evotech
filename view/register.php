@@ -19,7 +19,7 @@
 
         <h2>Register an Evotech account</h2>
 
-            <form>
+            <form action="register" method="POST">
             <label for="email">Enter your email address</label>
             <input type="email" name="email" placeholder="Email" required/>
             <br>
