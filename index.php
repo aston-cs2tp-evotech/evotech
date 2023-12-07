@@ -70,7 +70,9 @@ function handleAboutUsRequest() {
  * @return void
  */
 function handleLoginRequest() {
-    require __DIR__ . '/view/login.php';
+    global $pdo;
+
+
 }
 
 /**
@@ -93,14 +95,13 @@ function handleRegisterRequest() {
             
             $registrationResult = RegisterUser($_POST);
             
-
             // Send the user back to the homepage if registration was successful
             if ($registrationResult === "") {
                 header("Location: /");
                 exit();
             } else {
-                // Registration failed, you may display an error message
-                echo "Registration failed: " . $registrationResult;
+                // Display the registration form with an error message if registration failed
+                require __DIR__ . '/view/register.php';
             } 
     }
 }

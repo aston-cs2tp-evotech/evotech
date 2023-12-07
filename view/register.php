@@ -19,6 +19,13 @@
 
         <h2>Register an Evotech account</h2>
 
+            <?php
+            // Check if there are any errors to display
+            if (isset($registrationResult) && $registrationResult !== "") {
+                echo "<p class='error'>$registrationResult</p>";
+            }
+            ?>
+
             <form action="register" method="POST">
             <label for="email">Enter your email address</label>
             <input type="email" name="email" placeholder="Email" required/>
