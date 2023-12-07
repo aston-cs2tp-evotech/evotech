@@ -316,9 +316,6 @@ function CheckoutBasket() {
     $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
     if (!$basket) return false;
 
-    //check for multiple baskets (shouldn't happen but best be safe)
-    if (is_array($basket[0])) return false;
-
     //passed all checks, updating status
     return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("Processing"));
 }
