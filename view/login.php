@@ -19,9 +19,9 @@
 
 	    <h2>Log in to your Evotech account</h2>
 
-            <form>
-                <p><b>Enter your email address</b></p>
-                <input type="email" name="email" placeholder="Email" required/>
+            <form action="login" method="POST">
+                <p><b>Enter your username or email</b></p>
+                <input type="text" name="usernameOrEmail" placeholder="usernameOrEmail" required/>
                 <br>
                 <p><b>Enter your password</b></p>
                 <input type="password" name="password" placeholder="Password" required/>
