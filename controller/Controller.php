@@ -198,7 +198,7 @@ function logOut() {
 //
 // ---------------------------------------------
 
-//TODO: add function to checkout user's cart
+//TODO: add function to retrieve cart
 //      add function to view previous orders (marked as Delivered or Completed idk yet)
 
 /**
@@ -300,6 +300,24 @@ function modifyProductQuantityInBasket($productID, $quantity) {
     $newTotal = $basket["TotalAmount"] - $oldPrice + $newPrice;
     if (!$Order->updateOrderLineDetails($basket["OrderID"], $product["ProductID"], "Quantity", $quantity)) return false;
     return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $newTotal);
+}
+
+/**
+ * Checks out the basket (if it exists), of the logged in customer
+ * @return boolean True if succeeded, otherwise false
+ */
+function checkoutBasket() {
+    global $Order;
+    if (!checkLoggedIn()) return false;
+    //fetch basket
+    $basket = $Order->getAllOrdersByStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    if (!$basket) return false;
+
+    //check for multiple baskets (shouldn't happen but best be safe)
+    if (is_array($basket[0])) return false;
+
+    //passed all checks, updating status
+    return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("Processing"));
 }
 
 ?>
