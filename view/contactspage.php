@@ -21,13 +21,14 @@
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
 
-    <label for="description">Description:</label>
+    <label for="description">Description of issue:</label>
     <textarea id="description" name="description" rows="4" required></textarea>
 
     <label for="date">Date:</label>
     <input type="date" id="date" name="date" required>
 
     <button type="submit">Submit</button>
+    <script src="contacspage.js"></script>
 </form>
 
         </div>
@@ -63,6 +64,6 @@
         </div>
     </section>
 
-    <script src="contacspage.js"></script>
+   
 </body>
 </html>

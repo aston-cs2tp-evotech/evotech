@@ -29,7 +29,7 @@ function validateForm() {
         return;
     }
 
-    alert('Thanks for submitting, we will get back to you shortly :D');
+    alert('Thanks for submitting, we will get back to you shortly. :D');
 
     
     
