@@ -1,34 +1,170 @@
 <?php
 
-$request = $_SERVER['REQUEST_URI'];
+// Start session
+session_start();
 
-switch ($request) {
+// Include the database connection
+include 'config/database.php';
+
+// Include models
+require __DIR__ . '/model/Customer.php';
+$Customer = new CustomerModel($pdo);
+
+// Include the controller
+require __DIR__ . '/controller/Controller.php';
+
+// Initalise $userInfo
+global $userInfo;
+$userInfo = array();
+
+// Routing
+$request = $_SERVER['REQUEST_URI'];
+$requestPath = parse_url($request, PHP_URL_PATH);
+
+switch ($requestPath) {
 
     case '/':
-        require __DIR__ . '/view/home.php';
+    case '/home':
+        handleHomeRequest();
         break;
 
     case '/aboutus':
-        require __DIR__ . '/view/aboutus.php';
+        handleAboutUsRequest();
         break;
 
     case '/login':
-        require __DIR__ . '/view/login.php';
+        handleLoginRequest();
         break;
 
     case '/register':
-        require __DIR__ . '/view/register.php';
+        handleRegisterRequest();
+        break;
+
+    case '/logout':
+        handleLogoutRequest();
         break;
     
     case '/contactpage':
-        require __DIR__ . '/view/contactspage.php';
+        handleContactPageRequest();
         break;
     
     default:
-        require __DIR__ . '/view/home.php';
+        handle404Request();
         break;
 }
 
-include 'config/database.php';
+
+/**
+ * Handles home page requests
+ * 
+ * @return void
+ */
+function handleHomeRequest() {
+    require __DIR__ . '/view/home.php';
+}
+
+/**
+ * Handle about us page requests
+ * 
+ * @return void
+ */
+function handleAboutUsRequest() {
+    require __DIR__ . '/view/aboutus.php';
+}
+
+/**
+ * Handle login page requests
+ * 
+ * @return void
+ */
+function handleLoginRequest() {
+    global $pdo;
+
+    switch ($_SERVER['REQUEST_METHOD']) {
+
+        // Display the login form for GET requests
+        case 'GET':
+            require __DIR__ . '/view/login.php';
+            break;
+        
+        // Handle login form submission for POST requests
+        case 'POST':
+            
+            $usernameOrEmail = $_POST['usernameOrEmail'];
+            $password = $_POST['password'];
+
+            $loginResult = AttemptLogin($usernameOrEmail, $password);
+
+            // Send the user back to the homepage if login was successful
+            if ($loginResult) {
+                header("Location: /");
+                exit();
+            } else {
+                // Display the login form with an error message if login failed
+                require __DIR__ . '/view/login.php';
+            }
+    }
+
+}
+
+/**
+ * Handle registration page requests
+ * 
+ * @return void
+ */
+function handleRegisterRequest() {
+    global $pdo;
+
+    switch ($_SERVER['REQUEST_METHOD']) {
+
+        // Display the registration form for GET requests
+        case 'GET':
+            require __DIR__ . '/view/register.php';
+            break;
+        
+        // Handle registration form submission for POST requests
+        case 'POST':
+            
+            $registrationResult = RegisterUser($_POST);
+            
+            // Send the user back to the homepage if registration was successful
+            if ($registrationResult === "") {
+                header("Location: /");
+                exit();
+            } else {
+                // Display the registration form with an error message if registration failed
+                require __DIR__ . '/view/register.php';
+            } 
+    }
+}
+
+/**
+ * Handle logout requests
+ * 
+ * @return void
+ */
+function handleLogoutRequest() {
+    LogOut();
+    header("Location: /");
+    exit();
+}
+/**
+ * Handle contact page requests
+ * 
+ * @return void
+ */
+function handleContactPageRequest() {
+    require __DIR__ . '/view/contactspage.php';
+}
+
+/**
+ * Handle 404 page requests
+ * 
+ * @return void
+ */
+function handle404Request() {
+    http_response_code(404);
+    require __DIR__ . '/view/404.php';
+}
 
 ?>

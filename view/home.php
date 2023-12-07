@@ -1,3 +1,22 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+} else {
+    $username = "Guest";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +32,6 @@
 
 
 </head>
-
 
 <body>
     <nav class="navbar navbar-expand-lg  fixed-top py-1">
@@ -50,7 +68,16 @@
 
                 </div>
             </div>
-            <a href="login" class="login-button">Login</a>
+            
+            <!--<a href="login" class="login-button">Login</a>-->
+            <?php
+            // Check if the user is logged in
+            if (isset($_SESSION['uid'])) {
+                echo "<a href='logout' class='login-button'>Logout as $username</a>";
+            } else {
+                echo "<a href='login' class='login-button'>Login</a>";
+            }
+            ?>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
