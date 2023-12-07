@@ -321,12 +321,35 @@ function CheckoutBasket() {
 }
 
 /**
+ * Formats the passed orderlines to create an array with the order
+ * @param array $orderLinesArray of OrderLines
+ * @param array Associative array of the order (array[int][string])
+ * @return boolean True if succeeded, otherwise false
+ */
+function FormatOrderLines($orderLines, $basket) {
+    global $Product;
+
+    for ($i=0; $i<count($orderLines); $i++) {
+        $product = $Product->getProductByID($orderLines[$i]["ProductID"]);
+        if (!$product) return false;
+
+        $basket[$i]["ProductID"] = $product["ProductID"];
+        $basket[$i]["ProductName"] = $product["Name"];
+        $basket[$i]["Quantity"] = $orderLines[$i]["Quantity"];
+        $basket[$i]["TotalStock"] = $product["Stock"];
+        $basket[$i]["UnitPrice"] = $product["Price"];
+        $basket[$i]["TotalPrice"] = $basket[$i]["UnitPrice"] * $basket[$i]["Quantity"];
+    }
+    return true;
+}
+
+/**
  * Retrieves the customer's basket
  * @param string $totalAmount empty var when passed, holds total price for order if succeeds
  * @return array|boolean 2d array (array[int][string]) if success, otherwise null
  */
 function GetCustomerBasket($totalAmount) {
-    global $Product, $Order;
+    global $Order;
     if (!CheckLoggedIn()) return false;
 
     //retrieve order
@@ -337,22 +360,14 @@ function GetCustomerBasket($totalAmount) {
 
     //format return value
     $basket = Array(Array());
-    for ($i=0; $i<count($intOrderLines); $i++) {
-        $product = $Product->getProductByID($intOrderLines[$i]["ProductID"]);
-        if (!$product) return false;
-
-        $basket[$i]["ProductID"] = $product["ProductID"];
-        $basket[$i]["ProductName"] = $product["Name"];
-        $basket[$i]["Quantity"] = $intOrderLines[$i]["Quantity"];
-        $basket[$i]["TotalStock"] = $product["Stock"];
-        $basket[$i]["UnitPrice"] = $product["Price"];
-        $basket[$i]["TotalPrice"] = $basket[$i]["UnitPrice"] * $basket[$i]["Quantity"];
-    }
+    if (!FormatOrderLines($intOrderLines, $basket)) return false;
 
     //assign price and return
     $totalAmount = $intOrder["TotalAmount"];
     return $basket;
 
 }
+
+
 
 ?>
