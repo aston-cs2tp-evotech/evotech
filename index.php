@@ -72,6 +72,30 @@ function handleAboutUsRequest() {
 function handleLoginRequest() {
     global $pdo;
 
+    switch ($_SERVER['REQUEST_METHOD']) {
+
+        // Display the login form for GET requests
+        case 'GET':
+            require __DIR__ . '/view/login.php';
+            break;
+        
+        // Handle login form submission for POST requests
+        case 'POST':
+            
+            $usernameOrEmail = $_POST['usernameOrEmail'];
+            $password = $_POST['password'];
+
+            $loginResult = AttemptLogin($usernameOrEmail, $password);
+
+            // Send the user back to the homepage if login was successful
+            if ($loginResult === "") {
+                header("Location: /");
+                exit();
+            } else {
+                // Display the login form with an error message if login failed
+                require __DIR__ . '/view/login.php';
+            }
+    }
 
 }
 
