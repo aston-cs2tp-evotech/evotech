@@ -1,3 +1,22 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+} else {
+    $username = "Guest";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +32,6 @@
 
 
 </head>
-
 
 <body>
     <nav class="navbar navbar-expand-lg  fixed-top py-1">
@@ -50,7 +68,16 @@
 
                 </div>
             </div>
-            <a href="login" class="login-button">Login</a>
+            
+            <!--<a href="login" class="login-button">Login</a>-->
+            <?php
+            // Check if the user is logged in
+            if (isset($_SESSION['uid'])) {
+                echo "<a href='logout' class='login-button'>Logout as $username</a>";
+            } else {
+                echo "<a href='login' class='login-button'>Login</a>";
+            }
+            ?>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -61,7 +88,7 @@
     <!--Empty box to fix formatting error 
         Creates an empty above content to prevent main content  being covered by navbar
     -->
-    <section class="bg-dark text-light p-5 text-center text-sm-start py-5">
+    <section class="bg-success text-light p-5 text-center text-sm-start py-5">
 
     </section>
 
@@ -123,7 +150,7 @@
     
     <!-- Spacing issue still needs to be fixed-->
     <section class="d-md-flex flex-md-equal my-md-3 ps-md-3">
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1" >
             <div class="my-3 p-3">
                 <h2 class="Components">Components</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -131,7 +158,7 @@
             <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             </div>
         </div>
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Components">CPUs</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -143,7 +170,7 @@
     </section>
 
     <section class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Components">Graphics Cards</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -151,7 +178,7 @@
             <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             </div>
         </div>
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Cases">Cases</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -162,7 +189,7 @@
     </section>
 
     <section class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
             <div class="my-3 p-3">
                 <h2 class="Components">Storage</h2>
                 <p class="Shop-now">Shop Now.</p>
@@ -170,7 +197,7 @@
             <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
             </div>
         </div>
-        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+        <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1" >
             <div class="my-3 p-3">
                 <h2 class="Components">Memory</h2>
                 <p class="Shop-now">Shop Now.</p>

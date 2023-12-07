@@ -62,7 +62,7 @@
             </div>
           </div>
         <h2>Get In Touch</h2>
-        <p>If you have any questions or concerns, <a href="contact">contact us</a>. Evotech is for Everyone.</p>
+        <p>If you have any questions or concerns, <a href="contactpage">contact us</a>. Evotech is for Everyone.</p>
     </div>
 
 </body>
