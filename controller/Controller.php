@@ -1,7 +1,6 @@
 <?php
 
-//TODO: add function to view previous orders (marked as Delivered or Completed idk yet)
-//      add function to check contact form data
+//TODO: add function to check contact form data
 //      add function to retrieve a single product's data
 //      add function to retrieve products by category
 
@@ -368,6 +367,35 @@ function GetCustomerBasket($totalAmount) {
 
 }
 
+/**
+ * Retrieves all previous orders for a customer (not incl. basket)
+ * @param array $totalAmounts empty array when passed, each index holds the total amount for the respective order
+ * @return array|boolean 3d array (array[int][int][string]) if success, otherwise false
+ */
+function GetPreviousOrders($totalAmounts) {
+    global $Order;
+    if (!CheckLoggedIn()) return false;
 
+    //retrieve orders
+    $orders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Delivered", $_SESSION["uid"]);
+    if (!$orders) return false;
+    
+    //retrieve all orderlines associated with each order
+    $orderLines = Array(Array());
+    for ($i=0; $i<count($orders); $i++) { 
+        $orderLines[$i] = $Order->getAllOrderLinesByOrderID($orders[$i]["OrderID"]);
+        if (!$orderLines[$i]) return false;
+    }
+
+    //format return value
+    $megaBasket = Array(Array(Array()));
+    for ($i=0; $i<count($orderLines); $i++) if (!FormatOrderLines($orderLines[$i], $megaBasket[$i])) return false;
+
+    //get total amounts for each order
+    for ($i=0; $i<count($orders); $i++) $totalAmounts[$i] = $orders[$i]["TotalAmount"];
+
+    //return array
+    return $megaBasket;
+}
 
 ?>
