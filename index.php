@@ -13,6 +13,10 @@ $Customer = new CustomerModel($pdo);
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
 
+// Initalise $userInfo
+global $userInfo;
+$userInfo = array();
+
 // Routing
 $request = $_SERVER['REQUEST_URI'];
 $requestPath = parse_url($request, PHP_URL_PATH);
