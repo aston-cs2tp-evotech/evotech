@@ -320,9 +320,9 @@ function CheckoutBasket() {
 }
 
 /**
- * Formats the passed orderlines to create an array with the order
- * @param array $orderLinesArray of OrderLines
- * @param array Associative array of the order (array[int][string])
+ * --INTERNAL USE ONLY-- Formats the passed orderlines to create an array with the order
+ * @param array $orderLines Array of OrderLines
+ * @param array $basket Associative array of the order (array[int][string])
  * @return boolean True if succeeded, otherwise false
  */
 function FormatOrderLines($orderLines, $basket) {
