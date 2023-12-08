@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <?php include __DIR__ . '/view/nav.php'?>
+  <?php include __DIR__ . '/nav.php'?>
     <header>
         <h1>Product Page</h1>
     </header>
