@@ -1,3 +1,39 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php 
+
+# Set the 403 error document to 404.php CHANGE TO 403.PHP WHEN AVAILABLE!!!
+ErrorDocument 403 /view/404.php
+# Set the 404 error document to 404.php
+ErrorDocument 404 /view/404.php
+
+#Forbid access to any file under the following folders
+RedirectMatch 403 ^/config/.*$
+RedirectMatch 403 ^/setup/.*$
+
+
+#Forbid access to indivdiual files within the server
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^README.md">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^composer.json">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^config.php">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^CONTRIBUTING.md">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
