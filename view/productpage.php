@@ -1,3 +1,20 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,28 +28,40 @@
 <body>
   <?php include __DIR__ . '/nav.php'?>
     <header>
-        <h1>Product Page</h1>
+        <h1> </h1>
     </header>
 
     <main>
         <div class="product-box">
             <div class="product-image">
-                <img src="product_image.jpg" alt="Product Image">
+
+                <img src="https://m.media-amazon.com/images/I/81zk6Sq8hbL.jpg" alt="Product Image">
             </div>
 
             <div class="product-details">
-                <h2>Product Name</h2>
-                <p class="product-price">price</p>
-                <p>text</p>
+                <h2><?php echo $productDetails['Name']; ?></h2>
+                <p class="product-price">£<?php echo $productDetails['Price']; ?></p>
 
                 <div class="product-description">
                     <h3>Description</h3>
-                    <p>Additional details about the product go here...</p>
+                    <p><?php echo $productDetails['Description']; ?><</p>
                 </div>
-
-                <div class="add-to-basket">Add to Basket</div>
+                <div class="add-to-basket <?php echo isset($_SESSION['uid']) ? '' : 'disabled'; ?>">
+                <?php if (isset($_SESSION['uid'])): ?>
+                    <!-- Enable the box and allow adding to basket -->
+                    Add to Basket
+                <?php else: ?>
+                    <!-- Disable the box and prompt user to log in -->
+                    Please log in to add to basket
+                <?php endif; ?>
+            </div>
+                
             </div>
         </div>
+            </div>
+        </div>
+
+
 
         <div class="recommended-products">
             <div class="product-box">

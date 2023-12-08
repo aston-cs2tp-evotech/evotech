@@ -188,9 +188,25 @@ function handle404Request() {
 *
 * @return void  
 */
-function handleProductPageRequest(){
+function handleProductPageRequest() {
+    global $Product;
+
+    // Get the product ID from the URL parameter
+    $productID = isset($_GET['productID']) ? intval($_GET['productID']) : 0;
+
+    // Fetch product details based on the product ID
+    $productDetails = GetProductByID($productID);
+
+    // If the product is not found, handle it accordingly (e.g., redirect to 404)
+    if (!$productDetails) {
+        handle404Request();
+        return;
+    }
+
+    // Include the productpage.php view and pass product details
     require __DIR__ . '/view/productpage.php';
 }
+
 
 /**
  * Handle requests to the products page

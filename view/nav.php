@@ -53,6 +53,7 @@
             <?php
             // Check if the user is logged in
             if (isset($_SESSION['uid'])) {
+                
                 echo "<a href='logout' class='login-button'>Logout as $username</a>";
             } else {
                 echo "<a href='login' class='login-button'>Login</a>";
