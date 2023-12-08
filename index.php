@@ -3,19 +3,19 @@
 // Start session
 session_start();
 
-// Include the database connection
-include 'config/database.php';
+// Create connection to database
+include __DIR__ . "/config/database.php";
 
-// Include models
-require __DIR__ . '/model/Customer.php';
-$Customer = new CustomerModel($pdo);
+// Create Models
+include __DIR__ . "/model/Customer.php";
+include __DIR__ . "/model/Products.php";
+include __DIR__ . "/model/Orders.php";
+
+// Initalise $userInfo
+$userInfo = array();
 
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
-
-// Initalise $userInfo
-global $userInfo;
-$userInfo = array();
 
 // Routing
 $request = $_SERVER['REQUEST_URI'];
