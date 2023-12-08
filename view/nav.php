@@ -18,10 +18,10 @@
         <div class="container-fluid">
             <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
             <a class="navbar-brand me-auto" href="home">Evotech</a>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+            <div class="offcanvas offcanvas-dark bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Evotech</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color:white">Evotech</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
