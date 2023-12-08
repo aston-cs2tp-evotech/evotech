@@ -4,6 +4,7 @@
 //      add function to retrieve a single product's data
 //      add function to retrieve products by category
 
+require ("/config/database.php");
 require("/model/Customer.php");
 require("/model/Products.php");
 require("/model/Orders.php");
