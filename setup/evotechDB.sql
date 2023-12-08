@@ -69,7 +69,6 @@ CREATE TABLE `Products` (
   `Name` VARCHAR(200) NOT NULL,
   `Price` DECIMAL(10,2) NOT NULL,
   `Stock` INT NOT NULL,
-  `Category` VARCHAR(200) NOT NULL,
   `Description` VARCHAR(200) NOT NULL,
   `CategoryID` INT NOT NULL,
   PRIMARY KEY (`ProductID`),
@@ -87,7 +86,7 @@ CREATE TABLE `Products` (
 CREATE TABLE `ProductCompatibility` (
   `ProductID` INT NOT NULL,
   `CompatibilityID` INT NOT NULL,
-  `SlotType` VARCHAR(3) NOT NULL,
+  `SlotType` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`ProductID`, `CompatibilityID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`),
   FOREIGN KEY (`CompatibilityID`) REFERENCES `Compatibility` (`CompatibilityID`)
