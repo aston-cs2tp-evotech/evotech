@@ -1,51 +1,50 @@
 .navbar{
-    background-color: grey;
-    
-    
-  }
-  
-  .login-button{
-    background-color: green;
-    color: white;
-    font-size: 12px;
-    padding: 10px 20px;
-    border-radius: 40px;
-    
-  }
-  .login-button:hover{
-    background-color: chartreuse;
-  }
-  
-  .navbar-toggler{
-    border: none;
-    font-size: small;
-  }
-  
-  .navbar-toggler:focus, .btm-close:focus{
-    box-shadow: none;
-    outline: none;
-  }
-  
-  .nav-link{
-    color: black;
-    font-weight:  500px; ;
-    position: relative;
-  }
-  
-  .bi {
-    color: black;
-    font-weight:  500px; ;
-    position: relative;
+  background-color: #333;
   
   
-  }
-  .nav-link:hover, .nav-link.active{
-    color: white;
-  
-  }
-  
-  .nav-item{
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  
+}
+
+.login-button{
+  background-color: rgb(122, 122, 122);
+  color: white;
+  font-size: 12px;
+  padding: 10px 20px;
+  border-radius: 40px;
+  transition: 0.4s background-color;;
+}
+.login-button:hover{
+  background-color: rgb(27, 27, 27);
+}
+
+.navbar-toggler{
+  border: none;
+  font-size: small;
+}
+
+.navbar-toggler:focus, .btm-close:focus{
+  box-shadow: none;
+  outline: none;
+}
+
+.nav-link{
+  color: black;
+  font-weight:  500px; ;
+  position: relative;
+}
+
+.bi {
+  color: black;
+  font-weight:  500px; ;
+  position: relative;
+
+
+}
+.nav-link:hover, .nav-link.active{
+  color: rgb(157, 157, 157);
+
+}
+
+.nav-item{
+  padding-left: 20px;
+  padding-right: 20px;
+}
