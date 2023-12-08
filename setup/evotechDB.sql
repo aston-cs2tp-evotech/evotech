@@ -79,12 +79,14 @@ CREATE TABLE `ProductCompatibility` (
 -- The `ImageID` is a unique identifier for each image.
 -- The `ProductID` references the product to which the image belongs.
 -- The `FileName` stores the name of the image file.
+-- The 'MainImage' field is a boolean value that indicates whether the image is the main image for the product.
 -- This table is used to associate image files with products.
 -- --------------------------------------------------------
 CREATE TABLE `ProductImages` (
   `ImageID` INT NOT NULL AUTO_INCREMENT,
   `ProductID` INT NOT NULL,
   `FileName` VARCHAR(255) NOT NULL,
+  `MainImage` BOOLEAN NOT NULL,
   PRIMARY KEY (`ImageID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
