@@ -2,11 +2,6 @@
 
 //TODO: add function to check contact form data
 
-require ("/config/database.php");
-require("/model/Customer.php");
-require("/model/Products.php");
-require("/model/Orders.php");
-
 // ---------------------------------------------
 //
 // FUNCTIONS RELATING TO CUSTOMER AND MAIN PAGE
@@ -108,7 +103,7 @@ function RegisterUser($details) {
     if (!CheckExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
     if (!CheckExists($details["customer_address"]) || !preg_match("/[a-zA-Z0-9.,]+/", $details["customer_address"])) return "Invalid address";
     if (!CheckExists($details["password"]) || !(gettype($details["password"] == "string")) || !(strlen($details["password"]) > 7)) return "Invalid password";
-    if (!CheckExists($details["password_confirmation"]) || !($details["password"] === $details["password_confirmation"])) return "Confirmation password does not match";
+    if (!CheckExists($details["confirmpass"]) || !($details["password"] === $details["confirmpass"])) return "Confirmation password does not match";
     if ($Customer->getCustomerByUsername($details["username"])) return "Username is already taken";
     if ($Customer->getCustomerByEmail($details["email"])) return "Email is already in use";
     //hashes password

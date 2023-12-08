@@ -3,12 +3,19 @@
 // Start session
 session_start();
 
-// Include the controller
-require __DIR__ . '/controller/Controller.php';
+// Create connection to database
+include __DIR__ . "/config/database.php";
+
+// Create Models
+include __DIR__ . "/model/Customer.php";
+include __DIR__ . "/model/Products.php";
+include __DIR__ . "/model/Orders.php";
 
 // Initalise $userInfo
-global $userInfo;
 $userInfo = array();
+
+// Include the controller
+require __DIR__ . '/controller/Controller.php';
 
 // Routing
 $request = $_SERVER['REQUEST_URI'];
