@@ -33,13 +33,13 @@
                             <a class="nav-link" href="aboutus">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Products</a>
+                            <a class="nav-link" href="products">Products</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contactpage">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="basket">
                                 <i class="bi bi-basket">
                                     Basket
                                 </i>
