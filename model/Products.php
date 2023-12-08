@@ -204,6 +204,44 @@ class ProductModel {
     }
 
     /**
+     * Retrieve all images for a product.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @return array|null An array of image details or null if not found.
+     */
+    public function getProductImages($productID) {
+        $query = "SELECT * FROM `ProductImages` WHERE `ProductID` = :productID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $images = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $images ? $images : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
+     * Add an image for a product.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @param string $imageName
+     */
+    public function addProductImage($productID, $imageName) {
+        $insertQuery = "INSERT INTO `ProductImages` (`ProductID`, `FileName`) VALUES (:productID, :fileName)";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $insertStatement->bindParam(':fileName', $imageName, PDO::PARAM_STR);
+
+        try {
+            return $insertStatement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
      * Add compatibility for a product.
      *
      * @param int $productID The unique identifier of the product.
