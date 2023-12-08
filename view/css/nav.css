@@ -1,7 +1,5 @@
 .navbar{
-  background-color: #333;
-  
-  
+  background-color: black;
 }
 
 .login-button{
@@ -27,13 +25,13 @@
 }
 
 .nav-link{
-  color: black;
+  color: white;
   font-weight:  500px; ;
   position: relative;
 }
 
 .bi {
-  color: black;
+  color: white;
   font-weight:  500px; ;
   position: relative;
 
