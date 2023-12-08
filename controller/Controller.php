@@ -112,8 +112,6 @@ function RegisterUser($details) {
     if (!CheckExists($details["password_confirmation"]) || !($details["password"] === $details["confirmpass"])) return "Confirmation password does not match";
     if ($Customer->getCustomerByUsername($details["username"])) return "Username is already taken";
     if ($Customer->getCustomerByEmail($details["email"])) return "Email is already in use";
-    //change field name for model
-    $details["customer_address"] = $details["address"];
     //hashes password
     $details["password_hash"] = password_hash($details["password"], PASSWORD_DEFAULT);
     if (!$Customer->registerCustomer($details)) return "Database Error";
