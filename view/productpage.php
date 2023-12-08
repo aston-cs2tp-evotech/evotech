@@ -22,7 +22,7 @@
 
             <div class="product-details">
                 <h2>Product Name</h2>
-                <p class="product-price">$99.99</p>
+                <p class="product-price">price</p>
                 <p>text</p>
 
                 <div class="product-description">
@@ -34,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Recommended Products -->
         <div class="recommended-products">
             <div class="product-box">
                 <div class="product-image">
