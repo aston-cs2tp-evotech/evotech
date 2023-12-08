@@ -1,8 +1,6 @@
 <?php
 
 //TODO: add function to check contact form data
-//      add function to retrieve a single product's data
-//      add function to retrieve products by category
 
 require ("/config/database.php");
 require("/model/Customer.php");
@@ -193,6 +191,80 @@ function LogOut() {
     unset($_SESSION);
     session_destroy();
     //route back to main page or page that responds that user logged out
+}
+
+// ---------------------------------------------
+//
+// FUNCTIONS RELATING TO PRODCUTS
+//
+// ---------------------------------------------
+
+/**
+ * Gets product from the database, regardless of stock
+ * @param int $productID ID of the product
+ * @return array|boolean Array with product details if success, otherwise false
+ */
+function GetProductByID($productID) {
+    global $Product;
+    if (!checkExists($productID)) return false;
+    return $Product->getProductByID($productID);
+}
+
+/**
+ * --INTERNAL USE ONLY-- Filters array to only have stocked products
+ * @param array $products Array of products to filter (will overwrite)
+ * @return boolean True if success, otherwise false
+ */
+function FilterStockedProducts($products) {
+    if (!$products) return false;
+    $stockedProducts = Array();
+    foreach ($products as $product) if ($product["Stock"] > 0) array_push($stockedProducts, $product);
+    if (!$stockedProducts) return false;
+    $products = $stockedProducts;
+    return true;
+}
+
+/**
+ * Gets every product in the database, regardless of stock
+ * @return array|boolean 2d array if succeeded, otherwise false
+ */
+function GetAllProducts() {
+    global $Product;
+    return $Product->getAllProducts();
+}
+
+/**
+ * Gets every product in the database where stock > 0
+ * @return array|boolean 2d array if succeeded, otherwise false
+ */
+function GetAllStockedProducts() {
+    $products = GetAllProducts();
+    if (!FilterStockedProducts($products)) return false;
+    else return $products;
+}
+
+/**
+ * --CURRENTLY DOES NOTHING-- Gets all products by category, regardless of stock
+ * @param string $category Category of the product (component, accessory etc.)
+ * @return array|boolean 2d array if succeeded, otherwise false
+ */
+function GetAllProductsByCategory($category){
+    global $Product;
+    //currently isn't implemented in db so this will just never return an array in the mean time
+    $categories = Array("");
+    if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) return false;
+    return false;
+}
+
+/**
+ * --CURRENTLY DOES NOTHING-- Gets all products by category where stock > 0
+ * @param string $category Category of the product (component, accessory etc)
+ * @return array|boolean 2d array if succeeded, otherwise false
+ */
+function GetAllStockedProductsByCategory($category) {
+    $products = GetAllProductsByCategory($category);
+    if (!FilterStockedProducts($products)) return false;
+    else return $products;
 }
 
 // ---------------------------------------------
