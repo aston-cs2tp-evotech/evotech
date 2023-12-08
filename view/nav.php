@@ -14,7 +14,7 @@
 
 </head>
 
-<nav class="navbar navbar-expand-lg  fixed-top py-1">
+<nav class="navbar navbar-dark navbar-expand-lg fixed-top py-1">
         <div class="container-fluid">
             <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
             <a class="navbar-brand me-auto" href="home">Evotech</a>
