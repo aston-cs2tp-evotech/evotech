@@ -3,6 +3,13 @@
 // Start session
 session_start();
 
+// Include the database connection
+include 'config/database.php';
+
+// Include models
+require __DIR__ . '/model/Customer.php';
+$Customer = new CustomerModel($pdo);
+
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
 
