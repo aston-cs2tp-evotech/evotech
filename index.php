@@ -194,7 +194,11 @@ function handleProductPageRequest(){
 * @return void
 */
 function handleBasketPageRequest(){
-    require __DIR__ . '/view/basket.php';
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    } else{
+        require __DIR__ . '/view/basket.php';
+    }
 }
 
 /**
