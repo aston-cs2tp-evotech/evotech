@@ -314,11 +314,11 @@ function AddProductToBasket($productID, $quantity) {
 
     //create basket if none found, otherwise add item to it
     //(also checks for ownership of basket)
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
     $prodPrice = $product["Price"] * $quantity;
     if (!$basket) {
         //basket doesn't exist so it makes a new one
-        $orderStatID = $Order->getOrderStatusIDByName("Basket");
+        $orderStatID = $Order->getOrderStatusIDByName("basket");
         if (!$orderStatID) return false;
         $orderID = $Order->createOrder(array("customerID"=>$_SESSION["uid"], "totalAmount"=>$prodPrice,"orderStatusID"=>$orderStatID));
         if (!$orderID) return false;
@@ -351,7 +351,7 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     if (!ProductAndQuantityCheck($productID, $quantity, $product)) return false;
 
     //gets basket to update (also checks ownership)
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
     if (!$basket) return false;
     $allOrderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
     if (!$allOrderLines) return false;
@@ -383,11 +383,11 @@ function CheckoutBasket() {
     global $Order;
     if (!CheckLoggedIn()) return false;
     //fetch basket
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
     if (!$basket) return false;
 
     //passed all checks, updating status
-    return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("Processing"));
+    return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
 }
 
 /**
@@ -423,7 +423,7 @@ function GetCustomerBasket($totalAmount) {
     if (!CheckLoggedIn()) return false;
 
     //retrieve order
-    $intOrder = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Basket", $_SESSION["uid"]);
+    $intOrder = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
     if (!$intOrder) return false;
     $intOrderLines = $Order->getAllOrderLinesByOrderID($intOrder["OrderID"]);
     if (!$intOrderLines) return false;
@@ -448,7 +448,7 @@ function GetPreviousOrders($totalAmounts) {
     if (!CheckLoggedIn()) return false;
 
     //retrieve orders
-    $orders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("Delivered", $_SESSION["uid"]);
+    $orders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("delivered", $_SESSION["uid"]);
     if (!$orders) return false;
     
     //retrieve all orderlines associated with each order
