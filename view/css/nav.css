@@ -1,25 +1,19 @@
-#content{
-    position: relative;
-    margin-top: 50px;
-  }
-  
-  
-  .navbar{
-    background-color: #333;
+.navbar{
+    background-color: grey;
     
     
   }
   
   .login-button{
-    background-color: rgb(122, 122, 122);
+    background-color: green;
     color: white;
     font-size: 12px;
     padding: 10px 20px;
     border-radius: 40px;
-    transition: 0.4s background-color;;
+    
   }
   .login-button:hover{
-    background-color: rgb(27, 27, 27);
+    background-color: chartreuse;
   }
   
   .navbar-toggler{
@@ -46,7 +40,7 @@
   
   }
   .nav-link:hover, .nav-link.active{
-    color: rgb(157, 157, 157);
+    color: white;
   
   }
   
@@ -55,19 +49,3 @@
     padding-right: 20px;
   }
   
-  .section h2, .section p{
-    color: grey;
-    margin: 10px;
-    text-align: center;
-  
-  }
-  
-  .flex-equal > * {
-    flex: 1;
-  }
-  
-   
-  
-  .login{
-    text-decoration: none;
-  }
