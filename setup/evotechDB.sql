@@ -43,10 +43,25 @@ CREATE TABLE `AdminCredentials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
+-- Table for Categories
+-- The `CategoryID` is a unique identifier for each category.
+-- The `CategoryName` field stores the name of the category.
+-- This table is used to define and categorize products.
+-- --------------------------------------------------------
+CREATE TABLE `Categories` (
+  `CategoryID` INT NOT NULL AUTO_INCREMENT,
+  `CategoryName` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`CategoryID`),
+  UNIQUE KEY `CategoryName` (`CategoryName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
 -- Table for Products
 -- The `ProductID` is a unique identifier for each product.
 -- The `Name` field stores the name of the product.
 -- The `Price` field represents the price of the product, and `Stock` represents the stock quantity.
+-- The 'Category' field represents the category of the product (e.g., Motherboard, CPU).
+-- The 'Description' field stores a description of the product.
 -- This table is used to store detailed information about the products available in the system.
 -- --------------------------------------------------------
 CREATE TABLE `Products` (
@@ -54,8 +69,11 @@ CREATE TABLE `Products` (
   `Name` VARCHAR(200) NOT NULL,
   `Price` DECIMAL(10,2) NOT NULL,
   `Stock` INT NOT NULL,
+  `Description` VARCHAR(200) NOT NULL,
+  `CategoryID` INT NOT NULL,
   PRIMARY KEY (`ProductID`),
-  UNIQUE KEY `Name` (`Name`)
+  UNIQUE KEY `Name` (`Name`),
+  FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
@@ -68,10 +86,27 @@ CREATE TABLE `Products` (
 CREATE TABLE `ProductCompatibility` (
   `ProductID` INT NOT NULL,
   `CompatibilityID` INT NOT NULL,
-  `SlotType` VARCHAR(3) NOT NULL,
+  `SlotType` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`ProductID`, `CompatibilityID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`),
   FOREIGN KEY (`CompatibilityID`) REFERENCES `Compatibility` (`CompatibilityID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+-- Table for Product Images
+-- The `ImageID` is a unique identifier for each image.
+-- The `ProductID` references the product to which the image belongs.
+-- The `FileName` stores the name of the image file.
+-- The 'MainImage' field is a boolean value that indicates whether the image is the main image for the product.
+-- This table is used to associate image files with products.
+-- --------------------------------------------------------
+CREATE TABLE `ProductImages` (
+  `ImageID` INT NOT NULL AUTO_INCREMENT,
+  `ProductID` INT NOT NULL,
+  `FileName` VARCHAR(255) NOT NULL,
+  `MainImage` BOOLEAN NOT NULL,
+  PRIMARY KEY (`ImageID`),
+  FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------

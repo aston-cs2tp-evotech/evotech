@@ -17,10 +17,14 @@ if (isset($_SESSION['uid'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Log in</title>
-        <link rel="stylesheet" type="text/css" href="view/css/login_register_checkout.css"/>
+        <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout.css"/>
     
     </head>
     <body>
+      <?php include __DIR__ . '/nav.php'?>
+      <section class="bg-success p-5  py-4">
+
+       </section>
 
         <header>
             <h1>Log in</h1>
@@ -35,7 +39,7 @@ if (isset($_SESSION['uid'])) {
             <?php
             // Check if loginResult is False
             if (isset($loginResult) && $loginResult === False) {
-                echo "<p class='error'>Incorrect username or password</p>";
+                echo "<div class='alert alert-danger'>Incorrect username or password</div>";
             }
             ?>
 
@@ -48,7 +52,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
             <br>
-                <input type="submit" value="Log in"/>
+                <input class="btn btn-success" type="submit" value="Log in"/>
             <br>
             </form>
 

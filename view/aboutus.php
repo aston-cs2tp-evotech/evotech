@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
-    <link rel="stylesheet" href="view/css/aboutus.css">
+    <link rel="stylesheet" href="/view/css/aboutus.css">
     
 </head>
 <body>
+  <?php include __DIR__ . '/nav.php'?>
 
+  <section class="bg-success p-5  py-4">
+
+    </section>
+  
     <header>
         <h1>About Us</h1>
     </header>

@@ -26,7 +26,7 @@ if (isset($userInfo["Username"])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" type="text/css" href="view/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/view/css/home.css">
     <title>Evotech</title>
     <ion-icon name="desktop-outline"></ion-icon>
 
@@ -34,56 +34,7 @@ if (isset($userInfo["Username"])) {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg  fixed-top py-1">
-        <div class="container-fluid">
-            <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
-            <a class="navbar-brand me-auto" href="home">Evotech</a>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Evotech</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="aboutus">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contactpage">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-basket">
-                                    Basket
-                                </i>
-                            </a>
-                        </li>
-
-                </div>
-            </div>
-            
-            <!--<a href="login" class="login-button">Login</a>-->
-            <?php
-            // Check if the user is logged in
-            if (isset($_SESSION['uid'])) {
-                echo "<a href='logout' class='login-button'>Logout as $username</a>";
-            } else {
-                echo "<a href='login' class='login-button'>Login</a>";
-            }
-            ?>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </nav>
+  <?php include __DIR__ . '/nav.php'?>
      
     <!--Empty box to fix formatting error 
         Creates an empty above content to prevent main content  being covered by navbar

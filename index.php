@@ -48,6 +48,22 @@ switch ($requestPath) {
         handleContactPageRequest();
         break;
     
+    case '/basket':
+        handleBasketPageRequest();
+        break;
+    
+    case '/product':
+        handleProductPageRequest();
+        break;
+
+    case '/products':
+        handleProductsPageRequest();
+        break;
+
+    case '/checkout':
+        handleCheckoutPageRequest();
+        break;
+    
     default:
         handle404Request();
         break;
@@ -165,6 +181,46 @@ function handleContactPageRequest() {
 function handle404Request() {
     http_response_code(404);
     require __DIR__ . '/view/404.php';
+}
+
+/**
+* Handle requests to the product page
+*
+* @return void  
+*/
+function handleProductPageRequest(){
+    require __DIR__ . '/view/productpage.php';
+}
+
+/**
+ * Handle requests to the products page
+ * 
+ * @return void
+ */
+function handleProductsPageRequest(){
+    require __DIR__ . '/view/products.php';
+}
+
+/**
+* Handle requests to the basket
+* 
+* @return void
+*/
+function handleBasketPageRequest(){
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    } else{
+        require __DIR__ . '/view/basket.php';
+    }
+}
+
+/**
+ * handle requests to the checkout page
+ * 
+ * @return void
+ */
+function handleCheckoutPageRequest(){
+    require __DIR__ . '/view/checkout.php';
 }
 
 ?>
