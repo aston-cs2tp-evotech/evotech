@@ -2,11 +2,6 @@
 
 //TODO: add function to check contact form data
 
-require ("/config/database.php");
-require("/model/Customer.php");
-require("/model/Products.php");
-require("/model/Orders.php");
-
 // ---------------------------------------------
 //
 // FUNCTIONS RELATING TO CUSTOMER AND MAIN PAGE
