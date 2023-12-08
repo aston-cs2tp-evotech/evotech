@@ -39,7 +39,7 @@ if (isset($_SESSION['uid'])) {
             <?php
             // Check if loginResult is False
             if (isset($loginResult) && $loginResult === False) {
-                echo "<p class='error'>Incorrect username or password</p>";
+                echo "<div class='alert alert-danger'>Incorrect username or password</div>";
             }
             ?>
 
@@ -52,7 +52,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
             <br>
-                <input type="submit" value="Log in"/>
+                <input class="btn btn-success" type="submit" value="Log in"/>
             <br>
             </form>
 

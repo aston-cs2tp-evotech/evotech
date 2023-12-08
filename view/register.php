@@ -39,7 +39,7 @@ if (isset($_SESSION['uid'])) {
             <?php
             // Check if there are any errors to display
             if (isset($registrationResult) && $registrationResult !== "") {
-                echo "<p class='error'>$registrationResult</p>";
+                echo "<div class='alert alert-danger'>$registrationResult</div>";
             }
             ?>
 
@@ -62,7 +62,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
             <br>
-                <input type="submit" value="Register"/>
+                <input class="btn btn-success" type="submit" value="Register"/>
             <br>
             </form>
 
