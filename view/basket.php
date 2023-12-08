@@ -9,6 +9,7 @@
 
     <body>
 
+    <?php include __DIR__ . '/nav.php'?>
         <header>
             <h1>Basket</h1>
         </header>
