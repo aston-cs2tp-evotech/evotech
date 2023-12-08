@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="view/css/contactpage.css">
 </head>
 <body>
+   <?php include __DIR__ . '/nav.php'?>
+
+   <section class="bg-success p-5  py-4">
+
+    </section>
     <header>
         <h1>Contact EvoTech</h1>
     </header>

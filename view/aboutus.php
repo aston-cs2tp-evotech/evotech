@@ -8,7 +8,12 @@
     
 </head>
 <body>
+  <?php include __DIR__ . '/nav.php'?>
 
+  <section class="bg-success p-5  py-4">
+
+    </section>
+  
     <header>
         <h1>About Us</h1>
     </header>

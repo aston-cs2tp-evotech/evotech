@@ -21,7 +21,11 @@ if (isset($_SESSION['uid'])) {
 
     </head>
     <body>
+    <?php include __DIR__ . '/nav.php'?>
 
+    <section class="bg-success p-5  py-4">
+
+    </section>
         <header>
             <h1>Register</h1>
         </header>
