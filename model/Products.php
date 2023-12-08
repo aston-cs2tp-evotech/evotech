@@ -242,6 +242,25 @@ class ProductModel {
     }
 
     /**
+     * Delete an image for a product.
+     *
+     * @param int $productID The unique identifier of the product.
+     * @param string $imageName The name of the image file.
+     * @return bool True if the deletion is successful, false otherwise.
+     */
+    public function deleteProductImage($productID, $imageName) {
+        $query = "DELETE FROM `ProductImages` WHERE `ProductID` = :productID AND `FileName` = :fileName";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $statement->bindParam(':fileName', $imageName, PDO::PARAM_STR);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+    /**
      * Add compatibility for a product.
      *
      * @param int $productID The unique identifier of the product.
