@@ -206,7 +206,7 @@ function LogOut() {
  */
 function GetProductByID($productID) {
     global $Product;
-    if (!checkExists($productID)) return false;
+    if (!checkExists($productID) || !(gettype($productID) == "integer")) return false;
     return $Product->getProductByID($productID);
 }
 
