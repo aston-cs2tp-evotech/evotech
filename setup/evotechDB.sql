@@ -47,6 +47,8 @@ CREATE TABLE `AdminCredentials` (
 -- The `ProductID` is a unique identifier for each product.
 -- The `Name` field stores the name of the product.
 -- The `Price` field represents the price of the product, and `Stock` represents the stock quantity.
+-- The 'Category' field represents the category of the product (e.g., Motherboard, CPU).
+-- The 'Description' field stores a description of the product.
 -- This table is used to store detailed information about the products available in the system.
 -- --------------------------------------------------------
 CREATE TABLE `Products` (
@@ -54,6 +56,8 @@ CREATE TABLE `Products` (
   `Name` VARCHAR(200) NOT NULL,
   `Price` DECIMAL(10,2) NOT NULL,
   `Stock` INT NOT NULL,
+  `Category` VARCHAR(200) NOT NULL,
+  `Description` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`ProductID`),
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
