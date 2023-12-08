@@ -56,6 +56,10 @@ switch ($requestPath) {
         handleProductPageRequest();
         break;
 
+    case '/products':
+        handleProductsPageRequest();
+        break;
+
     case '/checkout':
         handleCheckoutPageRequest();
         break;
@@ -186,6 +190,15 @@ function handle404Request() {
 */
 function handleProductPageRequest(){
     require __DIR__ . '/view/productpage.php';
+}
+
+/**
+ * Handle requests to the products page
+ * 
+ * @return void
+ */
+function handleProductsPageRequest(){
+    require __DIR__ . '/view/products.php';
 }
 
 /**

@@ -43,6 +43,19 @@ CREATE TABLE `AdminCredentials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
+-- Table for Categories
+-- The `CategoryID` is a unique identifier for each category.
+-- The `CategoryName` field stores the name of the category.
+-- This table is used to define and categorize products.
+-- --------------------------------------------------------
+CREATE TABLE `Categories` (
+  `CategoryID` INT NOT NULL AUTO_INCREMENT,
+  `CategoryName` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`CategoryID`),
+  UNIQUE KEY `CategoryName` (`CategoryName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
 -- Table for Products
 -- The `ProductID` is a unique identifier for each product.
 -- The `Name` field stores the name of the product.
@@ -58,8 +71,10 @@ CREATE TABLE `Products` (
   `Stock` INT NOT NULL,
   `Category` VARCHAR(200) NOT NULL,
   `Description` VARCHAR(200) NOT NULL,
+  `CategoryID` INT NOT NULL,
   PRIMARY KEY (`ProductID`),
-  UNIQUE KEY `Name` (`Name`)
+  UNIQUE KEY `Name` (`Name`),
+  FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
