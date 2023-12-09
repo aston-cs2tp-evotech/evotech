@@ -257,7 +257,7 @@ function handleAddToBasketRequest() {
         exit();
     } else {
         // Redirect to the product page with an error message if the product could not be added
-        header("Location: /product?productID=$productID&error=1");
+        header("Location: /basket");
         exit();
     }
 
