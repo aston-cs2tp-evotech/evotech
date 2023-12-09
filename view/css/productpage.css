@@ -110,3 +110,18 @@ main {
     color: #333;
     margin-top: 10px;
 }
+footer {
+    background-color: #323131;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

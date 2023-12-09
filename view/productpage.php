@@ -95,5 +95,9 @@ if (isset($userInfo["Username"])) {
     </main>
 
 </body>
-
+<footer>
+        <div class="footer-content">
+            <p>&copy; 2023 EvoTech</p>
+        </div>
+    </footer>
 </html>
