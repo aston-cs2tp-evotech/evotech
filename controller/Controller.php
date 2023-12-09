@@ -298,36 +298,61 @@ function ProductAndQuantityCheck($productID, $quantity){
  */
 function AddProductToBasket($productID, $quantity) {
     global $Order;
-    //check login
-    if (!CheckLoggedIn()) return false;
-    //init array for product
-    $product = ProductAndQuantityCheck($productID, $quantity);
-    if (!$product) return false;
-    //quantity needs additional check to make sure it isnt 0
-    if ($quantity === 0) return false;
 
-    //create basket if none found, otherwise add item to it
-    //(also checks for ownership of basket)
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
+    // Check login
+    if (!CheckLoggedIn()) {
+        return false;
+    }
+
+    // Init array for product
+    $product = ProductAndQuantityCheck($productID, $quantity);
+    if (!$product) {
+        return false;
+    }
+
+    // Quantity needs additional check to make sure it isn't 0
+    if ($quantity === 0) {
+        return false;
+    }
+
+    // Create basket if none found, otherwise add item to it (also checks for ownership of basket)
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
     $prodPrice = $product["Price"] * $quantity;
     if (!$basket) {
-        //basket doesn't exist so it makes a new one
+        // Basket doesn't exist, so it makes a new one
         $orderStatID = $Order->getOrderStatusIDByName("basket");
-        if (!$orderStatID) return false;
-        $orderID = $Order->createOrder(array("customerID"=>$_SESSION["uid"], "totalAmount"=>$prodPrice,"orderStatusID"=>$orderStatID));
-        if (!$orderID) return false;
-        return $Order->createOrderLine(array("orderID"=>$orderID, "productID"=>$productID, "quantity"=>$quantity));
-    }
-    //check if product is already in basket
-    $orderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
-    if (!$orderLines) return false;
-    foreach ($orderLines as $orderLine) if ($orderLine["ProductID"] == $productID) return ModifyProductQuantityInBasket($productID, $orderLine["Quantity"]+$quantity);
+        if (!$orderStatID) {
+            return false;
+        }
 
-    //product not in basket, appending
-    if ($Order->createOrderLine(array("orderID"=>$basket["OrderID"], "productID"=>$productID, "quantity"=>$quantity))) {
-        return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]+$prodPrice);
+        $orderID = $Order->createOrder(array("customerID" => $_SESSION["uid"], "totalAmount" => $prodPrice, "orderStatusID" => $orderStatID));
+
+        if (!$orderID) {
+            return false;
+        }
+
+        return $Order->createOrderLine(array("orderID" => $orderID, "productID" => $productID, "quantity" => $quantity));
     }
-    else return false;
+
+    // Check if product is already in the basket
+    $orderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
+
+    if (!$orderLines) {
+        return false;
+    }
+
+    foreach ($orderLines as $orderLine) {
+        if ($orderLine["ProductID"] == $productID) {
+            return ModifyProductQuantityInBasket($productID, $orderLine["Quantity"] + $quantity);
+        }
+    }
+
+    // Product not in basket, appending
+    if ($Order->createOrderLine(array("orderID" => $basket["OrderID"], "productID" => $productID, "quantity" => $quantity))) {
+        return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"] + $prodPrice);
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -345,7 +370,7 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     if (!$product) return false;
 
     //gets basket to update (also checks ownership)
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
     if (!$basket) return false;
     $allOrderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
     if (!$allOrderLines) return false;
