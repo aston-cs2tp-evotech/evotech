@@ -415,46 +415,71 @@ function CheckoutBasket() {
  * @param array $basket Associative array of the order (array[int][string])
  * @return boolean True if succeeded, otherwise false
  */
-function FormatOrderLines($orderLines, $basket) {
+function FormatOrderLines($orderLines, &$basket) {
     global $Product;
 
-    for ($i=0; $i<count($orderLines); $i++) {
-        $product = $Product->getProductByID($orderLines[$i]["ProductID"]);
-        if (!$product) return false;
+    foreach ($orderLines as $index => $orderLine) {
+        $product = $Product->getProductByID($orderLine["ProductID"]);
+        if (!$product) {
+            return false;
+        }
 
-        $basket[$i]["ProductID"] = $product["ProductID"];
-        $basket[$i]["ProductName"] = $product["Name"];
-        $basket[$i]["Quantity"] = $orderLines[$i]["Quantity"];
-        $basket[$i]["TotalStock"] = $product["Stock"];
-        $basket[$i]["UnitPrice"] = $product["Price"];
-        $basket[$i]["TotalPrice"] = $basket[$i]["UnitPrice"] * $basket[$i]["Quantity"];
+        $basket[$index]["ProductID"] = $product["ProductID"];
+        $basket[$index]["ProductName"] = $product["Name"];
+        $basket[$index]["Quantity"] = $orderLine["Quantity"];
+        $basket[$index]["TotalStock"] = $product["Stock"];
+        $basket[$index]["UnitPrice"] = $product["Price"];
+        $basket[$index]["TotalPrice"] = $basket[$index]["UnitPrice"] * $basket[$index]["Quantity"];
     }
+
     return true;
 }
+
 
 /**
  * Retrieves the customer's basket
  * @param string $totalAmount empty var when passed, holds total price for order if succeeds
  * @return array|boolean 2d array (array[int][string]) if success, otherwise null
  */
-function GetCustomerBasket($totalAmount) {
+function GetCustomerBasket(&$totalAmount) {
     global $Order;
-    if (!CheckLoggedIn()) return false;
 
-    //retrieve order
-    $intOrder = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
-    if (!$intOrder) return false;
-    $intOrderLines = $Order->getAllOrderLinesByOrderID($intOrder["OrderID"]);
-    if (!$intOrderLines) return false;
+    if (!CheckLoggedIn()) {
+        return false;
+    }
 
-    //format return value
-    $basket = array(array());
-    if (!FormatOrderLines($intOrderLines, $basket)) return false;
+    // Retrieve orders with status "basket" for the customer
+    $basketOrders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
 
-    //assign price and return
-    $totalAmount = $intOrder["TotalAmount"];
+    // Check if any basket orders are found
+    if (!$basketOrders || empty($basketOrders)) {
+        return false;
+    }
+
+    // Assuming you want the latest basket order, you can choose the first one in the list
+    $latestBasketOrder = $basketOrders[0];
+
+    // Retrieve order lines for the basket order
+    $orderLines = $Order->getAllOrderLinesByOrderID($latestBasketOrder["OrderID"]);
+
+
+    // Check if any order lines are found
+    if (!$orderLines || empty($orderLines)) {
+        return false;
+    }
+
+    // Format return value
+    $basket = array();
+
+    // Assign price to the totalAmount variable
+    $totalAmount = $latestBasketOrder["TotalAmount"];
+
+    // Format order lines
+    if (!FormatOrderLines($orderLines, $basket)) {
+        return false;
+    }
+
     return $basket;
-
 }
 
 /**
