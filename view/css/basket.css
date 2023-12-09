@@ -33,7 +33,9 @@ h2 {
 
 .card-img {
     width: 100%;
-    height: auto;
+    max-height: 200px; 
+    object-fit: scale-down;
+    border-radius: 8px;
 }
 
 .card-body {

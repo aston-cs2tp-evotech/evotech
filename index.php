@@ -74,6 +74,10 @@ switch ($requestPath) {
         handleAddToBasketRequest();
         break;
 
+    case '/update-basket':
+        handleUpdateBasketRequest();
+        break;
+    
     case '/checkout':
         handleCheckoutPageRequest();
         break;
@@ -263,6 +267,36 @@ function handleAddToBasketRequest() {
 
 }
 
+/**
+ * Handle requests to update the quantity of a product in the basket
+ * 
+ * @return void
+ */
+function handleUpdateBasketRequest() {
+    // Check if the user is logged in
+    if (!isset($_SESSION['uid'])) {
+        // Redirect to the login page if not logged in
+        header("Location: /login");
+        exit();
+    }
+
+    // Get the product ID and quantity from the POST request
+    $productID = isset($_POST['productID']) ? intval($_POST['productID']) : 0;
+    $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
+
+    // Update the product in the basket
+    $updateBasketResult = ModifyProductQuantityInBasket($productID, $quantity);
+
+    // Redirect to the basket page if the product was updated successfully
+    if ($updateBasketResult) {
+        header("Location: /basket");
+        exit();
+    } else {
+        // Redirect to the product page with an error message if the product could not be updated
+        header("Location: /basket");
+        exit();
+    }
+}
 
 /**
 * Handle requests to the basket
@@ -283,7 +317,19 @@ function handleBasketPageRequest(){
  * @return void
  */
 function handleCheckoutPageRequest(){
-    require __DIR__ . '/view/checkout.php';
+    // Check if the user is logged in and if there are any items in the basket
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    }
+    $totalAmount = 0;
+
+    $basketItems = GetCustomerBasket($totalAmount);
+
+    if (!$basketItems) {
+        header("Location:/");
+    } else {
+        require __DIR__ . '/view/checkout.php';
+    }
 }
 
 ?>

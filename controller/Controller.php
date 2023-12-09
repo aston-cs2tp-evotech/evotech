@@ -315,7 +315,7 @@ function GetAllStockedProductsByCategory($category) {
 function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
     //check legitimate quantity
-    if (!CheckExists($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
+    if (!isset($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
     //check PID is int (no SQL injection allowed here sorry)
     if (!CheckExists($productID) || !(gettype($productID) == "integer")) return false;
     //check product is legit
@@ -420,6 +420,7 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     //check for orderLine deletion
     if ($quantity == 0) {
         if (!$Order->deleteOrderLine($basket["OrderID"], $product["ProductID"])) return false;
+        if (!$Order->getAllOrderLinesByOrderID($basket["OrderID"])) return $Order->deleteOrder($basket["OrderID"]);
         return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]-($orderLine["Quantity"]*$product["Price"]));
     }
 

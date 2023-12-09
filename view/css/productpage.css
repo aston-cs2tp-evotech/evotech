@@ -77,6 +77,9 @@ main {
 
 .product-image img {
     width: 100%;
+    height: auto;
+    max-width: 300px;
+
     border-radius: 8px;
 }
 
