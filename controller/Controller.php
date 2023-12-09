@@ -398,6 +398,88 @@ function GetAllStockedByCategory($category) {
     }
 }
 
+/**
+ * --INTERNAL USE ONLY-- Removes the product from the array by PID
+ * @param array $products The products array
+ * @param int $productID The ID of the product to remove
+ * @return string Empty if success, otherwise indicates failure
+ */
+function RemoveProductFromArrayByID(&$products, $productID) {
+    $oldProducts = $products;
+    //remove product from similar products
+    for ($i=0; $i<count($oldProducts); $i++) {
+        if ($oldProducts[$i]["ProductID"] == $productID) {
+            unset($oldProducts[$i]);
+        }
+    }
+    
+    //fixing array key values so it cant generate a null
+    $simProducts = array();
+    foreach ($oldProducts as $product) {
+        array_push($simProducts, $product);
+    }
+
+    //check array
+    if (empty($simProducts)) {
+        return "No products left in category";
+    }
+
+    $products = $simProducts;
+    return "";
+}
+/**
+ * Gets 3 random products of the same category
+ * @param int $productID The ID of the product
+ * @return array|string Array with 3 products if success, otherwise indicates failure
+ */
+function GetRecommendedProducts($productID) {
+    global $Product;
+    //ID check
+    if (!CheckExists($productID)) {
+        return "Invalid productID";
+    }
+    
+    //fetch product
+    $product = $Product->getProductByID($productID);
+    if (!CheckExists($product)) {
+        return "Database Error";
+    }
+
+    //get product category
+    $err = AddCategoryToProduct($product);
+    if (!empty($err)) {
+        return $err;
+    }
+
+    //gets similar product
+    $products = GetAllStockedByCategory($product["Category"]);
+    if (gettype($products) == "string") {
+        return $products;
+    }
+
+    //removes current product from array
+    $err1 = RemoveProductFromArrayByID($products, $productID);
+    if (!empty($err1)) {
+        return $err1;
+    }
+
+    //choose 3 randomly
+    $returnProds = array();
+    for ($i=0; $i<3; $i++) {
+        array_push($returnProds, $products[random_int(0, count($products)-1)]);
+        $err2 = RemoveProductFromArrayByID($products, $returnProds[$i]["ProductID"]);
+        if (!empty($err2)) {
+            return $err2 . " when selecting recommended products";
+        }
+    }
+    if (empty($returnProds)) {
+        return "Failed selecting recommended products";
+    }
+
+    return $returnProds;
+
+}
+
 // ---------------------------------------------
 //
 // FUNCTIONS RELATING TO ORDERS 
