@@ -34,7 +34,6 @@ if (isset($userInfo["Username"])) {
     <main>
         <div class="product-box">
             <div class="product-image">
-
                 <img src="https://m.media-amazon.com/images/I/81zk6Sq8hbL.jpg" alt="Product Image">
             </div>
 
@@ -44,20 +43,19 @@ if (isset($userInfo["Username"])) {
 
                 <div class="product-description">
                     <h3>Description</h3>
-                    <p><?php echo $productDetails['Description']; ?><</p>
+                    <p><?php echo $productDetails['Description']; ?></p>
                 </div>
-                <div class="add-to-basket <?php echo isset($_SESSION['uid']) ? '' : 'disabled'; ?>">
-                <?php if (isset($_SESSION['uid'])): ?>
-                    <!-- Enable the box and allow adding to basket -->
-                    Add to Basket
-                <?php else: ?>
-                    <!-- Disable the box and prompt user to log in -->
-                    Please log in to add to basket
-                <?php endif; ?>
-            </div>
-                
-            </div>
-        </div>
+
+                <form action="/add-to-basket" method="post" class="mt-3">
+                    <input type="hidden" name="productID" value="<?php echo $productDetails['ProductID']; ?>">
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" name="quantity" value="1" min="1" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['uid']) ? '' : 'disabled'; ?>>
+                        <?php echo isset($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
+                    </button>
+                </form>
             </div>
         </div>
 
