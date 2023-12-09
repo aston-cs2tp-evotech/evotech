@@ -56,16 +56,18 @@ if (isset($userInfo["Username"])) {
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h3 class="card-title"><?php echo $item['ProductName']; ?></h3>
-                                            <p class="card-text">Quantity: <?php echo $item['Quantity']; ?></p>
+                                            <p class="card-text">Price: £<?php echo number_format($item['UnitPrice'], 2); ?></p>
                                             <p class="card-text">Total Stock: <?php echo $item['TotalStock']; ?></p>
-                                            <form>
+                                            <form action="/update-basket?" method="post">
+                                                <input type="hidden" name="productID" value="<?php echo $item['ProductID']; ?>">
                                                 <div class="form-group">
                                                     <label for="quantity">Quantity</label>
-                                                    <input type="number" class="form-control" name="quantity" value="<?php echo $item['Quantity']; ?>" min="1" max="<?php echo $item['TotalStock']; ?>" required />
+                                                    <input type="number" class="form-control" name="quantity" value="<?php echo $item['Quantity']; ?>" min="0" max="<?php echo $item['TotalStock']; ?>" required />
                                                 </div>
                                                 <button type="button" class="btn btn-danger">Delete</button>
                                                 <input type="submit" class="btn btn-primary" value="Update">
                                             </form>
+                                            <h5 class="card-text">Subtotal: £<?php echo number_format($item['UnitPrice'] * $item['Quantity'], 2); ?></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -95,7 +97,26 @@ if (isset($userInfo["Username"])) {
 
         <!-- Link to Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get all delete buttons
+                var deleteButtons = document.querySelectorAll('.btn-danger');
 
+                // Attach click event listener to each delete button
+                deleteButtons.forEach(function (button) {
+                    button.addEventListener('click', function (event) {
+                        // Find the associated quantity input in the same form
+                        var quantityInput = event.currentTarget.closest('.card-body').querySelector('[name="quantity"]');
+
+                        // Set the quantity to 0
+                        if (quantityInput) {
+                            quantityInput.value = 0;
+                        }
+
+                    });
+                });
+            });
+        </script>
     </body>
 
 </html>
