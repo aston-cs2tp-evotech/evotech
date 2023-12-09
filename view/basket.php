@@ -12,7 +12,6 @@ if (isset($_SESSION["uid"])) {
 if (isset($userInfo["Username"])) {
     $username = $userInfo["Username"];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,24 +40,25 @@ if (isset($userInfo["Username"])) {
 
                     <?php
                     $totalAmount = 0;
-
+                    $totalPrice = 0;
                     // Get basket items using the GetCustomerBasket function
                     $basketItems = GetCustomerBasket($totalAmount);
 
                     if ($basketItems) {
                         foreach ($basketItems as $item) :
+                            $totalPrice += $item['UnitPrice'] * $item['Quantity'];
                     ?>
                             <div class="card mb-3">
                                 <div class="row no-gutters">
                                     <div class="col-md-4">
-                                        <img src="<?php echo $item['ProductID']; ?>" class="card-img" alt="Product image">
+                                        <img src="/view/images/products/<?php echo $item['ProductID'];?>/<?php echo $item["MainImage"]?>" class="card-img" alt="Product image">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h3 class="card-title"><?php echo $item['ProductName']; ?></h3>
                                             <p class="card-text">Price: £<?php echo number_format($item['UnitPrice'], 2); ?></p>
                                             <p class="card-text">Total Stock: <?php echo $item['TotalStock']; ?></p>
-                                            <form action="/update-basket?" method="post">
+                                            <form action="/update-basket" method="post">
                                                 <input type="hidden" name="productID" value="<?php echo $item['ProductID']; ?>">
                                                 <div class="form-group">
                                                     <label for="quantity">Quantity</label>
@@ -80,7 +80,7 @@ if (isset($userInfo["Username"])) {
                     <div class="card mt-4">
                         <div class="card-body">
                             <h3 class="card-title">Subtotal</h3>
-                            <h2 class="card-text">Total: £<?php echo number_format($totalAmount, 2); ?></h2>
+                            <h2 class="card-text">Total: £<?php echo number_format($totalPrice, 2); ?></h2>
                             <a href="checkout" class="btn btn-success btn-block">Go to checkout</a>
                             <a href="products" class="btn btn-secondary btn-block">Return to products</a>
                         </div>

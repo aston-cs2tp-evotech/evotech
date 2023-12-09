@@ -34,7 +34,7 @@ if (isset($userInfo["Username"])) {
     <main>
         <div class="product-box">
             <div class="product-image">
-                <img src="https://m.media-amazon.com/images/I/81zk6Sq8hbL.jpg" alt="Product Image">
+                <img src="/view/images/products/<?php echo $productDetails['ProductID'];?>/<?php echo $productDetails["MainImage"]?>">
             </div>
 
             <div class="product-details">
