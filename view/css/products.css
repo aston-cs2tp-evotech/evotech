@@ -1,0 +1,31 @@
+/* products.css */
+
+/* Style for the product cards */
+.card {
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the product images */
+  .card-img {
+    max-height: 200px; /* Adjust the value based on your preference */
+    max-width: 400px;
+    object-fit: scale-down;
+    width: auto;
+  }
+  
+  /* Center the product title in the card */
+  .card-title {
+    text-align: center;
+  }
+  
+  /* Style for the product description */
+  .card-text {
+    margin-bottom: 10px;
+  }
+  
+  /* Style for the "Product Page" button */
+  .btn-primary {
+    display: block;
+    margin: 0 auto;
+  }
+  
