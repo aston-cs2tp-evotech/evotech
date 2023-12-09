@@ -200,7 +200,7 @@ function LogOut() {
  * @param string $mainImage The variable that will store the main image
  * @param array $otherImages The array to store all other images
  */
-function SortProductImages($images, $mainImage, $otherImages) {
+function SortProductImages($images, &$mainImage, &$otherImages) {
     $main = "";
     $other = array();
     foreach ($images as $image) {
@@ -215,7 +215,7 @@ function SortProductImages($images, $mainImage, $otherImages) {
  * Adds the images to the product array
  * @param array $product The product array
  */
-function AddProductImagesToProduct($product) {
+function AddProductImagesToProduct(&$product) {
     global $Product;
     $images = $Product->getProductImages($product["ProductID"]);
     if (!$images) return false;
