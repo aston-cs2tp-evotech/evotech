@@ -82,23 +82,37 @@ main {
 
     border-radius: 8px;
 }
+.recommendation-section {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: #333; /* Set background color to grey */
+    padding: 20px; /* Add padding to create a grey gap */
+}
 
-/* Recommended Products */
+.recommendation-section h2 {
+    font-style: italic;
+    font-size: 36px;
+    color: #ffffff;
+    margin-bottom: 30px;
+}
+
 .recommended-products {
+    background-color: #333;
     display: flex;
     width: 100%;
+    margin-top: -10px;
 }
 
 .recommended-products .product-box {
     flex: 1;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .recommended-products .product-box:last-child {
-    margin-right: 0; 
+    margin-right: 0;
 }
 
 .recommended-products .product-box img {
@@ -106,10 +120,13 @@ main {
     border-radius: 8px;
 }
 
-.recommended-products .product-details h2 {
+.recommended-products .product-details h6 {
     color: #333;
-    margin-top: 10px;
+    margin-top: 0px;
 }
+
+
+
 footer {
     background-color: #323131;
     color: #fff;

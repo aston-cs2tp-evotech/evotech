@@ -60,39 +60,40 @@ if (isset($userInfo["Username"])) {
         </div>
 
 
+      
+        <div class="recommendation-section">
+    <h2>Recommended Products</h2>
 
-        <div class="recommended-products">
-            <div class="product-box">
-                <div class="product-image">
-                    <img src="recommended_product1.jpg" alt="Recommended Product 1">
-                </div>
-
-                <div class="product-details">
-                    <h2>Recommended Product 1</h2>
-                </div>
+    <div class="recommended-products">
+        <div class="product-box">
+            <div class="product-image">
+                <img src="recommended_product1.jpg" alt="Recommended Product 1">
             </div>
-
-            <div class="product-box">
-                <div class="product-image">
-                    <img src="recommended_product2.jpg" alt="Recommended Product 2">
-                </div>
-
-                <div class="product-details">
-                    <h2>Recommended Product 2</h2>
-                </div>
-            </div>
-
-            <div class="product-box">
-                <div class="product-image">
-                    <img src="recommended_product3.jpg" alt="Recommended Product 3">
-                </div>
-
-                <div class="product-details">
-                    <h2>Recommended Product 3</h2>
-                </div>
+            <div class="product-details">
+                <h6>name</h6>
             </div>
         </div>
-    </main>
+
+        <div class="product-box">
+            <div class="product-image">
+                <img src="recommended_product2.jpg" alt="Recommended Product 2">
+            </div>
+            <div class="product-details">
+                <h6>name</h6>
+            </div>
+        </div>
+
+        <div class="product-box">
+            <div class="product-image">
+                <img src="recommended_product3.jpg" alt="Recommended Product 3">
+            </div>
+            <div class="product-details">
+                <h6>name</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 <footer>
