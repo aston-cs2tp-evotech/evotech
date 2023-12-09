@@ -1,18 +1,5 @@
-p {
-    font-family: "arial";
-    text-align: left;
-}
-
-h3, input, button {
-    float: left;
-}
-
-a {
-    font-family: "arial";
-}
-
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Arial", Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f8f8f8;
@@ -26,11 +13,66 @@ header {
 }
 
 .container {
-    max-width: 400px;
+    max-width: 800px; /* Adjusted max-width for better responsiveness */
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
+}
+
+h2 {
+    color: #333;
+}
+
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+.card-text {
+    margin-bottom: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-block {
+    width: 100%;
 }

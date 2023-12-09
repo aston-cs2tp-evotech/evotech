@@ -310,10 +310,9 @@ function GetAllStockedProductsByCategory($category) {
  * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
  * @param int $productID PID of product
  * @param int $quantity Quantity of product
- * @param array $product Array to hold the product being checked
- * @return boolean True if succeeded, otherwise false
+ * @return array|boolean Product if succeeded, otherwise false
  */
-function ProductAndQuantityCheck($productID, $quantity, $product){
+function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
     //check legitimate quantity
     if (!CheckExists($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
@@ -325,7 +324,7 @@ function ProductAndQuantityCheck($productID, $quantity, $product){
     //check product has enough stock
     if ($product["Stock"] < $quantity) return false;
     //passed all checks
-    return true;
+    return $product;
 }
 
 /**
@@ -339,8 +338,8 @@ function AddProductToBasket($productID, $quantity) {
     //check login
     if (!CheckLoggedIn()) return false;
     //init array for product
-    $product = array();
-    if (!ProductAndQuantityCheck($productID, $quantity, $product)) return false;
+    $product = ProductAndQuantityCheck($productID, $quantity);
+    if (!$product) return false;
     //quantity needs additional check to make sure it isnt 0
     if ($quantity === 0) return false;
 
@@ -379,8 +378,8 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     //check login
     if (!CheckLoggedIn()) return false;
     //init array for product
-    $product = array();
-    if (!ProductAndQuantityCheck($productID, $quantity, $product)) return false;
+    $product = ProductAndQuantityCheck($productID, $quantity);
+    if (!$product) return false;
 
     //gets basket to update (also checks ownership)
     $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);

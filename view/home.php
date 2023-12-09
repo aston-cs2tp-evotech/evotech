@@ -11,10 +11,7 @@ if (isset($_SESSION["uid"])) {
 // Check if Username is set in $userInfo and then set $username
 if (isset($userInfo["Username"])) {
     $username = $userInfo["Username"];
-} else {
-    $username = "Guest";
 }
-
 ?>
 
 <!DOCTYPE html>
