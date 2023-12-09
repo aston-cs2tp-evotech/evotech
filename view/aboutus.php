@@ -1,3 +1,18 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
