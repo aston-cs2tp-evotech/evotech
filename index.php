@@ -11,11 +11,21 @@ include __DIR__ . "/model/Customer.php";
 include __DIR__ . "/model/Products.php";
 include __DIR__ . "/model/Orders.php";
 
+// Include the controller
+require __DIR__ . '/controller/Controller.php';
+
 // Initalise $userInfo
 $userInfo = array();
 
-// Include the controller
-require __DIR__ . '/controller/Controller.php';
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+}
+
 
 // Routing
 $request = $_SERVER['REQUEST_URI'];
@@ -58,6 +68,10 @@ switch ($requestPath) {
 
     case '/products':
         handleProductsPageRequest();
+        break;
+
+    case '/add-to-basket':
+        handleAddToBasketRequest();
         break;
 
     case '/checkout':
@@ -188,9 +202,25 @@ function handle404Request() {
 *
 * @return void  
 */
-function handleProductPageRequest(){
+function handleProductPageRequest() {
+    global $Product;
+
+    // Get the product ID from the URL parameter
+    $productID = isset($_GET['productID']) ? intval($_GET['productID']) : 0;
+
+    // Fetch product details based on the product ID
+    $productDetails = GetProductByID($productID);
+
+    // If the product is not found, handle it accordingly (e.g., redirect to 404)
+    if (!$productDetails) {
+        handle404Request();
+        return;
+    }
+
+    // Include the productpage.php view and pass product details
     require __DIR__ . '/view/productpage.php';
 }
+
 
 /**
  * Handle requests to the products page
@@ -200,6 +230,37 @@ function handleProductPageRequest(){
 function handleProductsPageRequest(){
     require __DIR__ . '/view/products.php';
 }
+
+/**
+ * Handle requests to add a product to the basket
+ *
+ * @return void
+ */
+function handleAddToBasketRequest() {
+    // Check if the user is logged in
+    if (!isset($_SESSION['uid'])) {
+        // Redirect to the login page if not logged in
+        header("Location: /login");
+        exit();
+    }
+
+    // Get the product ID and quantity from the POST request
+    $productID = isset($_POST['productID']) ? intval($_POST['productID']) : 0;
+    $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
+
+    // Debug statements
+    echo "User ID: " . $_SESSION['uid'] . "<br>";
+    echo "Product ID: " . $productID . "<br>";
+    echo "Quantity: " . $quantity . "<br>";
+
+    // Add the product to the basket
+    $addToBasketResult = AddProductToBasket($productID, $quantity);
+
+    // Debug statement
+    echo "Add to Basket Result: " . ($addToBasketResult ? "Success" : "Failed") . "<br>";
+
+}
+
 
 /**
 * Handle requests to the basket

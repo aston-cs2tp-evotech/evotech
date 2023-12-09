@@ -1,3 +1,20 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,28 +28,38 @@
 <body>
   <?php include __DIR__ . '/nav.php'?>
     <header>
-        <h1>Product Page</h1>
+        <h1> </h1>
     </header>
 
     <main>
         <div class="product-box">
             <div class="product-image">
-                <img src="product_image.jpg" alt="Product Image">
+                <img src="https://m.media-amazon.com/images/I/81zk6Sq8hbL.jpg" alt="Product Image">
             </div>
 
             <div class="product-details">
-                <h2>Product Name</h2>
-                <p class="product-price">price</p>
-                <p>text</p>
+                <h2><?php echo $productDetails['Name']; ?></h2>
+                <p class="product-price">£<?php echo $productDetails['Price']; ?></p>
 
                 <div class="product-description">
                     <h3>Description</h3>
-                    <p>Additional details about the product go here...</p>
+                    <p><?php echo $productDetails['Description']; ?></p>
                 </div>
 
-                <div class="add-to-basket">Add to Basket</div>
+                <form action="/add-to-basket" method="post" class="mt-3">
+                    <input type="hidden" name="productID" value="<?php echo $productDetails['ProductID']; ?>">
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" name="quantity" value="1" min="1" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['uid']) ? '' : 'disabled'; ?>>
+                        <?php echo isset($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
+                    </button>
+                </form>
             </div>
         </div>
+
+
 
         <div class="recommended-products">
             <div class="product-box">

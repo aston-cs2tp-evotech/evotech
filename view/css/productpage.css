@@ -63,6 +63,13 @@ main {
     background-color: #45a049;
 }
 
+.add-to-basket.disabled {
+    background-color: #dddddd;
+    color: #aaaaaa;
+    cursor: not-allowed;
+}
+
+
 .product-image {
     flex: 1;
     margin-top: 20px;
