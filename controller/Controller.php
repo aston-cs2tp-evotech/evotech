@@ -278,7 +278,7 @@ function GetAllStockedProductsByCategory($category) {
 function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
     //check legitimate quantity
-    if (!CheckExists($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
+    if (!isset($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
     //check PID is int (no SQL injection allowed here sorry)
     if (!CheckExists($productID) || !(gettype($productID) == "integer")) return false;
     //check product is legit
