@@ -383,6 +383,7 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     //check for orderLine deletion
     if ($quantity == 0) {
         if (!$Order->deleteOrderLine($basket["OrderID"], $product["ProductID"])) return false;
+        if (!$Order->getAllOrderLinesByOrderID($basket["OrderID"])) return $Order->deleteOrder($basket["OrderID"]);
         return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]-($orderLine["Quantity"]*$product["Price"]));
     }
 
