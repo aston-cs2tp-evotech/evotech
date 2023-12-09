@@ -31,14 +31,13 @@ if (isset($userInfo["Username"])) {
     <h1></h1>
 </header>
 
-<<!-- ... (previous code) ... -->
 
 <main>
     <div class="container mt-4">
         <div class="row">
             <div class="col-lg-8">
                 <h2>Shipping address for <?php echo $username ?></h2>
-                <form>
+                <form action="/checkoutProcess" method="POST">
                     <div class="form-group">
                         <label for="full_name">Full name</label>
                         <input type="text" class="form-control" name="full_name" required/>
@@ -86,6 +85,7 @@ if (isset($userInfo["Username"])) {
                 $basketItems = GetCustomerBasket($totalAmount);
 
                 foreach ($basketItems as $item) :
+                    $totalAmount += $item["UnitPrice"] * $item["Quantity"];
                 ?>
 
                     <div class="card mb-3">

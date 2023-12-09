@@ -81,6 +81,18 @@ switch ($requestPath) {
     case '/checkout':
         handleCheckoutPageRequest();
         break;
+
+    case '/checkoutProcess':
+        handleCheckoutProcessRequest();
+        break;
+
+    case '/orderSuccess':
+        require __DIR__ . '/view/orderConfirmation.php';
+        break;
+    
+    case '/orderFailed':
+        require __DIR__ . '/view/orderFailed.php';
+        break;
     
     default:
         handle404Request();
@@ -332,4 +344,23 @@ function handleCheckoutPageRequest(){
     }
 }
 
+/** 
+ * Handle requests to the checkout process
+ * 
+ * @return void
+ */
+function handleCheckoutProcessRequest(){
+
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    }
+
+    $hasCheckedOut = CheckoutBasket();
+
+    if (!$hasCheckedOut) {
+        header("Location:/orderFailed");
+    } else {
+        header("Location:/orderSuccess");
+    }
+}
 ?>
