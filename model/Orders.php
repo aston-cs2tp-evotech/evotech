@@ -122,15 +122,16 @@ class OrdersModel {
      * @return int|null The OrderID or null if failed to create.
      */
      public function createOrder($orderDetails) {
-        $insertQuery = "INSERT INTO 'Orders' (
-                        'CustomerID',
-                        'TotalAmount',
-                        'OrderStatusID'
-                    ) VALUES (
-                        :customerID,
-                        :totalAmount,
-                        :orderStatusID
-                    )";
+        $insertQuery = "INSERT INTO `Orders` (
+                            `CustomerID`,
+                            `TotalAmount`,
+                            `OrderStatusID`
+                        ) VALUES (
+                            :customerID,
+                            :totalAmount,
+                            :orderStatusID
+                        )";
+
         $insertStatement = $this->database->prepare($insertQuery);
         $insertStatement->bindParam(':customerID', $orderDetails['customerID'], PDO::PARAM_INT);
         $insertStatement->bindParam(':totalAmount', $orderDetails['totalAmount'], PDO::PARAM_STR);
@@ -191,15 +192,16 @@ class OrdersModel {
      * @return int|null The ID of the newly created OrderLine or null if failed to create.
      */
     public function createOrderLine($orderLineDetails) {
-        $insertQuery = "INSERT INTO 'OrderLines' (
-                        'OrderID',
-                        'ProductID',
-                        'Quantity',
-                    ) VALUES (
-                        :orderID,
-                        :productID,
-                        :quantity,
-                    )";
+        $insertQuery = "INSERT INTO `OrderLines` (
+                            `OrderID`,
+                            `ProductID`,
+                            `Quantity`
+                        ) VALUES (
+                            :orderID,
+                            :productID,
+                            :quantity
+                        )";
+
         $insertStatement = $this->database->prepare($insertQuery);
         $insertStatement->bindParam(':orderID', $orderLineDetails['orderID'], PDO::PARAM_INT);
         $insertStatement->bindParam(':productID', $orderLineDetails['productID'], PDO::PARAM_INT);
@@ -283,11 +285,12 @@ class OrdersModel {
      * @return int|null The ID of the newly created OrderStatus or null if failed to create.
      */
     public function createOrderStatus($orderStatusName) {
-        $insertQuery = "INSERT INTO 'OrderStatus' (
-                        'Name'
-                    ) VALUES (
-                        :orderStatusName
-                    )";
+        $insertQuery = "INSERT INTO `OrderStatus` (
+                            `Name`
+                        ) VALUES (
+                            :orderStatusName
+                        )";
+
         $insertStatement = $this->database->prepare($insertQuery);
         $insertStatement->bindParam(':orderStatusName', $orderStatusName, PDO::PARAM_STR);
         

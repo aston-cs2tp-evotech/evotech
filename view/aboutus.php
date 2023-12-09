@@ -1,14 +1,34 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser(); 
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us</title>
-    <link rel="stylesheet" href="view/css/aboutus.css">
+    <link rel="stylesheet" href="/view/css/aboutus.css">
     
 </head>
 <body>
+  <?php include __DIR__ . '/nav.php'?>
 
+  <section class="bg-success p-5  py-4">
+
+    </section>
+  
     <header>
         <h1>About Us</h1>
     </header>
@@ -62,7 +82,7 @@
             </div>
           </div>
         <h2>Get In Touch</h2>
-        <p>If you have any questions or concerns, <a href="contact">contact us</a>. Evotech is for Everyone.</p>
+        <p>If you have any questions or concerns, <a href="contactpage">contact us</a>. Evotech is for Everyone.</p>
     </div>
 
 </body>

@@ -1,72 +1,121 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+global $userInfo;
+if (isset($_SESSION["uid"])) {
+    ReLogInUser();
+}
+
+// Check if Username is set in $userInfo and then set $username
+if (isset($userInfo["Username"])) {
+    $username = $userInfo["Username"];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Checkout</title>
-        <link rel="stylesheet" type="text/css" href="view/css/login_register_checkout.css"/>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout.css"/>
+</head>
 
-    <body>
+<body>
+<?php include __DIR__ . '/nav.php'?>
+<header class="bg-dark text-white text-center py-4">
+    <h1></h1>
+</header>
 
-        <header>
-            <h1>Checkout</h1>
-        </header>
+<<!-- ... (previous code) ... -->
 
-        <main>
+<main>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Shipping address for <?php echo $username ?></h2>
+                <form>
+                    <div class="form-group">
+                        <label for="full_name">Full name</label>
+                        <input type="text" class="form-control" name="full_name" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="Full_address">Full address</label>
+                        <textarea name="customer_address" placeholder="Address" rows="6" required><?php echo $userInfo["CustomerAddress"]; ?></textarea>
+                    </div>
 
-        <div class="container">
-        
-        <h2>Shipping address</h2>
+                    <h2>Card details</h2>
+                    <div class="form-group">
+                        <label for="card_number">Card number</label>
+                        <input type="text" class="form-control" name="card_number" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="name_card">Name on card</label>
+                        <input type="text" class="form-control" name="name_card" required/>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="expiration_month">Expiration Month</label>
+                            <input type="number" class="form-control" name="expiration_month" min="1" max="12" required/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="expiration_year">Expiration Year</label>
+                            <input type="number" class="form-control" name="expiration_year" min="2023" max="2043" required/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="security_code">Security code</label>
+                        <input type="text" class="form-control" name="security_code" required/>
+                    </div>
 
-            <form>
-                <p><b>Full name</b></p>
-                <input type="text" name="full_name" required/>
-                <br>
-                <p><b>Address line 1</b></p>
-                <input type="text" name="address_1" required/>
-                <br>
-                <p><b>Address line 2</b></p>
-                <input type="text" name="address_2"/>
-                <br>
-                <p><b>Town/city</b></p>
-                <input type="text" name="town_city" required/>
-                <br>
-                <p><b>County</b></p>
-                <input type="text" name="county"/>
-                <br>
-                <p><b>Country/region</b></p>
-                <input type="text" name="country" required/>
-            <br>
-
-        <h2>Card details</h2>
-
-                <p><b>Card number</b></p>
-                <input type="text" name="card_number" required/>
-                <br>
-                <p><b>Name on card</b></p>
-                <input type="text" name="name_card" required/>
-                <br>
-                <p><b>Expiration date</b></p>
-                <p>Month</p>
-                <input type="number" name="expiration_month" min="1" max="12" required/>
-                <br>
-                <p>Year</p>
-                <input type="number" name="expiration_year" min="2023" max="2043" required/>
-                <br>
-                <p><b>Security code</b></p>
-                <input type="text" name="security_code" required/>
-            <br>
-            <br>
-            <br>
-                <input type="submit" value="Check out"/>
-            <br>
-            </form>
-
+                    <input type="submit" class="btn btn-primary mt-3" value="Check out"/>
+                </form>
             </div>
 
-        </main>
+            <div class="col-lg-4">
+                <h2>Your Basket</h2>
+                
+                <?php
+                $totalAmount = 0;
 
-    </body>
-    
+                // Get basket items using the GetCustomerBasket function
+                $basketItems = GetCustomerBasket($totalAmount);
+
+                foreach ($basketItems as $item) :
+                ?>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title"><?php echo $item['ProductName']; ?></h4>
+                            <p class="card-text">Quantity: <?php echo $item['Quantity']; ?></p>
+                            <p class="card-text">Price: £<?php echo $item['UnitPrice']; ?></p>
+                            <h5 class="card-text">Subtotal: £<?php echo $item['UnitPrice'] * $item['Quantity']; ?></h5>
+                        </div>
+                    </div>
+
+                <?php endforeach; ?>
+
+
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3 class="card-title">Subtotal</h3>
+                        <h2 class="card-text">£<?php echo $totalAmount; ?></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<!-- Link to Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+
 </html>

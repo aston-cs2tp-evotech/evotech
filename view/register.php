@@ -17,11 +17,15 @@ if (isset($_SESSION['uid'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register</title>
-        <link rel="stylesheet" type="text/css" href="view/css/login_register_checkout.css"/>
+        <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout.css"/>
 
     </head>
     <body>
+    <?php include __DIR__ . '/nav.php'?>
 
+    <section class="bg-success p-5  py-4">
+
+    </section>
         <header>
             <h1>Register</h1>
         </header>
@@ -35,7 +39,7 @@ if (isset($_SESSION['uid'])) {
             <?php
             // Check if there are any errors to display
             if (isset($registrationResult) && $registrationResult !== "") {
-                echo "<p class='error'>$registrationResult</p>";
+                echo "<div class='alert alert-danger'>$registrationResult</div>";
             }
             ?>
 
@@ -58,7 +62,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
             <br>
-                <input type="submit" value="Register"/>
+                <input class="btn btn-success" type="submit" value="Register"/>
             <br>
             </form>
 
