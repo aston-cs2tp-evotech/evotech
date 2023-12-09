@@ -257,7 +257,9 @@ function GetAllProducts() {
     global $Product;
     $products = $Product->getAllProducts();
     if (!$products) return false;
-    foreach ($products as $product) AddProductImagesToProduct($product);
+    foreach ($products as &$product) {
+        AddProductImagesToProduct($product);
+    }
     return $products;
 }
 
