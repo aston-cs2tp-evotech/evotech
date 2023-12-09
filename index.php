@@ -317,7 +317,19 @@ function handleBasketPageRequest(){
  * @return void
  */
 function handleCheckoutPageRequest(){
-    require __DIR__ . '/view/checkout.php';
+    // Check if the user is logged in and if there are any items in the basket
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    }
+    $totalAmount = 0;
+
+    $basketItems = GetCustomerBasket($totalAmount);
+
+    if (!$basketItems) {
+        header("Location:/");
+    } else {
+        require __DIR__ . '/view/checkout.php';
+    }
 }
 
 ?>
