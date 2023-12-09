@@ -238,13 +238,21 @@ function GetProductByID($productID) {
 /**
  * --INTERNAL USE ONLY-- Filters array to only have stocked products
  * @param array $products Array of products to filter (will overwrite)
- * @return boolean True if success, otherwise false
+ * @return string|boolean True if success, otherwise a string for failure
  */
-function FilterStockedProducts($products) {
-    if (!$products) return false;
+function FilterStockedProducts(&$products) {
+    if (!$products) {
+        return "No products to check";
+    }
     $stockedProducts = array();
-    foreach ($products as $product) if ($product["Stock"] > 0) array_push($stockedProducts, $product);
-    if (!$stockedProducts) return false;
+    foreach ($products as $product) {
+        if ($product["Stock"] > 0) {
+            array_push($stockedProducts, $product);
+        }
+    }
+    if (!$stockedProducts) {
+        return "No products have stock";
+    }
     $products = $stockedProducts;
     return true;
 }
@@ -274,31 +282,51 @@ function GetAllStockedProducts() {
 }
 
 /**
- * --CURRENTLY DOES NOTHING-- Gets all products by category, regardless of stock
+ * Gets all products by category, regardless of stock
  * @param string $category Category of the product (component, accessory etc.)
- * @return array|boolean 2d array if succeeded, otherwise false
+ * @return array|string 2d array if succeeded, otherwise a string where it failed
  */
-function GetAllProductsByCategory($category){
+function GetAllByCategory($category){
     global $Product;
-    //currently isn't implemented in db so this will just never return an array in the mean time
-    $categories = array("");
-    if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) return false;
-    //add category support later
-    $products = array();
-    if (!$products) return false;
-    foreach ($products as $product) AddProductImagesToProduct($product);
-    return false;
+    //Input validation
+    $categories = array("Components", "CPUs", "Graphics Cards", "Cases", "Storage", "Memory");
+    if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) {
+        return "Invalid Category";
+    }
+    
+    //get products
+    $products = GetAllProducts();
+    if (!$products) {
+        return "Error getting products";
+    }
+
+    //filter products
+    $filterProducts = array();
+    foreach ($products as $product) {
+        if ($product["Category"] == $category) {
+            array_push($filterProducts, $product);
+        }
+    }
+    if (empty($filterProducts)) {
+        return "No products in category";
+    }
+    return $filterProducts;
 }
 
 /**
  * --CURRENTLY DOES NOTHING-- Gets all products by category where stock > 0
  * @param string $category Category of the product (component, accessory etc)
- * @return array|boolean 2d array if succeeded, otherwise false
+ * @return array|string 2d array if succeeded, otherwise string for failure
  */
-function GetAllStockedProductsByCategory($category) {
-    $products = GetAllProductsByCategory($category);
-    if (!FilterStockedProducts($products)) return false;
-    else return $products;
+function GetAllStockedByCategory($category) {
+    $products = GetAllByCategory($category);
+    $err = FilterStockedProducts($products);
+    if (!$err) { 
+        return $err;
+    }
+    else {
+        return $products;
+    }
 }
 
 // ---------------------------------------------
