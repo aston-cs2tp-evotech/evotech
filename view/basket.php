@@ -113,6 +113,7 @@ if (isset($userInfo["Username"])) {
                             quantityInput.value = 0;
                         }
 
+                        event.currentTarget.closest('form').submit();
                     });
                 });
             });
