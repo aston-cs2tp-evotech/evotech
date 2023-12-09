@@ -282,6 +282,69 @@ function GetAllStockedProducts() {
 }
 
 /**
+ * Adds a category to the product via it's categoryID
+ * @param array $product The product
+ * @return string Empty if success, otherwise indicates failure 
+ */
+function AddCategoryToProduct(&$product) {
+    global $Product;
+
+    //get categoryID
+    $categories = $Product->getCategories();
+    if (!$categories) {
+        return "Database Error";
+    }
+
+    //iterate through categories to find correct one
+    foreach ($categories as $category) {
+        if ($product["CategoryID"] == $category["CategoryID"]) {
+            $product["Category"] = $category["CategoryName"];
+        }
+    }
+
+    //check it has category
+    if (empty($product["Category"])) {
+        return "Product has no category";
+    }
+
+    return "";
+}
+
+/**
+ * Adds categories to the products
+ * @param array $products The products array
+ * @return string Empty if success, otherwise indicates failure
+ */
+function AddCategoriesToProducts(&$products) {
+    global $Product;
+    
+    //get categoryID
+    $categories = $Product->getCategories();
+    if (!$categories) {
+        return "Database Error";
+    }
+
+    //iterate through products to add category
+    foreach ($products as &$product) {
+        foreach ($categories as $category) {
+            if ($product["CategoryID"] == $category["CategoryID"]) {
+                $product["Category"] = $category["CategoryName"];
+            }
+        }
+    }
+
+    //check all products have a category
+    foreach ($products as $product) {
+        if (empty($product["Category"])) {
+            return $product["Name"] . " has no category associated with it";
+        }
+    }
+
+    return "";
+
+}
+
+/**
  * Gets all products by category, regardless of stock
  * @param string $category Category of the product (component, accessory etc.)
  * @return array|string 2d array if succeeded, otherwise a string where it failed
@@ -300,6 +363,12 @@ function GetAllByCategory($category){
         return "Error getting products";
     }
 
+    //add categories
+    $err = AddCategoriesToProducts($products);
+    if (!empty($err)) {
+        return $err;
+    }
+
     //filter products
     $filterProducts = array();
     foreach ($products as $product) {
@@ -314,7 +383,7 @@ function GetAllByCategory($category){
 }
 
 /**
- * --CURRENTLY DOES NOTHING-- Gets all products by category where stock > 0
+ * Gets all products by category where stock > 0
  * @param string $category Category of the product (component, accessory etc)
  * @return array|string 2d array if succeeded, otherwise string for failure
  */
