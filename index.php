@@ -248,16 +248,18 @@ function handleAddToBasketRequest() {
     $productID = isset($_POST['productID']) ? intval($_POST['productID']) : 0;
     $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
 
-    // Debug statements
-    echo "User ID: " . $_SESSION['uid'] . "<br>";
-    echo "Product ID: " . $productID . "<br>";
-    echo "Quantity: " . $quantity . "<br>";
-
     // Add the product to the basket
     $addToBasketResult = AddProductToBasket($productID, $quantity);
 
-    // Debug statement
-    echo "Add to Basket Result: " . ($addToBasketResult ? "Success" : "Failed") . "<br>";
+    // Redirect to the basket page if the product was added successfully
+    if ($addToBasketResult) {
+        header("Location: /basket");
+        exit();
+    } else {
+        // Redirect to the product page with an error message if the product could not be added
+        header("Location: /basket");
+        exit();
+    }
 
 }
 
