@@ -421,7 +421,7 @@ function RemoveProductFromArrayByID(&$products, $productID) {
 
     //check array
     if (empty($simProducts)) {
-        return "No products left in category";
+        return "No products left in array";
     }
 
     $products = $simProducts;
