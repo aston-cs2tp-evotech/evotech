@@ -52,38 +52,6 @@ button {
     cursor: pointer;
 }
 
-/* Star Rating Styles */
-.rating {
-    display: inline-block;
-}
-
-.rating input {
-    display: none;
-}
-
-.rating label {
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    margin: 0 2px;
-    font-size: 20px;
-    text-align: center;
-    line-height: 30px;
-}
-
-.rating label:hover,
-.rating label:hover ~ label {
-    color: #ffcc00;
-}
-
-.rating input:checked ~ label {
-    color: #ffcc00;
-}
-
-.rating input:checked label:hover,
-.rating input:checked label:hover ~ label {
-    color: #ffcc00;
-}
 
 .customer-reviews-section {
     text-align: center;
