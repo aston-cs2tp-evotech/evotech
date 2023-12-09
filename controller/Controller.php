@@ -470,10 +470,9 @@ function CheckoutBasket() {
     global $Order;
     if (!CheckLoggedIn()) return false;
     //fetch basket
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
     if (!$basket) return false;
 
-    //passed all checks, updating status
     return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
 }
 
