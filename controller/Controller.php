@@ -195,6 +195,33 @@ function LogOut() {
 // ---------------------------------------------
 
 /**
+ * Sorts through the images of a product and finds the main one
+ * @param array $images The productImages as an array
+ * @param string $mainImage The variable that will store the main image
+ * @param array $otherImages The array to store all other images
+ */
+function SortProductImages($images, &$mainImage, &$otherImages) {
+    $main = "";
+    $other = array();
+    foreach ($images as $image) {
+        if ($image["MainImage"]) $main = $image["FileName"]; 
+        else array_push($other, $image["FileName"]);
+    }
+    $mainImage = $main;
+    $otherImages = $other;
+}
+
+/**
+ * Adds the images to the product array
+ * @param array $product The product array
+ */
+function AddProductImagesToProduct(&$product) {
+    global $Product;
+    $images = $Product->getProductImages($product["ProductID"]);
+    if (!$images) return false;
+    SortProductImages($images, $product["MainImage"], $product["OtherProductImages"]);
+}
+/**
  * Gets product from the database, regardless of stock
  * @param int $productID ID of the product
  * @return array|boolean Array with product details if success, otherwise false
@@ -202,7 +229,10 @@ function LogOut() {
 function GetProductByID($productID) {
     global $Product;
     if (!checkExists($productID) || !(gettype($productID) == "integer")) return false;
-    return $Product->getProductByID($productID);
+    $prod = $Product->getProductByID($productID);
+    if (!$prod) return false;
+    AddProductImagesToProduct($prod);
+    return $prod;
 }
 
 /**
@@ -225,7 +255,10 @@ function FilterStockedProducts($products) {
  */
 function GetAllProducts() {
     global $Product;
-    return $Product->getAllProducts();
+    $products = $Product->getAllProducts();
+    if (!$products) return false;
+    foreach ($products as $product) AddProductImagesToProduct($product);
+    return $products;
 }
 
 /**
@@ -248,6 +281,10 @@ function GetAllProductsByCategory($category){
     //currently isn't implemented in db so this will just never return an array in the mean time
     $categories = array("");
     if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) return false;
+    //add category support later
+    $products = array();
+    if (!$products) return false;
+    foreach ($products as $product) AddProductImagesToProduct($product);
     return false;
 }
 
@@ -423,6 +460,7 @@ function FormatOrderLines($orderLines, &$basket) {
         if (!$product) {
             return false;
         }
+        AddProductImagesToProduct($product);
 
         $basket[$index]["ProductID"] = $product["ProductID"];
         $basket[$index]["ProductName"] = $product["Name"];
@@ -430,6 +468,8 @@ function FormatOrderLines($orderLines, &$basket) {
         $basket[$index]["TotalStock"] = $product["Stock"];
         $basket[$index]["UnitPrice"] = $product["Price"];
         $basket[$index]["TotalPrice"] = $basket[$index]["UnitPrice"] * $basket[$index]["Quantity"];
+        $basket[$index]["MainImage"] = $product["MainImage"];
+        $basket[$index]["OtherProductImages"] = $product["OtherProductImages"];
     }
 
     return true;
