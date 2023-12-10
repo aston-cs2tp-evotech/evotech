@@ -35,20 +35,35 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
     <?php include __DIR__ . '/nav.php' ?>
     <header class="bg-dark text-white text-center py-4">
         <h1><br>Welcome, <?php echo $username; ?>!</h1>
+        <h4>Not <?php echo $username; ?>? <a href="/logout">Log Out</a></h4>
     </header>
 
     <main class="container mt-4">
         <div class="row">
             <div class="col-lg-6">
+
+        
                 <h2>Customer Details</h2>
                 <p><strong>Username:</strong> <?php echo $userInfo["Username"]; ?></p>
                 <p><strong>Email:</strong> <?php echo $userInfo["Email"]; ?></p>
                 <p><strong>Address:</strong> <?php echo $userInfo["CustomerAddress"]; ?></p>
-            </div>
 
+            </div>
+            
             <div class="col-lg-6">
                 <h2>Change Password</h2>
-                <!-- Form to change password -->
+                <!-- Check if passwordChangeResult is set -->
+                <?php if (isset($passwordChangeResult)) : ?>
+                    <?php if ($passwordChangeResult) : ?>
+                        <div class="alert alert-success" role="alert">
+                            Password changed successfully!
+                        </div>
+                    <?php else : ?>
+                        <div class="alert alert-danger" role="alert">
+                            Password change failed!
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
                 <form action="/change-password" method="POST">
                     <div class="form-group">
                         <label for="current_password">Current Password</label>
