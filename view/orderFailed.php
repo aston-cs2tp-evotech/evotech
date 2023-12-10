@@ -23,14 +23,14 @@ if (isset($_SESSION["uid"])) {
 <body>
     <?php include __DIR__ . '/nav.php'?>
     <header class="bg-dark text-white text-center py-4">
-        <h1></h1>
+        <h1>Order Failed</h1>
     </header>
 
     <main>
         <div class="container mt-4">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Order Failed</h2>
+                    <h2>Your order has failed</h2>
                     <p>We're sorry, but there was an issue processing your order. Please try again later or contact customer support.</p>
 
                     <a href="/checkout" class="btn btn-danger">Go Back to Checkout</a>
