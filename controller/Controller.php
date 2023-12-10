@@ -435,57 +435,83 @@ function RemoveProductFromArrayByID(&$products, $productID) {
     return "";
 }
 /**
- * Gets 3 random products of the same category
- * @param int $productID The ID of the product
- * @return array|string Array with 3 products if success, otherwise indicates failure
- */
+* Gets 3 random products, including from other categories if needed
+* @param int $productID The ID of the product
+* @return array|string Array with 3 products if success, otherwise indicates failure
+*/
 function GetRecommendedProducts($productID) {
-    global $Product;
-    //ID check
-    if (!CheckExists($productID)) {
-        return "Invalid productID";
-    }
-    
-    //fetch product
-    $product = $Product->getProductByID($productID);
-    if (!CheckExists($product)) {
-        return "Database Error";
-    }
+   global $Product;
+   
+   // ID check
+   if (!CheckExists($productID)) {
+       return "Invalid productID";
+   }
 
-    //get product category
-    $err = AddCategoryToProduct($product);
-    if (!empty($err)) {
-        return $err;
-    }
+   // Fetch product
+   $product = $Product->getProductByID($productID);
+   if (!CheckExists($product)) {
+       return "Database Error";
+   }
 
-    //gets similar product
-    $products = GetAllStockedByCategory($product["Category"]);
-    if (gettype($products) == "string") {
-        return $products;
-    }
+   // Get product category
+   $err = AddCategoryToProduct($product);
+   if (!empty($err)) {
+       return $err;
+   }
 
-    //removes current product from array
-    $err1 = RemoveProductFromArrayByID($products, $productID);
-    if (!empty($err1)) {
-        return $err1;
-    }
+   // Gets similar products from the same category
+   $products = GetAllStockedByCategory($product["Category"]);
+   if (gettype($products) == "string") {
+       // If not enough products in the same category, fetch from other categories
+       $allCategories = $Product->getCategories();
+       if (!$allCategories) {
+           return "Database Error";
+       }
 
-    //choose 3 randomly
-    $returnProds = array();
-    for ($i=0; $i<3; $i++) {
-        array_push($returnProds, $products[random_int(0, count($products)-1)]);
-        $err2 = RemoveProductFromArrayByID($products, $returnProds[$i]["ProductID"]);
-        if (!empty($err2)) {
-            return $err2 . " when selecting recommended products";
-        }
-    }
-    if (empty($returnProds)) {
-        return "Failed selecting recommended products";
-    }
+       // Remove the current product's category
+       $allCategories = array_filter($allCategories, function ($category) use ($product) {
+           return $category["CategoryID"] !== $product["CategoryID"];
+       });
 
-    return $returnProds;
+       // Choose a random category
+       $randomCategory = $allCategories[array_rand($allCategories)];
 
+       // Get products from the random category
+       $products = GetAllStockedByCategory($randomCategory["CategoryName"]);
+
+       if (gettype($products) == "string") {
+           return $products;
+       }
+   }
+
+   // Choose 3 randomly
+   $returnProds = array();
+   for ($i = 0; $i < 3; $i++) {
+       // Check if $products array is empty
+       if (empty($products)) {
+           return "Not enough products available for recommendations";
+       }
+
+       // Select a random index within the valid range
+       $randomIndex = random_int(0, count($products) - 1);
+
+       // Push the selected product to $returnProds
+       array_push($returnProds, $products[$randomIndex]);
+
+       // Remove the selected product from the array
+       $err2 = RemoveProductFromArrayByID($products, $returnProds[$i]["ProductID"]);
+       if (!empty($err2)) {
+           return $err2 . " when selecting recommended products";
+       }
+   }
+
+   if (empty($returnProds)) {
+       return "Failed selecting recommended products";
+   }
+
+   return $returnProds;
 }
+
 
 // ---------------------------------------------
 //
