@@ -81,6 +81,18 @@ switch ($requestPath) {
     case '/checkout':
         handleCheckoutPageRequest();
         break;
+
+    case '/checkoutProcess':
+        handleCheckoutProcessRequest();
+        break;
+
+    case '/orderSuccess':
+        require __DIR__ . '/view/orderConfirmation.php';
+        break;
+    
+    case '/orderFailed':
+        require __DIR__ . '/view/orderFailed.php';
+        break;
     
     default:
         handle404Request();
@@ -232,6 +244,20 @@ function handleProductPageRequest() {
  * @return void
  */
 function handleProductsPageRequest(){
+   
+    // Check if there is a Category in the URL
+    $categoryName = isset($_GET['category']) ? $_GET['category'] : null;
+
+    global $products;
+    
+    if ($categoryName) {
+        $products = GetAllByCategory($categoryName);
+    }
+
+    if (!is_array($products)) {
+        $products = GetAllProducts();
+    }
+
     require __DIR__ . '/view/products.php';
 }
 
@@ -332,4 +358,23 @@ function handleCheckoutPageRequest(){
     }
 }
 
+/** 
+ * Handle requests to the checkout process
+ * 
+ * @return void
+ */
+function handleCheckoutProcessRequest(){
+
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    }
+
+    $hasCheckedOut = CheckoutBasket();
+
+    if (!$hasCheckedOut) {
+        header("Location:/orderFailed");
+    } else {
+        header("Location:/orderSuccess");
+    }
+}
 ?>

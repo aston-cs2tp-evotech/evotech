@@ -238,13 +238,21 @@ function GetProductByID($productID) {
 /**
  * --INTERNAL USE ONLY-- Filters array to only have stocked products
  * @param array $products Array of products to filter (will overwrite)
- * @return boolean True if success, otherwise false
+ * @return string|boolean True if success, otherwise a string for failure
  */
-function FilterStockedProducts($products) {
-    if (!$products) return false;
+function FilterStockedProducts(&$products) {
+    if (!$products) {
+        return "No products to check";
+    }
     $stockedProducts = array();
-    foreach ($products as $product) if ($product["Stock"] > 0) array_push($stockedProducts, $product);
-    if (!$stockedProducts) return false;
+    foreach ($products as $product) {
+        if ($product["Stock"] > 0) {
+            array_push($stockedProducts, $product);
+        }
+    }
+    if (!$stockedProducts) {
+        return "No products have stock";
+    }
     $products = $stockedProducts;
     return true;
 }
@@ -257,7 +265,9 @@ function GetAllProducts() {
     global $Product;
     $products = $Product->getAllProducts();
     if (!$products) return false;
-    foreach ($products as $product) AddProductImagesToProduct($product);
+    foreach ($products as &$product) {
+        AddProductImagesToProduct($product);
+    }
     return $products;
 }
 
@@ -272,31 +282,208 @@ function GetAllStockedProducts() {
 }
 
 /**
- * --CURRENTLY DOES NOTHING-- Gets all products by category, regardless of stock
- * @param string $category Category of the product (component, accessory etc.)
- * @return array|boolean 2d array if succeeded, otherwise false
+ * Adds a category to the product via it's categoryID
+ * @param array $product The product
+ * @return string Empty if success, otherwise indicates failure 
  */
-function GetAllProductsByCategory($category){
+function AddCategoryToProduct(&$product) {
     global $Product;
-    //currently isn't implemented in db so this will just never return an array in the mean time
-    $categories = array("");
-    if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) return false;
-    //add category support later
-    $products = array();
-    if (!$products) return false;
-    foreach ($products as $product) AddProductImagesToProduct($product);
-    return false;
+
+    //get categoryID
+    $categories = $Product->getCategories();
+    if (!$categories) {
+        return "Database Error";
+    }
+
+    //iterate through categories to find correct one
+    foreach ($categories as $category) {
+        if ($product["CategoryID"] == $category["CategoryID"]) {
+            $product["Category"] = $category["CategoryName"];
+        }
+    }
+
+    //check it has category
+    if (empty($product["Category"])) {
+        return "Product has no category";
+    }
+
+    return "";
 }
 
 /**
- * --CURRENTLY DOES NOTHING-- Gets all products by category where stock > 0
- * @param string $category Category of the product (component, accessory etc)
- * @return array|boolean 2d array if succeeded, otherwise false
+ * Adds categories to the products
+ * @param array $products The products array
+ * @return string Empty if success, otherwise indicates failure
  */
-function GetAllStockedProductsByCategory($category) {
-    $products = GetAllProductsByCategory($category);
-    if (!FilterStockedProducts($products)) return false;
-    else return $products;
+function AddCategoriesToProducts(&$products) {
+    global $Product;
+    
+    //get categoryID
+    $categories = $Product->getCategories();
+    if (!$categories) {
+        return "Database Error";
+    }
+
+    //iterate through products to add category
+    foreach ($products as &$product) {
+        foreach ($categories as $category) {
+            if ($product["CategoryID"] == $category["CategoryID"]) {
+                $product["Category"] = $category["CategoryName"];
+            }
+        }
+    }
+
+    //check all products have a category
+    foreach ($products as $product) {
+        if (empty($product["Category"])) {
+            return $product["Name"] . " has no category associated with it";
+        }
+    }
+
+    return "";
+
+}
+
+/**
+ * Gets all products by category, regardless of stock
+ * @param string $category Category of the product (component, accessory etc.)
+ * @return array|string 2d array if succeeded, otherwise a string where it failed
+ */
+function GetAllByCategory($category){
+    global $Product;
+    //Input validation
+    $categories = array("Components", "CPUs", "Graphics Cards", "Cases", "Storage", "Memory");
+    if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) {
+        return "Invalid Category";
+    }
+    
+    //get products
+    $products = GetAllProducts();
+    if (!$products) {
+        return "Error getting products";
+    }
+
+    //add categories
+    $err = AddCategoriesToProducts($products);
+    if (!empty($err)) {
+        return $err;
+    }
+
+    //filter products
+    $filterProducts = array();
+    foreach ($products as $product) {
+        if ($product["Category"] == $category) {
+            array_push($filterProducts, $product);
+        }
+    }
+    if (empty($filterProducts)) {
+        return "No products in category";
+    }
+
+    //add images
+    foreach ($filterProducts as &$filteredProduct) {
+        AddProductImagesToProduct($filteredProduct);
+    }
+    
+    return $filterProducts;
+}
+
+/**
+ * Gets all products by category where stock > 0
+ * @param string $category Category of the product (component, accessory etc)
+ * @return array|string 2d array if succeeded, otherwise string for failure
+ */
+function GetAllStockedByCategory($category) {
+    $products = GetAllByCategory($category);
+    $err = FilterStockedProducts($products);
+    if (!$err) { 
+        return $err;
+    }
+    else {
+        return $products;
+    }
+}
+
+/**
+ * --INTERNAL USE ONLY-- Removes the product from the array by PID
+ * @param array $products The products array
+ * @param int $productID The ID of the product to remove
+ * @return string Empty if success, otherwise indicates failure
+ */
+function RemoveProductFromArrayByID(&$products, $productID) {
+    $oldProducts = $products;
+    //remove product from similar products
+    for ($i=0; $i<count($oldProducts); $i++) {
+        if ($oldProducts[$i]["ProductID"] == $productID) {
+            unset($oldProducts[$i]);
+        }
+    }
+    
+    //fixing array key values so it cant generate a null
+    $simProducts = array();
+    foreach ($oldProducts as $product) {
+        array_push($simProducts, $product);
+    }
+
+    //check array
+    if (empty($simProducts)) {
+        return "No products left in array";
+    }
+
+    $products = $simProducts;
+    return "";
+}
+/**
+ * Gets 3 random products of the same category
+ * @param int $productID The ID of the product
+ * @return array|string Array with 3 products if success, otherwise indicates failure
+ */
+function GetRecommendedProducts($productID) {
+    global $Product;
+    //ID check
+    if (!CheckExists($productID)) {
+        return "Invalid productID";
+    }
+    
+    //fetch product
+    $product = $Product->getProductByID($productID);
+    if (!CheckExists($product)) {
+        return "Database Error";
+    }
+
+    //get product category
+    $err = AddCategoryToProduct($product);
+    if (!empty($err)) {
+        return $err;
+    }
+
+    //gets similar product
+    $products = GetAllStockedByCategory($product["Category"]);
+    if (gettype($products) == "string") {
+        return $products;
+    }
+
+    //removes current product from array
+    $err1 = RemoveProductFromArrayByID($products, $productID);
+    if (!empty($err1)) {
+        return $err1;
+    }
+
+    //choose 3 randomly
+    $returnProds = array();
+    for ($i=0; $i<3; $i++) {
+        array_push($returnProds, $products[random_int(0, count($products)-1)]);
+        $err2 = RemoveProductFromArrayByID($products, $returnProds[$i]["ProductID"]);
+        if (!empty($err2)) {
+            return $err2 . " when selecting recommended products";
+        }
+    }
+    if (empty($returnProds)) {
+        return "Failed selecting recommended products";
+    }
+
+    return $returnProds;
+
 }
 
 // ---------------------------------------------
@@ -440,10 +627,9 @@ function CheckoutBasket() {
     global $Order;
     if (!CheckLoggedIn()) return false;
     //fetch basket
-    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
+    $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
     if (!$basket) return false;
 
-    //passed all checks, updating status
     return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
 }
 
