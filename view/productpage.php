@@ -66,7 +66,6 @@ $recommendedProducts = GetRecommendedProducts($productDetails["ProductID"]);
       
         <div class="recommendation-section">
             <h2>Recommended Products</h2>
-
             <div class="recommended-products">
                 <?php foreach ($recommendedProducts as $recommendedProduct) : ?>
                     <a href="/product?productID=<?php echo $recommendedProduct['ProductID']; ?>" class="product-link">
