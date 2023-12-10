@@ -13,6 +13,9 @@ if (isset($userInfo["Username"])) {
     $username = $userInfo["Username"];
 }
 
+// Get recommended products
+$recommendedProducts = GetRecommendedProducts($productDetails["ProductID"]);
+
 ?>
 
 <!DOCTYPE html>
@@ -62,43 +65,32 @@ if (isset($userInfo["Username"])) {
 
       
         <div class="recommendation-section">
-    <h2>Recommended Products</h2>
+            <h2>Recommended Products</h2>
 
-    <div class="recommended-products">
-        <div class="product-box">
-            <div class="product-image">
-                <img src="recommended_product1.jpg" alt="Recommended Product 1">
-            </div>
-            <div class="product-details">
-                <h6>name</h6>
+            <div class="recommended-products">
+                <?php foreach ($recommendedProducts as $recommendedProduct) : ?>
+                    <a href="/product?productID=<?php echo $recommendedProduct['ProductID']; ?>" class="product-link">
+                        <div class="product-box">
+                            <div class="product-image">
+                                <img src="/view/images/products/<?php echo $recommendedProduct['ProductID']; ?>/<?php echo $recommendedProduct["MainImage"] ?>" alt="Recommended Product Image">
+                            </div>
+                            <div class="product-details">
+                                <h5><?php echo $recommendedProduct['Name']; ?></h5>
+                                <p class="product-price">£<?php echo $recommendedProduct['Price']; ?></p>
+                            </div>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
 
-        <div class="product-box">
-            <div class="product-image">
-                <img src="recommended_product2.jpg" alt="Recommended Product 2">
-            </div>
-            <div class="product-details">
-                <h6>name</h6>
-            </div>
-        </div>
-
-        <div class="product-box">
-            <div class="product-image">
-                <img src="recommended_product3.jpg" alt="Recommended Product 3">
-            </div>
-            <div class="product-details">
-                <h6>name</h6>
-            </div>
-        </div>
-    </div>
-</div>
+    </main>
 
 
 </body>
 <footer>
-        <div class="footer-content">
-            <p>&copy; 2023 EvoTech</p>
-        </div>
-    </footer>
+    <div class="footer-content">
+        <p>&copy; <?php echo date("Y"); ?> - EvoTech - All Rights Reserved</p>
+    </div>
+</footer>
 </html>
