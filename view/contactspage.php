@@ -67,20 +67,23 @@ if (isset($userInfo["Username"])) {
         <h2>Customer Reviews</h2>
         <div class="customer-reviews">
             <div class="review-box">
-                <img src="customer1.jpg" alt="Customer 1">
-                <p>Great service! very good products and highly recommended.</p>
+                <img src="view/images/MRbean.jpg" alt="Customer 1">
+                <p>Evotech is a tech haven! Their vast selection of computer components meets every need, and the user-friendly interface makes shopping a breeze.</p>
+                <p>MR bean </p>
                 <p>Date: 01/01/2023</p>
             </div>
 
             <div class="review-box">
-                <img src="customer2.jpg" alt="Customer 2">
-                <p>Responsive team and excellent communication. We are satisfied with their work.</p>
-                <p>Date: 15/02/2023</p>
+                <img src="view/images/ksi.jpg" alt="Customer 2">
+                <p>Evotech goes beyond selling; their customer support is stellar. Quick responses, knowledgeable staff, setting a gold standard for customer care.</p>
+                <p>ksi</p>
+                <p>Date: 01/01/2023</p>
             </div>
 
             <div class="review-box">
-                <img src="customer3.jpg" alt="Customer 3">
-                <p>EvoTech went above and beyond our expectations. Will definitely work with them again.</p>
+                <img src="view/images/Danny-Aarons.webp" alt="Customer 3">
+                <p>EvoTech went above and beyond our expectations. Will definitely buy more products off them.</p>
+                <p>Danny Aarons</p>
                 <p>Date: 13/06/2023</p>
             </div>
         </div>

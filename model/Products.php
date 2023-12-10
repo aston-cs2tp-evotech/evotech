@@ -301,22 +301,6 @@ class ProductModel {
             return false;
         }
     }
-
-    /**
-     * Get all categories.
-     * 
-     * @return array|null An array of category details or null if not found.
-     */
-    function getCategories(){
-        $query = 'SELECT * FROM `Categories`';
-        $statement = $this->database->prepare($query);
-        
-        if ($statement->execute()){
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            return null;
-        }
-    }
     
 }
 ?>
