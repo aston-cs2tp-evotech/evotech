@@ -720,8 +720,21 @@ function GetPreviousOrders($totalAmounts) {
     if (!CheckLoggedIn()) return false;
 
     //retrieve orders
-    $orders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("delivered", $_SESSION["uid"]);
-    if (!$orders) return false;
+    $allOrders = $Order->getAllOrdersByCustomerID($_SESSION["uid"]);
+    if (!$allOrders) {
+        return false;
+    }
+
+    //removes basket from orders
+    $orders = array();
+    foreach ($allOrders as $order) {
+        if (!($order["OrderStatusID"] == $Order->getOrderStatusIDByName("basket"))) {
+            array_push($orders, $order);
+        }
+    }
+    if (!$orders) {
+        return false;
+    }
     
     //retrieve all orderlines associated with each order
     $orderLines = array(array());
@@ -733,6 +746,18 @@ function GetPreviousOrders($totalAmounts) {
     //format return value
     $megaBasket = array(array(array()));
     for ($i=0; $i<count($orderLines); $i++) if (!FormatOrderLines($orderLines[$i], $megaBasket[$i])) return false;
+
+    //prepare orderStatuses
+    $orderStats = $Order->getAllOrderStatuses();
+    
+    //add order status to order
+    foreach ($megaBasket as &$basket) {
+        //gets the index of the order by checking the first orderline to fetch order to get orderstatusID
+        $basket["Status"] = $orderStats[$Order->getOrderByID($basket[0]["OrderID"])["OrderStatusID"]];
+        if (empty($basket["Status"])) {
+            return false;
+        }
+    }
 
     //get total amounts for each order
     for ($i=0; $i<count($orders); $i++) $totalAmounts[$i] = $orders[$i]["TotalAmount"];
