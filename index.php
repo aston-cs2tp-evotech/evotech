@@ -93,6 +93,10 @@ switch ($requestPath) {
     case '/orderFailed':
         require __DIR__ . '/view/orderFailed.php';
         break;
+
+    case '/customer':
+        handleCustomerPageRequest();
+        break;
     
     default:
         handle404Request();
@@ -377,4 +381,20 @@ function handleCheckoutProcessRequest(){
         header("Location:/orderSuccess");
     }
 }
+
+/**
+ * Handle requests to the customer page
+ * 
+ * @return void
+ */
+function handleCustomerPageRequest(){
+    // Check if the user is logged in
+    if (!isset($_SESSION['uid'])){
+        header("Location:/");
+    } else {
+        require __DIR__ . '/view/customer.php';
+    }
+}
+
+
 ?>
