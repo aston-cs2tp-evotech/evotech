@@ -32,7 +32,7 @@ if (isset($userInfo["Username"])) {
 <body>
     <?php include __DIR__ . '/nav.php'?>
     <header class="bg-dark text-white text-center py-4">
-        <h1>Order Confirmation</h1>
+        <h1><br>Order Confirmation</h1>
     </header>
 
     <main>
@@ -41,7 +41,7 @@ if (isset($userInfo["Username"])) {
                 <div class="col-lg-12">
                     <h2>Your order has been confirmed</h2>
                     <p>Thank you, <?php echo $username; ?>, for your order!</p>
-                    <a href="/" class="btn btn-primary">Continue Shopping</a>
+                    <a href="/customer" class="btn btn-primary">View account and order history</a>
                 </div>
             </div>
         </div>
