@@ -9,6 +9,13 @@
     
     
   }
+
+  .card-img {
+    max-height: 300px; /* Adjust the value based on your preference */
+    max-width: 400px;
+    object-fit: scale-down;
+    width: auto;
+  }
   
   .login-button{
     background-color: rgb(122, 122, 122);
