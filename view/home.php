@@ -243,14 +243,26 @@ foreach ($categories as $category) {
             </div>
         </div>
     </section>
-<!--
+
     <footer class="p-5 bg-dark text-light text-center position-relative">
-        <div class="container">
-            <p class="lead">Evotech</p>
-        </div>
+        <div class="footer-container">
+            <footer class="py-3 my-4 text-light">
+              <ul class="nav justify-content-center border-bottom pb-3 mb-3 text-light">
+                <li class="footer-item"><a href="#" class="nav-link px-2 text-light">Home</a></li>
+                <li class="footer-item"><a href="#" class="nav-link px-2 text-light">About</a></li>
+                <li class="footer-item"><a href="#" class="nav-link px-2 text-light">Products</a></li>
+                <li class="footer-item"><a href="#" class="nav-link px-2 text-light">Contact</a></li>
+              </ul>
+              <p class="text-center text-light">&copy; Evotech</p>
+            </footer>
+          </div>
+          
+          
     </footer>
 
-                    -->
+    
+
+                    
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
