@@ -85,5 +85,12 @@ if (isset($userInfo["Username"])) {
         <p>If you have any questions or concerns, <a href="contactpage">contact us</a>. Evotech is for Everyone.</p>
     </div>
 
+    <footer>
+    <?php include __DIR__ . '/footer.php'?>
+
+</footer>
+
+
+
 </body>
 </html>

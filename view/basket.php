@@ -92,8 +92,10 @@ if (isset($userInfo["Username"])) {
         <?php } ?>
 
         </div>
+       
 
         </main>
+        
 
         <!-- Link to Bootstrap JS -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -118,6 +120,12 @@ if (isset($userInfo["Username"])) {
                 });
             });
         </script>
-    </body>
+
+
+
+ 
+
+ 
+</body>
 
 </html>

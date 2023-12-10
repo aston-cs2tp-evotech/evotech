@@ -71,5 +71,9 @@ if (isset($_SESSION['uid'])) {
             <a href="login">Log in</a>
 
             </div>
+            <footer>
+             <?php include __DIR__ . '/footer.php'?>
+
+            </footer>
 
         </main>

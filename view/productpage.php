@@ -89,8 +89,7 @@ $recommendedProducts = GetRecommendedProducts($productDetails["ProductID"]);
 
 </body>
 <footer>
-    <div class="footer-content">
-        <p>&copy; <?php echo date("Y"); ?> - EvoTech - All Rights Reserved</p>
-    </div>
+    <?php include __DIR__ . '/footer.php'?>
+
 </footer>
 </html>

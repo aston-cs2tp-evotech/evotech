@@ -66,6 +66,11 @@ if (isset($userInfo["Username"])) {
       </div>
     </div>
   </section>
+  <footer>
+    <?php include __DIR__ . '/footer.php'?>
+
+</footer>
+
 </body>
 
 </html>
