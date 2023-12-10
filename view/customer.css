@@ -1,9 +1,4 @@
-/* login_register_checkout_customer.css */
-p {
-    font-family: "Arial", sans-serif;
-    text-align: left;
-}
-
+/* customer.css */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -16,10 +11,6 @@ textarea {
 input[type="submit"] {
     width: 100%;
     box-sizing: border-box;
-}
-
-a {
-    font-family: "Arial", sans-serif;
 }
 
 body {
@@ -44,8 +35,4 @@ header {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
-}
-
-.error {
-    color: #ff0000;
 }
