@@ -16,8 +16,8 @@
 
 <nav class="navbar navbar-dark navbar-expand-lg fixed-top py-1">
         <div class="container-fluid">
-            <img src="view/images/Picture1.png" style="width: 50px; height: 50px;" alt="Evotech Logo">
-            <a class="navbar-brand me-auto" href="home">Evotech</a>
+            <a class="navbar-brand me-auto" href=home> <img src="view/images/evotechLogoCropped.png" style="width: 100px; height: 25px;" alt="Evotech Logo"> </a>
+            <!-- <a class="navbar-brand me-auto" href="home">Evotech</a> -->
             <div class="offcanvas offcanvas-dark bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
