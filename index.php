@@ -244,6 +244,20 @@ function handleProductPageRequest() {
  * @return void
  */
 function handleProductsPageRequest(){
+   
+    // Check if there is a Category in the URL
+    $categoryName = isset($_GET['category']) ? $_GET['category'] : null;
+
+    global $products;
+    
+    if ($categoryName) {
+        $products = GetAllByCategory($categoryName);
+    }
+
+    if (!is_array($products)) {
+        $products = GetAllProducts();
+    }
+
     require __DIR__ . '/view/products.php';
 }
 

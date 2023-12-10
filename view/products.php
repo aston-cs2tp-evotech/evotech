@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-global $userInfo;
+global $userInfo, $products;
 if (isset($_SESSION["uid"])) {
     ReLogInUser(); 
 }
@@ -36,7 +36,6 @@ if (isset($userInfo["Username"])) {
     <div class="shadow p-3 mb-5 bg-light body-tertiary rounded">
       <div class="container">
         <?php
-        $products = GetAllProducts();
         foreach ($products as $item):
         ?>
           <div class="card mb-3">
