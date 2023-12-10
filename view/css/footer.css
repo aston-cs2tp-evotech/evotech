@@ -1,0 +1,28 @@
+footer {
+    background-color: #323131;
+    color: #fff;
+    text-align: center;
+    padding: 1px;;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: inline-block;
+}
+
+.social-media {
+    display: inline-block;
+    float: right;
+    padding: 5px;
+    font-size: 20px;
+}
+
+.social-media i{
+    padding: 2px;
+}
+

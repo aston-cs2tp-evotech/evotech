@@ -119,6 +119,10 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
             <?php endif; ?>
         </div>
     </main>
+    <footer>
+      <?php include __DIR__ . '/footer.php'?>
+
+   </footer>
 
     <!-- Link to Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

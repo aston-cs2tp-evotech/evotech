@@ -87,10 +87,9 @@ if (isset($userInfo["Username"])) {
     </section>
 
     <footer>
-        <div class="footer-content">
-            <p>&copy; 2023 EvoTech</p>
-        </div>
-    </footer>
+    <?php include __DIR__ . '/footer.php'?>
+
+</footer>
 </body>
 
 </html>
