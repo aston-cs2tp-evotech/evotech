@@ -66,12 +66,12 @@ $recommendedProducts = GetRecommendedProducts($productDetails["ProductID"]);
       
         <div class="recommendation-section">
             <h2>Recommended Products</h2>
-
+            
             <div class="recommended-products">
                 <?php foreach ($recommendedProducts as $recommendedProduct) : ?>
                     <a href="/product?productID=<?php echo $recommendedProduct['ProductID']; ?>" class="product-link">
                         <div class="product-box">
-                            <div class="product-image">
+                            <div class="product-image ">
                                 <img src="/view/images/products/<?php echo $recommendedProduct['ProductID']; ?>/<?php echo $recommendedProduct["MainImage"] ?>" alt="Recommended Product Image">
                             </div>
                             <div class="product-details">
