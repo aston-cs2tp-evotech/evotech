@@ -379,6 +379,12 @@ function GetAllByCategory($category){
     if (empty($filterProducts)) {
         return "No products in category";
     }
+
+    //add images
+    foreach ($filterProducts as &$filteredProduct) {
+        AddProductImagesToProduct($filteredProduct);
+    }
+    
     return $filterProducts;
 }
 
