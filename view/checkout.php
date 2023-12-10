@@ -22,7 +22,7 @@ if (isset($userInfo["Username"])) {
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Link to your custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout.css"/>
+    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
 </head>
 
 <body>

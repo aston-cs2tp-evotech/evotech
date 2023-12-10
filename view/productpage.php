@@ -71,7 +71,7 @@ $recommendedProducts = GetRecommendedProducts($productDetails["ProductID"]);
                 <?php foreach ($recommendedProducts as $recommendedProduct) : ?>
                     <a href="/product?productID=<?php echo $recommendedProduct['ProductID']; ?>" class="product-link">
                         <div class="product-box">
-                            <div class="product-image">
+                            <div class="product-image ">
                                 <img src="/view/images/products/<?php echo $recommendedProduct['ProductID']; ?>/<?php echo $recommendedProduct["MainImage"] ?>" alt="Recommended Product Image">
                             </div>
                             <div class="product-details">
