@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 global $userInfo;
 if (isset($_SESSION["uid"])) {
-    ReLogInUser(); 
+    ReLogInUser();
 }
 
 // Check if Username is set in $userInfo and then set $username
@@ -15,16 +15,18 @@ if (isset($userInfo["Username"])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - EvoTech</title>
     <link rel="stylesheet" href="/view/css/contactpage.css">
 </head>
-<body>
-   <?php include __DIR__ . '/nav.php'?>
 
-   <section class="bg-success p-5  py-4">
+<body>
+    <?php include __DIR__ . '/nav.php' ?>
+
+    <section class="bg-success p-5  py-4">
 
     </section>
     <header>
@@ -33,23 +35,23 @@ if (isset($userInfo["Username"])) {
 
     <section class="contact-container">
         <div class="contact-form">
-            <h2>Contact Form</h2> 
-            <form id="contactForm">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
+            <h2>Contact Form</h2>
+            <form id="contactForm" action="mailto:info@evotech.com" method="get" enctype="text/plain">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
 
-    <label for="description">Description of issue:</label>
-    <textarea id="description" name="description" rows="4" required></textarea>
+                <label for="description">Description of issue:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
 
-    <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
 
-    <button type="submit">Submit</button>
-    <script src="contacspage.js"></script>
-</form>
+                <button type="submit">Submit</button>
+                <script src="/view/js/contacspage.js"></script>
+            </form>
 
         </div>
 
@@ -90,4 +92,5 @@ if (isset($userInfo["Username"])) {
         </div>
     </footer>
 </body>
+
 </html>
