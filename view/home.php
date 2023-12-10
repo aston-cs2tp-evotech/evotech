@@ -68,7 +68,9 @@ foreach ($categories as $category) {
                     <p class="lead my-3">
                     Winter Sale
                     </p>
+                    <a href="/products">
                     <button class="btn btn-primary btn-md">Shop Now</button>
+                    </a>
                 </div>
                 <!-- LOGO IF NEEDED -->
                <!-- <img class="img-fluid w-10" style="width: 10%; height: 80%; margin-right: 10px;" src="view/images/evotechLogo2.png"alt="Evotech">  -->
