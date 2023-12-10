@@ -412,6 +412,7 @@ function GetAllStockedByCategory($category) {
  */
 function RemoveProductFromArrayByID(&$products, $productID) {
     $oldProducts = $products;
+    $size = count($oldProducts);
     //remove product from similar products
     for ($i=0; $i<count($oldProducts); $i++) {
         if ($oldProducts[$i]["ProductID"] == $productID) {
@@ -426,7 +427,7 @@ function RemoveProductFromArrayByID(&$products, $productID) {
     }
 
     //check array
-    if (empty($simProducts)) {
+    if ($size > 1 && empty($simProducts)) {
         return "No products left in array";
     }
 
