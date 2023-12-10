@@ -98,6 +98,10 @@ switch ($requestPath) {
         handleCustomerPageRequest();
         break;
     
+    case '/change-password':
+        handleChangePasswordRequest();
+        break;
+
     default:
         handle404Request();
         break;
@@ -394,6 +398,47 @@ function handleCustomerPageRequest(){
     } else {
         require __DIR__ . '/view/customer.php';
     }
+}
+
+/**
+ * Handle requests to change the password
+ * 
+ * @return void
+ */
+function handleChangePasswordRequest(){
+    // Check if the user is logged in
+    if (!isset($_SESSION['uid'])){
+        header("Location:/login");
+    } 
+
+    $currentPassword = isset($_POST['current_password']) ? $_POST['current_password'] : null;
+    $newPassword = isset($_POST['new_password']) ? $_POST['new_password'] : null;
+    $confirmNewPassword = isset($_POST['confirm_password']) ? $_POST['confirm_password'] : null;
+    $passwordChangeResult = false;
+
+
+    $updateArray = array(
+        "field" => "password",
+        "value" => $currentPassword,
+        "newPassword" => $newPassword,
+        "confirmPassword" => $confirmNewPassword
+    );
+
+    $result = UpdateCustomerDetail($updateArray);
+    // Result is a string, if it is empty then the update was successful
+    if ($result === "") {
+        $passwordChangeResult = true;
+        require __DIR__ . '/view/customer.php';
+        return;
+    } else {
+        $passwordChangeResult = false;
+        echo $result;
+        print_r($updateArray);
+        require __DIR__ . '/view/customer.php';
+        return;
+    }
+
+
 }
 
 
