@@ -54,24 +54,27 @@ foreach ($categories as $category) {
     <!--Empty box to fix formatting error 
         Creates an empty above content to prevent main content  being covered by navbar
     -->
-    <section class="bg-success text-light p-5 text-center text-sm-start py-5">
+    <!-- <section class="bg-dark text-light p-5 text-center text-sm-start py-5">
 
-    </section>
+    </section> -->
 
-    <section class="bg-success text-light p-5 text-center text-sm-start py-5">
+    <section class="bg-dark text-light p-5 text-center text-sm-start py-5" style="background-image: url('view/images/insidePC.jpg' ); background-size: cover; background-position: center 40%;">
+    <div class="container" style="padding-top: 70px; padding-bottom: 40px;">
+
         <div class="container">
             <div class="d-sm-flex allign-items-center justify-content-between">
                 <div>
-                    <h2>Evolve Your Gear</h2>
+                    <h2 style="font-weight: 500;">Evolve Your Gear</h2>
                     <p class="lead my-3">
-                    
+                    Winter Sale
                     </p>
                     <button class="btn btn-primary btn-md">Shop Now</button>
                 </div>
-               <img class="img-fluid w-10" src="view/images/Picture1.png"alt="Evotech"> 
+                <!-- LOGO IF NEEDED -->
+               <!-- <img class="img-fluid w-10" style="width: 10%; height: 80%; margin-right: 10px;" src="view/images/evotechLogo2.png"alt="Evotech">  -->
             </div>
         </div>
-
+    </div>
     </section>
 
     <!--Boxes-->
