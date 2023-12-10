@@ -76,7 +76,7 @@ if (isset($userInfo["Username"])) {
             <div class="review-box">
                 <img src="view/images/ksi.jpg" alt="Customer 2">
                 <p>Evotech goes beyond selling; their customer support is stellar. Quick responses, knowledgeable staff, setting a gold standard for customer care.</p>
-                <p>Gurjot Singh</p>
+                <p>ksi</p>
                 <p>Date: 01/01/2023</p>
             </div>
 
