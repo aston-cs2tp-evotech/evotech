@@ -166,7 +166,7 @@ foreach ($categories as $category) {
                   </h2>
                   <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <h3>Evotech is a collective of engineers, artists, and creators. We built Evotech, an e-commerce platform that recommends and sells optimum solutions for real-world problems.</h3> 
+                      <h5>Evotech is a collective of engineers, artists, and creators. We built Evotech, an e-commerce platform that recommends and sells optimum solutions for real-world problems.</h5> 
                     </div>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ foreach ($categories as $category) {
                   </h2>
                   <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <h3>If there's a problem, we have the technology for you. Check our Shop to view the CPU's, Accessories, Monitors and other Components that we sell.</h3> 
+                      <h5>If there's a problem, we have the technology for you. Check our Shop to view the CPU's, Accessories, Monitors and other Components that we sell.</h5> 
                     </div>
                   </div>
                 </div>
@@ -193,7 +193,7 @@ foreach ($categories as $category) {
                   </h2>
                   <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                      <h3>You can Contact Us, for further questions. </h3> 
+                      <h5>You can Contact Us, for further questions. </h5> 
                     </div>
                   </div>
                 </div>
@@ -213,44 +213,44 @@ foreach ($categories as $category) {
                 <div class="col-md-6 col-lg-4">
                   <div class="card bg-light"> 
                     <div class="card-body text-center">
-                        <img src="https://randomuser.me/api/portraits/men/11.jpg"
+                        <img src="view/images/Review1.png" width="200px"
                          class="rounded-circle mb-3"
-                         alt=""/>
-                         <p class="card-text">... </p>
+                         alt="Review image"/>
+                         <p class="card-text">"Evotech is my go-to! Unbeatable prices, top notch quality and extended warranty. Highly recommend!"  </p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                    <div class="card bg-light"> 
                     <div class="card-body text-center">
-                        <img src="https://randomuser.me/api/portraits/men/11.jpg"
+                        <img src="view/images/Review2.jpg" width="200px"
                          class="rounded-circle mb-3"
                          alt=""/>
-                         <h3 class="card-text">...</h3>
+                         <p class="card-text">"Soild prices, fast delivery and fantastic service, will be a repeat customer!"</p>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                     <div class="card bg-light">
                     <div class="card-body text-center">
-                        <img src="https://randomuser.me/api/portraits/men/11.jpg"
+                        <img src="view/images/Review3.jpg" width="200px"
                          class="rounded-circle mb-3"
                          alt=""/>
-                         <h3 class="card-text">...</h3>
+                         <p class="card-text">"Evotech exceeded my expectations. Delivery was lighting-fast, a go to for computer components"</p>
                      </div>
                   </div>
                 </div>
             </div>
         </div>
     </section>
-
+<!--
     <footer class="p-5 bg-dark text-light text-center position-relative">
         <div class="container">
             <p class="lead">Evotech</p>
         </div>
     </footer>
 
-
+                    -->
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

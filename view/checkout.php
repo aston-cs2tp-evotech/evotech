@@ -80,12 +80,12 @@ if (isset($userInfo["Username"])) {
                 
                 <?php
                 $totalAmount = 0;
-
+                $totalPrice = 0;
                 // Get basket items using the GetCustomerBasket function
                 $basketItems = GetCustomerBasket($totalAmount);
 
                 foreach ($basketItems as $item) :
-                    $totalAmount += $item["UnitPrice"] * $item["Quantity"];
+                    $totalPrice += $item["UnitPrice"] * $item["Quantity"];
                 ?>
 
                     <div class="card mb-3">
@@ -103,7 +103,7 @@ if (isset($userInfo["Username"])) {
                 <div class="card mt-4">
                     <div class="card-body">
                         <h3 class="card-title">Subtotal</h3>
-                        <h2 class="card-text">£<?php echo $totalAmount; ?></h2>
+                        <h2 class="card-text">£<?php echo $totalPrice; ?></h2>
                     </div>
                 </div>
             </div>
