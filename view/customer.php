@@ -74,7 +74,7 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
                 <?php foreach ($orders as $orderID => $order) : ?>
                     <?php $totalPrice = 0; ?>
                     <h3>Order <?php echo $orderID; ?></h3>
-                    <h4>Status: <?php echo $order[0]['Status']; ?></h4>
+                    <h4>Status: <?php echo $order['Status']; ?></h4>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -86,6 +86,7 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
                             </thead>
                             <tbody>
                                 <?php foreach ($order as $product) : ?>
+                                    <?php if (gettype($product) == "string") { continue; }?>
                                     <?php $totalPrice += $product['UnitPrice'] * $product['Quantity']; ?>
                                     <tr>
                                         <td><?php echo $product['ProductName']; ?></td>

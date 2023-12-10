@@ -747,13 +747,19 @@ function GetPreviousOrders($totalAmounts) {
     $megaBasket = array(array(array()));
     for ($i=0; $i<count($orderLines); $i++) if (!FormatOrderLines($orderLines[$i], $megaBasket[$i])) return false;
 
+
     //prepare orderStatuses
     $orderStats = $Order->getAllOrderStatuses();
-    
+
     //add order status to order
-    foreach ($megaBasket as &$basket) {
+    foreach ($megaBasket as $index =>&$basket) {
         //gets the index of the order by checking the first orderline to fetch order to get orderstatusID
-        $basket["Status"] = $orderStats[$Order->getOrderByID($basket[0]["OrderID"])["OrderStatusID"]];
+        foreach ($orderStats as $order) {
+            if ($order["OrderStatusID"] == $orders[$index]["OrderStatusID"]) {
+                $basket["Status"] = $order["Name"];
+            }
+        }
+        
         if (empty($basket["Status"])) {
             return false;
         }
