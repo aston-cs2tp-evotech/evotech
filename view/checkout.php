@@ -12,6 +12,10 @@ if (isset($_SESSION["uid"])) {
 if (isset($userInfo["Username"])) {
     $username = $userInfo["Username"];
 }
+
+$basketItems = GetCustomerBasket($totalAmount);
+// check if basket is empty
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +86,6 @@ if (isset($userInfo["Username"])) {
                 $totalAmount = 0;
                 $totalPrice = 0;
                 // Get basket items using the GetCustomerBasket function
-                $basketItems = GetCustomerBasket($totalAmount);
 
                 foreach ($basketItems as $item) :
                     $totalPrice += $item["UnitPrice"] * $item["Quantity"];

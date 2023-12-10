@@ -223,7 +223,7 @@ foreach ($categories as $category) {
                 <div class="col-md-6 col-lg-4">
                    <div class="card bg-light"> 
                     <div class="card-body text-center">
-                        <img src="view/images/Review2.jpg" width="200px"
+                        <img src="view/images/Review2.JPG" width="200px"
                          class="rounded-circle mb-3"
                          alt=""/>
                          <p class="card-text">"Soild prices, fast delivery and fantastic service, will be a repeat customer!"</p>
