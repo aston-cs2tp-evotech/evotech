@@ -147,3 +147,17 @@ footer {
     justify-content: center;
     align-items: center;
 }
+
+@media only screen and (max-width: 768px) {
+    /* Adjust styles for smaller screens */
+
+    .recommended-products {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .recommended-products .product-box {
+        width: 100%;
+        margin-right: 0;
+    }
+}
