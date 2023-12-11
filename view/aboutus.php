@@ -18,7 +18,7 @@ if (isset($userInfo["Username"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
+    <title>About Us - EvoTech</title>
     <link rel="stylesheet" href="/view/css/aboutus.css">
     
 </head>

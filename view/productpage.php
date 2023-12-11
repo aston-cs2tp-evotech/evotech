@@ -24,7 +24,7 @@ $recommendedProducts = GetRecommendedProducts($productDetails["ProductID"]);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Page</title>
+    <title><?php echo $productDetails['Name']; ?> - EvoTech</title>
     <link rel="stylesheet" href="/view/css/productpage.css">
 </head>
 

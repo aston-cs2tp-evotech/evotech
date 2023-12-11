@@ -23,7 +23,7 @@ if (isset($userInfo["Username"])) {
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
   <link rel="stylesheet" type="text/css" href="/view/css/products.css">
-  <title>EvoTech</title>
+  <title><?php if (isset($_GET["category"])) {echo $_GET["category"];} else {echo "Products";}?> - EvoTech</title>
   <ion-icon name="desktop-outline"></ion-icon>
 </head>
 

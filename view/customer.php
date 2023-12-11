@@ -24,7 +24,7 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Details</title>
+    <title><?php echo "$username"; ?> - EvoTech</title>
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Link to your custom CSS -->
