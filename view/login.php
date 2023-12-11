@@ -16,7 +16,7 @@ if (isset($_SESSION['uid'])) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Log in</title>
+        <title>Log in - EvoTech</title>
         <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
     
     </head>
