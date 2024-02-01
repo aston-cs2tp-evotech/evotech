@@ -22,7 +22,7 @@
             <input type="text" name="productName" placeholder="Product name" required/>
             <br>
             <p><b>Enter description</b></p>
-            <textarea name="description" placeholder="Description" rows="8" required>
+            <input type="text" name="description" placeholder="Description" required/>
             <br>
             <p><b>Enter quantity</b></p>
             <input type="text" name="quantity" placeholder="Quantity" required/>
