@@ -16,13 +16,15 @@
 
         <main>
 
+        <div class="container">
+
         <div class="add-products">
         <form action="add_product" method="POST">
             <p><b>Enter product name</b></p>
             <input type="text" name="productName" placeholder="Product name" required/>
             <br>
             <p><b>Enter description</b></p>
-            <textarea name="description" placeholder="Description" rows="8" required>
+            <textarea name="description" placeholder="Description" rows="8" required></textarea>
             <br>
             <p><b>Enter quantity</b></p>
             <input type="text" name="quantity" placeholder="Quantity" required/>
@@ -35,6 +37,9 @@
             <input class="btn btn-success" type="submit" value="Add product"/>
         <br>
         </form>
+        </div>
+
+        </div>
 
         </main>
 
