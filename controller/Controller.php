@@ -306,7 +306,7 @@ function AddCategoryToProduct(&$product) {
 
     //check it has category
     if (empty($product["Category"])) {
-        return "Product has no category";
+        return $product["Name"] . " has no category associated with it";
     }
 
     return "";
@@ -318,28 +318,9 @@ function AddCategoryToProduct(&$product) {
  * @return string Empty if success, otherwise indicates failure
  */
 function AddCategoriesToProducts(&$products) {
-    global $Product;
-    
-    //get categoryID
-    $categories = $Product->getCategories();
-    if (!$categories) {
-        return "Database Error";
-    }
-
-    //iterate through products to add category
     foreach ($products as &$product) {
-        foreach ($categories as $category) {
-            if ($product["CategoryID"] == $category["CategoryID"]) {
-                $product["Category"] = $category["CategoryName"];
-            }
-        }
-    }
-
-    //check all products have a category
-    foreach ($products as $product) {
-        if (empty($product["Category"])) {
-            return $product["Name"] . " has no category associated with it";
-        }
+        $err = AddCategoryToProduct($product);
+        if ($err) return $err;
     }
 
     return "";
