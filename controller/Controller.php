@@ -68,28 +68,28 @@ function CheckLoggedIn() {
  * Attempts to log the user in using supplied credentials
  * @param string $user Customer's username or email
  * @param string $pass Customer's password
- * @return boolean True if login succeeded, otherwise false
+ * @return string Empty if succeeded (i.e. evaluates to false) or an err message if failed
  */
 function AttemptLogin($user, $pass) {
     global $Customer;
-    if (!CheckExists($user) || !(gettype($user) == "string")) return false;
-    if (!CheckExists($pass) || !(gettype($pass) == "string")) return false;
+    if (!CheckExists($user) || !(gettype($user) == "string")) return "Username or email not entered";
+    if (!CheckExists($pass) || !(gettype($pass) == "string")) return "Password not entered";
     //attempts to fetch details via username
     $details = $Customer->getCustomerByUsername($user);
     if (!CheckExists($details)) {
         //falls back to fetching via email
-        if (!filter_var($user, FILTER_VALIDATE_EMAIL)) return false;
+        if (!filter_var($user, FILTER_VALIDATE_EMAIL)) return "Invalid email entered";
         $details = $Customer->getCustomerByEmail($user);
-        if (!CheckExists($details)) return false;
+        if (!CheckExists($details)) return "User does not exist";
     }
     //checks passwords match
     if (password_verify($pass, $details["PasswordHash"])) {
         $_SESSION["uid"] = $details["CustomerID"];
         unset($details);
         ReLogInUser();
-        return true;
+        return "";
     }
-    else return false;
+    else return "Incorrect password";
 }
 
 /**
@@ -100,9 +100,9 @@ function AttemptLogin($user, $pass) {
 function RegisterUser($details) {
     global $Customer;
     if (!CheckExists($details["email"]) || !filter_var($details["email"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
-    if (!CheckExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
+    if (!CheckExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username, please make sure it is alphanumeric";
     if (!CheckExists($details["customer_address"]) || !preg_match("/[a-zA-Z0-9.,]+/", $details["customer_address"])) return "Invalid address";
-    if (!CheckExists($details["password"]) || !(gettype($details["password"] == "string")) || !(strlen($details["password"]) > 7)) return "Invalid password";
+    if (!CheckExists($details["password"]) || !(gettype($details["password"] == "string")) || !(strlen($details["password"]) > 7)) return "Invalid password, make sure it is 8 characters or more";
     if (!CheckExists($details["confirmpass"]) || !($details["password"] === $details["confirmpass"])) return "Confirmation password does not match";
     if ($Customer->getCustomerByUsername($details["username"])) return "Username is already taken";
     if ($Customer->getCustomerByEmail($details["email"])) return "Email is already in use";
@@ -118,7 +118,7 @@ function RegisterUser($details) {
 /**
  * Updates a specified field in the database for a customer 
  * @param array $details Associative array containing field to change, new value and other relevant info
- * @return string Empty if succeeded, or a string to indicate where it failed
+ * @return string Empty if succeeded (i.e. evaluates to false), or a string to indicate where it failed
  */
 function UpdateCustomerDetail($details) {
     global $Customer;
@@ -130,7 +130,7 @@ function UpdateCustomerDetail($details) {
     switch ($details["field"]) {
         case "username":
             //username check
-            if (!preg_match("/[a-zA-Z0-9]+/", $details["value"])) return "Invalid username";
+            if (!preg_match("/[a-zA-Z0-9]+/", $details["value"])) return "Invalid username, make sure it is alphanumeric";
 
             //if username is not in use
             $user = $Customer->getCustomerByUsername($details["value"]);
@@ -238,7 +238,7 @@ function GetProductByID($productID) {
 /**
  * --INTERNAL USE ONLY-- Filters array to only have stocked products
  * @param array $products Array of products to filter (will overwrite)
- * @return string|boolean True if success, otherwise a string for failure
+ * @return string Empty if succeeded (i.e. evaluates to false) or an err message if failed
  */
 function FilterStockedProducts(&$products) {
     if (!$products) {
@@ -254,17 +254,17 @@ function FilterStockedProducts(&$products) {
         return "No products have stock";
     }
     $products = $stockedProducts;
-    return true;
+    return "";
 }
 
 /**
  * Gets every product in the database, regardless of stock
- * @return array|boolean 2d array if succeeded, otherwise false
+ * @return array|string 2d array if succeeded, otherwise err message if failed
  */
 function GetAllProducts() {
     global $Product;
     $products = $Product->getAllProducts();
-    if (!$products) return false;
+    if (!$products) return "Error retrieving products";
     foreach ($products as &$product) {
         AddProductImagesToProduct($product);
     }
@@ -273,11 +273,13 @@ function GetAllProducts() {
 
 /**
  * Gets every product in the database where stock > 0
- * @return array|boolean 2d array if succeeded, otherwise false
+ * @return array|string 2d array if succeeded, otherwise err message if failed
  */
 function GetAllStockedProducts() {
     $products = GetAllProducts();
-    if (!FilterStockedProducts($products)) return false;
+    if (gettype($products) == "string") return $products;
+    $err = FilterStockedProducts($products);
+    if ($err) return $err;
     else return $products;
 }
 
@@ -292,7 +294,7 @@ function AddCategoryToProduct(&$product) {
     //get categoryID
     $categories = $Product->getCategories();
     if (!$categories) {
-        return "Database Error";
+        return "Error retrieving categories";
     }
 
     //iterate through categories to find correct one
@@ -354,13 +356,13 @@ function GetAllByCategory($category){
     //Input validation
     $categories = array("Components", "CPUs", "Graphics Cards", "Cases", "Storage", "Memory");
     if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) {
-        return "Invalid Category";
+        return "Invalid category";
     }
     
     //get products
     $products = GetAllProducts();
     if (!$products) {
-        return "Error getting products";
+        return "Error retrieving products";
     }
 
     //add categories
@@ -396,7 +398,7 @@ function GetAllByCategory($category){
 function GetAllStockedByCategory($category) {
     $products = GetAllByCategory($category);
     $err = FilterStockedProducts($products);
-    if (!$err) { 
+    if ($err) { 
         return $err;
     }
     else {
@@ -450,7 +452,7 @@ function GetRecommendedProducts($productID) {
    // Fetch product
    $product = $Product->getProductByID($productID);
    if (!CheckExists($product)) {
-       return "Database Error";
+       return "Error retrieving product";
    }
 
    // Get product category
@@ -465,7 +467,7 @@ function GetRecommendedProducts($productID) {
        // If not enough products in the same category, fetch from other categories
        $allCategories = $Product->getCategories();
        if (!$allCategories) {
-           return "Database Error";
+           return "Error retrieving categories";
        }
 
        // Remove the current product's category
@@ -524,19 +526,19 @@ function GetRecommendedProducts($productID) {
  * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
  * @param int $productID PID of product
  * @param int $quantity Quantity of product
- * @return array|boolean Product if succeeded, otherwise false
+ * @return array|string Product if succeeded, otherwise err message
  */
 function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
     //check legitimate quantity
-    if (!isset($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
+    if (!isset($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return "Invalid product quantity";
     //check PID is int (no SQL injection allowed here sorry)
-    if (!CheckExists($productID) || !(gettype($productID) == "integer")) return false;
+    if (!CheckExists($productID) || !(gettype($productID) == "integer")) return "Invalid product ID";
     //check product is legit
     $product = $Product->getProductByID($productID);
-    if (!$product) return false;
+    if (!$product) return "Product does not exist";
     //check product has enough stock
-    if ($product["Stock"] < $quantity) return false;
+    if ($product["Stock"] < $quantity) return "Not enough product stock for request";
     //passed all checks
     return $product;
 }
@@ -545,25 +547,25 @@ function ProductAndQuantityCheck($productID, $quantity){
  * Adds specified product to user's basket
  * @param int $productID PID of the product
  * @param int $quantity Quantity of specified product to add to basket
- * @return boolean True if succeeded, otherwise false
+ * @return string Empty if succeeded (i.e. evaluates to false) or an err message if failed
  */
 function AddProductToBasket($productID, $quantity) {
     global $Order;
 
     // Check login
     if (!CheckLoggedIn()) {
-        return false;
+        return "Not logged in, please log in to add items to basket";
     }
 
     // Init array for product
     $product = ProductAndQuantityCheck($productID, $quantity);
-    if (!$product) {
-        return false;
+    if (gettype ($product) == "string") {
+        return $product;
     }
 
     // Quantity needs additional check to make sure it isn't 0
     if ($quantity === 0) {
-        return false;
+        return "Product quantity should be bigger than 0";
     }
 
     // Create basket if none found, otherwise add item to it (also checks for ownership of basket)
@@ -573,36 +575,45 @@ function AddProductToBasket($productID, $quantity) {
         // Basket doesn't exist, so it makes a new one
         $orderStatID = $Order->getOrderStatusIDByName("basket");
         if (!$orderStatID) {
-            return false;
+            return "Error creating basket";
         }
 
         $orderID = $Order->createOrder(array("customerID" => $_SESSION["uid"], "totalAmount" => $prodPrice, "orderStatusID" => $orderStatID));
 
         if (!$orderID) {
-            return false;
+            return "Error initializing basket";
         }
 
-        return $Order->createOrderLine(array("orderID" => $orderID, "productID" => $productID, "quantity" => $quantity));
+        $ol = $Order->createOrderLine(array("orderID" => $orderID, "productID" => $productID, "quantity" => $quantity));
+        if ($ol == null) {
+            return "Error adding item to basket";
+        } else {
+            return "";
+        }
     }
 
     // Check if product is already in the basket
     $orderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
 
-    if (!$orderLines) {
-        return false;
-    }
-
-    foreach ($orderLines as $orderLine) {
-        if ($orderLine["ProductID"] == $productID) {
-            return ModifyProductQuantityInBasket($productID, $orderLine["Quantity"] + $quantity);
+    //checks if basket is empty, and skips iterating orderlines if that's the case
+    if ($orderLines != null) {
+        foreach ($orderLines as $orderLine) {
+            if ($orderLine["ProductID"] == $productID) {
+                return ModifyProductQuantityInBasket($productID, $orderLine["Quantity"] + $quantity);
+            }
         }
     }
 
     // Product not in basket, appending
     if ($Order->createOrderLine(array("orderID" => $basket["OrderID"], "productID" => $productID, "quantity" => $quantity))) {
-        return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"] + $prodPrice);
+        $err = $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"] + $prodPrice);
+        if (!$err) {
+            return "Error updating database";
+        } else {
+            return "";
+        }
     } else {
-        return false;
+        return "Error adding to basket";
     }
 }
 
@@ -610,7 +621,7 @@ function AddProductToBasket($productID, $quantity) {
  * Changes quantity of specified product in user's basket, a quantity of 0 will delete product from basket
  * @param int $productID PID of the product
  * @param int $quantity New quantity
- * @return boolean True if succeeded, otherwise false
+ * @return string Empty if succeeded (i.e. evaluates to false) or an err message if failed
  */
 function ModifyProductQuantityInBasket($productID, $quantity) {
     global $Order;
@@ -618,53 +629,71 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
     if (!CheckLoggedIn()) return false;
     //init array for product
     $product = ProductAndQuantityCheck($productID, $quantity);
-    if (!$product) return false;
+    if (gettype($product) == "string") return $product;
 
     //gets basket to update (also checks ownership)
     $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
-    if (!$basket) return false;
+    if (!$basket) return "Error retrieving basket"; 
     $allOrderLines = $Order->getAllOrderLinesByOrderID($basket["OrderID"]);
-    if (!$allOrderLines) return false;
+    if (!$allOrderLines) return "Basket has no items";
 
     //fetch orderLine with product in it
     $orderLine = array();
     foreach ($allOrderLines as $curOrderLine) if ($curOrderLine["ProductID"] == $productID) $orderLine = $curOrderLine;
-    if (!$orderLine) return false;
+    if (!$orderLine) return "Item not in basket";
 
     //check for orderLine deletion
     if ($quantity == 0) {
         if (!$Order->deleteOrderLine($basket["OrderID"], $product["ProductID"])) return false;
         if (!$Order->getAllOrderLinesByOrderID($basket["OrderID"])) return $Order->deleteOrder($basket["OrderID"]);
-        return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]-($orderLine["Quantity"]*$product["Price"]));
+        $err = $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]-($orderLine["Quantity"]*$product["Price"]));
+        if (!$err) {
+            return "Error removing item from basket in database";
+        } else {
+            return "";
+        }
     }
 
     //change quantity and update price to match
     $oldPrice = $orderLine["Quantity"] * $product["Price"];
     $newPrice = $quantity * $product["Price"];
     $newTotal = $basket["TotalAmount"] - $oldPrice + $newPrice;
-    if (!$Order->updateOrderLineDetails($basket["OrderID"], $product["ProductID"], "Quantity", $quantity)) return false;
-    return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $newTotal);
+    $err = $Order->updateOrderLineDetails($basket["OrderID"], $product["ProductID"], "Quantity", $quantity);
+    if (!$err) {
+        return "Error updating item in basket in database";
+    }
+    $bErr = $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $newTotal);
+    if (!$bErr) {
+        return "Error updating basket in database";
+    } else {
+        return "";
+    }
 }
 
 /**
  * Checks out the basket (if it exists), of the logged in customer
- * @return boolean True if succeeded, otherwise false
+ * @return string Empty if succeeded (i.e. evaluates to false) or an err message if failed
  */
 function CheckoutBasket() {
     global $Order;
-    if (!CheckLoggedIn()) return false;
+    if (!CheckLoggedIn()) return "User is not logged in, please log in to check out";
     //fetch basket
     $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
-    if (!$basket) return false;
+    if (!$basket) return "Cannot check out empty basket";
 
-    return $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    $err = $Order->updateOrderDetails($basket["OrderID"], "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    if (!$err) {
+        return "Error checking out basket in database";
+    } else {
+        return "";
+    }
 }
 
 /**
  * --INTERNAL USE ONLY-- Formats the passed orderlines to create an array with the order
  * @param array $orderLines Array of OrderLines
  * @param array $basket Associative array of the order (array[int][string])
- * @return boolean True if succeeded, otherwise false
+ * @return string Empty if succeeded (i.e. evaluates to false) or an err message if failed
  */
 function FormatOrderLines($orderLines, &$basket) {
     global $Product;
@@ -672,7 +701,7 @@ function FormatOrderLines($orderLines, &$basket) {
     foreach ($orderLines as $index => $orderLine) {
         $product = $Product->getProductByID($orderLine["ProductID"]);
         if (!$product) {
-            return false;
+            return "Error fetching product with ID " . $orderLine["ProductID"];
         }
         AddProductImagesToProduct($product);
 
@@ -686,20 +715,20 @@ function FormatOrderLines($orderLines, &$basket) {
         $basket[$index]["OtherProductImages"] = $product["OtherProductImages"];
     }
 
-    return true;
+    return "";
 }
 
 
 /**
  * Retrieves the customer's basket
  * @param string $totalAmount empty var when passed, holds total price for order if succeeds
- * @return array|boolean 2d array (array[int][string]) if success, otherwise null
+ * @return array|string 2d array (array[int][string]) if success, otherwise err message
  */
 function GetCustomerBasket(&$totalAmount) {
     global $Order;
 
     if (!CheckLoggedIn()) {
-        return false;
+        return "User not logged in, please log in to view your basket";
     }
 
     // Retrieve orders with status "basket" for the customer
@@ -707,7 +736,7 @@ function GetCustomerBasket(&$totalAmount) {
 
     // Check if any basket orders are found
     if (!$basketOrders || empty($basketOrders)) {
-        return false;
+        return "Empty basket";
     }
 
     // Assuming you want the latest basket order, you can choose the first one in the list
@@ -719,7 +748,7 @@ function GetCustomerBasket(&$totalAmount) {
 
     // Check if any order lines are found
     if (!$orderLines || empty($orderLines)) {
-        return false;
+        return "Empty basket";
     }
 
     // Format return value
@@ -729,8 +758,9 @@ function GetCustomerBasket(&$totalAmount) {
     $totalAmount = $latestBasketOrder["TotalAmount"];
 
     // Format order lines
-    if (!FormatOrderLines($orderLines, $basket)) {
-        return false;
+    $err = FormatOrderLines($orderLines, $basket);
+    if ($err) {
+        return $err;
     }
 
     return $basket;
@@ -739,16 +769,16 @@ function GetCustomerBasket(&$totalAmount) {
 /**
  * Retrieves all previous orders for a customer (not incl. basket)
  * @param array $totalAmounts empty array when passed, each index holds the total amount for the respective order
- * @return array|boolean 3d array (array[int][int][string]) if success, otherwise false
+ * @return array|string 3d array (array[int][int][string]) if success, otherwise err message
  */
 function GetPreviousOrders($totalAmounts) {
     global $Order;
-    if (!CheckLoggedIn()) return false;
+    if (!CheckLoggedIn()) return "User not logged in";
 
     //retrieve orders
     $allOrders = $Order->getAllOrdersByCustomerID($_SESSION["uid"]);
     if (!$allOrders) {
-        return false;
+        return "Customer has no previous orders";
     }
 
     //removes basket from orders
@@ -759,20 +789,25 @@ function GetPreviousOrders($totalAmounts) {
         }
     }
     if (!$orders) {
-        return false;
+        return "Customer has no previous orders";
     }
     
     //retrieve all orderlines associated with each order
     $orderLines = array(array());
     for ($i=0; $i<count($orders); $i++) { 
         $orderLines[$i] = $Order->getAllOrderLinesByOrderID($orders[$i]["OrderID"]);
-        if (!$orderLines[$i]) return false;
+        if (!$orderLines[$i]) return "Order with ID " . $orders[$i]["OrderID"] . " is empty";
     }
 
     //format return value
     $megaBasket = array(array(array()));
-    for ($i=0; $i<count($orderLines); $i++) if (!FormatOrderLines($orderLines[$i], $megaBasket[$i])) return false;
-
+    $err = "";
+    for ($i=0; $i<count($orderLines); $i++)  {
+        $err = FormatOrderLines($orderLines[$i], $megaBasket[$i]);
+        if ($err) {
+            return $err;
+        }
+    }
 
     //prepare orderStatuses
     $orderStats = $Order->getAllOrderStatuses();
@@ -787,7 +822,7 @@ function GetPreviousOrders($totalAmounts) {
         }
         
         if (empty($basket["Status"])) {
-            return false;
+            return "Order with ID " . $basket["OrderID"] . " has no status";
         }
     }
 
