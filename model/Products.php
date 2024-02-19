@@ -319,4 +319,198 @@ class ProductModel {
     }
     
 }
+
+class Product {
+
+    private $productID;
+    private $name;
+    private $price;
+    private $stock;
+    private $description;
+    private $categoryID;
+    private $categoryName;
+    private $mainImage;
+    private $otherImages;
+
+
+    /**
+     * Construct a new Product object by providing an associative array of product details.
+     */
+    public function __construct($productDetails) {
+        $this->productID = $productDetails['ProductID'];
+        $this->name = $productDetails['Name'];
+        $this->price = $productDetails['Price'];
+        $this->stock = $productDetails['Stock'];
+        $this->description = $productDetails['Description'];
+        $this->categoryID = $productDetails['CategoryID'];
+        $this->categoryName = $productDetails['CategoryName'];
+        $this->mainImage = $productDetails['MainImage'];
+        $this->otherImages = $productDetails['OtherImages'];
+    }
+
+
+    /**
+     * Get the unique identifier of the product.
+     * @return int The unique identifier of the product.
+     */
+    public function getProductID() {
+        return $this->productID;
+    }
+
+    /**
+     * Set the unique identifier of the product.
+     * @param int $productID The unique identifier of the product.
+     */
+    public function setProductID($productID) {
+        $this->productID = $productID;
+    }
+
+
+    /**
+     * Get the name of the product.
+     * @return string The name of the product.
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+
+    /**
+     * Set the name of the product.
+     * @param string $name The name of the product.
+     */
+    public function setName($name) {
+        $this->name = $name;
+    }
+
+
+    /**
+     * Get the price of the product.
+     * @return float The price of the product.
+     */
+    public function getPrice() {
+        return $this->price;
+    }
+
+
+    /**
+     * Set the price of the product.
+     * @param float $price The price of the product.
+     */
+    public function setPrice($price) {
+        $this->price = $price;
+    }
+
+
+    /**
+     * Get the stock of the product.
+     * @return int The stock of the product.
+     */
+    public function getStock() {
+        return $this->stock;
+    }
+
+
+    /**
+     * Set the stock of the product.
+     * @param int $stock The stock of the product.
+     */
+    public function setStock($stock) {
+        $this->stock = $stock;
+    }
+
+
+    /**
+     * Get the description of the product.
+     * @return string The description of the product.
+     */
+    public function getDescription() {
+        return $this->description;
+    }
+
+
+    /**
+     * Set the description of the product.
+     * @param string $description The description of the product.
+     */
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+
+    /**
+     * Get the category ID of the product.
+     * @return int The category ID of the product.
+     */
+    public function getCategoryID() {
+        return $this->categoryID;
+    }
+
+
+    /**
+     * Set the category ID of the product.
+     * @param int $categoryID The category ID of the product.
+     */
+    public function setCategoryID($categoryID) {
+        $this->categoryID = $categoryID;
+    }
+
+
+    /**
+     * Get the category name of the product.
+     * @return string The category name of the product.
+     */
+    public function getCategoryName() {
+        return $this->categoryName;
+    }
+
+
+    /**
+     * Set the category name of the product.
+     * @param string $categoryName The category name of the product.
+     */
+    public function setCategoryName($categoryName) {
+        $this->categoryName = $categoryName;
+    }
+
+
+    /**
+     * Get the main image of the product.
+     * @return string The main image of the product.
+     */
+    public function getMainImage() {
+        return $this->mainImage;
+    }
+
+
+    /**
+     * Set the main image of the product.
+     * @param string $mainImage The main image of the product.
+     */
+    public function setMainImage($mainImage) {
+        $this->mainImage = $mainImage;
+    }
+
+
+    /**
+     * Get the other images of the product.
+     * @return array The other images of the product.
+     */
+    public function getOtherImages() {
+        return $this->otherImages;
+    }
+
+
+    /**
+     * Set the other images of the product.
+     * @param array $otherImages The other images of the product.
+     */
+    public function setOtherImages($otherImages) {
+        $this->otherImages = $otherImages;
+    }
+
+
+
+}
+
 ?>

@@ -131,4 +131,126 @@ class CustomerModel {
     }
 }
 
+
+class Customer {
+
+    private $customerID;
+    private $email;
+    private $username;
+    private $address;
+    private $passwordHash;
+
+    /**
+     * Construct a new Customer object.
+     * 
+     * @param array $customerData The customer details.
+     */
+    public function __construct($customerData) {
+        $this->customerID = $customerData['CustomerID'];
+        $this->email = $customerData['Email'];
+        $this->username = $customerData['Username'];
+        $this->address = $customerData['CustomerAddress'];
+        $this->passwordHash = $customerData['PasswordHash'];
+    }
+
+
+    /**
+     * Retrieve the customer's unique identifier.
+     *
+     * @return int The customer's unique identifier.
+     */
+    public function getUID() {
+        return $this->customerID;
+    }
+
+
+    /**
+     * Set the customer's unique identifier.
+     * 
+     * @param int $UID The customer's unique identifier.
+     */
+    public function setUID($UID) {
+        $this->customerID = $UID;
+    }
+
+
+    /**
+     * Retrieve the customer's email.
+     *
+     * @return string The customer's email.
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+
+
+    /**
+     * Set the customer's email.
+     * 
+     * @param string $email The customer's email.
+     */
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+
+    /**
+     * Retrieve the customer's username.
+     *
+     * @return string The customer's username.
+     */
+    public function getUsername() {
+        return $this->username;
+    }
+
+
+    /**
+     * Set the customer's username.
+     * 
+     * @param string $username The customer's username.
+     */
+    public function setUsername($username) {
+        $this->username = $username;
+    }
+
+
+    /**
+     * Retrieve the customer's address.
+     *
+     * @return string The customer's address.
+     */
+    public function getAddress() {
+        return $this->address;
+    }
+
+
+    /**
+     * Set the customer's address.
+     * 
+     * @param string $address The customer's address.
+     */
+    public function setAddress($address) {
+        $this->address = $address;
+    }
+
+
+    /**
+     * Retrieve the customer's password hash.
+     *
+     * @return string The customer's password hash.
+     */
+    public function getPasswordHash() {
+        return $this->passwordHash;
+    }
+
+
+    /**
+     * Set the customer's password hash.
+     * 
+     * @param string $passwordHash The customer's password hash.
+     */
+    public function setPasswordHash($passwordHash) {
+        $this->passwordHash = $passwordHash;
+    }
+}
 ?>
