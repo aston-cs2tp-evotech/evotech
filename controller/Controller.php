@@ -9,7 +9,7 @@
 // ---------------------------------------------
 
 /**
- * @var array Global variable to store customer info (username, address etc)
+ * @var Customer Global variable to store customer info (username, address etc)
  */
 global $userInfo;
 
@@ -42,6 +42,27 @@ function CheckExists($var) {
     return (isset($var) && !empty($var));
 }
 
+/**
+ * Iterates through details from db to ensure every key exists for the Customer object
+ * @param array $details Details array from the database
+ * @return Customer|null A customer object with all details, or null if any didn't exist 
+ */
+function CreateSafeCustomer($details) {
+    $badCustomer = false;
+    $keys = array('CustomerID', 'Email', 'Username', 'CustomerAddress', 'PasswordHash');
+
+    //check every key
+    foreach ($details as $key => $detail) {
+        if (!in_array($key, $keys)) $badCustomer = true;
+    }
+
+    //create customer
+    if (!$badCustomer) {
+        return new Customer($details);
+    }
+    else return null;
+}
+
 /** 
  * Puts all relevent user info into the global userInfo array
 */
@@ -50,8 +71,8 @@ function ReLogInUser() {
     //checks if it is set and not false
     if (CheckExists($_SESSION["uid"])) {
         $uid = $_SESSION["uid"];
-        //querys the database to get user info
-        $userInfo = $Customer->getCustomerByUID($uid);
+        //querys the database to get user info and creates a customer
+        $userInfo = CreateSafeCustomer($Customer->getCustomerByUID($uid));
     } 
 }
 
@@ -75,16 +96,16 @@ function AttemptLogin($user, $pass) {
     if (!CheckExists($user) || !(gettype($user) == "string")) return false;
     if (!CheckExists($pass) || !(gettype($pass) == "string")) return false;
     //attempts to fetch details via username
-    $details = $Customer->getCustomerByUsername($user);
+    $details = CreateSafeCustomer($Customer->getCustomerByUsername($user));
     if (!CheckExists($details)) {
         //falls back to fetching via email
         if (!filter_var($user, FILTER_VALIDATE_EMAIL)) return false;
-        $details = $Customer->getCustomerByEmail($user);
+        $details = CreateSafeCustomer($Customer->getCustomerByEmail($user));
         if (!CheckExists($details)) return false;
     }
     //checks passwords match
-    if (password_verify($pass, $details["PasswordHash"])) {
-        $_SESSION["uid"] = $details["CustomerID"];
+    if (password_verify($pass, $details->getPasswordHash())) {
+        $_SESSION["uid"] = $details->getUID();
         unset($details);
         ReLogInUser();
         return true;

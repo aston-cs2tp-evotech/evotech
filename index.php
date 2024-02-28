@@ -15,15 +15,15 @@ include __DIR__ . "/model/Orders.php";
 require __DIR__ . '/controller/Controller.php';
 
 // Initalise $userInfo
-$userInfo = array();
+$userInfo = null;
 
 if (isset($_SESSION["uid"])) {
     ReLogInUser(); 
 }
 
 // Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+if (isset($userInfo)) {
+    $username = $userInfo->getUsername();
 }
 
 

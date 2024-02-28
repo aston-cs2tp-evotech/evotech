@@ -8,9 +8,9 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser(); 
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username
+if (isset($userInfo)) {
+  $username = $userInfo->getUsername();
 }
 
 // Get an image of the first product in each category

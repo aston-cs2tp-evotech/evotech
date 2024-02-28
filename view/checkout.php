@@ -8,9 +8,10 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser();
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username and address
+if (isset($userInfo)) {
+    $username = $userInfo->getUsername();
+    $address = $userInfo->getAddress();
 }
 
 $basketItems = GetCustomerBasket($totalAmount);
@@ -48,7 +49,7 @@ $basketItems = GetCustomerBasket($totalAmount);
                     </div>
                     <div class="form-group">
                         <label for="Full_address">Full address</label>
-                        <textarea name="customer_address" placeholder="Address" rows="6" required><?php echo $userInfo["CustomerAddress"]; ?></textarea>
+                        <textarea name="customer_address" placeholder="Address" rows="6" required><?php echo $address; ?></textarea>
                     </div>
 
                     <h2>Card details</h2>

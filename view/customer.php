@@ -8,9 +8,11 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser();
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username
+if (isset($userInfo)) {
+    $username = $userInfo->getUsername();
+    $email = $userInfo->getEmail();
+    $addr = $userInfo->getAddress();
 }
 
 // Get previous orders
@@ -44,9 +46,9 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
 
         
                 <h2>Customer Details</h2>
-                <p><strong>Username:</strong> <?php echo $userInfo["Username"]; ?></p>
-                <p><strong>Email:</strong> <?php echo $userInfo["Email"]; ?></p>
-                <p><strong>Address:</strong> <?php echo $userInfo["CustomerAddress"]; ?></p>
+                <p><strong>Username:</strong> <?php echo $username; ?></p>
+                <p><strong>Email:</strong> <?php echo $email; ?></p>
+                <p><strong>Address:</strong> <?php echo $addr; ?></p>
 
             </div>
             
