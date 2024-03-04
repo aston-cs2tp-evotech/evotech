@@ -57,6 +57,8 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
+To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
+
 ### macOS
 
 1. Install xcode command line tools
@@ -91,6 +93,8 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
+To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
+
 ### Linux
 
 1. Install XAMPP
@@ -116,6 +120,7 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
+To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
 
 ## Constructing the database
 The database needs to be constructed before the website can be used.
