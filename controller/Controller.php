@@ -216,42 +216,66 @@ function LogOut() {
 // ---------------------------------------------
 
 /**
+ * Creates a product object with all details (minus cateogries and images) if exists
+ * @param array $details Details array from db
+ * @return Product|null Product with required details, or null
+ */
+function CreateSafeProduct($details) {
+    $badProd = false;
+    $keys = array('ProductID', 'Name', 'Price', 'Stock', 'Description', 'CategoryID');
+
+    //check each required key
+    foreach ($details as $key => $detail) {
+        if (!in_array($key, $keys)) $badProd = true;
+    }
+
+    if (!$badProd) {
+        //prepare missing categories for Product
+        $details['CategoryName'] = null;
+        $details['MainImage'] = null;
+        $details['OtherImages'] = null;
+
+        return new Product($details);
+    }
+    else return null;
+}
+
+/**
  * Sorts through the images of a product and finds the main one
  * @param array $images The productImages as an array
- * @param string $mainImage The variable that will store the main image
- * @param array $otherImages The array to store all other images
+ * @param Product $product The Product object to add to
  */
-function SortProductImages($images, &$mainImage, &$otherImages) {
+function SortProductImages($images, $product) {
     $main = "";
     $other = array();
     foreach ($images as $image) {
         if ($image["MainImage"]) $main = $image["FileName"]; 
         else array_push($other, $image["FileName"]);
     }
-    $mainImage = $main;
-    $otherImages = $other;
+    $product->setMainImage($main);
+    $product->setOtherImages($other);
 }
 
 /**
- * Adds the images to the product array
- * @param array $product The product array
+ * Adds the images to the product
+ * @param Product $product The product
  */
 function AddProductImagesToProduct(&$product) {
     global $Product;
-    $images = $Product->getProductImages($product["ProductID"]);
+    $images = $Product->getProductImages($product->getProductID());
     if (!$images) return false;
-    SortProductImages($images, $product["MainImage"], $product["OtherProductImages"]);
+    SortProductImages($images, $product);
 }
 /**
  * Gets product from the database, regardless of stock
  * @param int $productID ID of the product
- * @return array|boolean Array with product details if success, otherwise false
+ * @return Product|boolean Product if success, otherwise false
  */
 function GetProductByID($productID) {
     global $Product;
     if (!checkExists($productID) || !(gettype($productID) == "integer")) return false;
-    $prod = $Product->getProductByID($productID);
-    if (!$prod) return false;
+    $prod = CreateSafeProduct($Product->getProductByID($productID));
+    if ($prod == null) return false;
     AddProductImagesToProduct($prod);
     return $prod;
 }
@@ -267,7 +291,7 @@ function FilterStockedProducts(&$products) {
     }
     $stockedProducts = array();
     foreach ($products as $product) {
-        if ($product["Stock"] > 0) {
+        if ($product->getStock() > 0) {
             array_push($stockedProducts, $product);
         }
     }
@@ -280,14 +304,17 @@ function FilterStockedProducts(&$products) {
 
 /**
  * Gets every product in the database, regardless of stock
- * @return array|boolean 2d array if succeeded, otherwise false
+ * @return array|boolean Array of products if succeeded, otherwise false
  */
 function GetAllProducts() {
     global $Product;
     $products = $Product->getAllProducts();
     if (!$products) return false;
     foreach ($products as &$product) {
-        AddProductImagesToProduct($product);
+        $prod = CreateSafeProduct($product);
+        if ($prod == null) return false;
+        AddProductImagesToProduct($prod);
+        $product = $prod;
     }
     return $products;
 }
@@ -304,7 +331,7 @@ function GetAllStockedProducts() {
 
 /**
  * Adds a category to the product via it's categoryID
- * @param array $product The product
+ * @param Product $product The product
  * @return string Empty if success, otherwise indicates failure 
  */
 function AddCategoryToProduct(&$product) {
@@ -318,13 +345,13 @@ function AddCategoryToProduct(&$product) {
 
     //iterate through categories to find correct one
     foreach ($categories as $category) {
-        if ($product["CategoryID"] == $category["CategoryID"]) {
-            $product["Category"] = $category["CategoryName"];
+        if ($product->getCategoryID() == $category["CategoryID"]) {
+            $product->setCategoryName($category["CategoryName"]);
         }
     }
 
     //check it has category
-    if (empty($product["Category"])) {
+    if (empty($product->getCategoryName())) {
         return "Product has no category";
     }
 
@@ -348,16 +375,16 @@ function AddCategoriesToProducts(&$products) {
     //iterate through products to add category
     foreach ($products as &$product) {
         foreach ($categories as $category) {
-            if ($product["CategoryID"] == $category["CategoryID"]) {
-                $product["Category"] = $category["CategoryName"];
+            if ($product->getCategoryID() == $category["CategoryID"]) {
+                $product->setCategoryName($category["CategoryName"]);
             }
         }
     }
 
     //check all products have a category
     foreach ($products as $product) {
-        if (empty($product["Category"])) {
-            return $product["Name"] . " has no category associated with it";
+        if (empty($product->getCategoryName())) {
+            return $product->getName() . " has no category associated with it";
         }
     }
 
@@ -368,7 +395,7 @@ function AddCategoriesToProducts(&$products) {
 /**
  * Gets all products by category, regardless of stock
  * @param string $category Category of the product (component, accessory etc.)
- * @return array|string 2d array if succeeded, otherwise a string where it failed
+ * @return array|string Array of products if succeeded, otherwise a string where it failed
  */
 function GetAllByCategory($category){
     global $Product;
@@ -393,7 +420,7 @@ function GetAllByCategory($category){
     //filter products
     $filterProducts = array();
     foreach ($products as $product) {
-        if ($product["Category"] == $category) {
+        if ($product->getCategoryName() == $category) {
             array_push($filterProducts, $product);
         }
     }
@@ -412,7 +439,7 @@ function GetAllByCategory($category){
 /**
  * Gets all products by category where stock > 0
  * @param string $category Category of the product (component, accessory etc)
- * @return array|string 2d array if succeeded, otherwise string for failure
+ * @return array|string Array of products succeeded, otherwise string for failure
  */
 function GetAllStockedByCategory($category) {
     $products = GetAllByCategory($category);
@@ -436,7 +463,7 @@ function RemoveProductFromArrayByID(&$products, $productID) {
     $size = count($oldProducts);
     //remove product from similar products
     for ($i=0; $i<count($oldProducts); $i++) {
-        if ($oldProducts[$i]["ProductID"] == $productID) {
+        if ($oldProducts[$i]->getProductID() == $productID) {
             unset($oldProducts[$i]);
         }
     }
@@ -469,7 +496,7 @@ function GetRecommendedProducts($productID) {
    }
 
    // Fetch product
-   $product = $Product->getProductByID($productID);
+   $product = CreateSafeProduct($Product->getProductByID($productID));
    if (!CheckExists($product)) {
        return "Database Error";
    }
@@ -481,7 +508,7 @@ function GetRecommendedProducts($productID) {
    }
 
    // Gets similar products from the same category
-   $products = GetAllStockedByCategory($product["Category"]);
+   $products = GetAllStockedByCategory($product->getCategoryName());
    if (gettype($products) == "string") {
        // If not enough products in the same category, fetch from other categories
        $allCategories = $Product->getCategories();
@@ -491,7 +518,7 @@ function GetRecommendedProducts($productID) {
 
        // Remove the current product's category
        $allCategories = array_filter($allCategories, function ($category) use ($product) {
-           return $category["CategoryID"] !== $product["CategoryID"];
+           return $category["CategoryID"] !== $product->getCategoryID();
        });
 
        // Choose a random category
@@ -520,7 +547,7 @@ function GetRecommendedProducts($productID) {
        array_push($returnProds, $products[$randomIndex]);
 
        // Remove the selected product from the array
-       $err2 = RemoveProductFromArrayByID($products, $returnProds[$i]["ProductID"]);
+       $err2 = RemoveProductFromArrayByID($products, $returnProds[$i]->getProductID());
        if (!empty($err2)) {
            return $err2 . " when selecting recommended products";
        }
@@ -545,7 +572,7 @@ function GetRecommendedProducts($productID) {
  * --INTERNAL USE ONLY-- checks for product to make sure it's all legit
  * @param int $productID PID of product
  * @param int $quantity Quantity of product
- * @return array|boolean Product if succeeded, otherwise false
+ * @return Product|boolean Product if succeeded, otherwise false
  */
 function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
@@ -554,10 +581,10 @@ function ProductAndQuantityCheck($productID, $quantity){
     //check PID is int (no SQL injection allowed here sorry)
     if (!CheckExists($productID) || !(gettype($productID) == "integer")) return false;
     //check product is legit
-    $product = $Product->getProductByID($productID);
-    if (!$product) return false;
+    $product = CreateSafeProduct($Product->getProductByID($productID));
+    if ($product == null) return false;
     //check product has enough stock
-    if ($product["Stock"] < $quantity) return false;
+    if ($product->getStock() < $quantity) return false;
     //passed all checks
     return $product;
 }
@@ -589,7 +616,7 @@ function AddProductToBasket($productID, $quantity) {
 
     // Create basket if none found, otherwise add item to it (also checks for ownership of basket)
     $basket = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0];
-    $prodPrice = $product["Price"] * $quantity;
+    $prodPrice = $product->getPrice() * $quantity;
     if (!$basket) {
         // Basket doesn't exist, so it makes a new one
         $orderStatID = $Order->getOrderStatusIDByName("basket");
@@ -654,16 +681,16 @@ function ModifyProductQuantityInBasket($productID, $quantity) {
 
     //check for orderLine deletion
     if ($quantity == 0) {
-        if (!$Order->deleteOrderLine($basket["OrderID"], $product["ProductID"])) return false;
+        if (!$Order->deleteOrderLine($basket["OrderID"], $product->getProductID())) return false;
         if (!$Order->getAllOrderLinesByOrderID($basket["OrderID"])) return $Order->deleteOrder($basket["OrderID"]);
         return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $basket["TotalAmount"]-($orderLine["Quantity"]*$product["Price"]));
     }
 
     //change quantity and update price to match
-    $oldPrice = $orderLine["Quantity"] * $product["Price"];
-    $newPrice = $quantity * $product["Price"];
+    $oldPrice = $orderLine["Quantity"] * $product->getPrice();
+    $newPrice = $quantity * $product->getPrice();
     $newTotal = $basket["TotalAmount"] - $oldPrice + $newPrice;
-    if (!$Order->updateOrderLineDetails($basket["OrderID"], $product["ProductID"], "Quantity", $quantity)) return false;
+    if (!$Order->updateOrderLineDetails($basket["OrderID"], $product->getProductID(), "Quantity", $quantity)) return false;
     return $Order->updateOrderDetails($basket["OrderID"], "TotalAmount", $newTotal);
 }
 
@@ -691,20 +718,20 @@ function FormatOrderLines($orderLines, &$basket) {
     global $Product;
 
     foreach ($orderLines as $index => $orderLine) {
-        $product = $Product->getProductByID($orderLine["ProductID"]);
-        if (!$product) {
+        $product = CreateSafeProduct($Product->getProductByID($orderLine["ProductID"]));
+        if ($product == null) {
             return false;
         }
         AddProductImagesToProduct($product);
 
-        $basket[$index]["ProductID"] = $product["ProductID"];
-        $basket[$index]["ProductName"] = $product["Name"];
+        $basket[$index]["ProductID"] = $product->getProductID();
+        $basket[$index]["ProductName"] = $product->getName();
         $basket[$index]["Quantity"] = $orderLine["Quantity"];
-        $basket[$index]["TotalStock"] = $product["Stock"];
-        $basket[$index]["UnitPrice"] = $product["Price"];
+        $basket[$index]["TotalStock"] = $product->getStock();
+        $basket[$index]["UnitPrice"] = $product->getPrice();
         $basket[$index]["TotalPrice"] = $basket[$index]["UnitPrice"] * $basket[$index]["Quantity"];
-        $basket[$index]["MainImage"] = $product["MainImage"];
-        $basket[$index]["OtherProductImages"] = $product["OtherProductImages"];
+        $basket[$index]["MainImage"] = $product->getMainImage();
+        $basket[$index]["OtherProductImages"] = $product->getOtherImages();
     }
 
     return true;

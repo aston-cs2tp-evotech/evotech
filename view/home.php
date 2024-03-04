@@ -135,7 +135,7 @@ foreach ($categories as $category) {
                 <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
                     <?php if (isset($categoryImages[$currentCategory])): ?>
                         <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark">
-                            <img src="view/images/products/<?php echo $categoryImages[$currentCategory]["ProductID"];?>/<?php echo $categoryImages[$currentCategory]["MainImage"]?>" class="card-img" alt="Product Image">
+                            <img src="view/images/products/<?php echo $categoryImages[$currentCategory]->getProductID();?>/<?php echo $categoryImages[$currentCategory]->getMainImage();?>" class="card-img" alt="Product Image">
                         </a>
                     <?php else: ?>
                         <!-- Default image or alternative content if no image is available -->

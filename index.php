@@ -14,7 +14,9 @@ include __DIR__ . "/model/Orders.php";
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
 
-// Initalise $userInfo
+/**
+ * @var Customer|null $userinfo Customer object if initialized
+ */
 $userInfo = null;
 
 if (isset($_SESSION["uid"])) {
