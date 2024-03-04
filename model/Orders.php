@@ -511,6 +511,7 @@ class Order {
     private $customerID;
     private $totalAmount;
     private $orderStatusID;
+    private $orderStatusName;
     private $orderLines;
 
 
@@ -524,6 +525,7 @@ class Order {
         $this->customerID = $orderDetails['CustomerID'];
         $this->totalAmount = $orderDetails['TotalAmount'];
         $this->orderStatusID = $orderDetails['OrderStatusID'];
+        $this->orderStatusName = $orderDetails['OrderStatusName'];
         $this->orderLines = array();
     }
 
@@ -605,6 +607,24 @@ class Order {
      */
     public function setOrderStatusID($orderStatusID) {
         $this->orderStatusID = $orderStatusID;
+    }
+
+    /**
+     * Get the OrderStatusName of the Order.
+     * 
+     * @return string The OrderStatusName.
+     */
+    public function getOrderStatusName() {
+        return $this->orderStatusName;
+    }
+
+    /**
+     * Set the OrderStatusName of the Order.
+     * 
+     * @param string The OrderStatusName.
+     */
+    public function setOrderStatusName($orderStatusName) {
+        $this->orderStatusName = $orderStatusName;
     }
 
 
