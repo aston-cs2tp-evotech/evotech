@@ -1,5 +1,10 @@
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: allianceNo2!important;
     background-color: #ffffff;
     margin: 0;
     padding: 0;

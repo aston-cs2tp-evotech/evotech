@@ -1,14 +1,20 @@
+@font-face {
+  font-family: allianceNo2;
+  src: url(/view/fonts/allianceno2.woff) format('woff');
+}
+
 #content{
     position: relative;
     margin-top: 50px;
   }
+    
+  body{
+      background-color: #534B62;
+      font-family: allianceNo2!important; 
+    }
   
   
-  .navbar{
-    background-color: #333;
-    
-    
-  }
+ 
 
   .card-img {
     max-height: 300px; /* Adjust the value based on your preference */
@@ -16,6 +22,7 @@
     object-fit: scale-down;
     width: auto;
   }
+  
   
   .login-button{
     background-color: rgb(122, 122, 122);

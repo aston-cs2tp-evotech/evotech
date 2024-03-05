@@ -1,4 +1,15 @@
 /* login_register_checkout_customer.css */
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+body{
+    font-family: allianceNo2!important; 
+  }
+  
+
+
+
 p {
     font-family: "Arial", sans-serif;
     text-align: left;
