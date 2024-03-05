@@ -44,7 +44,7 @@ foreach ($categories as $category) {
     <link rel="stylesheet" type="text/css" href="/view/css/home.css">
     <title>Home - EvoTech</title>
     <ion-icon name="desktop-outline"></ion-icon>
-
+ 
 
 </head>
 
@@ -58,13 +58,13 @@ foreach ($categories as $category) {
 
     </section> -->
 
-    <section class="bg-dark text-light p-5 text-center text-sm-start py-5" style="background-image: url('view/images/insidePC.jpg' ); background-size: cover; background-position: center 40%;">
+    <section class="text-dark p-5 text-center text-sm-start py-5" style= "background-color: #534B62  ; background-size: cover; background-position: center 40%;">
     <div class="container" style="padding-top: 70px; padding-bottom: 40px;">
 
         <div class="container">
             <div class="d-sm-flex allign-items-center justify-content-between">
                 <div>
-                    <h2 style="font-weight: 500;">Evolve Your Gear</h2>
+                    <h2 style="font-weight: 500">Evolve Your Gear</h2>
                     <p class="lead my-3">
                     Winter Sale
                     </p>
@@ -76,6 +76,7 @@ foreach ($categories as $category) {
                <!-- <img class="img-fluid w-10" style="width: 10%; height: 80%; margin-right: 10px;" src="view/images/evotechLogo2.png"alt="Evotech">  -->
             </div>
         </div>
+        
     </div>
     </section>
 
@@ -118,21 +119,23 @@ foreach ($categories as $category) {
          </div>
         </div>
     </section>
-    
+
     <!--List of different categories-->
+
+    
 
     <?php for ($i = 0; $i < count($categories); $i += 2): ?>
     <section class="d-md-flex flex-md-equal my-md-3 ps-md-3">
         <?php for ($j = $i; $j <= $i + 1 && $j < count($categories); $j++): ?>
             <?php $currentCategory = $categories[$j]; ?>
-            <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
+            <div style="background-color: #534B62 ;" class="bg me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
                 <div class="my-3 p-3">
                     <h2 class="<?= $currentCategory ?>">
                         <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark"><?php echo $currentCategory; ?></a>
                     </h2>
                     <p class="Shop-now">Shop Now.</p>
                 </div>
-                <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+                <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
                     <?php if (isset($categoryImages[$currentCategory])): ?>
                         <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark">
                             <img src="view/images/products/<?php echo $categoryImages[$currentCategory]["ProductID"];?>/<?php echo $categoryImages[$currentCategory]["MainImage"]?>" class="card-img" alt="Product Image">
@@ -148,10 +151,9 @@ foreach ($categories as $category) {
 <?php endfor; ?>
 
 
+                    
 
-
-    
-    <!-- faq -->
+  
     <section id="Faq" class="p-4">
         <div class="container">
             <h2 class="text-center mb-4">Frequently Asked Questions</h2>
@@ -202,6 +204,11 @@ foreach ($categories as $category) {
 
     </section>
 
+                    
+
+                    
+
+                   
     <section id="instructors" class="p-5 bg-light">
         <div class="container">
             <h2 class="text-center text-dark">Customer Reviews</h2>
@@ -243,6 +250,8 @@ foreach ($categories as $category) {
             </div>
         </div>
     </section>
+
+                    
 
     <footer>
     <?php include __DIR__ . '/footer.php'?>

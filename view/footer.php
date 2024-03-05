@@ -16,7 +16,7 @@
 <body>
   <footer>
     <div class="footer-content">
-        <p>&copy; <?php echo date("Y"); ?> - EvoTech - All Rights Reserved</p>
+        <p >&copy; <?php echo date("Y"); ?> - EvoTech - All Rights Reserved</p>
         
     </div>
     <section class="social-media">
