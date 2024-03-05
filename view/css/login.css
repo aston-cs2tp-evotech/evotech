@@ -1,0 +1,73 @@
+/* login.css */
+p {
+    font-family: "Arial", sans-serif;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+input[type="submit"] {
+    height: 40px;
+    width: 100%;
+    box-sizing: border-box;
+    background-image: linear-gradient(to right, #000000,#ffffff);
+    font-weight: bold;
+}
+
+a {
+    font-family: "Arial", sans-serif;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+}
+
+h2 {
+    text-align: left;
+}
+
+.login {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0px auto;
+}
+
+.login-image {
+    width: 600px;
+    margin: 0px auto;
+    padding: 20px;
+    background-color: #fff;
+    align-content: left;
+    text-align: center;
+}
+
+.login-form {
+    width: 600px;
+    margin: 0px auto;
+    padding: 20px;
+    background-color: #fff;
+    align-content: right;
+    text-align: center;
+}
+
+.error {
+    color: #ff0000;
+}
