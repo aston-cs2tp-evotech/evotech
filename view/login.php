@@ -71,15 +71,13 @@ if (isset($_SESSION['uid'])) {
             <a href="register">Register</a>
 
             <br>
-<<<<<<< HEAD
+
             <h2>Admin login</h2>
             <a href="AdminLogin">Admin Login</a>
             
         </div>
 
         </section>
-=======
->>>>>>> 9829e3e439546bd9dbcd147a3015a5e27a0675c8
 
         </main>
 
