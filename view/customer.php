@@ -28,7 +28,7 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Link to your custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
+    <link rel="stylesheet" type="text/css" href="/view/css/register_checkout_customer.css">
 </head>
 
 <body>
