@@ -56,16 +56,16 @@ h2 {
 }
 
 .login-image {
-    width: 600px;
+    width: 800px;
     margin: 0px auto;
-    padding: 20px;
-    background-color: #fff;
+    padding: 0px;
+    background-color: #534B62;
     align-content: left;
     text-align: center;
 }
 
 .login-form {
-    width: 600px;
+    width: 400px;
     margin: 0px auto;
     padding: 20px;
     background-color: #534B62;
