@@ -22,6 +22,8 @@ if (isset($_SESSION['uid'])) {
     </head>
     <body>
 
+    <?php include __DIR__ . '/nav.php'?>
+
         <header>
             <h1>Log in</h1>
         </header>
@@ -71,9 +73,6 @@ if (isset($_SESSION['uid'])) {
             <a href="register">Register</a>
 
             <br>
-
-            <h2>Admin login</h2>
-            <a href="AdminLogin">Admin Login</a>
             
         </div>
 
