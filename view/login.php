@@ -22,6 +22,8 @@ if (isset($_SESSION['uid'])) {
     </head>
     <body>
 
+    <?php include __DIR__ . '/nav.php'?>
+
         <header>
             <h1>Log in</h1>
         </header>
