@@ -73,9 +73,6 @@ if (isset($_SESSION['uid'])) {
             <a href="register">Register</a>
 
             <br>
-
-            <h2>Admin login</h2>
-            <a href="AdminLogin">Admin Login</a>
             
         </div>
 
