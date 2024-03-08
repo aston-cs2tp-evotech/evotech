@@ -56,12 +56,13 @@ h2 {
 .login {
     display: flex;
     justify-content: space-between;
-    max-width: 1600px;
+    max-width: 1550px;
     margin: 0px auto;
 }
 
 .login-image {
-    width: 1100px;
+    width: 1050px;
+    height: 620px;
     margin: 0px auto;
     padding: 0px;
     background-color: #534B62;
@@ -70,9 +71,9 @@ h2 {
 }
 
 .login-form {
-    width: 400px;
+    width: 500px;
     margin: 0px auto;
-    padding: 20px;
+    padding: 15px;
     background-color: #534B62;
     align-content: right;
     text-align: center;
