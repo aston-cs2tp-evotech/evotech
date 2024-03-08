@@ -65,7 +65,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
             <br>
-                <input class="btn btn-success" type="submit" value="Log in"/>
+                <input type="submit" value="Log in"/>
             <br>
             </form>
 
@@ -73,7 +73,9 @@ if (isset($_SESSION['uid'])) {
             <br>
             
             <h2>Don't have an account?</h2>
-            <a class="register" href="register">Register</a>
+            <form action="/register" method="POST">
+                <input type="submit" value="Register"/>
+            </form>
 
             <br>
             
