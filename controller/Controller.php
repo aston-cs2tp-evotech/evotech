@@ -54,10 +54,12 @@ function CreateSafeCustomer($details) {
     //check every key
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badCustomer = true;
+        else unset($keys[array_search($key, $keys)]); //removes key, to check all necessary fields exist
     }
 
+    echo count($keys);
     //create customer
-    if (!$badCustomer) {
+    if (!$badCustomer && empty($keys)) {
         return new Customer($details);
     }
     else return null;
@@ -227,9 +229,10 @@ function CreateSafeProduct($details) {
     //check each required key
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badProd = true;
+        else unset($keys[array_search($key, $keys)]);
     }
 
-    if (!$badProd) {
+    if (!$badProd && empty($keys)) {
         //prepare missing categories for Product
         $details['CategoryName'] = null;
         $details['MainImage'] = null;
@@ -580,8 +583,9 @@ function CreateSafeOrderLine($details) {
 
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badOrderLine = true;
+        else unset($keys[array_search($key, $keys)]);
     }
-    if (!$badOrderLine) {
+    if (!$badOrderLine && empty($keys)) {
         //fetch product to look up other info
         $product = CreateSafeProduct($Product->getProductByID($details['ProductID']));
         if (is_null($product)) return null;
@@ -633,9 +637,10 @@ function CreateSafeOrder($details) {
 
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badOrder = true;
+        else unset($keys[array_search($key, $keys)]);
     }
 
-    if (!$badOrder) {
+    if (!$badOrder && empty($keys)) {
         //add orderStatusName
         $statuses = $Order->getAllOrderStatuses();
         foreach ($statuses as $status) {
