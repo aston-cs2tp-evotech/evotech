@@ -238,7 +238,11 @@ function CreateSafeProduct($details) {
         $details['MainImage'] = null;
         $details['OtherImages'] = null;
 
-        return new Product($details);
+        $temp = new Product($details);
+        AddProductImagesToProduct($temp);
+        $err = AddCategoryToProduct($temp);
+        if (!$err) return $temp;
+        else return null;
     }
     else return null;
 }
@@ -279,7 +283,6 @@ function GetProductByID($productID) {
     if (!checkExists($productID) || !(gettype($productID) == "integer")) return false;
     $prod = CreateSafeProduct($Product->getProductByID($productID));
     if ($prod == null) return false;
-    AddProductImagesToProduct($prod);
     return $prod;
 }
 
@@ -316,7 +319,6 @@ function GetAllProducts() {
     foreach ($products as &$product) {
         $prod = CreateSafeProduct($product);
         if ($prod == null) return false;
-        AddProductImagesToProduct($prod);
         $product = $prod;
     }
     return $products;
@@ -431,10 +433,6 @@ function GetAllByCategory($category){
         return "No products in category";
     }
 
-    //add images
-    foreach ($filterProducts as &$filteredProduct) {
-        AddProductImagesToProduct($filteredProduct);
-    }
     
     return $filterProducts;
 }
@@ -502,12 +500,6 @@ function GetRecommendedProducts($productID) {
    $product = CreateSafeProduct($Product->getProductByID($productID));
    if (!CheckExists($product)) {
        return "Database Error";
-   }
-
-   // Get product category
-   $err = AddCategoryToProduct($product);
-   if (!empty($err)) {
-       return $err;
    }
 
    // Gets similar products from the same category
@@ -589,7 +581,6 @@ function CreateSafeOrderLine($details) {
         //fetch product to look up other info
         $product = CreateSafeProduct($Product->getProductByID($details['ProductID']));
         if (is_null($product)) return null;
-        AddProductImagesToProduct($product);
 
         //add missing info to orderLine
         $details['ProductName'] = $product->getName();
