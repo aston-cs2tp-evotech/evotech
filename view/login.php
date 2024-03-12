@@ -21,11 +21,10 @@ if (isset($_SESSION['uid'])) {
         
     </head>
     <body>
-    <?php include __DIR__ . '/nav.php'?>
         
-    <section class="bg-success p-5  py-4">
-
-    </section>
+        <section class="bg-success p-5  py-4">
+        <?php include __DIR__ . '/nav.php'?>
+        </section>
 
         <header>
             <h1>Log in</h1>
@@ -33,7 +32,7 @@ if (isset($_SESSION['uid'])) {
 
         <main>
 
-        <section class="login">
+        <div class="login">
 
         <div class="login-image">
 
@@ -73,7 +72,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             
             <h2>Don't have an account?</h2>
-            <form action="/register" method="POST">
+            <form>
                 <input type="submit" value="Register"/>
             </form>
 

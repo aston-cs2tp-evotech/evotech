@@ -28,10 +28,11 @@ input[type="submit"] {
     font-size: 16px;
 }
 
-a {
+a.register {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     background-color: #000;
     color: #fff;
+    text-decoration: none;
     padding: 12px 155px;
 }
 
