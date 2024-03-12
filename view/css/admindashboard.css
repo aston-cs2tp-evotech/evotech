@@ -1,0 +1,21 @@
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+
+body{
+  font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+  }
+
+
+
+#sidebar-wrapper{
+    width: 280px;
+    height:100vH ;
+}
+
+.table{
+    margin-top: 50px;
+    background-color: white;
+
+}

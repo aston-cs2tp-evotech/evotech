@@ -1,4 +1,5 @@
-# evotech
+![evotech; logo](https://github.com/aston-cs2tp-evotech/evotech/blob/main/view/images/evotechLogoCropped.png?raw=true)
+
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
@@ -10,6 +11,7 @@
 ![GitHub contributors](https://img.shields.io/github/contributors/aston-cs2tp-evotech/evotech)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/aston-cs2tp-evotech/evotech/test_and_depoly.yml)
 
+# evotech;
 
 An e-commerce website for selling computer parts and accessories built using PHP, MariaDB, HTML, CSS and JavaScript.
 Built as part of the Aston University Computer Science Team Project module.
@@ -20,6 +22,8 @@ Built as part of the Aston University Computer Science Team Project module.
     - [Windows](#windows)
     - [macOS](#macos)
     - [Linux](#linux)
+- [Constructing the database](#constructing-the-database)
+- [Using supplied dummy data](#using-supplied-dummy-data)
 - [Credits](#credits)
 
 
@@ -53,6 +57,8 @@ The script will have configured everything so in the future if you need to run l
 2. Open the following links in your browser:
     - http://localhost/phpmyadmin
     - http://localhost
+
+To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
 
 ### macOS
 
@@ -88,6 +94,8 @@ The script will have configured everything so in the future if you need to run l
     - http://localhost/phpmyadmin
     - http://localhost
 
+To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
+
 ### Linux
 
 1. Install XAMPP
@@ -112,6 +120,56 @@ The script will have configured everything so in the future if you need to run l
 2. Open the following links in your browser:
     - http://localhost/phpmyadmin
     - http://localhost
+
+To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
+
+## Constructing the database
+The database needs to be constructed before the website can be used.
+
+1. Open the following link in your browser:
+    - http://localhost/phpmyadmin
+2. Log in with your MySQL credentials
+    - Default username: `root`
+    - Default password: `''` (empty string)
+3. The database name is your username followed by '_db'
+    - For example, if your username is `root`, the database name is `root_db`
+4. Click on the `SQL` tab
+5. Open the `evotechDB.sql` file in the `setup` directory
+6. Copy the contents of the file and paste them into the SQL tab
+7. Click `Go` to run the SQL commands
+
+
+## Using supplied dummy data
+The database can be populated with dummy data to test the website.
+
+### SQL Product Data
+
+This will populate the database with dummy product data.
+The site **requires** some products to be present in the database to function correctly.
+
+1. Open the following link in your browser:
+    - http://localhost/phpmyadmin
+2. Log in with your MySQL credentials
+    - Default username: `root`
+    - Default password: `''` (empty string)
+3. Ensure you have created the database as per the instructions in [Constructing the database](#constructing-the-database)
+4. Click on the database name 
+    - The database name is your username followed by '_db'
+    - For example, if your username is `root`, the database name is `root_db`
+5. Click on the `SQL` tab
+6. Open the `dummyProductData.sql` file in the `setup` directory
+7. Copy the contents of the file and paste them into the SQL tab
+8. Click `Go` to run the SQL commands
+
+### Image Product Data
+
+This will populate the `images` directory with dummy product images.
+Whilst not necessary for the site to function, it will make the site look more realistic.
+
+1. Copy the image folders inside of `setup/examplePhotos/products` to `view/images/products`
+    - For example, `setup/examplePhotos/products/1` should be copied to `view/images/products/1`
+    - This can be done using the file explorer or the command line
+
 
 ## Credits
 

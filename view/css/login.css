@@ -1,0 +1,85 @@
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+  
+/* login.css */
+p {
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+input[type="submit"] {
+    height: 40px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+a.register {
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 155px;
+}
+
+body {
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+}
+
+h2 {
+    text-align: left;
+}
+
+.login {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1550px;
+    margin: 0px auto;
+}
+
+.login-image {
+    width: 1050px;
+    height: 708px;
+    margin: 0px auto;
+    padding: 0px;
+    background-color: #534B62;
+    align-content: left;
+    text-align: center;
+}
+
+.login-form {
+    width: 500px;
+    margin: 0px auto;
+    padding: 15px;
+    background-color: #534B62;
+    align-content: right;
+    text-align: center;
+}
+
+.error {
+    color: #ff0000;
+}
