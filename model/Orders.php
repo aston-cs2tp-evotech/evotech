@@ -16,6 +16,23 @@ class OrdersModel {
     }
 
     /**
+     * Retrieve all Orders in database.
+     * 
+     * @return array|null The Orders or null if not found
+     */
+    public function getAllOrders() {
+        $query = "SELECT * FROM `Orders`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $orders = $statement->fetch(PDO::FETCH_ASSOC);
+            return $orders ? $orders : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
      * Retrieve Order details by OrderID.
      * 
      * @param int $orderID The unique identifier of the Order.
