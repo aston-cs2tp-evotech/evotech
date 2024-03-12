@@ -357,9 +357,8 @@ function handleCheckoutPageRequest(){
     if (!isset($_SESSION['uid'])){
         header("Location:/");
     }
-    $totalAmount = 0;
 
-    $basketItems = GetCustomerBasket($totalAmount);
+    $basketItems = GetCustomerBasket();
 
     if (!$basketItems) {
         header("Location:/");

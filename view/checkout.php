@@ -14,7 +14,7 @@ if (isset($userInfo)) {
     $address = $userInfo->getAddress();
 }
 
-$basketItems = GetCustomerBasket($totalAmount);
+$basketItems = GetCustomerBasket();
 // check if basket is empty
 
 ?>
@@ -84,20 +84,18 @@ $basketItems = GetCustomerBasket($totalAmount);
                 <h2>Your Basket</h2>
                 
                 <?php
-                $totalAmount = 0;
-                $totalPrice = 0;
+                $totalPrice = $basketItems->getTotalAmount();
                 // Get basket items using the GetCustomerBasket function
 
                 foreach ($basketItems as $item) :
-                    $totalPrice += $item["UnitPrice"] * $item["Quantity"];
                 ?>
 
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h4 class="card-title"><?php echo $item['ProductName']; ?></h4>
-                            <p class="card-text">Quantity: <?php echo $item['Quantity']; ?></p>
-                            <p class="card-text">Price: £<?php echo $item['UnitPrice']; ?></p>
-                            <h5 class="card-text">Subtotal: £<?php echo $item['UnitPrice'] * $item['Quantity']; ?></h5>
+                            <h4 class="card-title"><?php echo $item->getProductName(); ?></h4>
+                            <p class="card-text">Quantity: <?php echo $item->getQuantity(); ?></p>
+                            <p class="card-text">Price: £<?php echo $item->getUnitPrice(); ?></p>
+                            <h5 class="card-text">Subtotal: £<?php echo $item->getTotalPrice(); ?></h5>
                         </div>
                     </div>
 

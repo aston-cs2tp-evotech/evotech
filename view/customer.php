@@ -16,8 +16,7 @@ if (isset($userInfo)) {
 }
 
 // Get previous orders
-$totalAmount = array();
-$orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $orders[order][product]['KEY']
+$orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order][product]['KEY']
 ?>
 
 <!DOCTYPE html>
@@ -88,10 +87,10 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
             <h2>Past Orders</h2>
             <?php if (!empty($orders)) : ?>
                 <?php $orders = array_reverse($orders, true); // Reverse the order of the array ?>
-                <?php foreach ($orders as $orderID => $order) : ?>
-                    <?php $totalPrice = 0; ?>
-                    <h3>Order <?php echo $orderID; ?></h3>
-                    <h4>Status: <?php echo $order['Status']; ?></h4>
+                <?php foreach ($orders as $order) : ?>
+                    <?php $totalPrice = $order->getTotalAmount(); ?>
+                    <h3>Order <?php echo $order->getOrderID(); ?></h3>
+                    <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -102,13 +101,11 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($order as $product) : ?>
-                                    <?php if (gettype($product) == "string") { continue; }?>
-                                    <?php $totalPrice += $product['UnitPrice'] * $product['Quantity']; ?>
+                                <?php foreach ($order->getOrderLines() as $product) : ?>
                                     <tr>
-                                        <td><?php echo $product['ProductName']; ?></td>
-                                        <td><?php echo $product['Quantity']; ?></td>
-                                        <td>£<?php echo $product['UnitPrice'] * $product['Quantity']; ?></td>
+                                        <td><?php echo $product->getProductName(); ?></td>
+                                        <td><?php echo $product->getQuantity(); ?></td>
+                                        <td>£<?php echo $product->getTotalPrice(); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

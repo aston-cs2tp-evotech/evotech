@@ -39,35 +39,34 @@ if (isset($userInfo)) {
                     <h2>Your basket</h2>
 
                     <?php
-                    $totalAmount = 0;
-                    $totalPrice = 0;
                     // Get basket items using the GetCustomerBasket function
-                    $basketItems = GetCustomerBasket($totalAmount);
+                    $basketItems = GetCustomerBasket();
+                    $totalPrice = null; //totalPrice is assigned after the check that basketItems exists
 
                     if ($basketItems) {
-                        foreach ($basketItems as $item) :
-                            $totalPrice += $item['UnitPrice'] * $item['Quantity'];
+                        $totalPrice = $basketItems->getTotalAmount();
+                        foreach ($basketItems->getOrderLines() as $item) :
                     ?>
                             <div class="card mb-3">
                                 <div class="row no-gutters">
                                     <div class="col-md-4">
-                                        <img src="/view/images/products/<?php echo $item['ProductID'];?>/<?php echo $item["MainImage"]?>" class="card-img" alt="Product image">
+                                        <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product image">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
-                                            <h3 class="card-title"><?php echo $item['ProductName']; ?></h3>
-                                            <p class="card-text">Price: £<?php echo number_format($item['UnitPrice'], 2); ?></p>
-                                            <p class="card-text">Total Stock: <?php echo $item['TotalStock']; ?></p>
+                                            <h3 class="card-title"><?php echo $item->getProductName(); ?></h3>
+                                            <p class="card-text">Price: £<?php echo number_format($item->getUnitPrice(), 2); ?></p>
+                                            <p class="card-text">Total Stock: <?php echo $item->getTotalStock(); ?></p>
                                             <form action="/update-basket" method="post">
-                                                <input type="hidden" name="productID" value="<?php echo $item['ProductID']; ?>">
+                                                <input type="hidden" name="productID" value="<?php echo $item->getProductID(); ?>">
                                                 <div class="form-group">
                                                     <label for="quantity">Quantity</label>
-                                                    <input type="number" class="form-control" name="quantity" value="<?php echo $item['Quantity']; ?>" min="0" max="<?php echo $item['TotalStock']; ?>" required />
+                                                    <input type="number" class="form-control" name="quantity" value="<?php echo $item->getQuantity(); ?>" min="0" max="<?php echo $item->getTotalStock(); ?>" required />
                                                 </div>
                                                 <button type="button" class="btn btn-danger">Delete</button>
                                                 <input type="submit" class="btn btn-primary" value="Update">
                                             </form>
-                                            <h5 class="card-text">Subtotal: £<?php echo number_format($item['UnitPrice'] * $item['Quantity'], 2); ?></h4>
+                                            <h5 class="card-text">Subtotal: £<?php echo number_format($item->getTotalPrice(), 2); ?></h4>
                                         </div>
                                     </div>
                                 </div>
