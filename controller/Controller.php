@@ -892,4 +892,26 @@ function GetPreviousOrders() {
     return $orders;
 }
 
+/**
+ * Retrieves all orders, with orderLines attached
+ * @return array|boolean array of Order objects if success, otherwise false
+ */
+function GetAllOrders() {
+    global $Order;
+
+    //retrieve all orders
+    $allOrders = CreateMultipleSafeOrders($Order->getAllOrders());
+    if (is_null($allOrders)) return false;
+
+    //add orderLines to each order
+    foreach ($allOrders as &$order) {
+        $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderByID()));
+        if (is_null($orderLines)) return false;
+        $err = AddOrderLinesToOrder($orderLines, $order);
+        if (!$err) return false;
+    }
+
+    return $allOrders;
+}
+
 ?>
