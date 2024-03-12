@@ -28,7 +28,7 @@ input[type="submit"] {
     font-size: 16px;
 }
 
-a {
+a.register {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     background-color: #000;
     color: #fff;
@@ -57,12 +57,13 @@ h2 {
 .login {
     display: flex;
     justify-content: space-between;
-    max-width: 1200px;
+    max-width: 1550px;
     margin: 0px auto;
 }
 
 .login-image {
-    width: 800px;
+    width: 1050px;
+    height: 620px;
     margin: 0px auto;
     padding: 0px;
     background-color: #534B62;
@@ -71,9 +72,9 @@ h2 {
 }
 
 .login-form {
-    width: 400px;
+    width: 500px;
     margin: 0px auto;
-    padding: 20px;
+    padding: 15px;
     background-color: #534B62;
     align-content: right;
     text-align: center;
