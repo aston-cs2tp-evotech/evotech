@@ -103,6 +103,10 @@ switch ($requestPath) {
     case '/change-password':
         handleChangePasswordRequest();
         break;
+    
+    case '/admin':
+        require __DIR__ . '/view/admin/dashboard.php';
+        break;
 
     default:
         handle404Request();
