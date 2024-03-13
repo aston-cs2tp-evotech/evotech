@@ -16,6 +16,23 @@ class OrdersModel {
     }
 
     /**
+     * Retrieve all Orders in database.
+     * 
+     * @return array|null The Orders or null if not found
+     */
+    public function getAllOrders() {
+        $query = "SELECT * FROM `Orders`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $orders = $statement->fetch(PDO::FETCH_ASSOC);
+            return $orders ? $orders : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
      * Retrieve Order details by OrderID.
      * 
      * @param int $orderID The unique identifier of the Order.
@@ -511,6 +528,7 @@ class Order {
     private $customerID;
     private $totalAmount;
     private $orderStatusID;
+    private $orderStatusName;
     private $orderLines;
 
 
@@ -524,6 +542,7 @@ class Order {
         $this->customerID = $orderDetails['CustomerID'];
         $this->totalAmount = $orderDetails['TotalAmount'];
         $this->orderStatusID = $orderDetails['OrderStatusID'];
+        $this->orderStatusName = $orderDetails['OrderStatusName'];
         $this->orderLines = array();
     }
 
@@ -605,6 +624,24 @@ class Order {
      */
     public function setOrderStatusID($orderStatusID) {
         $this->orderStatusID = $orderStatusID;
+    }
+
+    /**
+     * Get the OrderStatusName of the Order.
+     * 
+     * @return string The OrderStatusName.
+     */
+    public function getOrderStatusName() {
+        return $this->orderStatusName;
+    }
+
+    /**
+     * Set the OrderStatusName of the Order.
+     * 
+     * @param string The OrderStatusName.
+     */
+    public function setOrderStatusName($orderStatusName) {
+        $this->orderStatusName = $orderStatusName;
     }
 
 

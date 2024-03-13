@@ -8,9 +8,9 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser(); 
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username
+if (isset($userInfo)) {
+  $username = $userInfo->getUsername();
 }
 ?>
 <!DOCTYPE html>
@@ -41,23 +41,23 @@ if (isset($userInfo["Username"])) {
           <div class="card mb-3">
             <div class="row no-gutters">
               <div class="col-md-4">
-                <img src="/view/images/products/<?php echo $item['ProductID'];?>/<?php echo $item["MainImage"]?>" class="card-img" alt="Product Image">
+                <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product Image">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
                   <h4 class="card-title">
-                    <?php echo $item['Name']; ?>
+                    <?php echo $item->getName(); ?>
                   </h4>
                   <p class="card-text">
-                    <?php echo $item['Description']; ?>
+                    <?php echo $item->getDescription(); ?>
                   </p>
                   <p class="card-text">Stock:
-                    <?php echo $item['Stock']; ?>
+                    <?php echo $item->getStock(); ?>
                   </p>
                   <p class="card-text">Price: £
-                    <?php echo $item['Price']; ?>
+                    <?php echo $item->getPrice(); ?>
                   </p>
-                  <a href="/product?productID=<?php echo $item['ProductID']; ?>" class='btn btn-primary'>Product Page</a>
+                  <a href="/product?productID=<?php echo $item->getProductID(); ?>" class='btn btn-primary'>Product Page</a>
                 </div>
               </div>
             </div>

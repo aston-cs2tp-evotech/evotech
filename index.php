@@ -14,16 +14,18 @@ include __DIR__ . "/model/Orders.php";
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
 
-// Initalise $userInfo
-$userInfo = array();
+/**
+ * @var Customer|null $userinfo Customer object if initialized
+ */
+$userInfo = null;
 
 if (isset($_SESSION["uid"])) {
     ReLogInUser(); 
 }
 
 // Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+if (isset($userInfo)) {
+    $username = $userInfo->getUsername();
 }
 
 
@@ -355,9 +357,8 @@ function handleCheckoutPageRequest(){
     if (!isset($_SESSION['uid'])){
         header("Location:/");
     }
-    $totalAmount = 0;
 
-    $basketItems = GetCustomerBasket($totalAmount);
+    $basketItems = GetCustomerBasket();
 
     if (!$basketItems) {
         header("Location:/");
