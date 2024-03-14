@@ -22,13 +22,13 @@ if (isset($_SESSION['uid'])) {
     </head>
     <body>
         
-        <section class="bg-success p-5  py-4">
-        <?php include __DIR__ . '/nav.php'?>
-        </section>
+    <section class="bg-success p-5  py-4">
+    <?php include __DIR__ . '/nav.php'?>
+    </section>
 
-        <main>
+    <main>
 
-        <div class="login">
+    <div class="login">
 
         <div class="login-image">
 
@@ -76,9 +76,9 @@ if (isset($_SESSION['uid'])) {
             
         </div>
 
-        </section>
+    </div>
 
-        </main>
+    </main>
 
     </body>
 
