@@ -333,6 +333,16 @@ function GetAllStockedProducts() {
     if (!FilterStockedProducts($products)) return false;
     else return $products;
 }
+/**
+ * Gets all categories from the database
+ * @return array|boolean Array of categories if succeeded, otherwise false
+ */
+function GetAllCategories() {
+    global $Product;
+    $categories = $Product->getCategories();
+    if (!$categories) return false;
+    return $categories;
+}
 
 /**
  * Adds a category to the product via it's categoryID
@@ -614,6 +624,17 @@ function CreateMultipleSafeOrderLines($details) {
     }
     else return null;
 
+}
+
+/**
+ * Get all order statuses
+ * @return array|boolean Array of order statuses if success, otherwise false
+ */
+function GetAllOrderStatuses() {
+    global $Order;
+    $statuses = $Order->getAllOrderStatuses();
+    if (is_null($statuses)) return false;
+    return $statuses;
 }
 
 /**
