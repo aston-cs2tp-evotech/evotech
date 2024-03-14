@@ -905,7 +905,7 @@ function GetAllOrders() {
 
     //add orderLines to each order
     foreach ($allOrders as &$order) {
-        $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderByID()));
+        $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderID()));
         if (is_null($orderLines)) return false;
         $err = AddOrderLinesToOrder($orderLines, $order);
         if (!$err) return false;
