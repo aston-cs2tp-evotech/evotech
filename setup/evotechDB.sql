@@ -16,6 +16,15 @@ CREATE TABLE `OrderStatus` (
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+INSERT INTO `OrderStatus` (`Name`) VALUES
+('basket'),
+('ready'),
+('processing'),
+('delivering'),
+('delivered'),
+('cancelled'),
+('failed');
+
 -- --------------------------------------------------------
 -- Table for Compatibility
 -- The `CompatibilityID` is a unique identifier for each compatibility type.
