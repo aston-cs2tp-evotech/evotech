@@ -28,12 +28,20 @@ input[type="submit"] {
     font-size: 16px;
 }
 
-a.register {
+.login-form-button {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     background-color: #000;
     color: #fff;
     text-decoration: none;
-    padding: 12px 155px;
+    padding: 12px 225px;
+}
+
+.register-button {
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    padding: 12px 215px;
 }
 
 body {

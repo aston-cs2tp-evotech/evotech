@@ -56,21 +56,19 @@ if (isset($_SESSION['uid'])) {
                 <input type="text" name="usernameOrEmail" placeholder="Username / email address" required/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
-            <br>
-            <br>
-            <br>
-            <br>
-                <input type="submit" value="Log in"/>
-            <br>
             </form>
-
+            <br>
+            <br>
+            <br>
+            <br>
+                <a href="login" class="login-form-button">Login</a>
+            <br>
             <br>
             <br>
             
             <h2>Don't have an account?</h2>
-            <form action="/register">
-                <input type="submit" value="Register"/>
-            </form>
+                <br>
+                <a href="register" class="register-button">Register</a>
 
             <br>
             
