@@ -34,6 +34,11 @@ input[type="submit"] {
     color: #fff;
     text-decoration: none;
     padding: 12px 225px;
+    transition: 0.4s background-color;
+}
+
+.login-form-button:hover {
+    background-color: #aaa;
 }
 
 .register-button {
@@ -42,6 +47,11 @@ input[type="submit"] {
     color: #fff;
     text-decoration: none;
     padding: 12px 215px;
+    transition: 0.4s background-color;
+}
+
+.register-button:hover {
+    background-color: #aaa;
 }
 
 body {
