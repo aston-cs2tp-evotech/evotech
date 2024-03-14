@@ -8,12 +8,13 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser();
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username and address
+if (isset($userInfo)) {
+    $username = $userInfo->getUsername();
+    $address = $userInfo->getAddress();
 }
 
-$basketItems = GetCustomerBasket($totalAmount);
+$basketItems = GetCustomerBasket();
 // check if basket is empty
 
 ?>
@@ -26,7 +27,7 @@ $basketItems = GetCustomerBasket($totalAmount);
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Link to your custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
+    <link rel="stylesheet" type="text/css" href="/view/css/register_checkout_customer.css">
 </head>
 
 <body>
@@ -48,7 +49,7 @@ $basketItems = GetCustomerBasket($totalAmount);
                     </div>
                     <div class="form-group">
                         <label for="Full_address">Full address</label>
-                        <textarea name="customer_address" placeholder="Address" rows="6" required><?php echo $userInfo["CustomerAddress"]; ?></textarea>
+                        <textarea name="customer_address" placeholder="Address" rows="6" required><?php echo $address; ?></textarea>
                     </div>
 
                     <h2>Card details</h2>
@@ -83,20 +84,18 @@ $basketItems = GetCustomerBasket($totalAmount);
                 <h2>Your Basket</h2>
                 
                 <?php
-                $totalAmount = 0;
-                $totalPrice = 0;
+                $totalPrice = $basketItems->getTotalAmount();
                 // Get basket items using the GetCustomerBasket function
 
                 foreach ($basketItems as $item) :
-                    $totalPrice += $item["UnitPrice"] * $item["Quantity"];
                 ?>
 
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h4 class="card-title"><?php echo $item['ProductName']; ?></h4>
-                            <p class="card-text">Quantity: <?php echo $item['Quantity']; ?></p>
-                            <p class="card-text">Price: £<?php echo $item['UnitPrice']; ?></p>
-                            <h5 class="card-text">Subtotal: £<?php echo $item['UnitPrice'] * $item['Quantity']; ?></h5>
+                            <h4 class="card-title"><?php echo $item->getProductName(); ?></h4>
+                            <p class="card-text">Quantity: <?php echo $item->getQuantity(); ?></p>
+                            <p class="card-text">Price: £<?php echo $item->getUnitPrice(); ?></p>
+                            <h5 class="card-text">Subtotal: £<?php echo $item->getTotalPrice(); ?></h5>
                         </div>
                     </div>
 

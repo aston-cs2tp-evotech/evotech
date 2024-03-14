@@ -16,6 +16,23 @@ class OrdersModel {
     }
 
     /**
+     * Retrieve all Orders in database.
+     * 
+     * @return array|null The Orders or null if not found
+     */
+    public function getAllOrders() {
+        $query = "SELECT * FROM `Orders`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $orders = $statement->fetch(PDO::FETCH_ASSOC);
+            return $orders ? $orders : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
+    /**
      * Retrieve Order details by OrderID.
      * 
      * @param int $orderID The unique identifier of the Order.
@@ -316,5 +333,351 @@ class OrdersModel {
             return false;
         }
     }
+}
+
+class OrderLine {
+    
+    private $productID;
+    private $productName;
+    private $quantity;
+    private $totalStock;
+    private $unitPrice;
+    private $totalPrice;
+    private $mainImage;
+    private $otherImages;
+
+    
+    /**
+     * Construct a new OrderLine with an associated array
+     * 
+     * @param array $orderLineDetails The OrderLine details
+     */
+    public function __construct($orderLineDetails) {
+        $this->productID = $orderLineDetails['ProductID'];
+        $this->productName = $orderLineDetails['ProductName'];
+        $this->quantity = $orderLineDetails['Quantity'];
+        $this->totalStock = $orderLineDetails['TotalStock'];
+        $this->unitPrice = $orderLineDetails['UnitPrice'];
+        $this->totalPrice = $this->unitPrice * $this->quantity;
+        $this->mainImage = $orderLineDetails['MainImage'];
+        $this->otherImages = $orderLineDetails['OtherImages'];
+    }
+
+
+    /**
+     * Get the ProductID of the OrderLine.
+     * 
+     * @return int The ProductID.
+     */
+    public function getProductID() {
+        return $this->productID;
+    }
+
+
+    /**
+     * Set the ProductID of the OrderLine.
+     * 
+     * @param int $productID The ProductID.
+     */
+    public function setProductID($productID) {
+        $this->productID = $productID;
+    }
+
+
+    /**
+     * Get the ProductName of the OrderLine.
+     * 
+     * @return string The ProductName.
+     */
+    public function getProductName() {
+        return $this->productName;
+    }
+
+
+    /**
+     * Set the ProductName of the OrderLine.
+     * 
+     * @param string $productName The ProductName.
+     */
+    public function setProductName($productName) {
+        $this->productName = $productName;
+    }
+
+
+    /**
+     * Get the Quantity of the OrderLine.
+     * 
+     * @return int The Quantity.
+     */
+    public function getQuantity() {
+        return $this->quantity;
+    }
+
+
+    /**
+     * Set the Quantity of the OrderLine.
+     * 
+     * @param int $quantity The Quantity.
+     */
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
+
+        // Update the TotalPrice
+        $this->totalPrice = $this->unitPrice * $this->quantity;
+    }
+
+
+    /**
+     * Get the TotalStock of the OrderLine.
+     * 
+     * @return int The TotalStock.
+     */
+    public function getTotalStock() {
+        return $this->totalStock;
+    }
+
+
+    /**
+     * Set the TotalStock of the OrderLine.
+     * 
+     * @param int $totalStock The TotalStock.
+     */
+    public function setTotalStock($totalStock) {
+        $this->totalStock = $totalStock;
+    }
+
+
+    /**
+     * Get the UnitPrice of the OrderLine.
+     * 
+     * @return float The UnitPrice.
+     */
+    public function getUnitPrice() {
+        return $this->unitPrice;
+    }
+
+
+    /**
+     * Set the UnitPrice of the OrderLine.
+     * 
+     * @param float $unitPrice The UnitPrice.
+     */
+    public function setUnitPrice($unitPrice) {
+        $this->unitPrice = $unitPrice;
+
+        // Update the TotalPrice
+        $this->totalPrice = $this->unitPrice * $this->quantity;
+    }
+
+
+    /**
+     * Get the TotalPrice of the OrderLine.
+     * 
+     * @return float The TotalPrice.
+     */
+    public function getTotalPrice() {
+        return $this->totalPrice;
+    }
+
+
+    /**
+     * Get the MainImage of the OrderLine.
+     * 
+     * @return string The MainImage.
+     */
+    public function getMainImage() {
+        return $this->mainImage;
+    }
+
+
+    /**
+     * Set the MainImage of the OrderLine.
+     * 
+     * @param string $mainImage The MainImage.
+     */
+    public function setMainImage($mainImage) {
+        $this->mainImage = $mainImage;
+    }
+
+
+    /**
+     * Get the OtherImages of the OrderLine.
+     * 
+     * @return array The OtherImages.
+     */
+    public function getOtherImages() {
+        return $this->otherImages;
+    }
+
+
+    /**
+     * Set the OtherImages of the OrderLine.
+     * 
+     * @param array $otherImages The OtherImages.
+     */
+    public function setOtherImages($otherImages) {
+        $this->otherImages = $otherImages;
+    }
+
+}
+
+
+class Order {
+
+    private $orderID;
+    private $customerID;
+    private $totalAmount;
+    private $orderStatusID;
+    private $orderStatusName;
+    private $orderLines;
+
+
+    /**
+     * Construct a new Order with an associated array
+     * 
+     * @param array $orderDetails The Order details
+     */
+    public function __construct($orderDetails) {
+        $this->orderID = $orderDetails['OrderID'];
+        $this->customerID = $orderDetails['CustomerID'];
+        $this->totalAmount = $orderDetails['TotalAmount'];
+        $this->orderStatusID = $orderDetails['OrderStatusID'];
+        $this->orderStatusName = $orderDetails['OrderStatusName'];
+        $this->orderLines = array();
+    }
+
+
+    /**
+     * Get the OrderID of the Order.
+     * 
+     * @return int The OrderID.
+     */
+    public function getOrderID() {
+        return $this->orderID;
+    }
+
+
+    /**
+     * Set the OrderID of the Order.
+     * 
+     * @param int $orderID The OrderID.
+     */
+    public function setOrderID($orderID) {
+        $this->orderID = $orderID;
+    }
+
+
+    /**
+     * Get the CustomerID of the Order.
+     * 
+     * @return int The CustomerID.
+     */
+    public function getCustomerID() {
+        return $this->customerID;
+    }
+
+
+    /**
+     * Set the CustomerID of the Order.
+     * 
+     * @param int $customerID The CustomerID.
+     */
+    public function setCustomerID($customerID) {
+        $this->customerID = $customerID;
+    }
+
+
+    /**
+     * Get the TotalAmount of the Order.
+     * 
+     * @return float The TotalAmount.
+     */
+    public function getTotalAmount() {
+        return $this->totalAmount;
+    }
+
+
+    /**
+     * Set the TotalAmount of the Order.
+     * 
+     * @param float $totalAmount The TotalAmount.
+     */
+    public function setTotalAmount($totalAmount) {
+        $this->totalAmount = $totalAmount;
+    }
+
+
+    /**
+     * Get the OrderStatusID of the Order.
+     * 
+     * @return int The OrderStatusID.
+     */
+    public function getOrderStatusID() {
+        return $this->orderStatusID;
+    }
+
+
+    /**
+     * Set the OrderStatusID of the Order.
+     * 
+     * @param int $orderStatusID The OrderStatusID.
+     */
+    public function setOrderStatusID($orderStatusID) {
+        $this->orderStatusID = $orderStatusID;
+    }
+
+    /**
+     * Get the OrderStatusName of the Order.
+     * 
+     * @return string The OrderStatusName.
+     */
+    public function getOrderStatusName() {
+        return $this->orderStatusName;
+    }
+
+    /**
+     * Set the OrderStatusName of the Order.
+     * 
+     * @param string The OrderStatusName.
+     */
+    public function setOrderStatusName($orderStatusName) {
+        $this->orderStatusName = $orderStatusName;
+    }
+
+
+    /**
+     * Get the OrderLines of the Order.
+     * 
+     * @return array The OrderLines.
+     */
+    public function getOrderLines() {
+        return $this->orderLines;
+    }
+
+
+    /**
+     * Add an OrderLine to the Order.
+     * 
+     * @param OrderLine $orderLine The OrderLine to add.
+     */
+    public function addOrderLine($orderLine) {
+        $this->orderLines[] = $orderLine;
+    }
+
+
+    /**
+     * Remove an OrderLine from the Order.
+     * 
+     * @param int $productID The ProductID of the OrderLine to remove.
+     */
+    public function removeOrderLine($productID) {
+        foreach ($this->orderLines as $key => $orderLine) {
+            if ($orderLine->getProductID() == $productID) {
+                unset($this->orderLines[$key]);
+                break;
+            }
+        }
+    }
+
 }
 ?>

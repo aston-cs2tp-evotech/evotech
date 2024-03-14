@@ -8,14 +8,15 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser();
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username
+if (isset($userInfo)) {
+    $username = $userInfo->getUsername();
+    $email = $userInfo->getEmail();
+    $addr = $userInfo->getAddress();
 }
 
 // Get previous orders
-$totalAmount = array();
-$orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $orders[order][product]['KEY']
+$orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order][product]['KEY']
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +29,7 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Link to your custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
+    <link rel="stylesheet" type="text/css" href="/view/css/register_checkout_customer.css">
 </head>
 
 <body>
@@ -44,9 +45,9 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
 
         
                 <h2>Customer Details</h2>
-                <p><strong>Username:</strong> <?php echo $userInfo["Username"]; ?></p>
-                <p><strong>Email:</strong> <?php echo $userInfo["Email"]; ?></p>
-                <p><strong>Address:</strong> <?php echo $userInfo["CustomerAddress"]; ?></p>
+                <p><strong>Username:</strong> <?php echo $username; ?></p>
+                <p><strong>Email:</strong> <?php echo $email; ?></p>
+                <p><strong>Address:</strong> <?php echo $addr; ?></p>
 
             </div>
             
@@ -86,10 +87,10 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
             <h2>Past Orders</h2>
             <?php if (!empty($orders)) : ?>
                 <?php $orders = array_reverse($orders, true); // Reverse the order of the array ?>
-                <?php foreach ($orders as $orderID => $order) : ?>
-                    <?php $totalPrice = 0; ?>
-                    <h3>Order <?php echo $orderID; ?></h3>
-                    <h4>Status: <?php echo $order['Status']; ?></h4>
+                <?php foreach ($orders as $order) : ?>
+                    <?php $totalPrice = $order->getTotalAmount(); ?>
+                    <h3>Order <?php echo $order->getOrderID(); ?></h3>
+                    <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -100,13 +101,11 @@ $orders = GetPreviousOrders($totalAmount); // Assuming $orders is a 3D array: $o
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($order as $product) : ?>
-                                    <?php if (gettype($product) == "string") { continue; }?>
-                                    <?php $totalPrice += $product['UnitPrice'] * $product['Quantity']; ?>
+                                <?php foreach ($order->getOrderLines() as $product) : ?>
                                     <tr>
-                                        <td><?php echo $product['ProductName']; ?></td>
-                                        <td><?php echo $product['Quantity']; ?></td>
-                                        <td>£<?php echo $product['UnitPrice'] * $product['Quantity']; ?></td>
+                                        <td><?php echo $product->getProductName(); ?></td>
+                                        <td><?php echo $product->getQuantity(); ?></td>
+                                        <td>£<?php echo $product->getTotalPrice(); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

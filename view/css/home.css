@@ -1,82 +1,94 @@
+@font-face {
+  font-family: allianceNo2;
+  src: url(/view/fonts/allianceno2.woff) format('woff');
+}
+
 #content{
     position: relative;
     margin-top: 50px;
   }
-  
-  
-  .navbar{
-    background-color: #333;
     
+  body{
+      background-color: #534B62;
+      font-family: allianceNo2,  Arial, Helvetica, sans-serif !important;
+      
+    }
+  
     
-  }
-
-  .card-img {
-    max-height: 300px; /* Adjust the value based on your preference */
-    max-width: 400px;
-    object-fit: scale-down;
-    width: auto;
-  }
-  
-  .login-button{
-    background-color: rgb(122, 122, 122);
-    color: white;
-    font-size: 12px;
-    padding: 10px 20px;
-    border-radius: 40px;
-    transition: 0.4s background-color;;
-  }
-  .login-button:hover{
-    background-color: rgb(27, 27, 27);
-  }
-  
-  .navbar-toggler{
-    border: none;
-    font-size: small;
-  }
-  
-  .navbar-toggler:focus, .btm-close:focus{
-    box-shadow: none;
-    outline: none;
-  }
-  
-  .nav-link{
-    color: black;
-    font-weight:  500px; ;
-    position: relative;
-  }
-  
-  .bi {
-    color: black;
-    font-weight:  500px; ;
-    position: relative;
-  
-  
-  }
-  .nav-link:hover, .nav-link.active{
-    color: rgb(157, 157, 157);
-  
-  }
-  
-  .nav-item{
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  
-  .section h2, .section p{
-    color: grey;
-    margin: 10px;
-    text-align: center;
-  
-  }
+ 
   
   .flex-equal > * {
     flex: 1;
   }
   
-   
   
-  .login{
-    text-decoration: none;
-  }
 
 
+  .card-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-container .card {
+  flex: 1 0 auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  height: 275px; 
+  overflow: auto; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container .card img {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  width: 100%; 
+  height: auto; 
+}
+
+
+.card-container .card:hover {
+  transform: scale(1.03); 
+  transition: transform 0.3s ease-in-out; 
+
+}
+
+.card{
+  background-color: #A499B3!important; /*Requires important to change color */
+
+
+}
+
+  #largeCard{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #A499B3;
+    border-radius: 15px;
+}
+
+
+.largeCard .card {
+    margin: 0;
+}
+
+hr {
+    height: 20px;
+}
+
+#LearnMore-Link{
+  font-size: 30px;
+  margin-right: auto;
+  color: #D0BCD5 ;
+}
+
+#LearnMore-Link:hover{
+  color: #A499B3;
+}
+
+footer{
+  width: 100%;
+}

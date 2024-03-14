@@ -1,6 +1,10 @@
-/* login_register_checkout_customer.css */
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+/* register_checkout_customer.css */
 p {
-    font-family: "Arial", sans-serif;
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     text-align: left;
 }
 
@@ -19,11 +23,11 @@ input[type="submit"] {
 }
 
 a {
-    font-family: "Arial", sans-serif;
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     margin: 0;
     padding: 0;
     background-color: #f8f8f8;

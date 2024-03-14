@@ -8,9 +8,9 @@ if (isset($_SESSION["uid"])) {
     ReLogInUser(); 
 }
 
-// Check if Username is set in $userInfo and then set $username
-if (isset($userInfo["Username"])) {
-    $username = $userInfo["Username"];
+// Check if $userInfo is set, and then set the username
+if (isset($userInfo)) {
+  $username = $userInfo->getUsername();
 }
 
 // Get an image of the first product in each category
@@ -44,12 +44,15 @@ foreach ($categories as $category) {
     <link rel="stylesheet" type="text/css" href="/view/css/home.css">
     <title>Home - EvoTech</title>
     <ion-icon name="desktop-outline"></ion-icon>
-
+ 
 
 </head>
 
+<nav>
+    <?php include __DIR__ . '/nav.php'?>
+</nav>
+
 <body>
-  <?php include __DIR__ . '/nav.php'?>
      
     <!--Empty box to fix formatting error 
         Creates an empty above content to prevent main content  being covered by navbar
@@ -58,28 +61,126 @@ foreach ($categories as $category) {
 
     </section> -->
 
-    <section class="bg-dark text-light p-5 text-center text-sm-start py-5" style="background-image: url('view/images/insidePC.jpg' ); background-size: cover; background-position: center 40%;">
-    <div class="container" style="padding-top: 70px; padding-bottom: 40px;">
-
+    <section class="bg text-light p-5 my text-center text-sm-start py-5" style="background-color:#534B62; margin-top: 20px;">
         <div class="container">
             <div class="d-sm-flex allign-items-center justify-content-between">
                 <div>
-                    <h2 style="font-weight: 500;">Evolve Your Gear</h2>
-                    <p class="lead my-3">
-                    Winter Sale
-                    </p>
-                    <a href="/products">
-                    <button class="btn btn-primary btn-md">Shop Now</button>
-                    </a>
+                    <h1>Evotech; Slogan</h1>
+                    <h1 >
+                        Shop the latest technology at evotech
+                    </h1>
+                    
                 </div>
-                <!-- LOGO IF NEEDED -->
-               <!-- <img class="img-fluid w-10" style="width: 10%; height: 80%; margin-right: 10px;" src="view/images/evotechLogo2.png"alt="Evotech">  -->
+               
             </div>
         </div>
-    </div>
-    </section>
 
-    <!--Boxes-->
+        <section class="p-5">
+            <div class="card" id="largeCard">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="row text-center p card-container" >
+                            <div class="col-md p-1" >
+                                <div class="card bg text-dark" >
+                                    <img src="view/images/Motherboard.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Motherboard image">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Components</h5>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md p-1 ">
+                                <div class="card text-dark" >
+                                    <img src="view/images/cpu.jpg" style="max-width: 40%; max-height:40%;" class="card-img-top" alt="CPU image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">CPUs</h5>
+                                    </div>
+                                </div>   
+            
+                            </div>
+                            <div class="col-md p-1">
+                               <div class="card text-dark" >
+                                  <img src="view/images/Graphics card.webp" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Graphics Card image">
+                                  <div class="card-body">
+                                    <h5 class="card-title">GPUs</h5>
+                            
+                                  </div>  
+                                </div>
+            
+                            </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="row text-center p card-container" >
+                            <div class="col-md p-1" >
+                                <div class="card bg text-dark" >
+                                    <img src="view/images/Case.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Cases image">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Cases</h5>
+                                      
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-md p-1">
+                                <div class="card  text-dark" >
+                                    <img src="view/images/Ram.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Ram image">
+                                    <div class="card-body">
+                                      <h5 class="card-title">Memory</h5>
+                                      
+                                    </div>
+                                </div>   
+            
+                            </div>
+                            <div class="col-md p-1">
+                               <div class="card text-dark" >
+                                  <img src="view/images/SSD.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="SSD image"> 
+                                  <div class="card-body">
+                                    <h5 class="card-title">Storage</h5>
+                                    
+                                  </div>  
+                                </div>
+            
+                            </div>
+                        </div>
+                     </div>
+                  
+                </div>
+              </div>
+        </section>
+
+      <hr>
+      <section id="statements">
+      <h1>Mini Mission Statement that supports<br> 
+        inclusivity/accessibility to <br> people using
+        this site</h1>
+
+        <div class="container p-3">
+            <div class="row justify-content-between">
+              <div class="col-4">
+                <h2>
+                    Slight explanation and synopsis  of Evotech as a service and website
+                  </h2> 
+              </div>
+              <div class="col-6">
+                <h3>Detailed information about the other pages, and of each feature avaliable. Depth in line with the synopsis on left.</h3>
+                <a id="LearnMore-Link" href="#">Learn more about evotech <i class="bi bi-arrow-right" style="color: white;"></i>
+                <hr>
+                </a>
+              </div>
+            </div>
+          </div>
+
+       
+
+      
+      
+
+    </section>
+</section>
+
+
+    <!--Boxes-
     <section class="p-5">
         <div class="container">
          <div class="row">
@@ -118,24 +219,27 @@ foreach ($categories as $category) {
          </div>
         </div>
     </section>
-    
+   -->
+
     <!--List of different categories-->
+
+    <?php /*
 
     <?php for ($i = 0; $i < count($categories); $i += 2): ?>
     <section class="d-md-flex flex-md-equal my-md-3 ps-md-3">
         <?php for ($j = $i; $j <= $i + 1 && $j < count($categories); $j++): ?>
             <?php $currentCategory = $categories[$j]; ?>
-            <div class="bg-body-tertiary me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
+            <div style="background-color: #534B62 ;" class="bg me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
                 <div class="my-3 p-3">
                     <h2 class="<?= $currentCategory ?>">
                         <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark"><?php echo $currentCategory; ?></a>
                     </h2>
                     <p class="Shop-now">Shop Now.</p>
                 </div>
-                <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+                <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
                     <?php if (isset($categoryImages[$currentCategory])): ?>
                         <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark">
-                            <img src="view/images/products/<?php echo $categoryImages[$currentCategory]["ProductID"];?>/<?php echo $categoryImages[$currentCategory]["MainImage"]?>" class="card-img" alt="Product Image">
+                            <img src="view/images/products/<?php echo $categoryImages[$currentCategory]->getProductID();?>/<?php echo $categoryImages[$currentCategory]->getMainImage();?>" class="card-img" alt="Product Image">
                         </a>
                     <?php else: ?>
                         <!-- Default image or alternative content if no image is available -->
@@ -146,12 +250,11 @@ foreach ($categories as $category) {
         <?php endfor; ?>
     </section>
 <?php endfor; ?>
+*/ ?>
 
+                    
 
-
-
-    
-    <!-- faq -->
+  <!-- FAQ
     <section id="Faq" class="p-4">
         <div class="container">
             <h2 class="text-center mb-4">Frequently Asked Questions</h2>
@@ -201,7 +304,12 @@ foreach ($categories as $category) {
         </div>
 
     </section>
+        -->
+                    
 
+                    
+
+    <!--Customer Reviews-
     <section id="instructors" class="p-5 bg-light">
         <div class="container">
             <h2 class="text-center text-dark">Customer Reviews</h2>
@@ -243,8 +351,12 @@ foreach ($categories as $category) {
             </div>
         </div>
     </section>
+                    -->
 
-    <footer>
+                    
+
+  
+<footer>
     <?php include __DIR__ . '/footer.php'?>
 
 </footer>
@@ -261,7 +373,6 @@ foreach ($categories as $category) {
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
 </body>
-
 
 
 
