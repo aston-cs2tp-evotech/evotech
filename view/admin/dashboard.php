@@ -2,13 +2,19 @@
 <html lang="en">
 
 <head>
+  <?php
+  $products = GetAllProducts();
+  $orders = GetAllOrders();
+  $categories = GetAllCategories();
+  ?>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>evotech; dashboard</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link href="https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
   <style>
     .bd-placeholder-img {
       font-size: 1.125rem;
@@ -166,7 +172,6 @@
           </div>
 
 
-
         </div>
 
         <div id="ordersPage" class="page" style="display: none;">
@@ -175,46 +180,98 @@
             <h1 class="h2">Orders</h1>
           </div>
 
-          <!-- Table displaying orders -->
+          <?php
+          // Fetch all order statuses and sort by OrderStatusID
+          $allStatuses = GetAllOrderStatuses();
+          usort($allStatuses, function ($a, $b) {
+            return $a['OrderStatusID'] <=> $b['OrderStatusID'];
+          });
+          ?>
 
+          <!-- Table displaying orders -->
           <table id="ordersTable" class="table table-striped table-hover" style="width: 100%;">
             <thead>
               <tr>
                 <th>Order ID</th>
-                <th>Customer Name</th>
+                <th>Customer ID</th>
                 <th>Products</th>
-                <th>Quantity</th>
+                <th>Total Quantity</th>
                 <th>Total Price</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="table-primary">
-                <td>1</td>
-                <td>John Doe</td>
-                <td>Product 1, Product 2</td>
-                <td>2</td>
-                <td>100</td>
-                <td>Ready</td>
-              </tr>
-              <tr class="table-success">
-                <td>2</td>
-                <td>Jane Doe</td>
-                <td>Product 3, Product 4</td>
-                <td>1</td>
-                <td>50</td>
-                <td>Delivered</td>
-              </tr>
-            
+              <?php foreach ($orders as $order): ?>
+                <?php
+                $totalQuantity = 0;
+                $statusClass = ''; // Initialize an empty string for the status class
+                ?>
+                <?php
+                // Determine the status class based on the order status
+                switch ($order->getOrderStatusName()) {
+                  case 'basket':
+                    $statusClass = 'table-primary'; // Apply primary class for 'basket' status
+                    break;
+                  case 'ready':
+                    $statusClass = 'table-success'; // Apply success class for 'ready' status
+                    break;
+                  case 'processing':
+                    $statusClass = 'table-info'; // Apply info class for 'processing' status
+                    break;
+                  case 'delivering':
+                    $statusClass = 'table-warning'; // Apply warning class for 'delivering' status
+                    break;
+                  case 'delivered':
+                    $statusClass = 'table-dark'; // Apply dark class for 'delivered' status
+                    break;
+                  case 'cancelled':
+                    $statusClass = 'table-danger'; // Apply danger class for 'cancelled' status
+                    break;
+                  case 'failed':
+                    $statusClass = 'table-secondary'; // Apply secondary class for 'failed' status
+                    break;
+                }
+                ?>
+                <tr class="<?php echo $statusClass; ?>">
+                  <td>
+                    <?php echo $order->getOrderID(); ?>
+                  </td>
+                  <td>
+                    <?php echo $order->getCustomerID(); ?>
+                  </td>
+                  <td>
+                    <?php foreach ($order->getOrderLines() as $orderLine): ?>
+                      <?php echo $orderLine->getQuantity() . " x " . $orderLine->getProductName() . "<br>"; ?>
+                      <?php $totalQuantity += $orderLine->getQuantity(); ?>
+                    <?php endforeach; ?>
+                    <?php echo $totalQuantity; ?> x Product 1<br>
+                  </td>
+                  <td>
+                    <?php echo $totalQuantity; ?>
+                  </td>
+                  <td>£
+                    <?php echo $order->getTotalAmount(); ?>
+                  </td>
+                  <td>
+                    <select class="form-select" name="status">
+                      <?php foreach ($allStatuses as $status): ?>
+                        <option value="<?php echo $status['OrderStatusID']; ?>" <?php echo ($order->getOrderStatusID() == $status['OrderStatusID']) ? 'selected' : ''; ?>>
+                          <?php echo $status['Name']; ?>
+                        </option>
+                      <?php endforeach; ?>
+                    </select>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
             </tbody>
-          </table>
 
+          </table>
         </div>
 
+
+
         <div id="productsPage" class="page" style="display: none;">
-          <?php 
-          $products = GetAllProducts();
-          ?>
+
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Products</h1>
@@ -236,19 +293,31 @@
             <tbody>
               <?php
               foreach ($products as $item):
-              ?>
-              <tr>
-                <td><img src="/view/images/products/<?php echo $item['ProductID'];?>/<?php echo $item["MainImage"]?>" class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
-                <td style="text-align: center;"><?php echo $item['ProductID']; ?></td>
-                <td><?php echo $item['Name']; ?></td>
-                <td><?php echo $item['Price']; ?></td>
-                <td><?php echo $item['Stock']; ?></td>
-                <td><?php echo $item['Description']; ?></td>
-              </tr>
+                ?>
+                <tr>
+                  <td><img
+                      src="/view/images/products/<?php echo $item->getProductID(); ?>/<?php echo $item->getMainImage(); ?>"
+                      class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
+                  <td style="text-align: center;">
+                    <?php echo $item->getProductID(); ?>
+                  </td>
+                  <td>
+                    <?php echo $item->getName(); ?>
+                  </td>
+                  <td>£
+                    <?php echo $item->getPrice(); ?>
+                  </td>
+                  <td>
+                    <?php echo $item->getStock(); ?>
+                  </td>
+                  <td>
+                    <?php echo $item->getDescription(); ?>
+                  </td>
+                </tr>
               <?php endforeach; ?>
             </tbody>
           </table>
-  
+
         </div>
 
         <div id="addProductPage" class="page" style="display: none;">
@@ -256,7 +325,43 @@
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Add Product</h1>
           </div>
-          <!-- Add add product content here -->
+
+          <div id="addProductForm">
+            <form action="/addProduct" method="POST" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="productName" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="productName" name="productName" required>
+              </div>
+              <div class="mb-3">
+                <label for="productPrice" class="form-label">Price</label>
+                <input type="number" class="form-control" id="productPrice" name="productPrice" required>
+              </div>
+              <div class="mb-3">
+                <label for="productStock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="productStock" name="productStock" required>
+              </div>
+              <div class="mb-3">
+                <label for="productDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="productDescription" name="productDescription" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="productCategory" class="form-label">Category</label>
+                <select class="form-select" id="productCategory" name="productCategory" required>
+                  <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo $category['CategoryID']; ?>">
+                      <?php echo $category['CategoryName']; ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="productImage" class="form-label">Product Image</label>
+                <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Product</button>
+            </form>
+          </div>
+
         </div>
 
         <div id="customersPage" class="page" style="display: none;">
@@ -264,7 +369,7 @@
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Customers</h1>
           </div>
-          <!-- Add customers content here -->
+
         </div>
 
         <div id="importPage" class="page" style="display: none;">
@@ -272,11 +377,24 @@
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Import Data</h1>
           </div>
-          
+
+          <form action="/importData" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+              <label for="dummyData" class="form-label">Import Dummy Data</label>
+              <button type="submit" class="btn btn-primary" name="dummyData">Import</button>
+            </div>
+            <div class="mb-3">
+              <label for="fileData" class="form-label">Import from File</label>
+              <input type="file" class="form-control" id="fileData" name="fileData" accept=".csv, .xlsx">
+            </div>
+            <button type="submit" class="btn btn-primary">Import</button>
+          </form>
         </div>
 
-      </main>
     </div>
+
+    </main>
+  </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -291,7 +409,18 @@
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.min.js"></script>
   <script>
     $(document).ready(function () {
-      $('#ordersTable').DataTable();
+      $('#ordersTable').DataTable({
+        // Enable select extension
+        select: true,
+        // Define columnDefs to customize the status column
+        columnDefs: [
+          {
+            targets: 5, // Index of the status column (0-based index)
+            searchable: true, // Allow searching/filtering
+            orderable: true, // Allow ordering
+          }
+        ]
+      });
       $('#productsTable').DataTable();
     });
   </script>
