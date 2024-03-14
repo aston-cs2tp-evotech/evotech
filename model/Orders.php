@@ -25,7 +25,7 @@ class OrdersModel {
         $statement = $this->database->prepare($query);
 
         if ($statement->execute()) {
-            $orders = $statement->fetch(PDO::FETCH_ASSOC);
+            $orders = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $orders ? $orders : null;
         } else {
             return null; // Failed to execute query
