@@ -971,4 +971,62 @@ function CheckAdminLoggedIn() {
     else return false;
 }
 
+/**
+ * Updates the specified field of a product in db
+ * @param int $productID the ID of the product to update
+ * @param string $field the field to update
+ * @param mixed $value the value to change to
+ * @return string Empty if success, otherwise an err message
+ */
+function UpdateProductDetail($productID, $field, $value) {
+    global $Product;
+    $fields = array("Name", "Price", "Stock", "Description", "CategoryID");
+
+    if (!CheckExists($productID) || !(gettype($productID) == "int")) return "Invalid productID";
+    if (!CheckExists($field) || !(gettype($field) == "string") || !(in_array($field, $fields)))  return "Invalid field";
+    if (!CheckExists($value)) return "Empty value";
+
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+
+    switch ($field){
+        case ("Name"):
+            if (!(gettype($value) == "string")) return "Invalid name";
+            $err = $Product->updateProductDetail($productID, 'Name', $value);
+            if (!$err) return "Error changing name";
+            else return "";
+
+        case ("Price"):
+            if (!(gettype($value) == "int")) return "Invalid price";
+            $err = $Product->updateProductDetail($productID, 'Price', $value);
+            if (!$err) return "Error updating price";
+            else return "";
+
+        case ("Stock"):
+            if (!(gettype($value) == "int")) return "Invalid stock";
+            $err = $Product->updateProductDetail($productID, 'Stock', $value);
+            if (!$err) return "Error updating stock";
+            else return "";
+
+        case ("Description"):
+            if (!(gettype($value) == "string")) return "Invalid description";
+            $err = $Product->updateProductDetail($productID, 'Description', $value);
+            if (!$err) return "Error updating description";
+            else return "";
+
+        case ("CategoryID"):
+            if (!(gettype($value) == "int")) return "Invalid CategoryID";
+            $cats = $Product->getCategories();
+            if (is_null($cats)) return "Database error";
+
+            if (!in_array($value, $cats["CategoryID"])) return "Category does not exist";
+
+            $err = $Product->updateProductDetail($productID, 'CategoryID', $value);
+            if (!$err) return "Error updating category";
+            else return "";
+
+        default:
+            return "Invalid category";
+        }
+}
 ?>
