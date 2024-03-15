@@ -1098,4 +1098,49 @@ function DeleteProduct($productID) {
     if (!$err) return "Database error";
     else return "";
 }
+
+/**
+ * Update the specified field in a customer's details
+ * @param int $customerID the ID of the customer
+ * @param string $field the field to update
+ * @param mixed $value the new value for the field
+ * @return string Empty if success, otherwise false
+ */
+function UpdateCustomerInfo($customerID, $field, $value) {
+    global $Customer;
+    $fields = array('Username', 'Email', 'CustomerAddress', 'PasswordHash');
+
+    if (!(CheckExists($customerID) || !(gettype($customerID) == "int"))) return "Invalid customerID";
+    if (!(CheckExists($field)) || !(gettype($field) == "string") || !(in_array($field, $fields))) return "Invalid field";
+    if (!(CheckExists($value))) return "Invalid value";
+    
+    $cust = $Customer->getCustomerByUID($customerID);
+    if (is_null($cust)) return "Customer does not exist";
+
+    switch ($field){
+        case "Username":
+            if (!(gettype($value) == "string")) return "Invalid username";
+            $err = $Customer->updateCustomerDetail($customerID, "Username", $value);
+            if (!$err) return "Database error";
+            else return "";
+        case "Email":
+            if (!(gettype($value) == "string") || !(filter_var($value, FILTER_VALIDATE_EMAIL))) return "Invalid email";
+            $err = $Customer->updateCustomerDetail($customerID, "Email", $value);
+            if (!$err) return "Database error";
+            else return "";
+        case "CustomerAddress":
+            if (!(gettype($value) == "string")) return "Invalid address";
+            $err = $Customer->updateCustomerDetail($customerID, "CustomerAddress", $value);
+            if (!$err) return "Database error";
+            else return "";
+        case "PasswordHash":
+            if (!(gettype($value) == "string")) return "Invalid password";
+            $hash = password_hash($value, PASSWORD_DEFAULT);
+            $err = $Customer->updateCustomerDetail($customerID, "PasswordHash", $hash);
+            if (!$err) return "Database error";
+            else return "";
+        default:
+            return "Invalid category";
+    }
+}
 ?>
