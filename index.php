@@ -108,6 +108,18 @@ switch ($requestPath) {
         require __DIR__ . '/view/admin/dashboard.php';
         break;
 
+    case '/api/updateOrderStatus':
+        require __DIR__ . '/api/updateOrderStatus.php';
+        break;
+
+    case '/api/getProduct':
+        require __DIR__ . '/api/getProduct.php';
+        break;
+
+    case '/api/editProduct':
+        require __DIR__ . '/api/editProduct.php';
+        break;
+    
     default:
         handle404Request();
         break;
