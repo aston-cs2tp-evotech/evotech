@@ -336,6 +336,18 @@ function GetAllProducts() {
 }
 
 /**
+ * Get count of all products in the database
+ * 
+ * @return int|boolean The count of products if success, otherwise false
+ */
+function GetProductCount() {
+    global $Product;
+    $count = $Product->getProductCount();
+    if ($count) return $count;
+    else return false;
+}
+
+/**
  * Gets every product in the database where stock > 0
  * @return array|boolean 2d array if succeeded, otherwise false
  */
@@ -988,5 +1000,6 @@ function UpdateOrderStatus($orderID, $newStatusID) {
     // Update the status of the order
     return $Order->updateOrderDetails($orderID, "OrderStatusID", $newStatusID);
 }
+
 
 ?>
