@@ -102,7 +102,7 @@ class ProductModel {
      */
     public function updateProductDetail($productID, $field, $value) {
         // Validate $field to prevent SQL injection
-        $allowedFields = ['Name', 'Price', 'Stock'];
+        $allowedFields = ['Name', 'Price', 'Stock', 'Description'];
         if (!in_array($field, $allowedFields)) {
             return false; 
         }
@@ -236,6 +236,34 @@ class ProductModel {
 
         try {
             return $insertStatement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Update a field for an image
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @param string $imageName The current name of the image file.
+     * @param string $field The field to update.
+     * @param mixed $value The new value for the $field.
+     * @return bool True if changed successfully, false otherwise
+     */
+    public function updateProductImage($productID, $imageName, $field, $value){
+        $allowedFields = ['ProductID', 'FileName', 'MainImage'];
+        if (!in_array($field, $allowedFields)) {
+            return false;
+        }
+
+        $query = "UPDATE `Products` SET `$field` = :val WHERE `ProductID` = :productID AND `FileName` = :fileName";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':val', $value);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $statement->bindParam(':fileName', $imageName, PDO::PARAM_STR);
+
+        try {
+            return $statement->execute();
         } catch (PDOException $e) {
             return false;
         }
