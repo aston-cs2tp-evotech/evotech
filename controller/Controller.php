@@ -1080,4 +1080,22 @@ function AddProduct($details) {
     if (is_null($err)) return "Database error";
     else return "";
 }
+
+/**
+ * Deletes the specified product from db
+ * @param int $productID the product to delete
+ * @return string empty if success, otherwise false
+ */
+function DeleteProduct($productID) {
+    global $Product;
+    if (!CheckAdminLoggedIn()) return "Not logged in";
+    
+    if (!(gettype($productID) == "int")) return "Invalid productID";
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+
+    $err = $Product->deleteProduct($productID);
+    if (!$err) return "Database error";
+    else return "";
+}
 ?>
