@@ -5,6 +5,9 @@
   <?php
   $products = GetAllProducts();
   $orders = GetAllOrders();
+  if (!$orders) {
+    $orders = [];
+  }
   $categories = GetAllCategories();
   ?>
 
@@ -57,37 +60,42 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#" onclick="showPage('dashboard')">
-                <!-- Add onclick handler -->
                 <span data-feather="home"></span>
                 Dashboard
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('orders')"> <!-- Add onclick handler -->
+              <a class="nav-link" href="#" onclick="showPage('orders')"> 
                 <span data-feather="file"></span>
                 Orders
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('products')"> <!-- Add onclick handler -->
+              <a class="nav-link" href="#" onclick="showPage('products')"> 
                 <span data-feather="shopping-cart"></span>
                 Products
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('addProduct')"> <!-- Add onclick handler -->
+              <a class="nav-link" href="#" onclick="showPage('addProduct')"> 
                 <span data-feather="plus-square"></span>
                 Add Product
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('customers')"> <!-- Add onclick handler -->
+              <a class="nav-link" href="#" onclick="showPage('customers')"> 
                 <span data-feather="users"></span>
                 Customers
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('import')"> <!-- Add onclick handler -->
+              <a class="nav-link" href="#" onclick="showPage('admins')"> 
+                <span data-feather="hard-drive"></span>
+                Admins
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showPage('import')"> 
                 <span data-feather="hard-drive"></span>
                 Import Data
               </a>
@@ -108,7 +116,7 @@
                   <h5 class="card-title">Total Users</h5>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-text">100</h5>
+                  <h5 class="card-text"><?php echo GetCustomerCount();?></h5>
                 </div>
               </div>
             </div>
@@ -118,7 +126,7 @@
                   <h5 class="card-title">Total Products</h5>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-text">100</h5>
+                  <h5 class="card-text"><?php echo GetProductCount();?></h5>
                 </div>
               </div>
             </div>
@@ -128,7 +136,7 @@
                   <h5 class="card-title">Total Orders</h5>
                 </div>
                 <div class="card-body">
-                  <h5 class="card-text">100</h5>
+                  <h5 class="card-text"><?php echo count($orders);?></h5>
                 </div>
               </div>
             </div>
@@ -152,10 +160,10 @@
             <div class="col-md-4">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title text-center">Import Data</h5>
+                  <h5 class="card-title text-center">View Database</h5>
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary w-100">Go to Import Page</a>
+                  <a href="/phpmyadmin" class="btn btn-primary w-100">Go to phpMyAdmin</a>
                 </div>
               </div>
             </div>
@@ -171,6 +179,55 @@
             </div>
           </div>
 
+          <!-- Low stock products -->
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h3">Low Stock Products</h1>
+          </div>
+          <div class="row">
+            <?php
+            // Get low stock products by filtering products with stock less than 15
+            $lowStockProducts = array_filter($products, function ($product) {
+              return $product->getStock() < 15;
+            });
+            ?>
+            <table id="lowStockProductsTable" class="table table-striped table-hover" style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th>Product Name</th>
+                  <th>Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($lowStockProducts as $product): 
+                    // Determine the stock level class based on the stock level
+                    $stockLevelClass = '';
+                    $stock = $product->getStock();
+                    if ($stock >= 10 && $stock <= 15) {
+                        $stockLevelClass = 'table-warning'; // Apply warning class for stock level between 10 and 15
+                    } elseif ($stock >= 1 && $stock <= 10) {
+                        $stockLevelClass = 'table-danger'; // Apply danger class for stock level between 1 and 10
+                    } else {
+                        $stockLevelClass = 'table-dark'; // Apply dark class for stock level less than 1
+                    }
+                ?>
+                  <tr class="<?php echo $stockLevelClass; ?>">
+                    <td>
+                      <?php echo $product->getProductID(); ?>
+                    </td>
+                    <td>
+                      <?php echo $product->getName(); ?>
+                    </td>
+                    <td>
+                      <b><?php echo $product->getStock(); ?></b>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+
+            
+          </div>
 
         </div>
 
@@ -187,6 +244,9 @@
             return $a['OrderStatusID'] <=> $b['OrderStatusID'];
           });
           ?>
+
+          <div id="orderUpdate" class="alert" style="display: none;"></div>
+
 
           <!-- Table displaying orders -->
           <table id="ordersTable" class="table table-striped table-hover" style="width: 100%;">
@@ -210,29 +270,36 @@
                 // Determine the status class based on the order status
                 switch ($order->getOrderStatusName()) {
                   case 'basket':
-                    $statusClass = 'table-primary'; // Apply primary class for 'basket' status
+                    $statusClass = ''; 
+                    $modifiable = false; 
                     break;
                   case 'ready':
-                    $statusClass = 'table-success'; // Apply success class for 'ready' status
+                    $statusClass = 'table-primary'; 
+                    $modifiable = true;
                     break;
                   case 'processing':
-                    $statusClass = 'table-info'; // Apply info class for 'processing' status
+                    $statusClass = 'table-info'; 
+                    $modifiable = true;
                     break;
                   case 'delivering':
-                    $statusClass = 'table-warning'; // Apply warning class for 'delivering' status
+                    $statusClass = 'table-warning'; 
+                    $modifiable = true;
                     break;
                   case 'delivered':
-                    $statusClass = 'table-dark'; // Apply dark class for 'delivered' status
+                    $statusClass = 'table-success'; 
+                    $modifiable = true;
                     break;
                   case 'cancelled':
-                    $statusClass = 'table-danger'; // Apply danger class for 'cancelled' status
+                    $statusClass = 'table-danger'; 
+                    $modifiable = true;
                     break;
                   case 'failed':
-                    $statusClass = 'table-secondary'; // Apply secondary class for 'failed' status
+                    $statusClass = 'table-danger'; 
+                    $modifiable = true;
                     break;
                 }
                 ?>
-                <tr class="<?php echo $statusClass; ?>">
+                <tr class="<?php echo $statusClass; ?>" id="ordersTableRow<?php echo $order->getOrderID(); ?>">
                   <td>
                     <?php echo $order->getOrderID(); ?>
                   </td>
@@ -244,7 +311,6 @@
                       <?php echo $orderLine->getQuantity() . " x " . $orderLine->getProductName() . "<br>"; ?>
                       <?php $totalQuantity += $orderLine->getQuantity(); ?>
                     <?php endforeach; ?>
-                    <?php echo $totalQuantity; ?> x Product 1<br>
                   </td>
                   <td>
                     <?php echo $totalQuantity; ?>
@@ -253,17 +319,24 @@
                     <?php echo $order->getTotalAmount(); ?>
                   </td>
                   <td>
-                    <select class="form-select" name="status">
-                      <?php foreach ($allStatuses as $status): ?>
-                        <option value="<?php echo $status['OrderStatusID']; ?>" <?php echo ($order->getOrderStatusID() == $status['OrderStatusID']) ? 'selected' : ''; ?>>
-                          <?php echo $status['Name']; ?>
-                        </option>
-                      <?php endforeach; ?>
-                    </select>
+                    <?php if ($modifiable): ?>
+                      <select class="form-select" name="status">
+                        <?php foreach ($allStatuses as $status): ?>
+                          <?php if ($status['Name'] !== 'basket' || $order->getOrderStatusName() === 'basket'): ?>
+                            <option value="<?php echo $status['OrderStatusID']; ?>" <?php echo ($order->getOrderStatusID() == $status['OrderStatusID']) ? 'selected' : ''; ?>>
+                              <?php echo $status['Name']; ?>
+                            </option>
+                          <?php endif; ?>
+                        <?php endforeach; ?>
+                      </select>
+                    <?php else: ?>
+                      <span><?php echo $order->getOrderStatusName(); ?></span>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>
+
 
           </table>
         </div>
@@ -276,7 +349,17 @@
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Products</h1>
           </div>
-
+          
+          <?php if (isset($_GET['editProductError'])): ?>
+            <div class="alert alert-danger" role="alert">
+              <?php echo $_GET['editProductError']; ?>
+            </div>
+            <?php elseif (isset($_GET['editProductSuccess'])): ?>
+              <div class="alert alert-success" role="alert">
+                <?php echo $_GET['editProductSuccess']; ?>
+              </div>
+          <?php endif; ?>
+          
           <!-- Table displaying products -->
 
           <table id="productsTable" class="table table-striped table-hover" style="width: 100%;">
@@ -288,36 +371,90 @@
                 <th>Price</th>
                 <th>Stock</th>
                 <th>Description</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <?php
-              foreach ($products as $item):
-                ?>
-                <tr>
-                  <td><img
-                      src="/view/images/products/<?php echo $item->getProductID(); ?>/<?php echo $item->getMainImage(); ?>"
-                      class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
-                  <td style="text-align: center;">
-                    <?php echo $item->getProductID(); ?>
-                  </td>
-                  <td>
-                    <?php echo $item->getName(); ?>
-                  </td>
-                  <td>£
-                    <?php echo $item->getPrice(); ?>
-                  </td>
-                  <td>
-                    <?php echo $item->getStock(); ?>
-                  </td>
-                  <td>
-                    <?php echo $item->getDescription(); ?>
-                  </td>
-                </tr>
+              <?php foreach ($products as $item): ?>
+                  <?php
+
+                      $stockLevelClass = '';
+                      $stock = $item->getStock();
+                      if ($stock >= 15) {
+                          $stockLevelClass = ''; 
+                      } elseif ($stock >= 10 && $stock <= 15) {
+                          $stockLevelClass = 'table-warning'; 
+                      } elseif ($stock >= 1 && $stock <= 10) {
+                          $stockLevelClass = 'table-danger'; 
+                      } else {
+                          $stockLevelClass = 'table-dark'; 
+                      }
+                  ?>
+                  <tr class="<?php echo $stockLevelClass; ?>">
+                      <td style="max-width: 120px;"><img src="/view/images/products/<?php echo $item->getProductID(); ?>/<?php echo $item->getMainImage(); ?>" class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
+                      <td style="text-align: center;"><?php echo $item->getProductID(); ?></td>
+                      <td><?php echo $item->getName(); ?></td>
+                      <td>£<?php echo $item->getPrice(); ?></td>
+                      <td><?php echo $item->getStock(); ?></td>
+                      <td><?php echo $item->getDescription(); ?></td>
+                      <td>
+                          <a class="btn btn-primary" onclick="showPage('editProduct', <?php echo $item->getProductID(); ?>)">Edit</a>
+                          <a href="/product?productID=<?php echo $item->getProductID(); ?>" class="btn btn-primary">View Page</a>
+                      </td>
+                  </tr>
               <?php endforeach; ?>
-            </tbody>
+          </tbody>
+
           </table>
 
+        </div>
+
+                <div id="editProductPage" class="page" style="display: none;">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Edit Product</h1>
+            </div>
+
+            <div id="editProductForm">
+                <form action="/api/editProduct" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" id="editproductID" name="productID">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="editproductName" name="productName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Price in £</label>
+                        <input type="number" class="form-control" id="editproductPrice" name="productPrice" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productStock" class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="editproductStock" name="productStock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editproductDescription" name="productDescription" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Category</label>
+                        <select class="form-select" id="editproductCategory" name="productCategory" required>
+                            <?php foreach ($categories as $category): ?>
+                                <option value="<?php echo $category['CategoryID']; ?>">
+                                    <?php echo $category['CategoryName']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productImage" class="form-label">Product Image</label>
+                        <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required onchange="previewImage(this,true)">
+                    </div>
+
+                    <div class="mb-3">
+                        <img id="editProductimagePreview" src="#" alt="Preview" style="max-width: 200px; max-height: 200px;">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Product</button>
+                </form>
+            </div>
         </div>
 
         <div id="addProductPage" class="page" style="display: none;">
@@ -333,8 +470,8 @@
                 <input type="text" class="form-control" id="productName" name="productName" required>
               </div>
               <div class="mb-3">
-                <label for="productPrice" class="form-label">Price</label>
-                <input type="number" class="form-control" id="productPrice" name="productPrice" required>
+                <label for="productPrice" class="form-label">Price in £</label>
+                <input type="number" class="form-control" id="productPrice" name="productPrice" min = "0.01" step = "0.01" required>
               </div>
               <div class="mb-3">
                 <label for="productStock" class="form-label">Stock</label>
@@ -356,8 +493,13 @@
               </div>
               <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
-                <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required>
+                <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required onchange="previewImage(this)">
               </div>
+                
+               <div class="mb-3">
+                  <img id="addProductimagePreview" src="#" alt="Preview" style="max-width: 200px; max-height: 200px;">
+                </div>
+
               <button type="submit" class="btn btn-primary">Add Product</button>
             </form>
           </div>
@@ -368,6 +510,14 @@
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Customers</h1>
+          </div>
+
+        </div>
+
+        <div id="adminsPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Admins</h1>
           </div>
 
         </div>
@@ -403,27 +553,10 @@
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
     integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
     crossorigin="anonymous"></script>
-  <script src="/view/js/dashboard.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      $('#ordersTable').DataTable({
-        // Enable select extension
-        select: true,
-        // Define columnDefs to customize the status column
-        columnDefs: [
-          {
-            targets: 5, // Index of the status column (0-based index)
-            searchable: true, // Allow searching/filtering
-            orderable: true, // Allow ordering
-          }
-        ]
-      });
-      $('#productsTable').DataTable();
-    });
-  </script>
+  <script src="/view/js/dashboard.js"></script>
 </body>
 
 </html>
