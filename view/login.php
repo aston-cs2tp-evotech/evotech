@@ -22,9 +22,7 @@ if (isset($_SESSION['uid'])) {
     </head>
     <body>
         
-    <section class="bg-success p-5  py-4">
     <?php include __DIR__ . '/nav.php'?>
-    </section>
 
     <main>
 
@@ -37,6 +35,9 @@ if (isset($_SESSION['uid'])) {
         </div>
 
         <div class="login-form">
+
+            <br>
+            <br>
 
             <h2>Welcome to Evotech</h2>
 
@@ -60,7 +61,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
             <br>
-                <a href="login" onclick="submitForm();" class="login-form-button">Login</a>
+                <a href="#" onclick="submitForm();" class="login-form-button">Login</a>
             </form>
 
             <br>
