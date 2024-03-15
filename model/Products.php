@@ -317,6 +317,18 @@ class ProductModel {
             return null;
         }
     }
+
+    /**
+     * Count the number of total products in the database.
+     * 
+     * @return int The number of products in the database.
+     */
+    public function getProductCount() {
+        $query = "SELECT COUNT(*) FROM `Products`";
+        $statement = $this->database->prepare($query);
+        $statement->execute();
+        return $statement->fetchColumn();
+    }
     
 }
 
