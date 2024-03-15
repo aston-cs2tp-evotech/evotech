@@ -57,7 +57,6 @@ function CreateSafeCustomer($details) {
         else unset($keys[array_search($key, $keys)]); //removes key, to check all necessary fields exist
     }
 
-    echo count($keys);
     //create customer
     if (!$badCustomer && empty($keys)) {
         return new Customer($details);
