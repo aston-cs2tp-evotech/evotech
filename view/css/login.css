@@ -67,6 +67,10 @@ h2 {
     text-align: left;
 }
 
+.welcome {
+    text-align: center;
+}
+
 .login {
     max-width: 100%;
     max-height: 100%;
