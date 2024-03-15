@@ -1029,4 +1029,55 @@ function UpdateProductDetail($productID, $field, $value) {
             return "Invalid category";
         }
 }
+
+/**
+ * Add a product to the database
+ * @param array $details array with all necessary info
+ * @return string empty if success, otherwise false
+ */
+function AddProduct($details) {
+    global $Product;
+    if (!(gettype($details) == "array")) return "Invalid details";
+    $fields = array('name', 'price', 'stock', 'description', 'categoryID');
+
+    //check each field and value
+    foreach ($details as $key => $detail) {
+        if (in_array($key, $fields)) unset($fields[array_search($key, $fields)]);
+        else return "Invalid data";
+
+        switch ($key) {
+            case "name":
+                if (!(gettype($detail) == "string")) return "Invalid name";
+                break;
+
+            case "price":
+                if (!(gettype($detail) == "int")) return "Invalid price";
+                break;
+
+            case "stock":
+                if (!(gettype($detail) == "int")) return "Invalid stock";
+                break;
+
+            case "description":
+                if (!(gettype($detail) == "string")) return "Invalid description";
+                break;
+
+            case "categoryID":
+                if (!(gettype($detail) == "int")) return "Invalid categoryID";
+                $cats = $Product->getCategories();
+                if (is_null($cats)) return "Database error";
+                if (!in_array($detail, $cats["CategoryID"])) return "Category does not exist";
+                break;
+
+            default:
+                return "Invalid field specified";
+        }
+    }
+
+    if (!empty($fields)) return "Not all required fields have been filled";
+
+    $err = $Product->addProduct($details);
+    if (is_null($err)) return "Database error";
+    else return "";
+}
 ?>
