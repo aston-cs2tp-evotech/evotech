@@ -979,6 +979,8 @@ function CheckAdminLoggedIn() {
  * @return string Empty if success, otherwise an err message
  */
 function UpdateProductDetail($productID, $field, $value) {
+    if (!CheckAdminLoggedIn()) return "Not logged in";
+
     global $Product;
     $fields = array("Name", "Price", "Stock", "Description", "CategoryID");
 
@@ -1036,6 +1038,8 @@ function UpdateProductDetail($productID, $field, $value) {
  * @return string empty if success, otherwise false
  */
 function AddProduct($details) {
+    if (!CheckAdminLoggedIn()) return "Not logged in";
+
     global $Product;
     if (!(gettype($details) == "array")) return "Invalid details";
     $fields = array('name', 'price', 'stock', 'description', 'categoryID');
@@ -1107,6 +1111,8 @@ function DeleteProduct($productID) {
  * @return string Empty if success, otherwise false
  */
 function UpdateCustomerInfo($customerID, $field, $value) {
+    if (!CheckAdminLoggedIn()) return "Not logged in";
+    
     global $Customer;
     $fields = array('Username', 'Email', 'CustomerAddress', 'PasswordHash');
 
