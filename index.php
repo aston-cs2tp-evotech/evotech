@@ -116,6 +116,10 @@ switch ($requestPath) {
         require __DIR__ . '/api/getProduct.php';
         break;
 
+    case '/api/addProduct':
+        require __DIR__ . '/api/addProduct.php';
+        break;
+
     case '/api/editProduct':
         require __DIR__ . '/api/editProduct.php';
         break;
