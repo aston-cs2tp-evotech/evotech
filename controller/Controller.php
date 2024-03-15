@@ -138,6 +138,18 @@ function RegisterUser($details) {
 }
 
 /**
+ * Get count of all customers in the database
+ * 
+ * @return int|boolean The count of customers if success, otherwise false
+ */
+function GetCustomerCount() {
+    global $Customer;
+    $count = $Customer->getCustomerCount();
+    if ($count) return $count;
+    else return false;
+}
+
+/**
  * Updates a specified field in the database for a customer 
  * @param array $details Associative array containing field to change, new value and other relevant info
  * @return string Empty if succeeded, or a string to indicate where it failed
@@ -932,6 +944,49 @@ function GetAllOrders() {
     }
 
     return $allOrders;
+}
+
+/**
+ * Retrieves an order by orderID
+ * @param int $orderID The ID of the order
+ * @return Order|boolean Order object if success, otherwise false
+ */
+function GetOrderByID($orderID) {
+    global $Order;
+
+    // Retrieve the order by orderID
+    $order = CreateSafeOrder($Order->getOrderByID($orderID));
+    if (is_null($order)) {
+        return false;
+    }
+
+    // Retrieve order lines for the order
+    $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderID()));
+    if (is_null($orderLines)) {
+        return false;
+    }
+
+    // Format order lines
+    if (!AddOrderLinesToOrder($orderLines, $order)) {
+        return false;
+    }
+
+    return $order;
+}
+
+
+/**
+ * Updates the status of an order
+ * @param int $orderID The ID of the order
+ * @param int $newStatusID The new status ID of the order
+ * @return boolean True if succeeded, otherwise false
+ */
+function UpdateOrderStatus($orderID, $newStatusID) {
+    global $Order;
+
+
+    // Update the status of the order
+    return $Order->updateOrderDetails($orderID, "OrderStatusID", $newStatusID);
 }
 
 ?>
