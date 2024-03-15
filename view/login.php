@@ -18,7 +18,7 @@ if (isset($_SESSION['uid'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Log in - EvoTech</title>
         <link rel="stylesheet" type="text/css" href="/view/css/login.css">
-        
+        <script src="/view/js/login.js"></script>     
     </head>
     <body>
         
@@ -52,16 +52,17 @@ if (isset($_SESSION['uid'])) {
             ?>
 
             <h2>Log in</h2>
-            <form action="login" method="POST">
+            <form id="login" action="login" method="POST">
                 <input type="text" name="usernameOrEmail" placeholder="Username / email address" required/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
+            <br>
+            <br>
+            <br>
+            <br>
+                <a href="login" onclick="submitForm();" class="login-form-button">Login</a>
             </form>
-            <br>
-            <br>
-            <br>
-            <br>
-                <a href="login" class="login-form-button">Login</a>
+
             <br>
             <br>
             <br>
