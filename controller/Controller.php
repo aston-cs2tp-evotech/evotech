@@ -1,5 +1,13 @@
 <?php
 
+//  --------------------------------------------------
+//
+//
+//              CUSTOMER FUNCTIONS
+//
+//
+//  --------------------------------------------------
+
 //TODO: add function to check contact form data
 
 // ---------------------------------------------
@@ -892,6 +900,25 @@ function GetPreviousOrders() {
     return $orders;
 }
 
+//  --------------------------------------------------
+//
+//
+//              ADMIN FUNCTIONS
+//
+//
+//  --------------------------------------------------
+
+/*
+    List to add:
+        Stock all
+        Add product
+        Delete product - don't delete, just set stock to -1 to archive it
+        Add image
+        Remove image
+        Make MainImage
+        Update customer
+*/
+
 /**
  * Retrieves all orders, with orderLines attached
  * @return array|boolean array of Order objects if success, otherwise false
@@ -912,6 +939,36 @@ function GetAllOrders() {
     }
 
     return $allOrders;
+}
+
+/**
+ * Attempts to log in an admin with the supplied credentials, storing it in $_SESSION
+ * @param string $user Admin's username
+ * @param string $pass Admin's password
+ * @return string Empty if success, otherwise false
+ */
+function AttemptAdminLogin($user, $pass) {
+    global $Admin;
+    if (!CheckExists($user) || !(gettype($user) == "string")) return "Invalid Username";
+    if (!CheckExists($pass) || !(gettype($pass) == "string")) return "Invalid password";
+    //attempts to fetch details via username
+    $details = $Admin->getAdminByUsername($user);
+    if (is_null($details)) return "Incorrect password or username";
+    //checks passwords match
+    if (password_verify($pass, $details["PasswordHash"])) {
+        $_SESSION["adminUID"] = $details["AdminID"];
+        $_SESSION["adminName"] = $details["Username"];
+        return "";
+    }
+    else return "Incorrect password or username";
+}
+/**
+ * Checks if an admin is logged in
+ * @return boolean True if logged in, otherwise false
+ */
+function CheckAdminLoggedIn() {
+    if (isset($_SESSION["adminUID"]) && !(is_null($_SESSION["adminUID"]))) return true;
+    else return false;
 }
 
 ?>
