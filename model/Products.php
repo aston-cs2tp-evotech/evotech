@@ -78,16 +78,22 @@ class ProductModel {
         $insertQuery = "INSERT INTO `Products` (
                             `Name`, 
                             `Price`, 
-                            `Stock`
+                            `Stock`,
+                            `Description`,
+                            `CategoryID`
                         ) VALUES (
                             :name, 
                             :price, 
-                            :stock
+                            :stock,
+                            :desc,
+                            :cat
                         )";
         $insertStatement = $this->database->prepare($insertQuery);
         $insertStatement->bindParam(':name', $productData['name'], PDO::PARAM_STR);
         $insertStatement->bindParam(':price', $productData['price'], PDO::PARAM_STR);
         $insertStatement->bindParam(':stock', $productData['stock'], PDO::PARAM_INT);
+        $insertStatement->bindParam(':desc', $productData['description'], PDO::PARAM_STR);
+        $insertStatement->bindParam(':cat', $productData['categoryID'], PDO::PARAM_INT);
 
         return $insertStatement->execute() ? $this->getProductByName($productData['name']) : null;
     }
