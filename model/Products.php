@@ -102,7 +102,7 @@ class ProductModel {
      */
     public function updateProductDetail($productID, $field, $value) {
         // Validate $field to prevent SQL injection
-        $allowedFields = ['Name', 'Price', 'Stock', 'Description'];
+        $allowedFields = ['Name', 'Price', 'Stock', 'Description', 'CategoryID'];
         if (!in_array($field, $allowedFields)) {
             return false; 
         }
