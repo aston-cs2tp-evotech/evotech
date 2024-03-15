@@ -1137,7 +1137,7 @@ function UpdateProductDetail($productID, $field, $value) {
  * @return string empty if success, otherwise false
  */
 function AddProduct($details) {
-    if (!CheckAdminLoggedIn()) return "Not logged in";
+    //if (!CheckAdminLoggedIn()) return "Not logged in";
 
     global $Product;
     if (!(gettype($details) == "array")) return "Invalid details";
@@ -1154,11 +1154,21 @@ function AddProduct($details) {
                 break;
 
             case "price":
-                if (!(gettype($detail) == "int")) return "Invalid price";
+                try {
+                    $detail = (int)$detail;
+                } catch (Exception $e) {
+                    return "Invalid price";
+                }
+                if (!(gettype($detail) == "integer")) return "Invalid price";
                 break;
 
             case "stock":
-                if (!(gettype($detail) == "int")) return "Invalid stock";
+                try {
+                    $detail = (int)$detail;
+                } catch (Exception $e) {
+                    return "Invalid price";
+                }
+                if (!(gettype($detail) == "integer")) return "Invalid stock";
                 break;
 
             case "description":
@@ -1166,10 +1176,21 @@ function AddProduct($details) {
                 break;
 
             case "categoryID":
-                if (!(gettype($detail) == "int")) return "Invalid categoryID";
+                try {
+                    $detail = (int)$detail;
+                } catch (Exception $e) {
+                    return "Invalid price";
+                }
+                if (!(gettype($detail) == "integer")) return "Invalid categoryID";
                 $cats = $Product->getCategories();
+                print_r($cats);
                 if (is_null($cats)) return "Database error";
-                if (!in_array($detail, $cats["CategoryID"])) return "Category does not exist";
+                // Check if category exists
+                foreach ($cats as $cat) {
+                    if ($cat["CategoryID"] == $detail) {
+                        unset($cats[array_search($cat, $cats)]);
+                    }
+                }
                 break;
 
             default:
@@ -1181,8 +1202,12 @@ function AddProduct($details) {
 
     $err = $Product->addProduct($details);
     if (is_null($err)) return "Database error";
-    else return "";
+    else return $err['ProductID'];
 }
+
+/**
+ * Add an image to the product
+ */
 
 /**
  * Deletes the specified product from db
