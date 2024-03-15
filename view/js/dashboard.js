@@ -167,3 +167,17 @@ function getProductDetails(productID, callback) {
     }
   });
 }
+
+// When page is loaded, and either editProductSuccess or addProductSuccess is set as a GET parameter, show the product page
+$(document).ready(function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('editProductSuccess')) {
+    showPage('products');
+    // Remove the GET parameter from the URL
+    window.history.replaceState({}, document.title, "/" + "admin");
+  } else if (urlParams.has('addProductSuccess')) {
+    showPage('products');
+    // Remove the GET parameter from the URL
+    window.history.replaceState({}, document.title, "/" + "admin");
+  }
+});

@@ -445,14 +445,16 @@
                     </div>
                     <div class="mb-3">
                         <label for="productImage" class="form-label">Product Image</label>
-                        <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" required onchange="previewImage(this,true)">
+                        <input type="file" class="form-control" id="productImage" name="productImage" accept="image/*" onchange="previewImage(this,true)">
                     </div>
 
                     <div class="mb-3">
                         <img id="editProductimagePreview" src="#" alt="Preview" style="max-width: 200px; max-height: 200px;">
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Update Product</button>
+                    <div>
+                      <button type="submit" class="btn btn-primary">Update Product</button>
+                      <button type="button" class="btn btn-danger" onclick="deleteProduct()">Delete Product</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -464,7 +466,7 @@
           </div>
 
           <div id="addProductForm">
-            <form action="/addProduct" method="POST" enctype="multipart/form-data">
+            <form action="/api/addProduct" method="POST" enctype="multipart/form-data">
               <div class="mb-3">
                 <label for="productName" class="form-label">Product Name</label>
                 <input type="text" class="form-control" id="productName" name="productName" required>

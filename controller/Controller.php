@@ -1183,7 +1183,6 @@ function AddProduct($details) {
                 }
                 if (!(gettype($detail) == "integer")) return "Invalid categoryID";
                 $cats = $Product->getCategories();
-                print_r($cats);
                 if (is_null($cats)) return "Database error";
                 // Check if category exists
                 foreach ($cats as $cat) {
@@ -1272,6 +1271,34 @@ function UpdateCustomerInfo($customerID, $field, $value) {
         default:
             return "Invalid category";
     }
+}
+
+/**
+ * Add an image to the product
+ * @param int $productID The ID of the product
+ * @param string $fileName The name of the file
+ * @param boolean $mainImage Whether the image is the main image
+ * @return string Empty if success, otherwise false
+ */
+function AddProductImage($productID, $fileName, $mainImage) {
+    global $Product;
+    //if (!CheckAdminLoggedIn()) return "Not logged in";
+    try {
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return "Invalid productID";
+    }
+    if (!(gettype($fileName) == "string")) return "Invalid fileName";
+    if (!(gettype($mainImage) == "boolean")) return "Invalid mainImage";
+
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+
+    $err = $Product->addProductImage($productID, $fileName);
+    if (!$err) return "Database error";
+    $err = $Product->updateProductImage($productID, $fileName, "MainImage", $mainImage);
+    if (!$err) return "Database error";
+    else return "";
 }
 
 /**
