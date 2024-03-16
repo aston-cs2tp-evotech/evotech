@@ -10,6 +10,7 @@ include __DIR__ . "/config/database.php";
 include __DIR__ . "/model/Customer.php";
 include __DIR__ . "/model/Products.php";
 include __DIR__ . "/model/Orders.php";
+include __DIR__ . "/model/Admin.php";
 
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
