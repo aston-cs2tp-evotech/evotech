@@ -125,6 +125,7 @@ switch ($requestPath) {
         require __DIR__ . '/api/editProduct.php';
         break;
     
+        break;
     default:
         handle404Request();
         break;
