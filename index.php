@@ -125,7 +125,22 @@ switch ($requestPath) {
         require __DIR__ . '/api/editProduct.php';
         break;
     
+    case '/api/deleteProduct':
+        require __DIR__ . '/api/deleteProduct.php';
         break;
+    
+    case '/api/getCustomer':
+        require __DIR__ . '/api/getCustomer.php';
+        break;
+    
+    case '/api/editCustomer':
+        require __DIR__ . '/api/editCustomer.php';
+        break;
+
+    case '/api/deleteCustomer':
+        require __DIR__ . '/api/deleteCustomer.php';
+        break;
+
     default:
         handle404Request();
         break;
