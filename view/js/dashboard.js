@@ -1,5 +1,5 @@
 // Function to show the page based on the ID
-function showPage(pageId, productID = null, customerID = null, adminID = null) {
+function showPage(pageId, productID = null, customerID = null, adminID = null, customerIDforOrder = null) {
   // Hide all pages
   var pages = document.getElementsByClassName("page");
   for (var i = 0; i < pages.length; i++) {
@@ -56,7 +56,25 @@ function showPage(pageId, productID = null, customerID = null, adminID = null) {
       document.getElementById("editcustomerAddress").value = customerDetails.customerAddress;
     });
   }
+
+  // If navigating to orders and the customerIDforOrder is not null, filter the orders by customerID
+  if (pageId === "orders" && customerIDforOrder !== null) {
+    // Filter the orders table by customerID
+    var ordersTable = $('#ordersTable').DataTable();
+    ordersTable.column(1).search(customerIDforOrder).draw();
+    var resetButton = document.getElementById('resetTableFiltersButton');
+    resetButton.style.display = 'block';
+
+    function resetTableFilters() {
+      ordersTable.search('').columns().search('').draw();
+      resetButton.style.display = 'none';
+    }
+
+    // Attach reset functionality to the reset button
+    resetButton.addEventListener('click', resetTableFilters);
+  }
 }
+
 
 // Function to retrieve and show the last visited page on page load
 function showLastVisitedPage() {

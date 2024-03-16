@@ -243,6 +243,8 @@
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Orders</h1>
+
+            <a id="resetTableFiltersButton" href="#" class="btn btn-secondary" onclick="resetOrdersTable()" style="display: none;">Show all Orders</a>
           </div>
 
           <?php
@@ -562,7 +564,7 @@
                     <?php echo $customer->getAddress(); ?>
                   </td>
                   <td>
-                    <a href="#" class="btn btn-primary">View Orders</a>
+                    <a href="#" class="btn btn-primary" onclick="showPage('orders', null, null, null, <?php echo $customer->getUID(); ?>)">View Orders</a>
                     <a href="#" class="btn btn-secondary" onclick="showPage('editCustomer', null, <?php echo $customer->getUID(); ?>)">Edit Details</a>
                   </td>
                 </tr>
@@ -570,7 +572,7 @@
             </tbody>
           </table>
         </div>
-
+        
         <div id="editCustomerPage" class="page" style="display: none;">
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
