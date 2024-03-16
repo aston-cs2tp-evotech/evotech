@@ -57,6 +57,7 @@ if (isset($_SESSION['uid'])) {
                 <input type="text" name="usernameOrEmail" placeholder="Username / email address" required/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
+            </form>
             <br>
             <br>
             <br>
