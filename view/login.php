@@ -62,8 +62,6 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
                 <a href="#" onclick="submitForm();" class="login-form-button">Login</a>
-            </form>
-
             <br>
             <br>
             <br>
