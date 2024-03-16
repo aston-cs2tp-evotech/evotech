@@ -1,5 +1,5 @@
 // Function to show the page based on the ID
-function showPage(pageId, productID = null) {
+function showPage(pageId, productID = null, customerID = null, adminID = null) {
   // Hide all pages
   var pages = document.getElementsByClassName("page");
   for (var i = 0; i < pages.length; i++) {
@@ -16,8 +16,8 @@ function showPage(pageId, productID = null) {
     navLinks[i].classList.remove("active");
   }
 
-  // Add 'active' class to the clicked navigation link except for if the page is editProduct
-  if (pageId !== "editProduct"){
+  // Add 'active' class to the clicked navigation link except for if the page is an edit page
+  if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin") {
     var clickedNavLink = document.querySelector('a[href="#"][onclick="showPage(\'' + pageId + '\')"]');
     clickedNavLink.classList.add("active");
 
@@ -42,6 +42,20 @@ function showPage(pageId, productID = null) {
       document.getElementById("editProductimagePreview").src = "/view/images/products/" + productID + "/" + productDetails.productImage;
     });
   }
+
+  // If navigating to editCustomerPage, populate form with customer details
+  if (pageId === "editCustomer" && customerID !== null) {
+    getCustomerDetails(customerID, function(response) {
+      // Parse JSON response
+      var customerDetails = JSON.parse(response);
+
+      // Populate form fields with customer details
+      document.getElementById("editcustomerID").value = customerID;
+      document.getElementById("editcustomerUsername").value = customerDetails.customerUsername;
+      document.getElementById("editcustomerEmail").value = customerDetails.customerEmail;
+      document.getElementById("editcustomerAddress").value = customerDetails.customerAddress;
+    });
+  }
 }
 
 // Function to retrieve and show the last visited page on page load
@@ -61,8 +75,6 @@ function showLastVisitedPage() {
 // Call the function to show the last visited page on page load
 showLastVisitedPage();
 
-
-
 $(document).ready(function () {
   $('#ordersTable').DataTable({
     // Enable select extension
@@ -76,7 +88,14 @@ $(document).ready(function () {
       }
     ]
   });
-  $('#productsTable').DataTable();
+  var productsTable = new DataTable('#productsTable');
+  $('#lowStockProductsTable').DataTable({
+    // Show 5 rows by default
+    pageLength: 5,
+    lengthMenu: [5, 10, 25, 50, 75, 100]
+  });
+  $('#customersTable').DataTable();
+  $('#adminsTable').DataTable();
 });
 
 // Get ordersMessage element
@@ -136,7 +155,6 @@ $('select[name="status"]').change(function() {
 function previewImage(input, edit=false) {
   const element = edit ? 'editProductimagePreview' : 'addProductimagePreview';
   var preview = document.getElementById(element);
-  console.log(preview);
   // if src already exists, remove it
   if (preview.src) {
     preview.src = '#';
@@ -159,7 +177,6 @@ function getProductDetails(productID, callback) {
     method: 'POST',
     data: { productID: productID },
     success: function(response) {
-      console.log(response);
       callback(response);
     },
     error: function(xhr, status, error) {
@@ -167,6 +184,83 @@ function getProductDetails(productID, callback) {
     }
   });
 }
+
+// Function to fetch customer details asynchronously
+function getCustomerDetails(customerID, callback) {
+  $.ajax({
+    url: '/api/getCustomer',
+    method: 'POST',
+    data: { customerID: customerID },
+    success: function(response) {
+      callback(response);
+    },
+    error: function(xhr, status, error) {
+      callback(null);
+    }
+  });
+}
+
+// Function to delete a product asynchronously
+function deleteProduct() {
+  // Get product ID
+  var productID = document.getElementById('editproductID').value;
+  $.ajax({
+    url: '/api/deleteProduct',
+    method: 'POST',
+    data: { productID: productID },
+    success: function(response) {
+      // Show success message
+      var deleteProductMessage = document.getElementById('productUpdate');
+      deleteProductMessage.innerHTML = productID + ' deleted successfully';
+      deleteProductMessage.style.display = 'block';
+      deleteProductMessage.classList.add('alert-success', 'alert-dismissible');
+      // Remove the product row from the table
+      var row = document.getElementById('productsTableRow' + productID);
+      row.remove();
+      showPage('products');
+      
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var deleteProductMessage = document.getElementById('productUpdate');
+      deleteProductMessage.innerHTML = error + ': ' + xhr.responseText;
+      deleteProductMessage.style.display = 'block';
+      deleteProductMessage.classList.add('alert-danger', 'alert-dismissible');
+      showPage('products');
+    }
+  });
+}
+
+// Function to delete a customer asynchronously
+function deleteCustomer() {
+  // Get customer ID
+  var customerID = document.getElementById('editcustomerID').value;
+  $.ajax({
+    url: '/api/deleteCustomer',
+    method: 'POST',
+    data: { customerID: customerID },
+    success: function(response) {
+      // Show success message
+      var deleteCustomerMessage = document.getElementById('customerUpdate');
+      deleteCustomerMessage.innerHTML = 'Customer ' + customerID + ' deleted successfully';
+      deleteCustomerMessage.style.display = 'block';
+      deleteCustomerMessage.classList.add('alert-success', 'alert-dismissible');
+      // Remove the customer row from the table
+      var row = document.getElementById('customersTableRow' + customerID);
+      row.remove();
+      showPage('customers');
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var deleteCustomerMessage = document.getElementById('customerUpdate');
+      deleteCustomerMessage.innerHTML = 'Error deleting customer';
+      deleteCustomerMessage.style.display = 'block';
+      deleteCustomerMessage.classList.add('alert-danger', 'alert-dismissible');
+      showPage('customers');
+    }
+  });
+}
+
 
 // When page is loaded, and either editProductSuccess or addProductSuccess is set as a GET parameter, show the product page
 $(document).ready(function() {
@@ -181,3 +275,54 @@ $(document).ready(function() {
     window.history.replaceState({}, document.title, "/" + "admin");
   }
 });
+
+
+// Function to edit a customer asynchronously
+$("#editCustomerForm").submit(function(e) {
+  e.preventDefault();
+
+  // Get form data
+  var customerID = $("#editcustomerID").val();
+  var customerUsername = $("#editcustomerUsername").val();
+  var customerEmail = $("#editcustomerEmail").val();
+  var customerAddress = $("#editcustomerAddress").val();
+  var customerPassword = $("#editcustomerPassword").val();
+
+  // Make AJAX request
+  $.ajax({
+    url: "/api/editCustomer",
+    method: "POST",
+    data: {
+      customerID: customerID,
+      customerUsername: customerUsername,
+      customerEmail: customerEmail,
+      customerAddress: customerAddress,
+      customerPassword: customerPassword
+    },
+    success: function(response) {
+      // Show success message
+      var editCustomerMessage = document.getElementById("customerUpdate");
+      editCustomerMessage.innerHTML = "Customer " + customerUsername + " updated successfully";
+      editCustomerMessage.style.display = "block";
+      editCustomerMessage.classList.add("alert-success", "alert-dismissible");
+
+      // Update the customer details in the table
+      document.getElementById("columnCustomerUsername_" + customerID).innerHTML = customerUsername;
+      document.getElementById("columnCustomerEmail_" + customerID).innerHTML = customerEmail;
+      document.getElementById("columnCustomerAddress_" + customerID).innerHTML = customerAddress;
+
+
+      showPage("customers");
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var editCustomerMessage = document.getElementById("customerUpdate");
+      editCustomerMessage.innerHTML = "Error updating customer";
+      editCustomerMessage.style.display = "block";
+      editCustomerMessage.classList.add("alert-danger", "alert-dismissible");
+      showPage("customers");
+    }
+  });
+
+});
+

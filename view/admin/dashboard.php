@@ -4,17 +4,25 @@
 <head>
   <?php
   $products = GetAllProducts();
+  if (!$products) {
+    $products = [];
+  }
   $orders = GetAllOrders();
   if (!$orders) {
     $orders = [];
   }
   $categories = GetAllCategories();
+  $customers = GetAllCustomers();
+  $admins = GetAllAdmins();
+  if (!$admins) {
+    $admins = [];
+  }
   ?>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>evotech; dashboard</title>
-
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -150,10 +158,10 @@
             <div class="col-md-4">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title text-center">Add Product</h5>
+                  <h5 class="card-title text-center">View Products</h5>
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary w-100">Go to Add Product Page</a>
+                  <a href="#" class="btn btn-secondary w-100" onclick="showPage('products')">Go to Products</a>
                 </div>
               </div>
             </div>
@@ -163,7 +171,7 @@
                   <h5 class="card-title text-center">View Database</h5>
                 </div>
                 <div class="card-body">
-                  <a href="/phpmyadmin" class="btn btn-primary w-100">Go to phpMyAdmin</a>
+                  <a href="/phpmyadmin" class="btn btn-secondary w-100">Go to phpMyAdmin</a>
                 </div>
               </div>
             </div>
@@ -173,7 +181,7 @@
                   <h5 class="card-title text-center">View Orders</h5>
                 </div>
                 <div class="card-body">
-                  <a href="#" class="btn btn-primary w-100">Go to Order Page</a>
+                  <a href="#" class="btn btn-secondary w-100" onclick="showPage('orders')">Go to Orders</a>
                 </div>
               </div>
             </div>
@@ -348,6 +356,8 @@
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Products</h1>
+
+            <a href="#" class="btn btn-secondary" onclick="showPage('addProduct')">Add New Product</a>
           </div>
           
           <?php if (isset($_GET['editProductError'])): ?>
@@ -359,6 +369,8 @@
                 <?php echo $_GET['editProductSuccess']; ?>
               </div>
           <?php endif; ?>
+
+          <div id="productUpdate" class="alert" style="display: none;"></div>
           
           <!-- Table displaying products -->
 
@@ -390,16 +402,16 @@
                           $stockLevelClass = 'table-dark'; 
                       }
                   ?>
-                  <tr class="<?php echo $stockLevelClass; ?>">
-                      <td style="max-width: 120px;"><img src="/view/images/products/<?php echo $item->getProductID(); ?>/<?php echo $item->getMainImage(); ?>" class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
-                      <td style="text-align: center;"><?php echo $item->getProductID(); ?></td>
-                      <td><?php echo $item->getName(); ?></td>
-                      <td>£<?php echo $item->getPrice(); ?></td>
-                      <td><?php echo $item->getStock(); ?></td>
-                      <td><?php echo $item->getDescription(); ?></td>
-                      <td>
+                  <tr class="<?php echo $stockLevelClass; ?>" id="productsTableRow<?php echo $item->getProductID(); ?>">
+                      <td id="columnProductImage_<?php echo $item->getProductID(); ?>" style="max-width: 120px;"><img src="/view/images/products/<?php echo $item->getProductID(); ?>/<?php echo $item->getMainImage(); ?>" class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
+                      <td id="columnProductID_<?php echo $item->getProductID(); ?>" style="text-align: center;"><?php echo $item->getProductID(); ?></td>
+                      <td id="columnProductName_<?php echo $item->getProductID(); ?>"><?php echo $item->getName(); ?></td>
+                      <td id="columnProductPrice_<?php echo $item->getProductID(); ?>">£<?php echo $item->getPrice(); ?></td>
+                      <td id="columnProductStock_<?php echo $item->getProductID(); ?>"><?php echo $item->getStock(); ?></td>
+                      <td id="columnProductDescription_<?php echo $item->getProductID(); ?>"><?php echo $item->getDescription(); ?></td>
+                      <td id="columnProductActions_<?php echo $item->getProductID(); ?>" style="text-align: center;">
                           <a class="btn btn-primary" onclick="showPage('editProduct', <?php echo $item->getProductID(); ?>)">Edit</a>
-                          <a href="/product?productID=<?php echo $item->getProductID(); ?>" class="btn btn-primary">View Page</a>
+                          <a href="/product?productID=<?php echo $item->getProductID(); ?>" class="btn btn-secondary">View Page</a>
                       </td>
                   </tr>
               <?php endforeach; ?>
@@ -409,13 +421,15 @@
 
         </div>
 
-                <div id="editProductPage" class="page" style="display: none;">
+        <div id="editProductPage" class="page" style="display: none;">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">Edit Product</h1>
+
+                <a href="#" class="btn btn-secondary" onclick="showPage('products')">Back to Products</a>
             </div>
 
-            <div id="editProductForm">
-                <form action="/api/editProduct" method="POST" enctype="multipart/form-data">
+            <div id="editProductFormContainer">
+                <form id="editProductForm" action="/api/editProduct" method="POST" enctype="multipart/form-data">
                     <input type="hidden" id="editproductID" name="productID">
                     <div class="mb-3">
                         <label for="productName" class="form-label">Product Name</label>
@@ -463,6 +477,8 @@
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Add Product</h1>
+
+            <a href="#" class="btn btn-secondary" onclick="showPage('products')">Back to Products</a>
           </div>
 
           <div id="addProductForm">
@@ -514,14 +530,138 @@
             <h1 class="h2">Customers</h1>
           </div>
 
+          <div id="customerUpdate" class="alert" style="display: none;"></div>
+
+          <?php
+          ?>
+  
+          <!-- Table displaying customers -->
+          <table id="customersTable" class="table table-striped table-hover" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Address</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($customers as $customer): ?>
+                <tr id="customersTableRow<?php echo $customer->getUID(); ?>">
+                  <td id="columnCustomerID_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getUID(); ?>
+                  </td>
+                  <td id="columnCustomerEmail_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getEmail(); ?>
+                  </td>
+                  <td id="columnCustomerUsername_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getUsername(); ?>
+                  </td>
+                  <td id="columnCustomerAddress_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getAddress(); ?>
+                  </td>
+                  <td>
+                    <a href="#" class="btn btn-primary">View Orders</a>
+                    <a href="#" class="btn btn-secondary" onclick="showPage('editCustomer', null, <?php echo $customer->getUID(); ?>)">Edit Details</a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="editCustomerPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Edit Customer</h1>
+            <a href="#" class="btn btn-secondary" onclick="showPage('customers')">Back to Customers</a>
+          </div>
+
+          <div id="editCustomerForm">
+            <form>
+              <input type="hidden" id="editcustomerID" name="customerID">
+              <div class="mb-3">
+                <label for="customerEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="editcustomerEmail" name="customerEmail" required>
+              </div>
+              <div class="mb-3">
+                <label for="customerUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="editcustomerUsername" name="customerUsername" required>
+              </div>
+              <div class="mb-3">
+                <label for="customerAddress" class="form-label">Address</label>
+                <textarea class="form-control" id="editcustomerAddress" name="customerAddress" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="customerPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="editcustomerPassword" name="customerPassword" placeholder="Leave blank to keep the same">
+              </div>
+              <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Update Customer</button>
+                <button type="button" class="btn btn-danger" onclick="deleteCustomer()">Delete Customer</button>
+              </div>
+            </form>
+          </div>
         </div>
 
         <div id="adminsPage" class="page" style="display: none;">
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Admins</h1>
+
+            <a href="#" class="btn btn-secondary" onclick="showPage('addAdmin')">Add Admin</a>
+          </div>
+          
+          <div id="adminUpdate" class="alert" style="display: none;"></div>
+
+          <!-- Table displaying admins -->
+          <table id="adminsTable" class="table table-striped table-hover" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Admin ID</th>
+                <th>Username</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($admins as $admin): ?>
+                <tr>
+                  <td>
+                    <?php echo $admin->getUID(); ?>
+                  </td>
+                  <td>
+                    <?php echo $admin->getUsername(); ?>
+                  </td>
+                  <td>
+                    <a href="#" class="btn btn-primary">Edit <?php echo $admin->getUsername();?></a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="editAdminPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Edit Admin</h1>
           </div>
 
+          <div id="editAdminForm">
+            <form>
+              <input type="hidden" id="editadminID" name="adminID">
+              <div class="mb-3">
+                <label for="adminUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="editadminUsername" name="adminUsername" required>
+              </div>
+              <div class="mb-3">
+                <label for="adminPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="editadminPassword" name="adminPassword" placeholder="Leave blank to keep the same">
+              </div>
+              <button type="submit" class="btn btn-primary">Update Admin</button>
+            </form>
+          </div>
         </div>
 
         <div id="importPage" class="page" style="display: none;">
@@ -552,9 +692,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
-    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.min.js"></script>
