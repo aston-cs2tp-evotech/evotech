@@ -163,7 +163,7 @@ foreach ($categories as $category) {
               </div>
               <div class="col-6">
               <br>  
-              <h3>Detailed information about the other pages, and of each feature avaliable. Depth in line with the synopsis on left.</h3>
+              <h3>For further details on Evotech and its wide range of products, simply click the link below </h3>
                 <a id="LearnMore-Link" href="aboutus">Learn more about evotech <i class="bi bi-arrow-right" style="color: white;"></i>
                 <hr>
                 </a>
