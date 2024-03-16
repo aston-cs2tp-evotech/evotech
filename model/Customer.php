@@ -142,6 +142,33 @@ class CustomerModel {
         $statement->execute();
         return $statement->fetchColumn();
     }
+
+    /**
+     * Retrieve all customers in the database.
+     * 
+     * @return array|null An array of all customers or null if no customers are found.
+     */
+    public function getAllCustomers() {
+        $query = "SELECT * FROM `Customers`";
+        $statement = $this->database->prepare($query);
+        if ($statement->execute()) {
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Delete a customer from the database
+     * 
+     * @param int $customerID The unique identifier of the customer.
+     */
+    public function deleteCustomer($customerID) {
+        $query = "DELETE FROM `Customers` WHERE `CustomerID` = :customerID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':customerID', $customerID, PDO::PARAM_INT);
+        return $statement->execute();
+    }
 }
 
 

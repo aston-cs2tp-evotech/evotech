@@ -101,6 +101,94 @@ class AdminModel {
         }
 
     }
+
+    /**
+     * Get all admins
+     * 
+     * @return array|null The list of all admins or null if no admins found.
+     */
+    public function getAllAdmins() {
+        $query = "SELECT * FROM `AdminCredentials`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $admins = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $admins ? $admins : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
 }
 
+class Admin {
+    private $adminID;
+    private $username;
+    private $passwordHash;
+
+
+    /**
+     * Admin constructor.
+     *
+     * @param array $adminData The admin details.
+     */
+    public function __construct($adminData) {
+        $this->adminID = $adminData['AdminID'];
+        $this->username = $adminData['Username'];
+        $this->passwordHash = $adminData['PasswordHash'];
+    }
+
+    /**
+     * Get the admin's unique identifier.
+     *
+     * @return int The admin's unique identifier.
+     */
+    public function getUID() {
+        return $this->adminID;
+    }
+
+    /**
+     * Set the admin's unique identifier.
+     *
+     * @param int $adminID The admin's unique identifier.
+     */
+    public function setUID($adminID) {
+        $this->adminID = $adminID;
+    }
+
+    /**
+     * Get the admin's username.
+     *
+     * @return string The admin's username.
+     */
+    public function getUsername() {
+        return $this->username;
+    }
+
+    /**
+     * Set the admin's username.
+     *
+     * @param string $username The admin's username.
+     */
+    public function setUsername($username) {
+        $this->username = $username;
+    }
+
+    /**
+     * Get the admin's password hash.
+     *
+     * @return string The admin's password hash.
+     */
+    public function getPasswordHash() {
+        return $this->passwordHash;
+    }
+
+    /**
+     * Set the admin's password hash.
+     *
+     * @param string $passwordHash The admin's password hash.
+     */
+    public function setPasswordHash($passwordHash) {
+        $this->passwordHash = $passwordHash;
+    }
+}
 ?>

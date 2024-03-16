@@ -132,12 +132,27 @@ class ProductModel {
      * @return bool True if the deletion is successful, false otherwise.
      */
     public function deleteProduct($productID) {
-        $query = "DELETE FROM `Products` WHERE `ProductID` = :productID";
-        $statement = $this->database->prepare($query);
-        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $statements = array();
+        // Delete from ProductImages\
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductImages` WHERE `ProductID` = :productID"));
+        // Delete from ProductCompatibility
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductCompatibility` WHERE `ProductID` = :productID"));
+        // Delete from ProductSlots
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductSlots` WHERE `ProductID` = :productID"));
+        // Delete from Products
+        array_push($statements, $this->database->prepare("DELETE FROM `Products` WHERE `ProductID` = :productID"));
+        
+        foreach ($statements as $statement) {
+            $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        }
 
         try {
-            return $statement->execute();
+            foreach ($statements as $statement) {
+                if (!$statement->execute()) {
+                    return false;
+                }
+            }
+            return true;
         } catch (PDOException $e) {
             return false;
         }

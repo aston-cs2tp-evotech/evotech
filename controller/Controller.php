@@ -42,6 +42,11 @@ $Product = new ProductModel($pdo);
 $Order = new OrdersModel($pdo);
 
 /**
+ * @var AdminModel The admin model for interacting with the database
+ */
+$Admin = new AdminModel($pdo);
+
+/**
  * Check if a variable is safe to evaluate
  * @param mixed $var Variable to check
  * @return boolean True if $var is safe and exists, otherwise false
@@ -68,6 +73,28 @@ function CreateSafeCustomer($details) {
     //create customer
     if (!$badCustomer && empty($keys)) {
         return new Customer($details);
+    }
+    else return null;
+}
+
+/**
+ * Iterates through details from db to ensure every key exists for the Admin object
+ * @param array $details Details array from the database
+ * @return Admin|null An admin object with all details, or null if any didn't exist 
+ */
+function CreateSafeAdmin($details) {
+    $badAdmin = false;
+    $keys = array('AdminID', 'Username', 'PasswordHash');
+
+    //check every key
+    foreach ($details as $key => $detail) {
+        if (!in_array($key, $keys)) $badAdmin = true;
+        else unset($keys[array_search($key, $keys)]); //removes key, to check all necessary fields exist
+    }
+
+    //create admin
+    if (!$badAdmin && empty($keys)) {
+        return new Admin($details);
     }
     else return null;
 }
@@ -158,6 +185,23 @@ function GetCustomerCount() {
 }
 
 /**
+ * Get all customers in the database
+ * 
+ * @return array|boolean Array of customers if success, otherwise false
+ */
+function GetAllCustomers() {
+    global $Customer;
+    $customers = $Customer->getAllCustomers();
+    if (!$customers) return false;
+    foreach ($customers as &$customer) {
+        $cust = CreateSafeCustomer($customer);
+        if ($cust == null) return false;
+        $customer = $cust;
+    }
+    return $customers;
+}
+
+/**
  * Updates a specified field in the database for a customer 
  * @param array $details Associative array containing field to change, new value and other relevant info
  * @return string Empty if succeeded, or a string to indicate where it failed
@@ -217,6 +261,19 @@ function UpdateCustomerDetail($details) {
         default:
             return "Invalid field";
     }
+}
+
+/** 
+ * Gets customer by their ID
+ * 
+ * @param int $customerID The ID of the customer
+ * @return Customer|boolean The customer if success, otherwise false
+ */
+function GetCustomerByID($customerID) {
+    global $Customer;
+    $customer = CreateSafeCustomer($Customer->getCustomerByUID($customerID));
+    if ($customer) return $customer;
+    else return false;
 }
 
 /**
@@ -970,6 +1027,65 @@ function GetPreviousOrders() {
 */
 
 /**
+ * Get all admins in the database
+ * 
+ * @return array|boolean Array of admins if success, otherwise false
+ */
+function GetAllAdmins() {
+    global $Admin;
+    $admins = $Admin->getAllAdmins();
+    
+    if (!$admins) return false;
+    foreach ($admins as &$admin) {
+        $adm = CreateSafeAdmin($admin);
+        if ($adm == null) return false;
+        $admin = $adm;
+    }
+    return $admins;
+}
+
+/**
+ * Update Customer details by admin
+ * 
+ * @param array $details Associative array containing key as field to update and value as new value
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function UpdateCustomerByAdmin($details) {
+    global $Customer;
+    foreach ($details as $key => $value) {
+        if ($key == "CustomerID") {
+            continue;
+        }
+        $err = $Customer->updateCustomerDetail($details["CustomerID"], $key, $value);
+        if (!$err) {
+            return "Error updating " . $key . " for customer " . $details["CustomerID"];
+        }
+    }
+    return "";
+}
+
+/**
+ * Deletes a customer from the database by their ID if there are no orders associated with them
+ * 
+ * @param int $customerID The ID of the customer
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function DeleteCustomerByAdmin($customerID) {
+    global $Customer;
+    global $Order;
+    $orders = $Order->getAllOrdersByCustomerID($customerID);
+    if ($orders) {
+        return "Customer has orders associated with them";
+    }
+    $err = $Customer->deleteCustomer($customerID);
+    if (!$err) {
+        return "Error deleting customer";
+    }
+    return "";
+}
+
+
+/**
  * Retrieves all orders, with orderLines attached
  * @return array|boolean array of Order objects if success, otherwise false
  */
@@ -1205,26 +1321,52 @@ function AddProduct($details) {
 }
 
 /**
- * Add an image to the product
+ * Deletes specified customer from db only if no orders are associated with it
+ * 
+ * @param int $customerID the customer to delete
+ * @return string empty if success, otherwise false
  */
 
+
 /**
- * Deletes the specified product from db
+ * Deletes the specified product from db only if no orders are associated with it
  * @param int $productID the product to delete
  * @return string empty if success, otherwise false
  */
 function DeleteProduct($productID) {
     global $Product;
-    if (!CheckAdminLoggedIn()) return "Not logged in";
+    // if (!CheckAdminLoggedIn()) return "Not logged in";
+    try {
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return "Invalid productID";
+    }
+    $debug_msg = "";
     
-    if (!(gettype($productID) == "int")) return "Invalid productID";
+    if (!(gettype($productID) == "integer")) return "Invalid productID";
     $prod = $Product->getProductByID($productID);
     if (is_null($prod)) return "Product does not exist";
 
+    $isInOrder = false;
+    $orders = GetAllOrders();
+    // if no orders are associated with the product, delete it
+    foreach ($orders as $order) {
+        foreach ($order->getOrderLines() as $orderLine) {
+            if ($orderLine->getProductID() == $productID) {
+                $isInOrder = true;
+                break;
+            }
+        }
+    }
+    if ($isInOrder) return "Product is associated with an existing order. Remove it from all orders before deleting it.";
+
     $err = $Product->deleteProduct($productID);
-    if (!$err) return "Database error";
+
+    if (!$err) return $err;
     else return "";
 }
+
+/** */
 
 /**
  * Update the specified field in a customer's details
@@ -1234,7 +1376,7 @@ function DeleteProduct($productID) {
  * @return string Empty if success, otherwise false
  */
 function UpdateCustomerInfo($customerID, $field, $value) {
-    if (!CheckAdminLoggedIn()) return "Not logged in";
+    //if (!CheckAdminLoggedIn()) return "Not logged in";
     
     global $Customer;
     $fields = array('Username', 'Email', 'CustomerAddress', 'PasswordHash');
@@ -1333,4 +1475,3 @@ function UpdateProductImage($productID, $fileName, $mainImage) {
     else return "";
 }
 
-?>
