@@ -112,7 +112,7 @@
       </nav>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <div id="dashboardPage" class="page"> <!-- Add unique ID for each page -->
+        <div id="dashboardPage" class="page"> 
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
@@ -187,7 +187,6 @@
             </div>
           </div>
 
-          <!-- Low stock products -->
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h3">Low Stock Products</h1>
           </div>
@@ -258,7 +257,6 @@
           <div id="orderUpdate" class="alert" style="display: none;"></div>
 
 
-          <!-- Table displaying orders -->
           <table id="ordersTable" class="table table-striped table-hover" style="width: 100%;">
             <thead>
               <tr>
@@ -374,7 +372,6 @@
 
           <div id="productUpdate" class="alert" style="display: none;"></div>
           
-          <!-- Table displaying products -->
 
           <table id="productsTable" class="table table-striped table-hover" style="width: 100%;">
             <thead>
@@ -536,8 +533,7 @@
 
           <?php
           ?>
-  
-          <!-- Table displaying customers -->
+
           <table id="customersTable" class="table table-striped table-hover" style="width: 100%;">
             <thead>
               <tr>
@@ -628,7 +624,6 @@
 
           <div id="adminUpdate" class="alert" style="display: none;"></div>
 
-          <!-- Table displaying admins -->
           <table id="adminsTable" class="table table-striped table-hover" style="width: 100%;">
             <thead>
               <tr>
