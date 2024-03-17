@@ -9,7 +9,7 @@ SET time_zone = "+00:00";
 -- The `Name` field stores the descriptive name of the order status (e.g., Processing, Shipped).
 -- This table is used to track and manage different order statuses.
 -- --------------------------------------------------------
-CREATE TABLE `OrderStatus` (
+CREATE TABLE if not exists `OrderStatus` (
   `OrderStatusID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`OrderStatusID`),
@@ -31,7 +31,7 @@ INSERT INTO `OrderStatus` (`Name`) VALUES
 -- The `CompatibilityName` field stores a descriptive name or identifier for each compatibility type (e.g., USB, PCIe).
 -- This table is used to define various types of compatibility for products.
 -- --------------------------------------------------------
-CREATE TABLE `Compatibility` (
+CREATE TABLE if not exists `Compatibility` (
   `CompatibilityID` INT NOT NULL AUTO_INCREMENT,
   `CompatibilityName` VARCHAR(99) NOT NULL,
   PRIMARY KEY (`CompatibilityID`)
@@ -44,7 +44,7 @@ CREATE TABLE `Compatibility` (
 -- The `PasswordHash` field stores the hashed password using PHP's password_hash() function.
 -- This table is used to manage administrator credentials.
 -- --------------------------------------------------------
-CREATE TABLE `AdminCredentials` (
+CREATE TABLE if not exists `AdminCredentials` (
   `AdminID` INT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(200) NOT NULL,
   `PasswordHash` VARCHAR(255) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE `AdminCredentials` (
 -- The `CategoryName` field stores the name of the category.
 -- This table is used to define and categorize products.
 -- --------------------------------------------------------
-CREATE TABLE `Categories` (
+CREATE TABLE if not exists `Categories` (
   `CategoryID` INT NOT NULL AUTO_INCREMENT,
   `CategoryName` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`CategoryID`),
@@ -73,7 +73,7 @@ CREATE TABLE `Categories` (
 -- The 'Description' field stores a description of the product.
 -- This table is used to store detailed information about the products available in the system.
 -- --------------------------------------------------------
-CREATE TABLE `Products` (
+CREATE TABLE if not exists `Products` (
   `ProductID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(200) NOT NULL,
   `Price` DECIMAL(10,2) NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE `Products` (
 -- `SlotType` represents the type of slot compatibility (e.g., USB, PCIe).
 -- This table establishes compatibility relationships between products based on slot types.
 -- --------------------------------------------------------
-CREATE TABLE `ProductCompatibility` (
+CREATE TABLE if not exists `ProductCompatibility` (
   `ProductID` INT NOT NULL,
   `CompatibilityID` INT NOT NULL,
   `SlotType` VARCHAR(50) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE `ProductCompatibility` (
 -- The 'MainImage' field is a boolean value that indicates whether the image is the main image for the product.
 -- This table is used to associate image files with products.
 -- --------------------------------------------------------
-CREATE TABLE `ProductImages` (
+CREATE TABLE if not exists `ProductImages` (
   `ImageID` INT NOT NULL AUTO_INCREMENT,
   `ProductID` INT NOT NULL,
   `FileName` VARCHAR(255) NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE `ProductImages` (
 -- The `PasswordHash` field stores the hashed password using PHP's password_hash() function.
 -- This table is used to manage detailed customer information.
 -- --------------------------------------------------------
-CREATE TABLE `Customers` (
+CREATE TABLE if not exists `Customers` (
   `CustomerID` INT NOT NULL AUTO_INCREMENT,
   `Email` VARCHAR(200) NOT NULL,
   `Username` VARCHAR(200) NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE `Customers` (
 -- `TotalAmount` represents the total amount of the order, and `OrderStatusID` represents the current status of the order.
 -- This table is used to track and manage customer orders.
 -- --------------------------------------------------------
-CREATE TABLE `Orders` (
+CREATE TABLE if not exists `Orders` (
   `OrderID` INT NOT NULL AUTO_INCREMENT,
   `CustomerID` INT NOT NULL,
   `TotalAmount` DECIMAL(10,2) NOT NULL,
@@ -160,7 +160,7 @@ CREATE TABLE `Orders` (
 -- `Quantity` stores the quantity of the product in the order.
 -- This table is used to track the items in each order.
 -- --------------------------------------------------------
-CREATE TABLE `OrderLines` (
+CREATE TABLE if not exists `OrderLines` (
   `OrderID` INT NOT NULL,
   `ProductID` INT NOT NULL,
   `Quantity` INT NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE `OrderLines` (
 -- representing the association between a product and a slot type.
 -- This table is used to define and store various slot types associated with products.
 -- --------------------------------------------------------
-CREATE TABLE `ProductSlots` (
+CREATE TABLE if not exists `ProductSlots` (
   `ProductID` INT NOT NULL,
   `SlotType` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`ProductID`, `SlotType`),
@@ -189,7 +189,7 @@ CREATE TABLE `ProductSlots` (
 -- representing the association between a product and a customer.
 -- The `Rating` field stores the rating given by the customer, and `Review` stores the review text.
 -- Rating must be filled in, but review is optional.
-CREATE TABLE `ProductReviews` (
+CREATE TABLE if not exists `ProductReviews` (
   `ProductID` INT NOT NULL,
   `CustomerID` INT NOT NULL,
   `Rating` INT NOT NULL,
