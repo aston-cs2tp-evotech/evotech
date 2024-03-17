@@ -192,7 +192,6 @@
           </div>
           <div class="row">
             <?php
-            // Get low stock products by filtering products with stock less than 15
             $lowStockProducts = array_filter($products, function ($product) {
               return $product->getStock() < 15;
             });
@@ -211,11 +210,11 @@
                     $stockLevelClass = '';
                     $stock = $product->getStock();
                     if ($stock >= 10 && $stock <= 15) {
-                        $stockLevelClass = 'table-warning'; // Apply warning class for stock level between 10 and 15
+                        $stockLevelClass = 'table-warning'; 
                     } elseif ($stock >= 1 && $stock <= 10) {
-                        $stockLevelClass = 'table-danger'; // Apply danger class for stock level between 1 and 10
+                        $stockLevelClass = 'table-danger'; 
                     } else {
-                        $stockLevelClass = 'table-dark'; // Apply dark class for stock level less than 1
+                        $stockLevelClass = 'table-dark'; 
                     }
                 ?>
                   <tr class="<?php echo $stockLevelClass; ?>">
