@@ -141,6 +141,18 @@ switch ($requestPath) {
         require __DIR__ . '/api/deleteCustomer.php';
         break;
 
+    case '/api/getAdmin':
+        require __DIR__ . '/api/getAdmin.php';
+        break;
+
+    case '/api/editAdmin':
+        require __DIR__ . '/api/editAdmin.php';
+        break;
+
+    case '/api/addAdmin':
+        require __DIR__ . '/api/addAdmin.php';
+        break;
+
     default:
         handle404Request();
         break;
