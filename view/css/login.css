@@ -28,12 +28,32 @@ input[type="submit"] {
     font-size: 16px;
 }
 
-a.register {
+.login-form-button {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     background-color: #000;
     color: #fff;
     text-decoration: none;
-    padding: 12px 155px;
+    transition: 0.4s background-color;
+    border-radius: 10px;
+    padding: 12px 45%;
+}
+
+.login-form-button:hover {
+    background-color: #aaa;
+}
+
+.register-button {
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.4s background-color;
+    border-radius: 10px;
+    padding: 12px 41.75%;
+}
+
+.register-button:hover {
+    background-color: #aaa;
 }
 
 body {
@@ -43,15 +63,12 @@ body {
     background-color: #f8f8f8;
 }
 
-header {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1em;
-}
-
 h2 {
     text-align: left;
+}
+
+.welcome {
+    text-align: center;
 }
 
 .login {
@@ -60,6 +77,7 @@ h2 {
     display: flex;
     justify-content: space-between;
     margin: 0px auto;
+    color: #f8f8f8;
 }
 
 .login-image {
@@ -75,7 +93,7 @@ h2 {
 .login-form {
     width: 35%;
     margin: 0px auto;
-    padding: 15px;
+    padding: 25px;
     background-color: #534B62;
     text-align: center;
     box-sizing: border-box;

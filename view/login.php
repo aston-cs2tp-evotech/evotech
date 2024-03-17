@@ -18,13 +18,11 @@ if (isset($_SESSION['uid'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Log in - EvoTech</title>
         <link rel="stylesheet" type="text/css" href="/view/css/login.css">
-        
+        <script src="/view/js/login.js"></script>     
     </head>
     <body>
         
-    <section class="bg-success p-5  py-4">
     <?php include __DIR__ . '/nav.php'?>
-    </section>
 
     <main>
 
@@ -38,7 +36,10 @@ if (isset($_SESSION['uid'])) {
 
         <div class="login-form">
 
-            <h2>Welcome to Evotech</h2>
+            <br>
+            <br>
+
+            <h2 class="welcome">Welcome to Evotech</h2>
 
             <br>
             <br>
@@ -52,25 +53,23 @@ if (isset($_SESSION['uid'])) {
             ?>
 
             <h2>Log in</h2>
-            <form action="login" method="POST">
+            <form id="login" action="login" method="POST">
                 <input type="text" name="usernameOrEmail" placeholder="Username / email address" required/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
-            <br>
-            <br>
-            <br>
-            <br>
-                <input type="submit" value="Log in"/>
-            <br>
             </form>
-
+            <br>
+            <br>
+            <br>
+            <br>
+                <a href="#" onclick="submitForm();" class="login-form-button">Login</a>
+            <br>
             <br>
             <br>
             
             <h2>Don't have an account?</h2>
-            <form action="/register">
-                <input type="submit" value="Register"/>
-            </form>
+                <br>
+                <a href="register" class="register-button">Register</a>
 
             <br>
             
