@@ -60,6 +60,7 @@ foreach ($categories as $category) {
     <!-- <section class="bg-dark text-light p-5 text-center text-sm-start py-5">
 
     </section> -->
+    
 
     <section class="bg text-light p-5 my text-center text-sm-start py-5" style="background-color:#534B62; margin-top: 20px;">
         <div class="container">
@@ -75,79 +76,51 @@ foreach ($categories as $category) {
             </div>
         </div>
 
-        <section class="p-5">
-            <div class="card" id="largeCard">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="row text-center p card-container" >
-                            <div class="col-md p-1" >
-                                <div class="card bg text-dark" >
-                                    <img src="view/images/Motherboard.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Motherboard image">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Components</h5>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md p-1 ">
-                                <div class="card text-dark" >
-                                    <img src="view/images/cpu.jpg" style="max-width: 40%; max-height:40%;" class="card-img-top" alt="CPU image">
-                                    <div class="card-body">
-                                        <h5 class="card-title">CPUs</h5>
-                                    </div>
-                                </div>   
-            
-                            </div>
-                            <div class="col-md p-1">
-                               <div class="card text-dark" >
-                                  <img src="view/images/Graphics card.webp" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Graphics Card image">
-                                  <div class="card-body">
-                                    <h5 class="card-title">GPUs</h5>
-                            
-                                  </div>  
-                                </div>
-            
-                            </div>
+
+    
+    
+    <section class="p-5">
+      <div class="card " id="largeCard">
+        <div class="card-body">
+          <?php for ($i = 0; $i < count($categories); $i += 3): ?>
+            <div class="row">
+              <div class="row text-center p card-container">
+                <?php for ($j = $i; $j <= $i + 2 && $j < count($categories); $j++): ?>
+                  <div class="col-md-4 p-1 ">
+                    <div class="card bg text-dark">
+                      <?php $currentCategory = $categories[$j]; ?>
+                      <?php if (isset($categoryImages[$currentCategory])): ?>
+                        <a href="/products?category=<?php echo $currentCategory; ?>">
+                          <img src="view/images/products/<?php echo $categoryImages[$currentCategory]->getProductID();?>/<?php echo $categoryImages[$currentCategory]->getMainImage();?>" class="card-img-top" alt="Product Image">
+                        </a>
+                        <div class="card-body">
+                          <h5 class="card-title">
+                            <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark"><?php echo $currentCategory; ?></a>
+                          </h5>
                         </div>
-                     </div>
-                     <div class="row">
-                        <div class="row text-center p card-container" >
-                            <div class="col-md p-1" >
-                                <div class="card bg text-dark" >
-                                    <img src="view/images/Case.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Cases image">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Cases</h5>
-                                      
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md p-1">
-                                <div class="card  text-dark" >
-                                    <img src="view/images/Ram.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="Ram image">
-                                    <div class="card-body">
-                                      <h5 class="card-title">Memory</h5>
-                                      
-                                    </div>
-                                </div>   
-            
-                            </div>
-                            <div class="col-md p-1">
-                               <div class="card text-dark" >
-                                  <img src="view/images/SSD.png" style="max-width: 40%; max-height: 40%;" class="card-img-top" alt="SSD image"> 
-                                  <div class="card-body">
-                                    <h5 class="card-title">Storage</h5>
-                                    
-                                  </div>  
-                                </div>
-            
-                            </div>
-                        </div>
-                     </div>
-                  
-                </div>
+                      <?php else: ?>
+                        <!-- Default image or alternative content if no image is available -->
+                        <div class="bg-dark shadow-sm mx-auto" style="width: 100%; height: 100%; border-radius: 21px 21px 0 0;"></div>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                <?php endfor; ?>
               </div>
-        </section>
+            </div>
+          <?php endfor; ?>
+        </div>
+      </div>
+    </section>
+
+  
+
+
+
+       
+       
+      
+        
+
 
       <hr>
       <section id="statements">
@@ -171,9 +144,6 @@ foreach ($categories as $category) {
             </div>
           </div>
 
-       
-
-      
       
 
     </section>

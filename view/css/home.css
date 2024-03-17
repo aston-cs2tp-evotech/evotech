@@ -14,15 +14,12 @@
       
     }
   
-    
- 
-  
+      
   .flex-equal > * {
     flex: 1;
   }
   
   
-
 
   .card-container {
     display: flex;
@@ -33,21 +30,23 @@
   flex: 1 0 auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   height: 275px; 
-  overflow: auto; 
+  overflow: hidden; 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.card-container .card img {
+.card-container .card-img-top {
   display: block; 
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
-  width: 100%; 
+  margin-top: 40px;
+  padding: 5px;
+  width: 45%; 
   height: auto; 
 }
+
 
 
 .card-container .card:hover {
