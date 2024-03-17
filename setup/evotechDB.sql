@@ -23,7 +23,7 @@ INSERT INTO `OrderStatus` (`Name`) VALUES
 ('delivering'),
 ('delivered'),
 ('cancelled'),
-('failed');
+('returned');
 
 -- --------------------------------------------------------
 -- Table for Compatibility

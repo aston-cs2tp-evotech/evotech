@@ -303,8 +303,8 @@
                     $statusClass = 'table-danger'; 
                     $modifiable = true;
                     break;
-                  case 'failed':
-                    $statusClass = 'table-danger'; 
+                  case 'returned':
+                    $statusClass = 'table-dark'; 
                     $modifiable = true;
                     break;
                 }
