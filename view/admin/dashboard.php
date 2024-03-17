@@ -719,28 +719,6 @@
             </form>
           </div>
         </div>
-
-        <div id="importPage" class="page" style="display: none;">
-          <div
-            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Import Data</h1>
-          </div>
-
-          <form action="/importData" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-              <label for="dummyData" class="form-label">Import Dummy Data</label>
-              <button type="submit" class="btn btn-primary" name="dummyData">Import</button>
-            </div>
-            <div class="mb-3">
-              <label for="fileData" class="form-label">Import from File</label>
-              <input type="file" class="form-control" id="fileData" name="fileData" accept=".csv, .xlsx">
-            </div>
-            <button type="submit" class="btn btn-primary">Import</button>
-          </form>
-        </div>
-
-
-
     </div>
 
     </main>
