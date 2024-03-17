@@ -919,7 +919,29 @@ function CheckoutBasket() {
     $basket = CreateSafeOrder($Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0]);
     if (is_null($basket)) return false;
 
-    return $Order->updateOrderDetails($basket->getOrderID(), "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    $orderID = $basket->getOrderID();
+    $basket = GetOrderByID($orderID);
+    // For each orderLine, reduce the stock of the product by the quantity in the orderLine
+    $orderLines = $basket -> getOrderLines();
+    foreach ($orderLines as $orderLine) {
+        $productID = $orderLine -> getProductID();
+        $quantity = $orderLine -> getQuantity();
+        $product = GetProductByID($productID);
+        $updatedStock = $product -> getStock() - $quantity;
+        if ($product -> getStock() < $quantity) {
+            return false;
+        }
+        $result = UpdateProductDetail($productID, "Stock", $updatedStock);
+        echo $result;
+        if (!$result) {
+            return false;
+        }
+    }
+    $result = $Order->updateOrderDetails($basket->getOrderID(), "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    if (!$result) return false;
+    // If all has been successful, return true
+    return true;
+
 }
 
 /**
@@ -1214,13 +1236,23 @@ function UpdateProductDetail($productID, $field, $value) {
             else return "";
 
         case ("Price"):
-            if (!(gettype($value) == "int")) return "Invalid price";
+            try {
+                $value = (double)$value;
+            } catch (Exception $e) {
+                return "Invalid price";
+            }
+            if (!(gettype($value) == "double")) return "Invalid price";
             $err = $Product->updateProductDetail($productID, 'Price', $value);
             if (!$err) return "Error updating price";
             else return "";
 
         case ("Stock"):
-            if (!(gettype($value) == "int")) return "Invalid stock";
+            try {
+                $value = (int)$value;
+            } catch (Exception $e) {
+                return "Invalid stock";
+            }
+            if (!(gettype($value) == "integer")) return "Invalid stock";
             $err = $Product->updateProductDetail($productID, 'Stock', $value);
             if (!$err) return "Error updating stock";
             else return "";
@@ -1232,11 +1264,23 @@ function UpdateProductDetail($productID, $field, $value) {
             else return "";
 
         case ("CategoryID"):
-            if (!(gettype($value) == "int")) return "Invalid CategoryID";
+            try {
+                $value = (int)$value;
+            } catch (Exception $e) {
+                return "Invalid CategoryID";
+            }
+            if (!(gettype($value) == "integer")) return "Invalid CategoryID";
             $cats = $Product->getCategories();
             if (is_null($cats)) return "Database error";
 
-            if (!in_array($value, $cats["CategoryID"])) return "Category does not exist";
+            $catFound = false;
+            foreach ($cats as $cat) {
+                if ($cat["CategoryID"] == $value) {
+                    $catFound = true;
+                    break;
+                }
+            }
+            if (!$catFound) return "Category does not exist";
 
             $err = $Product->updateProductDetail($productID, 'CategoryID', $value);
             if (!$err) return "Error updating category";
