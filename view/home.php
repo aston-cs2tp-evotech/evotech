@@ -151,20 +151,20 @@ foreach ($categories as $category) {
 
       <hr>
       <section id="statements">
-      <h1>Mini Mission Statement that supports<br> 
-        inclusivity/accessibility to <br> people using
-        this site</h1>
-
+      <h1>
+      Evotech: Making hardware accessible to all <br> users, prioritising inclusivity in technology solutions
         <div class="container p-3">
             <div class="row justify-content-between">
               <div class="col-4">
-                <h2>
-                    Slight explanation and synopsis  of Evotech as a service and website
-                  </h2> 
+              <br>  
+              <h2>
+                Evotech: Guiding hardware needs, with online shopping and support services.
+              </h2> 
               </div>
               <div class="col-6">
-                <h3>Detailed information about the other pages, and of each feature avaliable. Depth in line with the synopsis on left.</h3>
-                <a id="LearnMore-Link" href="#">Learn more about evotech <i class="bi bi-arrow-right" style="color: white;"></i>
+              <br>  
+              <h3>For further details on Evotech and its wide range of products, simply click the link below </h3>
+                <a id="LearnMore-Link" href="aboutus">Learn more about evotech <i class="bi bi-arrow-right" style="color: white;"></i>
                 <hr>
                 </a>
               </div>
