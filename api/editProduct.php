@@ -28,7 +28,7 @@ if ($product->getPrice() != $productPrice) {
 }
 
 if ($product->getStock() != $productStock) {
-    UpdateProductDetail($productID, "Stock", $productStock);
+    $message .= UpdateProductDetail($productID, "Stock", $productStock);
 }
 
 if ($product->getDescription() != $productDescription) {
@@ -98,7 +98,7 @@ if ($product->getMainImage() != $_FILES["productImage"]["name"] && $_FILES["prod
             // Update product image
             $imageName = basename($newTargetFile);
             UpdateProductImage($productID, $imageName, true);
-            $message = "The file ". htmlspecialchars( basename( $_FILES["productImage"]["name"])). " has been uploaded.";
+            $message .= "\nThe file ". htmlspecialchars( basename( $_FILES["productImage"]["name"])). " has been uploaded.";
             
         } else {
             echo "Sorry, there was an error uploading your file.";
