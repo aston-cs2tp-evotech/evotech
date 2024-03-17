@@ -182,3 +182,20 @@ CREATE TABLE `ProductSlots` (
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+
+-- --------------------------------------------------------
+-- Table for Product Reviews
+-- The `ProductID` and `CustomerID` form a composite primary key,
+-- representing the association between a product and a customer.
+-- The `Rating` field stores the rating given by the customer, and `Review` stores the review text.
+-- Rating must be filled in, but review is optional.
+CREATE TABLE `ProductReviews` (
+  `ProductID` INT NOT NULL,
+  `CustomerID` INT NOT NULL,
+  `Rating` INT NOT NULL,
+  `Review` VARCHAR(200),
+  PRIMARY KEY (`ProductID`, `CustomerID`),
+  FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`),
+  FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
