@@ -1049,6 +1049,55 @@ function GetPreviousOrders() {
 */
 
 /**
+ * Add an admin to the database
+ * 
+ * @param array $details Associative array containing key as field to update and value as new value
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function AddAdmin($details) {
+    global $Admin;
+    if (!CheckExists($details["Username"]) || !CheckExists($details["Password"])) return "Invalid request";
+    if (!preg_match("/[a-zA-Z0-9]+/", $details["Username"])) return "Invalid username";
+    if (strlen($details["Password"]) < 7) return "Password should be longer than 7 characters";
+    $details["Password_hash"] = password_hash($details["Password"], PASSWORD_DEFAULT);
+    $err = $Admin->addAdmin($details);
+    if (!$err) return "Error creating admin";
+    return "";
+}
+
+/**
+ * Get Admin by their ID
+ * 
+ * @param int $adminID The ID of the admin
+ */
+function GetAdminByID($adminID) {
+    global $Admin;
+    $admin = CreateSafeAdmin($Admin->getAdminByUID($adminID));
+    if ($admin) return $admin;
+    else return false;
+}
+
+/**
+ * Update the details of an admin by an admin
+ * 
+ * @param array $details Associative array containing key as field to update and value as new value
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function UpdateAdminByAdmin($details) {
+    global $Admin;
+    foreach ($details as $key => $value) {
+        if ($key == "AdminID") {
+            continue;
+        }
+        $err = $Admin->updateAdmin($details["AdminID"], $key, $value);
+        if (!$err) {
+            return "Error updating " . $key . " for admin " . $details["AdminID"];
+        }
+    }
+    return "";
+}
+
+/**
  * Get all admins in the database
  * 
  * @return array|boolean Array of admins if success, otherwise false

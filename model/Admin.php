@@ -60,19 +60,20 @@ class AdminModel {
      * @return array|null The registered admin details or null if registration fails.
      */
     public function addAdmin($adminData) {
-        $insertQuery = "INSERT INTO 'AdminCredentials' (
-                        'Username',
-                        'PasswordHash'
+        $insertQuery = "INSERT INTO `AdminCredentials` (
+                        `Username`,
+                        `PasswordHash`
                     ) VALUES (
                         :username,
                         :passwordHash
                     )";
         $insertStatement = $this->database->prepare($insertQuery);
-        $insertStatement->bindParam(':username', $adminData['username'], PDO::PARAM_STR);
-        $insertStatement->bindParam(':passwordHash', $adminData['password_hash'], PDO::PARAM_STR);
-
-        return $insertStatement->execute() ? $this->getAdminByUsername($adminData['username']) : null;
+        $insertStatement->bindParam(':username', $adminData['Username'], PDO::PARAM_STR);
+        $insertStatement->bindParam(':passwordHash', $adminData['Password_hash'], PDO::PARAM_STR);
+    
+        return $insertStatement->execute() ? $this->getAdminByUsername($adminData['Username']) : null;
     }
+    
 
     /**
      * Update an admin's details.

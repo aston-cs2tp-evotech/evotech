@@ -17,7 +17,7 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
   }
 
   // Add 'active' class to the clicked navigation link except for if the page is an edit page
-  if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin") {
+  if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin" && pageId !== "addAdmin") {
     var clickedNavLink = document.querySelector('a[href="#"][onclick="showPage(\'' + pageId + '\')"]');
     clickedNavLink.classList.add("active");
 
@@ -40,6 +40,18 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
       document.getElementById("editproductDescription").value = productDetails.productDescription;
       document.getElementById("editproductCategory").value = productDetails.productCategory;
       document.getElementById("editProductimagePreview").src = "/view/images/products/" + productID + "/" + productDetails.productImage;
+    });
+  }
+
+  // If navigating to editAdminPage, populate form with admin details
+  if (pageId === "editAdmin" && adminID !== null) {
+    getAdminDetails(adminID, function(response) {
+      // Parse JSON response
+      var adminDetails = JSON.parse(response);
+
+      // Populate form fields with admin details
+      document.getElementById("editadminID").value = adminID;
+      document.getElementById("editadminUsername").value = adminDetails.adminUsername;
     });
   }
 
@@ -140,11 +152,8 @@ $('select[name="status"]').change(function() {
       var row = $('#ordersTableRow' + orderID); // Select the row using its ID
       row.removeClass(); // Remove all existing classes
       switch (newStatusID) {
-        case '1':
-          row.addClass('table-primary');
-          break;
         case '2':
-          row.addClass('table-success');
+          row.addClass('table-primary');
           break;
         case '3':
           row.addClass('table-info');
@@ -153,13 +162,13 @@ $('select[name="status"]').change(function() {
           row.addClass('table-warning');
           break;
         case '5':
-          row.addClass('table-dark');
+          row.addClass('table-success');
           break;
         case '6':
           row.addClass('table-danger');
           break;
         case '7':
-          row.addClass('table-secondary');
+          row.addClass('table-danger');
           break;
       }
     },
@@ -194,6 +203,21 @@ function getProductDetails(productID, callback) {
     url: '/api/getProduct',
     method: 'POST',
     data: { productID: productID },
+    success: function(response) {
+      callback(response);
+    },
+    error: function(xhr, status, error) {
+      callback(null);
+    }
+  });
+}
+
+// Function to fetch admin details asynchronously
+function getAdminDetails(adminID, callback) {
+  $.ajax({
+    url: '/api/getAdmin',
+    method: 'POST',
+    data: { adminID: adminID },
     success: function(response) {
       callback(response);
     },
@@ -271,7 +295,7 @@ function deleteCustomer() {
     error: function(xhr, status, error) {
       // Show error message
       var deleteCustomerMessage = document.getElementById('customerUpdate');
-      deleteCustomerMessage.innerHTML = 'Error deleting customer';
+      deleteCustomerMessage.innerHTML = error + ': ' + xhr.responseText;
       deleteCustomerMessage.style.display = 'block';
       deleteCustomerMessage.classList.add('alert-danger', 'alert-dismissible');
       showPage('customers');
@@ -291,7 +315,16 @@ $(document).ready(function() {
     showPage('products');
     // Remove the GET parameter from the URL
     window.history.replaceState({}, document.title, "/" + "admin");
+  } else if (urlParams.has('addAdminSuccess')) {
+    showPage('admins');
+    // Remove the GET parameter from the URL
+    window.history.replaceState({}, document.title, "/" + "admin");
+  } else if (urlParams.has('addAdminError')) {
+    showPage('admins');
+    // Remove the GET parameter from the URL
+    window.history.replaceState({}, document.title, "/" + "admin");
   }
+
 });
 
 
@@ -339,6 +372,48 @@ $("#editCustomerForm").submit(function(e) {
       editCustomerMessage.style.display = "block";
       editCustomerMessage.classList.add("alert-danger", "alert-dismissible");
       showPage("customers");
+    }
+  });
+
+});
+
+// Function to edit an admin asynchronously
+$("#editAdminForm").submit(function(e) {
+  e.preventDefault();
+
+  // Get form data
+  var adminID = $("#editadminID").val();
+  var adminUsername = $("#editadminUsername").val();
+  var adminPassword = $("#editadminPassword").val();
+
+  // Make AJAX request
+  $.ajax({
+    url: "/api/editAdmin",
+    method: "POST",
+    data: {
+      adminID: adminID,
+      adminUsername: adminUsername,
+      adminPassword: adminPassword
+    },
+    success: function(response) {
+      // Show success message
+      var editAdminMessage = document.getElementById("adminUpdate");
+      editAdminMessage.innerHTML = "Admin " + adminUsername + " updated successfully";
+      editAdminMessage.style.display = "block";
+      editAdminMessage.classList.add("alert-success", "alert-dismissible");
+
+      // Update the admin details in the table
+      document.getElementById("columnAdminUsername_" + adminID).innerHTML = adminUsername;
+
+      showPage("admins");
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var editAdminMessage = document.getElementById("adminUpdate");
+      editAdminMessage.innerHTML = "Error updating admin";
+      editAdminMessage.style.display = "block";
+      editAdminMessage.classList.add("alert-danger", "alert-dismissible");
+      showPage("admins");
     }
   });
 

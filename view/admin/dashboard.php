@@ -615,6 +615,17 @@
             <a href="#" class="btn btn-secondary" onclick="showPage('addAdmin')">Add Admin</a>
           </div>
           
+          <?php if (isset($_GET['addAdminError'])): ?>
+            <div class="alert alert-danger" role="alert">
+              <?php echo $_GET['addAdminError']; ?>
+            </div>
+            <?php elseif (isset($_GET['addAdminSuccess'])): ?>
+              <div class="alert alert-success" role="alert">
+                <?php echo $_GET['addAdminSuccess']; ?>
+              </div>
+          <?php endif; ?>
+
+
           <div id="adminUpdate" class="alert" style="display: none;"></div>
 
           <!-- Table displaying admins -->
@@ -632,11 +643,11 @@
                   <td>
                     <?php echo $admin->getUID(); ?>
                   </td>
-                  <td>
+                  <td id="columnAdminUsername_<?php echo $admin->getUID(); ?>">
                     <?php echo $admin->getUsername(); ?>
                   </td>
                   <td>
-                    <a href="#" class="btn btn-primary">Edit <?php echo $admin->getUsername();?></a>
+                    <a href="#" class="btn btn-primary"onclick="showPage('editAdmin', null, null, <?php echo $admin->getUID(); ?>)">Edit</a>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -648,6 +659,55 @@
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Edit Admin</h1>
+
+            <a href="#" class="btn btn-secondary" onclick="showPage('admins')">Back to Admins</a>
+          </div>
+
+          <div id="editAdminForm">
+            <form action="/api/editAdmin" method="POST">
+              <input type="hidden" id="editadminID" name="adminID">
+              <div class="mb-3">
+                <label for="adminUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="editadminUsername" name="adminUsername" required>
+              </div>
+              <div class="mb-3">
+                <label for="adminPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="editadminPassword" name="adminPassword" placeholder="Leave blank to keep the same">
+              </div>
+              <button type="submit" class="btn btn-primary">Update Admin</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="addAdminPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Add Admin</h1>
+
+            <a href="#" class="btn btn-secondary" onclick="showPage('admins')">Back to Admins</a>
+          </div>
+
+          <div id="addAdminForm">
+            <form action="/api/addAdmin" method="POST">
+              <div class="mb-3">
+                <label for="adminUsername" class="form-label">Username</label>
+                <input type="text" class="form-control" id="adminUsername" name="adminUsername" required>
+              </div>
+              <div class="mb-3">
+                <label for="adminPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="adminPassword" name="adminPassword" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Add Admin</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="editAdmin" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Edit Admin</h1>
+
+            <a href="#" class="btn btn-secondary" onclick="showPage('admins')">Back to Admins</a>
           </div>
 
           <div id="editAdminForm">
@@ -685,6 +745,8 @@
           </form>
         </div>
 
+
+
     </div>
 
     </main>
@@ -698,7 +760,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.min.js"></script>
-  <script src="/view/js/dashboard.js"></script>
+  <script src="/view/js/dashboard2.js"></script>
 </body>
 
 </html>
