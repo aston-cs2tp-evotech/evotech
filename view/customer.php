@@ -91,6 +91,7 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                     <?php $totalPrice = $order->getTotalAmount(); ?>
                     <h3>Order <?php echo $order->getOrderID(); ?></h3>
                     <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
+                    <h4>Date: <?php echo $order->getCheckedOutAt(); ?></h4>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
