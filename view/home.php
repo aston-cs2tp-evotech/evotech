@@ -76,7 +76,6 @@ foreach ($categories as $category) {
             </div>
         </div>
 
-
     
     
     <section class="p-5">
@@ -91,10 +90,10 @@ foreach ($categories as $category) {
                       <?php $currentCategory = $categories[$j]; ?>
                       <?php if (isset($categoryImages[$currentCategory])): ?>
                         <a href="/products?category=<?php echo $currentCategory; ?>">
-                          <img src="view/images/products/<?php echo $categoryImages[$currentCategory]->getProductID();?>/<?php echo $categoryImages[$currentCategory]->getMainImage();?>" class="card-img-top" alt="Product Image">
+                          <img src="view/images/products/<?php echo $categoryImages[$currentCategory]->getProductID();?>/<?php echo $categoryImages[$currentCategory]->getMainImage();?>" class="<?= $currentCategory ?>-card-img-top" alt="Product Image">
                         </a>
                         <div class="card-body">
-                          <h5 class="card-title">
+                          <h5 class="<?= $currentCategory ?>-text">
                             <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark"><?php echo $currentCategory; ?></a>
                           </h5>
                         </div>
