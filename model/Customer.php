@@ -133,14 +133,17 @@ class CustomerModel {
     /**
      * Count the number of customers in the database.
      * 
-     * @return int The number of customers in the database.
+     * @return int|null The number of customers in the database, or null if failed.
      */
     
     public function getCustomerCount() {
         $query = "SELECT COUNT(*) FROM `Customers`";
         $statement = $this->database->prepare($query);
-        $statement->execute();
-        return $statement->fetchColumn();
+        if ($statement->execute()) {
+            return $statement->fetchColumn();
+        } else {
+            return null;
+        }
     }
 
     /**

@@ -180,7 +180,7 @@ function RegisterUser($details) {
 function GetCustomerCount() {
     global $Customer;
     $count = $Customer->getCustomerCount();
-    if ($count) return $count;
+    if (!is_null($count)) return $count;
     else return false;
 }
 
@@ -414,7 +414,7 @@ function GetAllProducts() {
 function GetProductCount() {
     global $Product;
     $count = $Product->getProductCount();
-    if ($count) return $count;
+    if (!is_null($count)) return $count;
     else return false;
 }
 

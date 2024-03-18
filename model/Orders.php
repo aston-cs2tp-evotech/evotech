@@ -347,7 +347,7 @@ class OrdersModel {
             $orderCount = $statement->fetch(PDO::FETCH_ASSOC);
             return $orderCount ? $orderCount['COUNT(*)'] : 0;
         } else {
-            return 0; // Failed to execute query
+            return null; // Failed to execute query
         }
     }
 }
