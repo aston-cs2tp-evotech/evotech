@@ -77,6 +77,7 @@ foreach ($categories as $category) {
         </div>
 
     
+        <!--List of different categories-->
     
     <section class="p-5">
       <div class="card " id="largeCard">
@@ -111,14 +112,6 @@ foreach ($categories as $category) {
       </div>
     </section>
 
-  
-
-
-
-       
-       
-      
-        
 
 
       <hr>
@@ -148,181 +141,6 @@ foreach ($categories as $category) {
     </section>
 </section>
 
-
-    <!--Boxes-
-    <section class="p-5">
-        <div class="container">
-         <div class="row">
-            <div class="row text-center">
-                <div class="col-md">
-                    <div class="card bg-light text-dark" >
-                        <i class="bi bi-truck" style="font-size: 80px; color: black;"></i>
-                        <div class="card-body">
-                          <h5 class="card-title">Free Delivery</h5>
-                          <p class="card-text">Across UK and Global Orders</p>
-                        </div>
-                        
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="card bg-light text-dark" >
-                        <i class="bi bi-lightning-charge-fill" style="font-size: 80px; color: black;"></i>
-                        <div class="card-body">
-                          <h5 class="card-title">Extended Warranty</h5>
-                          <p class="card-text">12 Month Quality Guarantee</p>
-                        </div>
-                    </div>   
-
-                </div>
-                <div class="col-md">
-                   <div class="card bg-light text-dark" >
-                      <i class="bi bi-person-circle" style="font-size: 80px; color: black;"></i>
-                      <div class="card-body">
-                        <h5 class="card-title">User Choices</h5>
-                        <p class="card-text">'Reviewed and Rated' by Real Users</p>
-                      </div>  
-                    </div>
-
-                </div>
-            </div>
-         </div>
-        </div>
-    </section>
-   -->
-
-    <!--List of different categories-->
-
-    <?php /*
-
-    <?php for ($i = 0; $i < count($categories); $i += 2): ?>
-    <section class="d-md-flex flex-md-equal my-md-3 ps-md-3">
-        <?php for ($j = $i; $j <= $i + 1 && $j < count($categories); $j++): ?>
-            <?php $currentCategory = $categories[$j]; ?>
-            <div style="background-color: #534B62 ;" class="bg me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden flex-grow-1">
-                <div class="my-3 p-3">
-                    <h2 class="<?= $currentCategory ?>">
-                        <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark"><?php echo $currentCategory; ?></a>
-                    </h2>
-                    <p class="Shop-now">Shop Now.</p>
-                </div>
-                <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
-                    <?php if (isset($categoryImages[$currentCategory])): ?>
-                        <a href="/products?category=<?php echo $currentCategory; ?>" class="text-decoration-none text-dark">
-                            <img src="view/images/products/<?php echo $categoryImages[$currentCategory]->getProductID();?>/<?php echo $categoryImages[$currentCategory]->getMainImage();?>" class="card-img" alt="Product Image">
-                        </a>
-                    <?php else: ?>
-                        <!-- Default image or alternative content if no image is available -->
-                        <div class="bg-dark shadow-sm mx-auto" style="width: 100%; height: 100%; border-radius: 21px 21px 0 0;"></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endfor; ?>
-    </section>
-<?php endfor; ?>
-*/ ?>
-
-                    
-
-  <!-- FAQ
-    <section id="Faq" class="p-4">
-        <div class="container">
-            <h2 class="text-center mb-4">Frequently Asked Questions</h2>
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <strong> 
-                            What is Evotech?
-                        </strong>
-                    </button>
-                  </h2>
-                  <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <h5>Evotech is a collective of engineers, artists, and creators. We built Evotech, an e-commerce platform that recommends and sells optimum solutions for real-world problems.</h5> 
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> <strong>
-                      What solutions does Evotech sell?
-                    </strong>
-                    </button>
-                  </h2>
-                  <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <h5>If there's a problem, we have the technology for you. Check our Shop to view the CPU's, Accessories, Monitors and other Components that we sell.</h5> 
-                    </div>
-                  </div>
-                </div>
-                <div class="accordion-item">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                      <strong>
-                        I have further questions, where can I get in touch?
-                    </strong>  
-                    </button>
-                  </h2>
-                  <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <h5>You can Contact Us, for further questions. </h5> 
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div>
-
-    </section>
-        -->
-                    
-
-                    
-
-    <!--Customer Reviews-
-    <section id="instructors" class="p-5 bg-light">
-        <div class="container">
-            <h2 class="text-center text-dark">Customer Reviews</h2>
-            <p class="lead text-center text-dark mb-5">
-                See what our customers have to say about us 
-
-            </p>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                  <div class="card bg-light"> 
-                    <div class="card-body text-center">
-                        <img src="view/images/Review1.png" width="200px"
-                         class="rounded-circle mb-3"
-                         alt="Review image"/>
-                         <p class="card-text">"Evotech is my go-to! Unbeatable prices, top notch quality and extended warranty. Highly recommend!"  </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                   <div class="card bg-light"> 
-                    <div class="card-body text-center">
-                        <img src="view/images/Review2.JPG" width="200px"
-                         class="rounded-circle mb-3"
-                         alt=""/>
-                         <p class="card-text">"Soild prices, fast delivery and fantastic service, will be a repeat customer!"</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-light">
-                    <div class="card-body text-center">
-                        <img src="view/images/Review3.jpg" width="200px"
-                         class="rounded-circle mb-3"
-                         alt=""/>
-                         <p class="card-text">"Evotech exceeded my expectations. Delivery was lighting-fast, a go to for computer components"</p>
-                     </div>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </section>
-                    -->
-
-                    
 
   
 <footer>
