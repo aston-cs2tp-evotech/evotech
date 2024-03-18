@@ -37,13 +37,83 @@
   align-items: center;
 }
 
-.card-container .card-img-top {
+.card-container .Components-card-img-top {
   display: block; 
   margin-left: auto;
   margin-right: auto;
-  margin-top: 40px;
+  margin-top: 30px;
   padding: 5px;
-  width: 45%; 
+  width: 130px; 
+  height: auto; 
+}
+
+.card-container .CPUs-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 130px; 
+  height: auto; 
+}
+
+.card-container .CPUs-text {
+  margin-top: 28px;
+
+}
+
+.card-container .Cards-text {
+  margin-top: 18px;
+
+}
+
+.card-container .Storage-text {
+  margin-top: 28px;
+
+}
+
+
+
+.card-container .Cards-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 135px; 
+  height: auto; 
+}
+
+
+.card-container .Cases-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 130px; 
+  height: auto; 
+}
+
+
+.card-container .Memory-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 175px; 
+  height: auto; 
+}
+
+
+.card-container .Storage-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
+  padding: 5px;
+  width: 175px; 
   height: auto; 
 }
 
