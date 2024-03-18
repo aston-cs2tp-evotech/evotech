@@ -80,10 +80,7 @@ if (isset($_SESSION['uid'])) {
     </main>
 
     </body>
-
-    <footer>
+    
     <?php include __DIR__ . '/footer.php'?>
-
-</footer>
 
 </html>
