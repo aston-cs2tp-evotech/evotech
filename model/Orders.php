@@ -333,6 +333,23 @@ class OrdersModel {
             return false;
         }
     }
+
+    /**
+     * Get count of all Orders.
+     * 
+     * @return int|null The count of Orders or null if failed to retrieve.
+     */
+    public function getOrderCount() {
+        $query = "SELECT COUNT(*) FROM `Orders`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $orderCount = $statement->fetch(PDO::FETCH_ASSOC);
+            return $orderCount ? $orderCount['COUNT(*)'] : 0;
+        } else {
+            return 0; // Failed to execute query
+        }
+    }
 }
 
 class OrderLine {

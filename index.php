@@ -10,6 +10,7 @@ include __DIR__ . "/config/database.php";
 include __DIR__ . "/model/Customer.php";
 include __DIR__ . "/model/Products.php";
 include __DIR__ . "/model/Orders.php";
+include __DIR__ . "/model/Admin.php";
 
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
@@ -102,6 +103,54 @@ switch ($requestPath) {
     
     case '/change-password':
         handleChangePasswordRequest();
+        break;
+    
+    case '/admin':
+        require __DIR__ . '/view/admin/dashboard.php';
+        break;
+
+    case '/api/updateOrderStatus':
+        require __DIR__ . '/api/updateOrderStatus.php';
+        break;
+
+    case '/api/getProduct':
+        require __DIR__ . '/api/getProduct.php';
+        break;
+
+    case '/api/addProduct':
+        require __DIR__ . '/api/addProduct.php';
+        break;
+
+    case '/api/editProduct':
+        require __DIR__ . '/api/editProduct.php';
+        break;
+    
+    case '/api/deleteProduct':
+        require __DIR__ . '/api/deleteProduct.php';
+        break;
+    
+    case '/api/getCustomer':
+        require __DIR__ . '/api/getCustomer.php';
+        break;
+    
+    case '/api/editCustomer':
+        require __DIR__ . '/api/editCustomer.php';
+        break;
+
+    case '/api/deleteCustomer':
+        require __DIR__ . '/api/deleteCustomer.php';
+        break;
+
+    case '/api/getAdmin':
+        require __DIR__ . '/api/getAdmin.php';
+        break;
+
+    case '/api/editAdmin':
+        require __DIR__ . '/api/editAdmin.php';
+        break;
+
+    case '/api/addAdmin':
+        require __DIR__ . '/api/addAdmin.php';
         break;
 
     default:

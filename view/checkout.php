@@ -85,26 +85,34 @@ $basketItems = GetCustomerBasket();
                 
                 <?php
                 $totalPrice = $basketItems->getTotalAmount();
-                // Get basket items using the GetCustomerBasket function
+                ?>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3 class="card-title">Total</h3>
+                        <h2 class="card-text">£<?php echo $totalPrice; ?></h2>
+                    </div>
+                </div>
 
-                foreach ($basketItems as $item) :
+                <?php 
+                foreach ($basketItems->getOrderLines() as $item) :
                 ?>
 
                     <div class="card mb-3">
                         <div class="card-body">
                             <h4 class="card-title"><?php echo $item->getProductName(); ?></h4>
                             <p class="card-text">Quantity: <?php echo $item->getQuantity(); ?></p>
-                            <p class="card-text">Price: £<?php echo $item->getUnitPrice(); ?></p>
+                            <p class="card-text">Price per Unit: £<?php echo $item->getUnitPrice(); ?></p>
                             <h5 class="card-text">Subtotal: £<?php echo $item->getTotalPrice(); ?></h5>
                         </div>
                     </div>
 
                 <?php endforeach; ?>
+                <?php // END: ed8c6549bwf9 ?>
 
 
                 <div class="card mt-4">
                     <div class="card-body">
-                        <h3 class="card-title">Subtotal</h3>
+                        <h3 class="card-title">Total</h3>
                         <h2 class="card-text">£<?php echo $totalPrice; ?></h2>
                     </div>
                 </div>

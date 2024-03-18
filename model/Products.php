@@ -132,12 +132,27 @@ class ProductModel {
      * @return bool True if the deletion is successful, false otherwise.
      */
     public function deleteProduct($productID) {
-        $query = "DELETE FROM `Products` WHERE `ProductID` = :productID";
-        $statement = $this->database->prepare($query);
-        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $statements = array();
+        // Delete from ProductImages\
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductImages` WHERE `ProductID` = :productID"));
+        // Delete from ProductCompatibility
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductCompatibility` WHERE `ProductID` = :productID"));
+        // Delete from ProductSlots
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductSlots` WHERE `ProductID` = :productID"));
+        // Delete from Products
+        array_push($statements, $this->database->prepare("DELETE FROM `Products` WHERE `ProductID` = :productID"));
+        
+        foreach ($statements as $statement) {
+            $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        }
 
         try {
-            return $statement->execute();
+            foreach ($statements as $statement) {
+                if (!$statement->execute()) {
+                    return false;
+                }
+            }
+            return true;
         } catch (PDOException $e) {
             return false;
         }
@@ -262,7 +277,7 @@ class ProductModel {
             return false;
         }
 
-        $query = "UPDATE `Products` SET `$field` = :val WHERE `ProductID` = :productID AND `FileName` = :fileName";
+        $query = "UPDATE `ProductImages` SET `$field` = :val WHERE `ProductID` = :productID AND `FileName` = :fileName";
         $statement = $this->database->prepare($query);
         $statement->bindParam(':val', $value);
         $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
@@ -350,6 +365,18 @@ class ProductModel {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Count the number of total products in the database.
+     * 
+     * @return int The number of products in the database.
+     */
+    public function getProductCount() {
+        $query = "SELECT COUNT(*) FROM `Products`";
+        $statement = $this->database->prepare($query);
+        $statement->execute();
+        return $statement->fetchColumn();
     }
     
 }
