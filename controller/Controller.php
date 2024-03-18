@@ -932,7 +932,6 @@ function CheckoutBasket() {
             return false;
         }
         $result = UpdateProductDetail($productID, "Stock", $updatedStock);
-        echo $result;
         if (!$result) {
             return false;
         }
