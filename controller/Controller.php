@@ -62,7 +62,7 @@ function CheckExists($var) {
  */
 function CreateSafeCustomer($details) {
     $badCustomer = false;
-    $keys = array('CustomerID', 'Email', 'Username', 'CustomerAddress', 'PasswordHash');
+    $keys = array('CustomerID', 'Email', 'Username', 'CustomerAddress', 'PasswordHash', 'CreatedAt', 'UpdatedAt');
 
     //check every key
     foreach ($details as $key => $detail) {
@@ -84,7 +84,7 @@ function CreateSafeCustomer($details) {
  */
 function CreateSafeAdmin($details) {
     $badAdmin = false;
-    $keys = array('AdminID', 'Username', 'PasswordHash');
+    $keys = array('AdminID', 'Username', 'PasswordHash', 'CreatedAt', 'UpdatedAt');
 
     //check every key
     foreach ($details as $key => $detail) {
@@ -300,7 +300,7 @@ function LogOut() {
  */
 function CreateSafeProduct($details) {
     $badProd = false;
-    $keys = array('ProductID', 'Name', 'Price', 'Stock', 'Description', 'CategoryID');
+    $keys = array('ProductID', 'Name', 'Price', 'Stock', 'Description', 'CategoryID', 'CreatedAt', 'UpdatedAt');
 
     //check each required key
     foreach ($details as $key => $detail) {
@@ -739,7 +739,7 @@ function GetAllOrderStatuses() {
 function CreateSafeOrder($details) {
     global $Order;
     $badOrder = false;
-    $keys = array('OrderID', 'CustomerID', 'TotalAmount', 'OrderStatusID');
+    $keys = array('OrderID', 'CustomerID', 'TotalAmount', 'OrderStatusID', 'CheckedOutAt','CreatedAt', 'UpdatedAt');
 
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badOrder = true;
@@ -932,7 +932,7 @@ function CheckoutBasket() {
             return false;
         }
         $result = UpdateProductDetail($productID, "Stock", $updatedStock);
-        if (!$result) {
+        if ($result == 0) {
             return false;
         }
     }
@@ -1303,7 +1303,7 @@ function UpdateProductDetail($productID, $field, $value) {
             if (!(gettype($value) == "integer")) return "Invalid stock";
             $err = $Product->updateProductDetail($productID, 'Stock', $value);
             if (!$err) return "Error updating stock";
-            else return "";
+            return "";
 
         case ("Description"):
             if (!(gettype($value) == "string")) return "Invalid description";
@@ -1555,7 +1555,6 @@ function UpdateProductImage($productID, $fileName, $mainImage) {
     if (!(gettype($mainImage) == "boolean")) return "Invalid mainImage";
 
     $prod = $Product->getProductByID($productID);
-    print_r($prod);
     if (is_null($prod)) return "Product does not exist";
     $imageName = GetProductByID($productID)->getMainImage();
 
