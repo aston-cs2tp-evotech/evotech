@@ -350,6 +350,26 @@ class OrdersModel {
             return 0; // Failed to execute query
         }
     }
+
+    /**
+     * Get CheckedOutAt timestamp of an Order. Returns null if not checked out or not found.
+     * 
+     * @param int $orderID The unique identifier of the Order.
+     * @return string|null The CheckedOutAt timestamp or null if not found.
+     */
+    public function getCheckedOutAt($orderID) {
+        $query = "SELECT `CheckedOutAt` FROM `Orders` WHERE `OrderID` = :orderID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':orderID', $orderID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $checkedOutAt = $statement->fetch(PDO::FETCH_ASSOC);
+            return $checkedOutAt ? $checkedOutAt['CheckedOutAt'] : null;
+        } else {
+            return null; // Failed to execute query
+        }
+    }
+
 }
 
 class OrderLine {
@@ -547,6 +567,7 @@ class Order {
     private $orderStatusID;
     private $orderStatusName;
     private $orderLines;
+    private $checkedOutAt;
 
 
     /**
@@ -561,6 +582,7 @@ class Order {
         $this->orderStatusID = $orderDetails['OrderStatusID'];
         $this->orderStatusName = $orderDetails['OrderStatusName'];
         $this->orderLines = array();
+        $this->checkedOutAt = $orderDetails['CheckedOutAt'];
     }
 
 
@@ -694,6 +716,24 @@ class Order {
                 break;
             }
         }
+    }
+
+    /**
+     * Get the CheckedOutAt timestamp of the Order.
+     * 
+     * @return string|null The CheckedOutAt timestamp or null if not found.
+     */
+    public function getCheckedOutAt() {
+        return $this->checkedOutAt;
+    }
+
+    /**
+     * Set the CheckedOutAt timestamp of the Order.
+     * 
+     * @param string $checkedOutAt The CheckedOutAt timestamp.
+     */
+    public function setCheckedOutAt($checkedOutAt) {
+        $this->checkedOutAt = $checkedOutAt;
     }
 
 }
