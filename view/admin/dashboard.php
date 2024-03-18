@@ -73,6 +73,11 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showPage('report')"> 
+                <span data-feather="file"></span>
+                Report
+              </a>
+            <li class="nav-item">
               <a class="nav-link" href="#" onclick="showPage('orders')"> 
                 <span data-feather="file"></span>
                 Orders
@@ -102,12 +107,7 @@
                 Admins
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('import')"> 
-                <span data-feather="hard-drive"></span>
-                Import Data
-              </a>
-            </li>
+
           </ul>
       </nav>
 
@@ -236,7 +236,50 @@
           </div>
 
         </div>
+        
+        <div id="reportPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Report</h1>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title" style="text-align: center;">Total Users</h5>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-text" style="text-align: center;"><?php echo GetCustomerCount();?></h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title
+                  " style="text-align: center;">Total Products</h5>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-text" style="text-align: center;"><?php echo GetProductCount();?></h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title
+                  " style="text-align: center;">Total Orders</h5>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-text" style="text-align: center;"><?php echo count($orders);?></h5>
+                </div>
+              </div>
+            </div>
+          </div>
 
+           
+
+        </div>
         <div id="ordersPage" class="page" style="display: none;">
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
