@@ -451,7 +451,7 @@
                       <td id="columnProductStock_<?php echo $item->getProductID(); ?>"><?php echo $item->getStock(); ?></td>
                       <td id="columnProductDescription_<?php echo $item->getProductID(); ?>"><?php echo $item->getDescription(); ?></td>
                       <td id="columnProductActions_<?php echo $item->getProductID(); ?>" style="text-align: center;">
-                          <a class="btn btn-primary" onclick="showPage('editProduct', <?php echo $item->getProductID(); ?>)">Edit</a>
+                          <a class="btn btn-primary m-1" onclick="showPage('editProduct', <?php echo $item->getProductID(); ?>)">Edit</a>
                           <a href="/product?productID=<?php echo $item->getProductID(); ?>" class="btn btn-secondary">View Page</a>
                       </td>
                   </tr>
