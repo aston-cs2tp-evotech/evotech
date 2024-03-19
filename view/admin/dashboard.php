@@ -307,6 +307,7 @@
                 <th>Products</th>
                 <th>Total Quantity</th>
                 <th>Total Price</th>
+                <th>Checked Out Date</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -367,6 +368,9 @@
                   </td>
                   <td>£
                     <?php echo $order->getTotalAmount(); ?>
+                  </td>
+                  <td>
+                    <?php echo $order->getCheckedOutAt(); ?>
                   </td>
                   <td>
                     <?php if ($modifiable): ?>
@@ -583,6 +587,8 @@
                 <th>Email</th>
                 <th>Username</th>
                 <th>Address</th>
+                <th>Date Created</th>
+                <th>Last Date Modified</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -600,6 +606,12 @@
                   </td>
                   <td id="columnCustomerAddress_<?php echo $customer->getUID(); ?>">
                     <?php echo $customer->getAddress(); ?>
+                  </td>
+                  <td id="columnCustomerDateCreated_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getCreatedAt(); ?>
+                  </td>
+                  <td id="columnCustomerDateModified_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getUpdatedAt(); ?>
                   </td>
                   <td>
                     <a href="#" class="btn btn-primary" onclick="showPage('orders', null, null, null, <?php echo $customer->getUID(); ?>)">View Orders</a>
@@ -671,6 +683,8 @@
               <tr>
                 <th>Admin ID</th>
                 <th>Username</th>
+                <th>Date Crwated</th>
+                <th>Last Date Modified</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -682,6 +696,12 @@
                   </td>
                   <td id="columnAdminUsername_<?php echo $admin->getUID(); ?>">
                     <?php echo $admin->getUsername(); ?>
+                  </td>
+                  <td>
+                    <?php echo $admin->getCreatedAt(); ?>
+                  </td>
+                  <td>
+                    <?php echo $admin->getUpdatedAt(); ?>
                   </td>
                   <td>
                     <a href="#" class="btn btn-primary"onclick="showPage('editAdmin', null, null, <?php echo $admin->getUID(); ?>)">Edit</a>

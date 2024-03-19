@@ -69,6 +69,12 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     });
   }
 
+  // If navigating to orders 
+  if (pageId === "orders") {
+    var ordersTable = $('#ordersTable').DataTable();
+    ordersTable.order([5, 'desc']).draw();
+  }
+
   // If navigating to orders and the customerIDforOrder is not null, filter the orders by customerID
   if (pageId === "orders" && customerIDforOrder !== null) {
     // Filter the orders table by customerID
@@ -76,9 +82,12 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     ordersTable.column(1).search(customerIDforOrder).draw();
     var resetButton = document.getElementById('resetTableFiltersButton');
     resetButton.style.display = 'block';
+    // Sort by column heading 'Checked Out Date' (column index 5) in descending order
+    ordersTable.order([5, 'desc']).draw();
 
     function resetTableFilters() {
       ordersTable.search('').columns().search('').draw();
+      ordersTable.order([5, 'desc']).draw();
       resetButton.style.display = 'none';
     }
 
