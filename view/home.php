@@ -120,13 +120,13 @@ foreach ($categories as $category) {
       Evotech: Making hardware accessible to all <br> users, prioritising inclusivity in technology solutions
         <div class="container p-3">
             <div class="row justify-content-between">
-              <div class=" col-4 sm-row-4">
+              <div class=" col-sm-4">
               <br>  
               <h2>
                 Evotech: Guiding hardware needs, with online shopping and support services.
               </h2> 
               </div>
-              <div class="col-6 sm-row-6">
+              <div class="col-sm-6">
               <br>  
               <h3>For further details on Evotech and its wide range of products, simply click the link below </h3>
                 <a id="LearnMore-Link" href="aboutus">Learn more about evotech <i class="bi bi-arrow-right" style="color: white;"></i>
