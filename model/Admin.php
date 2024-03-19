@@ -125,6 +125,8 @@ class Admin {
     private $adminID;
     private $username;
     private $passwordHash;
+    private $createdAt;
+    private $updatedAt;
 
 
     /**
@@ -136,6 +138,8 @@ class Admin {
         $this->adminID = $adminData['AdminID'];
         $this->username = $adminData['Username'];
         $this->passwordHash = $adminData['PasswordHash'];
+        $this->createdAt = $adminData['CreatedAt'];
+        $this->updatedAt = $adminData['UpdatedAt'];
     }
 
     /**
@@ -191,5 +195,40 @@ class Admin {
     public function setPasswordHash($passwordHash) {
         $this->passwordHash = $passwordHash;
     }
+
+    /**
+     * Get the admin's creation date.
+     *
+     * @return string The admin's creation date.
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the admin's creation date.
+     *
+     * @param string $createdAt The admin's creation date.
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Get the admin's last update date.
+     *
+     * @return string The admin's last update date.
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the admin's last update date.
+     *
+     * @param string $updatedAt The admin's last update date.
+     */
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
+    }
 }
-?>
