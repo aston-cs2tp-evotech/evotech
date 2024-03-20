@@ -34,26 +34,23 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
 
 <body>
     <?php include __DIR__ . '/nav.php' ?>
+    
     <header class="bg-dark text-white text-center py-4">
-        <h1><br>Welcome, <?php echo $username; ?>!</h1>
+        <h1>Welcome, <?php echo $username; ?>!</h1>
         <h4>Not <?php echo $username; ?>? <a href="/logout">Log Out</a></h4>
     </header>
 
     <main class="container mt-4">
         <div class="row">
             <div class="col-lg-6">
-
-        
                 <h2>Customer Details</h2>
                 <p><strong>Username:</strong> <?php echo $username; ?></p>
                 <p><strong>Email:</strong> <?php echo $email; ?></p>
                 <p><strong>Address:</strong> <?php echo $addr; ?></p>
-
             </div>
             
             <div class="col-lg-6">
                 <h2>Change Password</h2>
-                <!-- Check if passwordChangeResult is set -->
                 <?php if (isset($passwordChangeResult)) : ?>
                     <?php if ($passwordChangeResult) : ?>
                         <div class="alert alert-success" role="alert">
@@ -86,11 +83,12 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
         <div class="mt-4">
             <h2>Past Orders</h2>
             <?php if (!empty($orders)) : ?>
-                <?php $orders = array_reverse($orders, true); // Reverse the order of the array ?>
+                <?php $orders = array_reverse($orders, true); ?>
                 <?php foreach ($orders as $order) : ?>
                     <?php $totalPrice = $order->getTotalAmount(); ?>
                     <h3>Order <?php echo $order->getOrderID(); ?></h3>
                     <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
+                    <h4>Date: <?php echo $order->getCheckedOutAt(); ?></h4>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -118,10 +116,10 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
             <?php endif; ?>
         </div>
     </main>
+    
     <footer>
-      <?php include __DIR__ . '/footer.php'?>
-
-   </footer>
+        <?php include __DIR__ . '/footer.php'?>
+    </footer>
 
     <!-- Link to Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
