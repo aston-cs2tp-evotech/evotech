@@ -509,7 +509,9 @@ function handleDashboardRequest() {
             require __DIR__ . '/view/admin/dashboard.php';
         } 
         else {
-            handle404Request();
+            // Logouut admin
+            unset($_SESSION);
+            header("Location:/adminLogin");
         }
     } 
     else { 
