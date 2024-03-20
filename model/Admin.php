@@ -224,7 +224,7 @@ class AdminModel {
      * @return boolean True if success, otherwise false
      */
     public function deleteToken($token) {
-        $query = "DELETE * FROM `APITokens` WHERE `Token` = :token";
+        $query = "DELETE FROM `APITokens` WHERE `Token` = :token";
         $statement = $this->database->prepare($query);
         $statement->bindParam(':token', $token, PDO::PARAM_STR);
 
