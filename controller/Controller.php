@@ -1065,7 +1065,7 @@ function GetPreviousOrders() {
 /**
  * Check API Token validity & attempt to generate token if expired recently
  * @param string $token API token
- * @return boolean True if valid or valid token has been generated, otherwise false
+ * @return string|boolean Token if valid, otherwise false
  */
 function VerfiyToken($token) {
     global $Admin;
@@ -1087,13 +1087,13 @@ function VerfiyToken($token) {
 
             if ($success && (!empty($newTk)))  {
                 $_SESSION["adminToken"] = $newTk;
-                return true;
+                return $newTk;
             }
             else return false;
         }
         else return false;
     } 
-    else return true;
+    else return $token;
 }
 
 /**
