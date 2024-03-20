@@ -17,10 +17,13 @@
   if (!$admins) {
     $admins = [];
   }
+
+  $tokens = GetAllTokens();
   ?>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="adminToken" content="<?php echo $_SESSION['adminToken']; ?>">
   <title>evotech; dashboard</title>
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -107,7 +110,11 @@
                 Admins
               </a>
             </li>
-
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showPage('apiTokens')">
+                <span data-feather="key"></span>
+                API Tokens
+              </a>
           </ul>
       </nav>
 
@@ -782,6 +789,50 @@
             </form>
           </div>
         </div>
+
+        <div id="apiTokensPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">API Tokens</h1>
+          </div>
+
+          <div id="apiKeysUpdate" class="alert" style="display: none;"></div>
+
+          <table id="apiKeysTable" class="table table-striped table-hover" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>AdminID</th>
+                <th>Name</th>
+                <th>Token</th>
+                <th>ExpiresAt</th>
+                <th>CreatedAt</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($tokens as $token) : ?>
+              <tr class=<?php $token["AdminID"]?>>
+                <td>
+                  <?php echo $token["AdminID"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["TokenName"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["Token"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["ExpiresAt"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["CreatedAt"]; ?>
+                </td>
+                <td>
+                  <a href="#" class="btn btn-danger" onclick="deleteToken(<?php echo $token["AdminID"]?>)">Revoke</a>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
     </div>
 
     </main>
