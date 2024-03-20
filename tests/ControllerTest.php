@@ -6,7 +6,7 @@ require __DIR__ . "/../model/Orders.php";
 require __DIR__ . "/../model/Products.php";
 require __DIR__ . "/../controller/Controller.php";
 
-class ControllerTests extends TestCase
+class ControllerTest extends TestCase
 {
     public function testCheckExists(){
         // Test when a variable is set
