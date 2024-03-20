@@ -18,9 +18,9 @@ if (isset($_SESSION['uid'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register - EvoTech</title>
         <link rel="stylesheet" type="text/css" href="/view/css/register.css">
-
     </head>
     <body>
+
     <?php include __DIR__ . '/nav.php'?>
 
     <main>
@@ -59,6 +59,7 @@ if (isset($_SESSION['uid'])) {
                 <br>
                 <textarea name="customer_address" placeholder="Address" rows="6" required></textarea>
                 <br>
+                <br>
                 <input type="password" name="password" placeholder="Password" required/>
                 <br>
                 <input id="password_confirmation" type="password" name="confirmpass" placeholder="Confirm password" required/>
@@ -74,7 +75,7 @@ if (isset($_SESSION['uid'])) {
             
             <h2>Already have an account?</h2>
                 <br>
-                <a href="login" class="login-button">Log in</a>
+                <a href="login" class="register-login-button">Log in</a>
 
         </div>
     
