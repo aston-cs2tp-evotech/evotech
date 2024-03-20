@@ -18,6 +18,7 @@ if (isset($_SESSION['uid'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register - EvoTech</title>
         <link rel="stylesheet" type="text/css" href="/view/css/register.css">
+        <script src="/view/js/register.js"></script>
     </head>
     <body>
 
