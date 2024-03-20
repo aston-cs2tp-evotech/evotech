@@ -122,43 +122,43 @@ switch ($requestPath) {
         break;
 
     case '/api/getProduct':
-        handleAPIRequest('getProduct.php');
+        handleAPIRequest('getProduct');
         break;
 
     case '/api/addProduct':
-        handleAPIRequest('addProduct.php');
+        handleAPIRequest('addProduct');
         break;
 
     case '/api/editProduct':
-        handleAPIRequest('editProduct.php');
+        handleAPIRequest('editProduct');
         break;
     
     case '/api/deleteProduct':
-        handleAPIRequest('deleteProduct.php');
+        handleAPIRequest('deleteProduct');
         break;
     
     case '/api/getCustomer':
-        handleAPIRequest('getCustomer.php');
+        handleAPIRequest('getCustomer');
         break;
     
     case '/api/editCustomer':
-        handleAPIRequest('editCustomer.php');
+        handleAPIRequest('editCustomer');
         break;
 
     case '/api/deleteCustomer':
-        handleAPIRequest('deleteCustomer.php');
+        handleAPIRequest('deleteCustomer');
         break;
 
     case '/api/getAdmin':
-        handleAPIRequest('getAdmin.php');
+        handleAPIRequest('getAdmin');
         break;
 
     case '/api/editAdmin':
-        handleAPIRequest('editAdmin.php');
+        handleAPIRequest('editAdmin');
         break;
 
     case '/api/addAdmin':
-        handleAPIRequest('addAdmin.php');
+        handleAPIRequest('addAdmin');
         break;
 
     default:
