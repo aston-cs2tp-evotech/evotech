@@ -370,13 +370,16 @@ class ProductModel {
     /**
      * Count the number of total products in the database.
      * 
-     * @return int The number of products in the database.
+     * @return int|null The number of products in the database, or null if failed.
      */
     public function getProductCount() {
         $query = "SELECT COUNT(*) FROM `Products`";
         $statement = $this->database->prepare($query);
-        $statement->execute();
-        return $statement->fetchColumn();
+        if ($statement->execute()) {
+            return $statement->fetchColumn();
+        } else {
+            return null;
+        }
     }
     
 }

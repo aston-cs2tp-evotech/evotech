@@ -119,6 +119,120 @@ class AdminModel {
             return null; // Failed to execute query
         }
     }
+
+    /**
+     * Creates an API token for a specified admin
+     * 
+     * @param int $adminID the adminID
+     * @param DateTime $expiry the expiry time of the token
+     * @return array|null The created token, or null if failed.
+     */
+    public function createToken($adminID, $expiry, $name) {
+        //format DateTime to string
+        $exp = $expiry->format("Y-m-d H:i:s");
+        //generate a token
+        $token = "";
+        $hex = "0123456789abcdef";
+        $h = str_split($hex);
+        do {
+            $token = "";
+            for ($i = 0; $i < 16; $i++) {
+                $token = $token . $h[random_int(0, count($h)-1)];
+            }
+        // this is meant to stop collisions but also
+        // scary while loop :(
+        } while (!is_null($this->getTokenByID($token)));
+
+
+        $insertQuery = "INSERT INTO `APITokens` (
+                        `AdminID`,
+                        `Token`,
+                        `ExpiresAt`,
+                        `TokenName`
+                    ) VALUES (
+                        :adminID,
+                        :token,
+                        :expiry,
+                        :TokenName
+                    )";
+        $insertStatement = $this->database->prepare($insertQuery);
+        $insertStatement->bindParam(':adminID', $adminID, PDO::PARAM_INT);
+        $insertStatement->bindParam(':token', $token, PDO::PARAM_STR);
+        $insertStatement->bindParam(':expiry', $exp, PDO::PARAM_STR);
+        $insertStatement->bindParam(':TokenName', $name, PDO::PARAM_STR);
+
+        return $insertStatement->execute() ? $this->getTokenByID($token) : null;
+    }
+
+    /**
+     * Gets API token by supplied ID
+     * 
+     * @param string $token The token
+     * @return array|null The token w/ info or null if not found.
+     */
+    public function getTokenByID($token) {
+        $query = "SELECT * FROM `APITokens` WHERE `Token` = :token";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':token', $token, PDO::PARAM_STR);
+
+        if ($statement->execute()) {
+            $tk = $statement->fetch(PDO::FETCH_ASSOC);
+            return $tk ? $tk : null;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets API token associated with admin
+     * 
+     * @param int $adminID the AdminID for the token
+     * @return array|null The tokens associated with the admin, or null if not found.
+     */
+    public function getTokensByAdmin($adminID)  {
+        $query = "SELECT * FROM `APITokens` WHERE `AdminID` = :adminID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':adminID', $adminID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $tk = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $tk ? $tk : null;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets all API tokens
+     * 
+     * @return array|null Array of tokens, or null if failed
+     */
+    public function getAllTokens() {
+        $query = "SELECT * FROM `APITokens`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $tk = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $tk ? $tk : null;
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * Deletes an API token
+     * 
+     * @param string $token the Token to delete
+     * @return boolean True if success, otherwise false
+     */
+    public function deleteToken($token) {
+        $query = "DELETE FROM `APITokens` WHERE `Token` = :token";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':token', $token, PDO::PARAM_STR);
+
+        return $statement->execute();
+    }
 }
 
 class Admin {

@@ -56,6 +56,21 @@ function CheckExists($var) {
 }
 
 /**
+ * Converts html chars to prevent html injection (supports up to 1d arrays)
+ * @param $params Any param to escape html injection 
+ */
+function escapeHTML(&...$params) {
+    foreach ($params as &$param) {
+        if (!is_array($param) && (gettype($param) == "string")) $param = htmlspecialchars($param);
+        else {
+            foreach ($param as &$p) { 
+                if (gettype($p) == "string") $p = htmlspecialchars($p);
+            }
+        }
+    }
+}
+
+/**
  * Iterates through details from db to ensure every key exists for the Customer object
  * @param array $details Details array from the database
  * @return Customer|null A customer object with all details, or null if any didn't exist 
@@ -129,6 +144,7 @@ function CheckLoggedIn() {
  */
 function AttemptLogin($user, $pass) {
     global $Customer;
+    escapeHTML($user, $pass);
     if (!CheckExists($user) || !(gettype($user) == "string")) return false;
     if (!CheckExists($pass) || !(gettype($pass) == "string")) return false;
     //attempts to fetch details via username
@@ -156,6 +172,7 @@ function AttemptLogin($user, $pass) {
  */
 function RegisterUser($details) {
     global $Customer;
+    escapeHTML($details);
     if (!CheckExists($details["email"]) || !filter_var($details["email"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
     if (!CheckExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
     if (!CheckExists($details["customer_address"]) || !preg_match("/[a-zA-Z0-9.,]+/", $details["customer_address"])) return "Invalid address";
@@ -180,7 +197,7 @@ function RegisterUser($details) {
 function GetCustomerCount() {
     global $Customer;
     $count = $Customer->getCustomerCount();
-    if ($count) return $count;
+    if (!is_null($count)) return $count;
     else return false;
 }
 
@@ -208,6 +225,7 @@ function GetAllCustomers() {
  */
 function UpdateCustomerDetail($details) {
     global $Customer;
+    escapeHTML($details);
     $details["field"] = strtolower($details["field"]);
     //preliminary checks
     if (!CheckLoggedIn()) return "Not logged in";
@@ -271,6 +289,7 @@ function UpdateCustomerDetail($details) {
  */
 function GetCustomerByID($customerID) {
     global $Customer;
+    escapeHTML($customerID);
     $customer = CreateSafeCustomer($Customer->getCustomerByUID($customerID));
     if ($customer) return $customer;
     else return false;
@@ -356,6 +375,7 @@ function AddProductImagesToProduct(&$product) {
  */
 function GetProductByID($productID) {
     global $Product;
+    escapeHTML($productID);
     try {
         // convert to int
         $productID = (int)$productID;
@@ -414,7 +434,7 @@ function GetAllProducts() {
 function GetProductCount() {
     global $Product;
     $count = $Product->getProductCount();
-    if ($count) return $count;
+    if (!is_null($count)) return $count;
     else return false;
 }
 
@@ -508,6 +528,7 @@ function AddCategoriesToProducts(&$products) {
  */
 function GetAllByCategory($category){
     global $Product;
+    escapeHTML($category);
     //Input validation
     $categories = array("Components", "CPUs", "Graphics Cards", "Cases", "Storage", "Memory");
     if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) {
@@ -547,6 +568,7 @@ function GetAllByCategory($category){
  * @return array|string Array of products succeeded, otherwise string for failure
  */
 function GetAllStockedByCategory($category) {
+    escapeHTML($category);
     $products = GetAllByCategory($category);
     $err = FilterStockedProducts($products);
     if (!$err) { 
@@ -594,7 +616,7 @@ function RemoveProductFromArrayByID(&$products, $productID) {
 */
 function GetRecommendedProducts($productID) {
    global $Product;
-   
+   escapeHTML($productID);
    // ID check
    if (!CheckExists($productID)) {
        return "Invalid productID";
@@ -790,6 +812,7 @@ function CreateMultipleSafeOrders($details) {
  */
 function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
+    escapeHTML($productID, $quantity);
     //check legitimate quantity
     if (!isset($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
     //check PID is int (no SQL injection allowed here sorry)
@@ -811,6 +834,7 @@ function ProductAndQuantityCheck($productID, $quantity){
  */
 function AddProductToBasket($productID, $quantity) {
     global $Order;
+    escapeHTML($productID, $quantity);
 
     // Check login
     if (!CheckLoggedIn()) {
@@ -876,6 +900,7 @@ function AddProductToBasket($productID, $quantity) {
  */
 function ModifyProductQuantityInBasket($productID, $quantity) {
     global $Order;
+    escapeHTML($productID, $quantity);
     //check login
     if (!CheckLoggedIn()) return false;
     //init array for product
@@ -1036,16 +1061,102 @@ function GetPreviousOrders() {
 //
 //  --------------------------------------------------
 
-/*
-    List to add:
-        Stock all
-        Add product
-        Delete product - don't delete, just set stock to -1 to archive it
-        Add image
-        Remove image
-        Make MainImage
-        Update customer
-*/
+/**
+ * Check API Token validity & attempt to generate token if expired recently
+ * @param string $token API token
+ * @return boolean True if valid or valid token has been generated, otherwise false
+ */
+function VerfiyToken($token) {
+    global $Admin;
+    escapeHTML($token);
+    //preliminary token checks
+    if (!(CheckExists($token)) || (!(gettype($token) == "string"))) return false;
+    $tk = $Admin->getTokenByID($token);
+    if (is_null($tk)) return false;
+
+    $tkDate = new DateTime($tk["ExpiresAt"]);
+
+    //check if token has expired
+    if ($tkDate < new DateTime()) {
+        //check token expired in the last 5 mins
+        if ($tkDate->add(new DateInterval("PT5M")) >= new DateTime()) {
+            //generate new token and delete old one
+            $newTk = GenerateToken($tk["AdminID"]);
+            $success = $Admin->deleteToken($tk["Token"]);
+
+            if ($success && (!empty($newTk)))  {
+                $_SESSION["adminToken"] = $newTk;
+                return true;
+            }
+            else return false;
+        }
+        else return false;
+    } 
+    else return true;
+}
+
+/**
+ * Create a token
+ * @param int $adminID The admin to associate to (defaults to $_SESSION["adminID"])
+ * @param DateTime $expiry The expiry time for the token (defaults to now+20mins)
+ * @param string $name The name for token access type
+ * @return string The token, or an empty string if failed
+ */
+function GenerateToken($adminID = null, $expiry=null, $name="ADMIN_DASHBOARD_ACCESS") {
+    global $Admin;
+    //assign current admin as adminID if not supplied
+    if (is_null($adminID)) {
+        if (!CheckAdminLoggedIn()) return "";
+        else $adminID = $_SESSION["adminUID"];
+    }
+    else {
+        //check adminID
+        try {
+            $adminID = (int) $adminID;
+        }
+        catch (Exception $e) {
+            return "";
+        }
+
+        $ad = $Admin->getAdminByUID($adminID);
+        if (is_null($ad)) return "";
+    }
+
+    //create DateTime and add 20 mins to it
+    if (is_null($expiry)) {
+        $expiry = new DateTime();
+        $expiry->add(new DateInterval("PT20M"));
+    }
+    else {
+        //check expiry is actually DateTime
+        try {
+            $expiry->add(new DateInterval("PT0M"));
+        }
+        catch (Exception $e) {
+            return "";
+        }
+    }
+    if (!(CheckExists($name)) || !(gettype($name) == "string")) return "";
+
+    $tk = $Admin->createToken($adminID, $expiry, $name);
+    if (is_null($tk)) return "";
+    else return $tk["Token"];
+}
+
+/**
+ * Checks all tokens, and deletes ones that have expired more than 5 mins ago
+ */
+function PruneTokens() {
+    global $Admin;
+    $tokens = $Admin->getAllTokens();
+    $currTime = new DateTime();
+    foreach ($tokens as $token) {
+        $tkTime = new DateTime($token["ExpiresAt"]);
+        $tkTime->add(new DateInterval("PT5M"));
+
+        if ($tkTime < $currTime) $Admin->deleteToken($token["Token"]);
+    }
+}
 
 /**
  * Add an admin to the database
@@ -1055,6 +1166,7 @@ function GetPreviousOrders() {
  */
 function AddAdmin($details) {
     global $Admin;
+    escapeHTML($details);
     if (!CheckExists($details["Username"]) || !CheckExists($details["Password"])) return "Invalid request";
     if (!preg_match("/[a-zA-Z0-9]+/", $details["Username"])) return "Invalid username";
     if (strlen($details["Password"]) < 7) return "Password should be longer than 7 characters";
@@ -1071,6 +1183,7 @@ function AddAdmin($details) {
  */
 function GetAdminByID($adminID) {
     global $Admin;
+    escapeHTML($adminID);
     $admin = CreateSafeAdmin($Admin->getAdminByUID($adminID));
     if ($admin) return $admin;
     else return false;
@@ -1084,6 +1197,7 @@ function GetAdminByID($adminID) {
  */
 function UpdateAdminByAdmin($details) {
     global $Admin;
+    escapeHTML($details);
     foreach ($details as $key => $value) {
         if ($key == "AdminID") {
             continue;
@@ -1122,6 +1236,7 @@ function GetAllAdmins() {
  */
 function UpdateCustomerByAdmin($details) {
     global $Customer;
+    escapeHTML($details);
     foreach ($details as $key => $value) {
         if ($key == "CustomerID") {
             continue;
@@ -1143,6 +1258,7 @@ function UpdateCustomerByAdmin($details) {
 function DeleteCustomerByAdmin($customerID) {
     global $Customer;
     global $Order;
+    escapeHTML($customerID);
     $orders = $Order->getAllOrdersByCustomerID($customerID);
     if ($orders) {
         return "Customer has orders associated with them";
@@ -1184,7 +1300,7 @@ function GetAllOrders() {
  */
 function GetOrderByID($orderID) {
     global $Order;
-
+    escapeHTML($orderID);
     // Retrieve the order by orderID
     $order = CreateSafeOrder($Order->getOrderByID($orderID));
     if (is_null($order)) {
@@ -1214,7 +1330,7 @@ function GetOrderByID($orderID) {
  */
 function UpdateOrderStatus($orderID, $newStatusID) {
     global $Order;
-
+    escapeHTML($orderID, $newStatusID);
 
     // Update the status of the order
     return $Order->updateOrderDetails($orderID, "OrderStatusID", $newStatusID);
@@ -1229,6 +1345,7 @@ function UpdateOrderStatus($orderID, $newStatusID) {
  */
 function AttemptAdminLogin($user, $pass) {
     global $Admin;
+    escapeHTML($user, $pass);
     if (!CheckExists($user) || !(gettype($user) == "string")) return "Invalid Username";
     if (!CheckExists($pass) || !(gettype($pass) == "string")) return "Invalid password";
     //attempts to fetch details via username
@@ -1238,6 +1355,10 @@ function AttemptAdminLogin($user, $pass) {
     if (password_verify($pass, $details["PasswordHash"])) {
         $_SESSION["adminUID"] = $details["AdminID"];
         $_SESSION["adminName"] = $details["Username"];
+        //assign token
+        $token = $Admin->getTokensByAdmin($_SESSION["AdminUID"]);
+        if (is_null($token)) $_SESSION["adminToken"] = GenerateToken($_SESSION["AdminUID"]);
+        else $_SESSION["adminToken"] = $token[0]["Token"];
         return "";
     }
     else return "Incorrect password or username";
@@ -1259,9 +1380,8 @@ function CheckAdminLoggedIn() {
  * @return string Empty if success, otherwise an err message
  */
 function UpdateProductDetail($productID, $field, $value) {
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
-
     global $Product;
+    escapeHTML($productID, $field, $value);
     $fields = array("Name", "Price", "Stock", "Description", "CategoryID");
 
     try {
@@ -1345,9 +1465,8 @@ function UpdateProductDetail($productID, $field, $value) {
  * @return string empty if success, otherwise false
  */
 function AddProduct($details) {
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
-
     global $Product;
+    escapeHTML($details);
     if (!(gettype($details) == "array")) return "Invalid details";
     $fields = array('name', 'price', 'stock', 'description', 'categoryID');
 
@@ -1427,7 +1546,7 @@ function AddProduct($details) {
  */
 function DeleteProduct($productID) {
     global $Product;
-    // if (!CheckAdminLoggedIn()) return "Not logged in";
+    escapeHTML($productID);
     try {
         $productID = (int)$productID;
     } catch (Exception $e) {
@@ -1468,9 +1587,8 @@ function DeleteProduct($productID) {
  * @return string Empty if success, otherwise false
  */
 function UpdateCustomerInfo($customerID, $field, $value) {
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
-    
     global $Customer;
+    escapeHTML($customerID, $field, $value);
     $fields = array('Username', 'Email', 'CustomerAddress', 'PasswordHash');
 
     if (!(CheckExists($customerID) || !(gettype($customerID) == "int"))) return "Invalid customerID";
@@ -1516,7 +1634,7 @@ function UpdateCustomerInfo($customerID, $field, $value) {
  */
 function AddProductImage($productID, $fileName, $mainImage) {
     global $Product;
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
+    escapeHTML($productID, $fileName, $mainImage);
     try {
         $productID = (int)$productID;
     } catch (Exception $e) {
@@ -1545,7 +1663,7 @@ function AddProductImage($productID, $fileName, $mainImage) {
  */
 function UpdateProductImage($productID, $fileName, $mainImage) {
     global $Product;
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
+    escapeHTML($productID, $fileName, $mainImage);
     try {
         $productID = (int)$productID;
     } catch (Exception $e) {
