@@ -62,6 +62,7 @@ function CheckExists($var) {
 function escapeHTML(&...$params) {
     foreach ($params as &$param) {
         if (!is_array($param) && (gettype($param) == "string")) $param = htmlspecialchars($param);
+        else if (!is_array($param)) continue;
         else {
             foreach ($param as &$p) { 
                 if (gettype($p) == "string") $p = htmlspecialchars($p);
