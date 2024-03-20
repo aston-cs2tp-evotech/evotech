@@ -1062,6 +1062,98 @@ function GetPreviousOrders() {
 //  --------------------------------------------------
 
 /**
+ * Check API Token validity & attempt to generate token if expired recently
+ * @param string $token API token
+ * @return boolean True if valid or valid token has been generated, otherwise false
+ */
+function VerfiyToken($token) {
+    global $Admin;
+    escapeHTML($token);
+    //preliminary token checks
+    if (!(CheckExists($token)) || (!(gettype($token) == "string"))) return false;
+    $tk = $Admin->getTokenByID($token);
+    if (is_null($tk)) return false;
+
+    $tkDate = new DateTime($tk["ExpiresAt"]);
+
+    //check if token has expired
+    if ($tkDate < new DateTime()) {
+        //check token expired in the last 5 mins
+        if ($tkDate->add(new DateInterval("PT5M")) >= new DateTime()) {
+            //generate new token and delete old one
+            $newTk = GenerateToken($tk["AdminID"]);
+            $success = $Admin->deleteToken($tk["Token"]);
+
+            if ($success && (!empty($newTk))) return true;
+            else return false;
+        }
+        else return false;
+    } 
+    else return true;
+}
+
+/**
+ * Create a token
+ * @param int $adminID The admin to associate to (defaults to $_SESSION["adminID"])
+ * @param DateTime $expiry The expiry time for the token (defaults to now+20mins)
+ * @return string The token, or an empty string if failed
+ */
+function GenerateToken($adminID = null, $expiry=null) {
+    global $Admin;
+    //assign current admin as adminID if not supplied
+    if (is_null($adminID)) {
+        if (!CheckAdminLoggedIn()) return "";
+        else $adminID = $_SESSION["adminUID"];
+    }
+    else {
+        //check adminID
+        try {
+            $adminID = (int) $adminID;
+        }
+        catch (Exception $e) {
+            return "";
+        }
+
+        $ad = $Admin->getAdminByUID($adminID);
+        if (is_null($ad)) return "";
+    }
+
+    //create DateTime and add 20 mins to it
+    if (is_null($expiry)) {
+        $expiry = new DateTime();
+        $expiry->add(new DateInterval("PT20M"));
+    }
+    else {
+        //check expiry is actually DateTime
+        try {
+            $expiry->add(new DateInterval("PT0M"));
+        }
+        catch (Exception $e) {
+            return "";
+        }
+    }
+
+    $tk = $Admin->createToken($adminID, $expiry);
+    if (is_null($tk)) return "";
+    else return $tk["Token"];
+}
+
+/**
+ * Checks all tokens, and deletes ones that have expired more than 5 mins ago
+ */
+function PruneTokens() {
+    global $Admin;
+    $tokens = $Admin->getAllTokens();
+    $currTime = new DateTime();
+    foreach ($tokens as $token) {
+        $tkTime = new DateTime($token["ExpiresAt"]);
+        $tkTime->add(new DateInterval("PT5M"));
+
+        if ($tkTime < $currTime) $Admin->deleteToken($token["Token"]);
+    }
+}
+
+/**
  * Add an admin to the database
  * 
  * @param array $details Associative array containing key as field to update and value as new value
@@ -1258,6 +1350,10 @@ function AttemptAdminLogin($user, $pass) {
     if (password_verify($pass, $details["PasswordHash"])) {
         $_SESSION["adminUID"] = $details["AdminID"];
         $_SESSION["adminName"] = $details["Username"];
+        //assign token
+        $token = $Admin->getTokensByAdmin($_SESSION["AdminUID"]);
+        if (is_null($token)) $_SESSION["adminToken"] = GenerateToken($_SESSION["AdminUID"]);
+        else $_SESSION["adminToken"] = $token[0]["Token"];
         return "";
     }
     else return "Incorrect password or username";

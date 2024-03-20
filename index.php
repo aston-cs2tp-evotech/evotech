@@ -118,47 +118,47 @@ switch ($requestPath) {
         break;
 
     case '/api/updateOrderStatus':
-        require __DIR__ . '/api/updateOrderStatus.php';
+        handleAPIRequest('updateOrderStatus');
         break;
 
     case '/api/getProduct':
-        require __DIR__ . '/api/getProduct.php';
+        handleAPIRequest('getProduct.php');
         break;
 
     case '/api/addProduct':
-        require __DIR__ . '/api/addProduct.php';
+        handleAPIRequest('addProduct.php');
         break;
 
     case '/api/editProduct':
-        require __DIR__ . '/api/editProduct.php';
+        handleAPIRequest('editProduct.php');
         break;
     
     case '/api/deleteProduct':
-        require __DIR__ . '/api/deleteProduct.php';
+        handleAPIRequest('deleteProduct.php');
         break;
     
     case '/api/getCustomer':
-        require __DIR__ . '/api/getCustomer.php';
+        handleAPIRequest('getCustomer.php');
         break;
     
     case '/api/editCustomer':
-        require __DIR__ . '/api/editCustomer.php';
+        handleAPIRequest('editCustomer.php');
         break;
 
     case '/api/deleteCustomer':
-        require __DIR__ . '/api/deleteCustomer.php';
+        handleAPIRequest('deleteCustomer.php');
         break;
 
     case '/api/getAdmin':
-        require __DIR__ . '/api/getAdmin.php';
+        handleAPIRequest('getAdmin.php');
         break;
 
     case '/api/editAdmin':
-        require __DIR__ . '/api/editAdmin.php';
+        handleAPIRequest('editAdmin.php');
         break;
 
     case '/api/addAdmin':
-        require __DIR__ . '/api/addAdmin.php';
+        handleAPIRequest('addAdmin.php');
         break;
 
     default:
@@ -503,8 +503,14 @@ function handleChangePasswordRequest(){
  * Handles requests to view the dashboard
  */
 function handleDashboardRequest() {
+    PruneTokens();
     if (CheckAdminLoggedIn()) {
-        require __DIR__ . '/view/admin/dashboard.php';
+        if (VerfiyToken($_SESSION["adminToken"])) {
+            require __DIR__ . '/view/admin/dashboard.php';
+        } 
+        else {
+            handle404Request();
+        }
     } 
     else { 
         header("Location:/adminLogin"); //redirect to login page
@@ -536,6 +542,71 @@ function handleAdminLogout() {
     unset($_SESSION);
     session_destroy();
     header("Location:/admin");
+}
+
+/**
+ * Handles API requests
+ * 
+ * @param string $path Path to request
+ */
+function handleAPIRequest($path) {
+    PruneTokens();
+    if (!CheckExists($_POST["Token"])) {
+        $result = VerfiyToken($_SESSION["adminToken"]);
+        if (!$result) http_response_code(403);
+    }
+    else {
+        $result = VerfiyToken($_POST["Token"]);
+        if (!$result) http_response_code(403);
+    }
+
+    switch ($path) {
+        case 'updateOrderStatus':
+            require __DIR__ . '/api/updateOrderStatus.php';
+            break;
+        case 'getProduct':
+            require __DIR__ . '/api/getProduct.php';
+            break;
+        
+        case 'addProduct':
+            require __DIR__ . '/api/addProduct.php';
+            break;
+        
+        case 'editProduct':
+            require __DIR__ . '/api/editProduct.php';
+            break;
+            
+        case 'deleteProduct':
+            require __DIR__ . '/api/deleteProduct.php';
+            break;
+            
+        case 'getCustomer':
+            require __DIR__ . '/api/getCustomer.php';
+            break;
+            
+        case 'editCustomer':
+            require __DIR__ . '/api/editCustomer.php';
+            break;
+        
+        case 'deleteCustomer':
+            require __DIR__ . '/api/deleteCustomer.php';
+            break;
+        
+        case 'getAdmin':
+            require __DIR__ . '/api/getAdmin.php';
+            break;
+        
+        case 'editAdmin':
+            require __DIR__ . '/api/editAdmin.php';
+            break;
+        
+        case 'addAdmin':
+            require __DIR__ . '/api/addAdmin.php';
+            break;
+        default:
+            handle404Request();
+            break;
+    }
 }
 
 

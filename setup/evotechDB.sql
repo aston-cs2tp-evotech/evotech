@@ -238,3 +238,15 @@ CREATE TABLE if not exists `ProductReviews` (
   FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+-- --------------------------------------------------------
+-- Table for API Tokens
+-- The `Token` is the unique identifier for each token,
+-- The `ExpiresAt` field is the timestamp for when it will expire
+-- --------------------------------------------------------
+CREATE TABLE if not exists `APITokens` (
+  `AdminID` INT NOT NULL,
+  `Token` VARCHAR(16) NOT NULL,
+  `ExpiresAt` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`Token`),
+  FOREIGN KEY (`AdminID`) REFERENCES `AdminCredentials` (`AdminID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
