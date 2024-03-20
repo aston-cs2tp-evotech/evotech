@@ -1230,6 +1230,19 @@ function GetAllAdmins() {
 }
 
 /**
+ * Get all api tokens in the database
+ * 
+ * @return array|boolean Array of tokens if success, otherwise false
+ */
+function GetAllTokens() {
+    global $Admin;
+    $tokens = $Admin->getAllTokens();
+    if (!$tokens) return false;
+    return $tokens;
+}
+
+
+/**
  * Update Customer details by admin
  * 
  * @param array $details Associative array containing key as field to update and value as new value
