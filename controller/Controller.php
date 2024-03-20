@@ -1061,17 +1061,6 @@ function GetPreviousOrders() {
 //
 //  --------------------------------------------------
 
-/*
-    List to add:
-        Stock all
-        Add product
-        Delete product - don't delete, just set stock to -1 to archive it
-        Add image
-        Remove image
-        Make MainImage
-        Update customer
-*/
-
 /**
  * Add an admin to the database
  * 
@@ -1290,8 +1279,6 @@ function CheckAdminLoggedIn() {
  * @return string Empty if success, otherwise an err message
  */
 function UpdateProductDetail($productID, $field, $value) {
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
-
     global $Product;
     escapeHTML($productID, $field, $value);
     $fields = array("Name", "Price", "Stock", "Description", "CategoryID");
@@ -1377,8 +1364,6 @@ function UpdateProductDetail($productID, $field, $value) {
  * @return string empty if success, otherwise false
  */
 function AddProduct($details) {
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
-
     global $Product;
     escapeHTML($details);
     if (!(gettype($details) == "array")) return "Invalid details";
@@ -1461,7 +1446,6 @@ function AddProduct($details) {
 function DeleteProduct($productID) {
     global $Product;
     escapeHTML($productID);
-    // if (!CheckAdminLoggedIn()) return "Not logged in";
     try {
         $productID = (int)$productID;
     } catch (Exception $e) {
@@ -1502,8 +1486,6 @@ function DeleteProduct($productID) {
  * @return string Empty if success, otherwise false
  */
 function UpdateCustomerInfo($customerID, $field, $value) {
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
-    
     global $Customer;
     escapeHTML($customerID, $field, $value);
     $fields = array('Username', 'Email', 'CustomerAddress', 'PasswordHash');
@@ -1552,7 +1534,6 @@ function UpdateCustomerInfo($customerID, $field, $value) {
 function AddProductImage($productID, $fileName, $mainImage) {
     global $Product;
     escapeHTML($productID, $fileName, $mainImage);
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
     try {
         $productID = (int)$productID;
     } catch (Exception $e) {
@@ -1582,7 +1563,6 @@ function AddProductImage($productID, $fileName, $mainImage) {
 function UpdateProductImage($productID, $fileName, $mainImage) {
     global $Product;
     escapeHTML($productID, $fileName, $mainImage);
-    //if (!CheckAdminLoggedIn()) return "Not logged in";
     try {
         $productID = (int)$productID;
     } catch (Exception $e) {

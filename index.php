@@ -106,7 +106,15 @@ switch ($requestPath) {
         break;
     
     case '/admin':
-        require __DIR__ . '/view/admin/dashboard.php';
+        handleDashboardRequest();
+        break;
+
+    case '/adminLogin':
+        handleAdminLogin();
+        break;
+    
+    case '/adminLogout':
+        handleAdminLogout();
         break;
 
     case '/api/updateOrderStatus':
@@ -489,6 +497,45 @@ function handleChangePasswordRequest(){
     }
 
 
+}
+
+/**
+ * Handles requests to view the dashboard
+ */
+function handleDashboardRequest() {
+    if (CheckAdminLoggedIn()) {
+        require __DIR__ . '/view/admin/dashboard.php';
+    } 
+    else { 
+        header("Location:/adminLogin"); //redirect to login page
+    }
+}
+
+/**
+ * Handles admin logins
+ */
+function handleAdminLogin() {
+    if (!isset($_POST["username"])) {
+        require __DIR__ . '/view/AdminLogin.php';
+    }
+    else {
+        if (!isset($_POST["password"])) header("Location:/adminLogin");
+        else {
+            $result = AttemptAdminLogin($_POST["username"], $_POST["password"]);
+            if (empty($result)) header("Location:/admin");
+            //TODO show error message on adminLogin page
+            else header("Location:/adminLogin");
+        }
+    }
+}
+
+/**
+ * Handles admin logouts
+ */
+function handleAdminLogout() {
+    unset($_SESSION);
+    session_destroy();
+    header("Location:/admin");
 }
 
 
