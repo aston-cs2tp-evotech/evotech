@@ -23,13 +23,16 @@ jobs:
         php-version: '8.2'
         tools: composer:v2 phpunit
     
+    - name: Install Dependencies
+      run: composer install
+    
     - name: Run PHPUnit
       run: phpunit tests
 
   deploy:
     runs-on: ubuntu-latest
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'aston-cs2tp-evotech/evotech'
 
     steps:
     - name: Checkout Repository
