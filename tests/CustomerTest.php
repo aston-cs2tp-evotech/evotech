@@ -256,4 +256,39 @@ class CustomerTest extends TestCase {
         $this->assertTrue($result);
     }
 
+    public function testCustomerClass() {
+        $customerData = [
+            'CustomerID' => 1,
+            'Email' => 'test@example.com',
+            'Username' => 'testuser',
+            'CustomerAddress' => '123 Main St',
+            'PasswordHash' => 'hashedpassword',
+            'CreatedAt' => '2024-01-01',
+            'UpdatedAt' => '2024-01-02'
+        ];
+
+        $customer = new Customer($customerData);
+
+        // Test getters
+        $this->assertEquals(1, $customer->getUID(), 'UID does not match');
+        $this->assertEquals('test@example.com', $customer->getEmail(), 'Email does not match');
+        $this->assertEquals('testuser', $customer->getUsername(), 'Username does not match');
+        $this->assertEquals('123 Main St', $customer->getAddress(), 'Address does not match');
+        $this->assertEquals('hashedpassword', $customer->getPasswordHash(), 'Password hash does not match');
+        $this->assertEquals('2024-01-01', $customer->getCreatedAt(), 'Created at does not match');
+        $this->assertEquals('2024-01-02', $customer->getUpdatedAt(), 'Updated at does not match');
+
+        // Test setters
+        $customer->setUID(2);
+        $customer->setEmail('newtest@example.com');
+        $customer->setUsername('newuser');
+        $customer->setAddress('456 Elm St');
+        $customer->setPasswordHash('newhashedpassword');
+
+        $this->assertEquals(2, $customer->getUID(), 'UID does not match');
+        $this->assertEquals('newtest@example.com', $customer->getEmail(), 'Email does not match');
+        $this->assertEquals('newuser', $customer->getUsername(), 'Username does not match');
+        $this->assertEquals('456 Elm St', $customer->getAddress(), 'Address does not match');
+        $this->assertEquals('newhashedpassword', $customer->getPasswordHash(), 'Password hash does not match');
+    }
 }
