@@ -1084,7 +1084,10 @@ function VerfiyToken($token) {
             $newTk = GenerateToken($tk["AdminID"]);
             $success = $Admin->deleteToken($tk["Token"]);
 
-            if ($success && (!empty($newTk))) return true;
+            if ($success && (!empty($newTk)))  {
+                $_SESSION["adminToken"] = $newTk;
+                return true;
+            }
             else return false;
         }
         else return false;
@@ -1096,9 +1099,10 @@ function VerfiyToken($token) {
  * Create a token
  * @param int $adminID The admin to associate to (defaults to $_SESSION["adminID"])
  * @param DateTime $expiry The expiry time for the token (defaults to now+20mins)
+ * @param string $name The name for token access type
  * @return string The token, or an empty string if failed
  */
-function GenerateToken($adminID = null, $expiry=null) {
+function GenerateToken($adminID = null, $expiry=null, $name="ADMIN_DASHBOARD_ACCESS") {
     global $Admin;
     //assign current admin as adminID if not supplied
     if (is_null($adminID)) {
@@ -1132,8 +1136,9 @@ function GenerateToken($adminID = null, $expiry=null) {
             return "";
         }
     }
+    if (!(CheckExists($name)) || !(gettype($name) == "string")) return "";
 
-    $tk = $Admin->createToken($adminID, $expiry);
+    $tk = $Admin->createToken($adminID, $expiry, $name);
     if (is_null($tk)) return "";
     else return $tk["Token"];
 }

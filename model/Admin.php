@@ -127,7 +127,7 @@ class AdminModel {
      * @param DateTime $expiry the expiry time of the token
      * @return array|null The created token, or null if failed.
      */
-    public function createToken($adminID, $expiry) {
+    public function createToken($adminID, $expiry, $name) {
         //format DateTime to string
         $exp = $expiry->format("Y-m-d H:i:s");
         //generate a token
@@ -147,16 +147,19 @@ class AdminModel {
         $insertQuery = "INSERT INTO `APITokens` (
                         `AdminID`,
                         `Token`,
-                        `ExpiresAt`
+                        `ExpiresAt`,
+                        `TokenName`
                     ) VALUES (
                         :adminID,
                         :token,
-                        :expiry
+                        :expiry,
+                        :TokenName
                     )";
         $insertStatement = $this->database->prepare($insertQuery);
         $insertStatement->bindParam(':adminID', $adminID, PDO::PARAM_INT);
         $insertStatement->bindParam(':token', $token, PDO::PARAM_STR);
         $insertStatement->bindParam(':expiry', $exp, PDO::PARAM_STR);
+        $insertStatement->bindParam(':TokenName', $name, PDO::PARAM_STR);
 
         return $insertStatement->execute() ? $this->getTokenByID($token) : null;
     }

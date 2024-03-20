@@ -247,6 +247,7 @@ CREATE TABLE if not exists `APITokens` (
   `AdminID` INT NOT NULL,
   `Token` VARCHAR(16) NOT NULL,
   `ExpiresAt` TIMESTAMP NULL DEFAULT NULL,
+  `TokenName` VARCHAR(200) NOT NULL,
   PRIMARY KEY (`Token`),
   FOREIGN KEY (`AdminID`) REFERENCES `AdminCredentials` (`AdminID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
