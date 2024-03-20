@@ -456,9 +456,8 @@ function refreshToken() {
       Token : adminToken
     },
     success: function(response) {
-      console.log('Token refreshed');
-      console.log(response);
-      adminToken = response['token']
+      response = JSON.parse(response);
+      adminToken = response.token;
       // Update meta tag with new token
       document.querySelector('meta[name="adminToken"]').content = adminToken;
       
@@ -480,7 +479,7 @@ var inactivityTime = function () {
   document.onkeydown = resetTimer;   
 
   function logout() {
-      alert("You are now logged out.")
+      alert("You are now logged out due to inactivity");
       location.href = '/adminLogout'
   }
 
@@ -488,7 +487,7 @@ var inactivityTime = function () {
       clearTimeout(time);
       // set timeout to 4 minutes
       time = setTimeout(logout, 4 * 60 * 1000);
-      if (lastTokenRefresh > 60) {
+      if (lastTokenRefresh > 10) {
         refreshToken();
       }
   }
