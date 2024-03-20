@@ -161,6 +161,10 @@ switch ($requestPath) {
         handleAPIRequest('addAdmin');
         break;
 
+    case '/api/refreshToken':
+        handleAPIRequest('refreshToken');
+        break;
+
     default:
         handle404Request();
         break;
@@ -605,6 +609,11 @@ function handleAPIRequest($path) {
         case 'addAdmin':
             require __DIR__ . '/api/addAdmin.php';
             break;
+
+        case 'refreshToken':
+            require __DIR__ . '/api/refreshToken.php';
+            break;
+            
         default:
             handle404Request();
             break;
