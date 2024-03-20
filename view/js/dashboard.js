@@ -1,3 +1,15 @@
+// Set the adminToken
+var adminToken = document.querySelector('meta[name="adminToken"]').content;
+
+var lastTokenRefresh = 0;
+lastTokenRefresh = setInterval(function() {
+  lastTokenRefresh++;
+}, 1000);
+
+// Call the function to show the last visited page on page load
+showLastVisitedPage();
+
+
 // Function to show the page based on the ID
 function showPage(pageId, productID = null, customerID = null, adminID = null, customerIDforOrder = null) {
   // Hide all pages
@@ -111,12 +123,6 @@ function showLastVisitedPage() {
   }
 }
 
-// Set the adminToken
-var adminToken = document.querySelector('meta[name="adminToken"]').content;
-
-// Call the function to show the last visited page on page load
-showLastVisitedPage();
-
 $(document).ready(function () {
   $('#ordersTable').DataTable({
     // Enable select extension
@@ -138,6 +144,10 @@ $(document).ready(function () {
   });
   $('#customersTable').DataTable();
   $('#adminsTable').DataTable();
+  $('#apiKeysTable').DataTable();
+
+  inactivityTime();
+  
 });
 
 // Get ordersMessage element
@@ -435,3 +445,51 @@ $("#editAdminForm").submit(function(e) {
 
 });
 
+// Function to refresh the adminToken asynchronously
+
+function refreshToken() {
+  lastTokenRefresh = 0;
+  $.ajax({
+    url: "/api/refreshToken",
+    method: "POST",
+    data: {
+      Token : adminToken
+    },
+    success: function(response) {
+      console.log('Token refreshed');
+      console.log(response);
+      adminToken = response['token']
+      // Update meta tag with new token
+      document.querySelector('meta[name="adminToken"]').content = adminToken;
+      
+    },
+    error: function(xhr, status, error) {
+      console.log(error + ': ' + xhr.responseText);
+    }
+  });
+}
+
+
+var inactivityTime = function () {
+  var time;
+  window.onload = resetTimer;
+  document.onmousemove = resetTimer;
+  document.onmousedown = resetTimer; 
+  document.ontouchstart = resetTimer;
+  document.onclick = resetTimer;     
+  document.onkeydown = resetTimer;   
+
+  function logout() {
+      alert("You are now logged out.")
+      location.href = '/adminLogout'
+  }
+
+  function resetTimer() {
+      clearTimeout(time);
+      // set timeout to 4 minutes
+      time = setTimeout(logout, 4 * 60 * 1000);
+      if (lastTokenRefresh > 60) {
+        refreshToken();
+      }
+  }
+};
