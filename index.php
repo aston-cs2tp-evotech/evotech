@@ -551,7 +551,7 @@ function handleAdminLogout() {
  */
 function handleAPIRequest($path) {
     PruneTokens();
-    if (!CheckExists($_POST["Token"])) {
+    if (!isset($_POST["Token"])) {
         $result = VerfiyToken($_SESSION["adminToken"]);
         if (!$result) http_response_code(403);
     }
