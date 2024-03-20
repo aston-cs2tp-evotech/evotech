@@ -111,6 +111,9 @@ function showLastVisitedPage() {
   }
 }
 
+// Set the adminToken
+var adminToken = document.querySelector('meta[name="adminToken"]').content;
+
 // Call the function to show the last visited page on page load
 showLastVisitedPage();
 
@@ -149,7 +152,7 @@ $('select[name="status"]').change(function() {
   $.ajax({
     url: '/api/updateOrderStatus', // Update the URL with the actual endpoint
     method: 'POST',
-    data: { orderID: orderID, newStatusID: newStatusID },
+    data: { orderID: orderID, newStatusID: newStatusID , Token : adminToken},
     success: function(response) {
       // Update UI if necessary
       ordersMessage.innerHTML = response;
@@ -211,11 +214,12 @@ function getProductDetails(productID, callback) {
   $.ajax({
     url: '/api/getProduct',
     method: 'POST',
-    data: { productID: productID },
+    data: { productID: productID , Token : adminToken},
     success: function(response) {
       callback(response);
     },
     error: function(xhr, status, error) {
+      console.log(error + ': ' + xhr.responseText);
       callback(null);
     }
   });
@@ -226,7 +230,7 @@ function getAdminDetails(adminID, callback) {
   $.ajax({
     url: '/api/getAdmin',
     method: 'POST',
-    data: { adminID: adminID },
+    data: { adminID: adminID , Token : adminToken},
     success: function(response) {
       callback(response);
     },
@@ -241,7 +245,7 @@ function getCustomerDetails(customerID, callback) {
   $.ajax({
     url: '/api/getCustomer',
     method: 'POST',
-    data: { customerID: customerID },
+    data: { customerID: customerID , Token : adminToken},
     success: function(response) {
       callback(response);
     },
@@ -258,7 +262,7 @@ function deleteProduct() {
   $.ajax({
     url: '/api/deleteProduct',
     method: 'POST',
-    data: { productID: productID },
+    data: { productID: productID , Token : adminToken},
     success: function(response) {
       // Show success message
       var deleteProductMessage = document.getElementById('productUpdate');
@@ -289,7 +293,7 @@ function deleteCustomer() {
   $.ajax({
     url: '/api/deleteCustomer',
     method: 'POST',
-    data: { customerID: customerID },
+    data: { customerID: customerID , Token : adminToken},
     success: function(response) {
       // Show success message
       var deleteCustomerMessage = document.getElementById('customerUpdate');
@@ -357,7 +361,8 @@ $("#editCustomerForm").submit(function(e) {
       customerUsername: customerUsername,
       customerEmail: customerEmail,
       customerAddress: customerAddress,
-      customerPassword: customerPassword
+      customerPassword: customerPassword,
+      Token : adminToken
     },
     success: function(response) {
       // Show success message
@@ -402,7 +407,8 @@ $("#editAdminForm").submit(function(e) {
     data: {
       adminID: adminID,
       adminUsername: adminUsername,
-      adminPassword: adminPassword
+      adminPassword: adminPassword,
+      Token : adminToken
     },
     success: function(response) {
       // Show success message
@@ -417,6 +423,7 @@ $("#editAdminForm").submit(function(e) {
       showPage("admins");
     },
     error: function(xhr, status, error) {
+      console.log(error + ': ' + xhr.responseText);
       // Show error message
       var editAdminMessage = document.getElementById("adminUpdate");
       editAdminMessage.innerHTML = "Error updating admin";
