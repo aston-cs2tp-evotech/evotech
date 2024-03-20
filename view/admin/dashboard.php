@@ -21,6 +21,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="adminToken" content="<?php echo $_SESSION['adminToken']; ?>">
   <title>evotech; dashboard</title>
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -107,7 +108,11 @@
                 Admins
               </a>
             </li>
-
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showPage('apiKeys')">
+                <span data-feather="key"></span>
+                API Keys and Tokens
+              </a>
           </ul>
       </nav>
 
