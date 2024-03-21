@@ -82,4 +82,119 @@ class ControllerTest extends TestCase
         $this->assertNull($admin, "Invalid Key failed");
     }
 
+    public function testReLogInUser() {
+        // Mocking the required global variables
+        global $userInfo, $Customer;
+        $userInfo = null; // Reset userInfo
+        
+        // Mocking the session
+        $_SESSION["uid"] = 123; // Example UID
+        
+        // Mocking the Customer object
+        $customerData = [
+            "CustomerID" => 123,
+            "Email" => "test@example.com",
+            "Username" => "test_user",
+            "CustomerAddress" => "123 Street",
+            "PasswordHash" => "hashed_password",
+            "CreatedAt" => "2024-01-01 00:00:00",
+            "UpdatedAt" => "2024-01-01 00:00:00"
+        ];
+        $mockCustomer = new Customer($customerData);
+        
+        // Mocking the CustomerModel
+        $customerModelMock = $this->getMockBuilder(CustomerModel::class)
+                                  ->disableOriginalConstructor()
+                                  ->getMock();
+        
+        // Mocking the result of getCustomerByUID method
+        $customerModelMock->expects($this->once())
+                          ->method('getCustomerByUID')
+                          ->with($this->equalTo($_SESSION["uid"]))
+                          ->willReturn($customerData);
+        
+        // Replace global $Customer with the mock object
+        $Customer = $customerModelMock;
+        
+        // Call the function to test
+        ReLogInUser();
+        
+        // Cast $userInfo to Customer object
+        $userInfo = (object) $userInfo;
+        
+        // Assertions
+        $this->assertInstanceOf(Customer::class, $userInfo, "userInfo should be an instance of Customer");
+        $this->assertEquals($mockCustomer->getUID(), $userInfo->getUID(), "UID is not set correctly in userInfo");
+        $this->assertEquals($mockCustomer->getEmail(), $userInfo->getEmail(), "Email is not set correctly in userInfo");
+        $this->assertEquals($mockCustomer->getUsername(), $userInfo->getUsername(), "Username is not set correctly in userInfo");
+        $this->assertEquals($mockCustomer->getAddress(), $userInfo->getAddress(), "Address is not set correctly in userInfo");
+        $this->assertEquals($mockCustomer->getPasswordHash(), $userInfo->getPasswordHash(), "PasswordHash is not set correctly in userInfo");
+        $this->assertEquals($mockCustomer->getCreatedAt(), $userInfo->getCreatedAt(), "CreatedAt is not set correctly in userInfo");
+        $this->assertEquals($mockCustomer->getUpdatedAt(), $userInfo->getUpdatedAt(), "UpdatedAt is not set correctly in userInfo");
+    }
+
+    public function testCheckLoggedInWhenBothSet() {
+        // Mocking the required global variable
+        global $userInfo;
+        
+        // Setting up the scenario where both $_SESSION["uid"] and $userInfo are set
+        $_SESSION["uid"] = 123; // Example UID
+        $userInfo = new Customer([
+            "CustomerID" => 123,
+            "Email" => "test@example.com",
+            "Username" => "test_user",
+            "CustomerAddress" => "123 Street",
+            "PasswordHash" => "hashed_password",
+            "CreatedAt" => "2024-01-01 00:00:00",
+            "UpdatedAt" => "2024-01-01 00:00:00"
+        ]);
+        
+        // Asserting that CheckLoggedIn returns true
+        $this->assertTrue(CheckLoggedIn(), "When both \$_SESSION[\"uid\"] and \$userInfo are set, CheckLoggedIn should return true");
+    }
+
+    public function testCheckLoggedInWhenUidSetButUserInfoNotSet() {
+        // Mocking the required global variable
+        global $userInfo;
+        $userInfo = null;
+        
+        
+        // Setting up the scenario where only $_SESSION["uid"] is set
+        $_SESSION["uid"] = 123; // Example UID
+        
+        // Asserting that CheckLoggedIn returns false
+        $this->assertFalse(CheckLoggedIn(), "When only \$_SESSION[\"uid\"] is set and \$userInfo is not set, CheckLoggedIn should return false");
+    }
+    
+    public function testCheckLoggedInWhenUserInfoSetButUidNotSet() {
+        // Mocking the required global variable
+        global $userInfo;
+        $userInfo = new Customer([
+            "CustomerID" => 123,
+            "Email" => "test@example.com",
+            "Username" => "test_user",
+            "CustomerAddress" => "123 Street",
+            "PasswordHash" => "hashed_password",
+            "CreatedAt" => "2024-01-01 00:00:00",
+            "UpdatedAt" => "2024-01-01 00:00:00"
+        ]);
+        
+        // Setting up the scenario where only $userInfo is set
+        unset($_SESSION["uid"]);
+        
+        // Asserting that CheckLoggedIn returns false
+        $this->assertFalse(CheckLoggedIn(), "When only \$userInfo is set and \$_SESSION[\"uid\"] is not set, CheckLoggedIn should return false");
+    }
+
+    public function testCheckLoggedInWhenNeitherSet() {
+        // Mocking the required global variable
+        global $userInfo;
+        $userInfo = null;
+        
+        // Setting up the scenario where neither $_SESSION["uid"] nor $userInfo is set
+        unset($_SESSION["uid"]);
+        
+        // Asserting that CheckLoggedIn returns false
+        $this->assertFalse(CheckLoggedIn(), "When neither \$_SESSION[\"uid\"] nor \$userInfo is set, CheckLoggedIn should return false");
+    }    
 }
