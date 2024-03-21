@@ -35,6 +35,27 @@ if (isset($userInfo)) {
   <section class="Products">
     <div class="shadow p-3 mb-5 bg-light body-tertiary rounded">
       <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="dropdown m-2">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Category
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                <li><a class="dropdown-item" >Motherboards</a></li>
+                <li><a class="dropdown-item" >CPUs</a></li>
+                <li><a class="dropdown-item" >Graphics Cards</a></li>
+                <li><a class="dropdown-item" >Cases</a></li>
+                <li><a class="dropdown-item" >Memory</a></li>
+                <li><a class="dropdown-item" >Storage</a></li>
+              </ul>
+            </div>
+          </div>
+           <div class="col"> 
+            <input type="text" class="form-control m-2" id="search" placeholder="Search">
+        
+        </div>
+
         <?php
         foreach ($products as $item):
         ?>
