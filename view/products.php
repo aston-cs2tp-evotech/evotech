@@ -33,12 +33,33 @@ if (isset($userInfo)) {
   <h1 class="text-center">Products</h1>
 
   <section class="Products">
-    <div class="shadow p-3 mb-5 bg-light body-tertiary rounded">
+    <div class="shadow p-3 mb-5 bg body-tertiary rounded">
       <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="dropdown m-2">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Category
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
+                <li><a class="dropdown-item" >Motherboards</a></li>
+                <li><a class="dropdown-item" >CPUs</a></li>
+                <li><a class="dropdown-item" >Graphics Cards</a></li>
+                <li><a class="dropdown-item" >Cases</a></li>
+                <li><a class="dropdown-item" >Memory</a></li>
+                <li><a class="dropdown-item" >Storage</a></li>
+              </ul>
+            </div>
+          </div>
+           <div class="col"> 
+            <input type="text" class="form-control m-2" id="search" placeholder="Search">
+        
+        </div>
+
         <?php
         foreach ($products as $item):
         ?>
-          <div class="card mb-3">
+          <div class="card mb-3 rounded">
             <div class="row no-gutters">
               <div class="col-md-4">
                 <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product Image">
@@ -66,9 +87,9 @@ if (isset($userInfo)) {
       </div>
     </div>
   </section>
+
   <footer>
     <?php include __DIR__ . '/footer.php'?>
-
 </footer>
 
 </body>
