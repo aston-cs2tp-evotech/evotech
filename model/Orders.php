@@ -340,17 +340,17 @@ class OrdersModel {
      * @return int|null The count of Orders or null if failed to retrieve.
      */
     public function getOrderCount() {
-        $query = "SELECT COUNT(*) FROM `Orders`";
+        $query = "SELECT COUNT(*) AS count FROM `Orders`";
         $statement = $this->database->prepare($query);
 
         if ($statement->execute()) {
             $orderCount = $statement->fetch(PDO::FETCH_ASSOC);
-            return $orderCount ? $orderCount['COUNT(*)'] : 0;
+            return $orderCount ? (int)$orderCount['count'] : 0; // Cast count to int
         } else {
             return null; // Failed to execute query
         }
     }
-
+    
     /**
      * Get CheckedOutAt timestamp of an Order. Returns null if not checked out or not found.
      * 
