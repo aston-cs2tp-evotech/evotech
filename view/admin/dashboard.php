@@ -17,10 +17,13 @@
   if (!$admins) {
     $admins = [];
   }
+
+  $tokens = GetAllTokens();
   ?>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="adminToken" content="<?php echo $_SESSION['adminToken']; ?>">
   <title>evotech; dashboard</title>
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -56,7 +59,7 @@
     <div class="w-100"></div>
     <div class="navbar-nav">
       <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="#">Sign out</a>
+        <a class="nav-link px-3" href="/adminLogout">Sign out</a>
       </div>
     </div>
   </header>
@@ -72,6 +75,11 @@
                 Dashboard
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showPage('report')"> 
+                <span data-feather="file"></span>
+                Report
+              </a>
             <li class="nav-item">
               <a class="nav-link" href="#" onclick="showPage('orders')"> 
                 <span data-feather="file"></span>
@@ -103,11 +111,10 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="showPage('import')"> 
-                <span data-feather="hard-drive"></span>
-                Import Data
+              <a class="nav-link" href="#" onclick="showPage('apiTokens')">
+                <span data-feather="key"></span>
+                API Tokens
               </a>
-            </li>
           </ul>
       </nav>
 
@@ -236,7 +243,50 @@
           </div>
 
         </div>
+        
+        <div id="reportPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Report</h1>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title" style="text-align: center;">Total Users</h5>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-text" style="text-align: center;"><?php echo GetCustomerCount();?></h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title
+                  " style="text-align: center;">Total Products</h5>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-text" style="text-align: center;"><?php echo GetProductCount();?></h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-title
+                  " style="text-align: center;">Total Orders</h5>
+                </div>
+                <div class="card-body">
+                  <h5 class="card-text" style="text-align: center;"><?php echo count($orders);?></h5>
+                </div>
+              </div>
+            </div>
+          </div>
 
+           
+
+        </div>
         <div id="ordersPage" class="page" style="display: none;">
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -264,6 +314,7 @@
                 <th>Products</th>
                 <th>Total Quantity</th>
                 <th>Total Price</th>
+                <th>Checked Out Date</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -324,6 +375,9 @@
                   </td>
                   <td>£
                     <?php echo $order->getTotalAmount(); ?>
+                  </td>
+                  <td>
+                    <?php echo $order->getCheckedOutAt(); ?>
                   </td>
                   <td>
                     <?php if ($modifiable): ?>
@@ -540,6 +594,8 @@
                 <th>Email</th>
                 <th>Username</th>
                 <th>Address</th>
+                <th>Date Created</th>
+                <th>Last Date Modified</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -557,6 +613,12 @@
                   </td>
                   <td id="columnCustomerAddress_<?php echo $customer->getUID(); ?>">
                     <?php echo $customer->getAddress(); ?>
+                  </td>
+                  <td id="columnCustomerDateCreated_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getCreatedAt(); ?>
+                  </td>
+                  <td id="columnCustomerDateModified_<?php echo $customer->getUID(); ?>">
+                    <?php echo $customer->getUpdatedAt(); ?>
                   </td>
                   <td>
                     <a href="#" class="btn btn-primary" onclick="showPage('orders', null, null, null, <?php echo $customer->getUID(); ?>)">View Orders</a>
@@ -628,6 +690,8 @@
               <tr>
                 <th>Admin ID</th>
                 <th>Username</th>
+                <th>Date Crwated</th>
+                <th>Last Date Modified</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -639,6 +703,12 @@
                   </td>
                   <td id="columnAdminUsername_<?php echo $admin->getUID(); ?>">
                     <?php echo $admin->getUsername(); ?>
+                  </td>
+                  <td>
+                    <?php echo $admin->getCreatedAt(); ?>
+                  </td>
+                  <td>
+                    <?php echo $admin->getUpdatedAt(); ?>
                   </td>
                   <td>
                     <a href="#" class="btn btn-primary"onclick="showPage('editAdmin', null, null, <?php echo $admin->getUID(); ?>)">Edit</a>
@@ -719,6 +789,50 @@
             </form>
           </div>
         </div>
+
+        <div id="apiTokensPage" class="page" style="display: none;">
+          <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">API Tokens</h1>
+          </div>
+
+          <div id="apiKeysUpdate" class="alert" style="display: none;"></div>
+
+          <table id="apiKeysTable" class="table table-striped table-hover" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>AdminID</th>
+                <th>Name</th>
+                <th>Token</th>
+                <th>ExpiresAt</th>
+                <th>CreatedAt</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($tokens as $token) : ?>
+              <tr class=<?php $token["AdminID"]?>>
+                <td>
+                  <?php echo $token["AdminID"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["TokenName"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["Token"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["ExpiresAt"]; ?>
+                </td>
+                <td>
+                  <?php echo $token["CreatedAt"]; ?>
+                </td>
+                <td>
+                  <a href="#" class="btn btn-danger" onclick="deleteToken(<?php echo $token["AdminID"]?>)">Revoke</a>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
     </div>
 
     </main>

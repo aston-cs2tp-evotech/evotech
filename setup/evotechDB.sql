@@ -12,6 +12,8 @@ SET time_zone = "+00:00";
 CREATE TABLE if not exists `OrderStatus` (
   `OrderStatusID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(200) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`OrderStatusID`),
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -34,6 +36,8 @@ INSERT INTO `OrderStatus` (`Name`) VALUES
 CREATE TABLE if not exists `Compatibility` (
   `CompatibilityID` INT NOT NULL AUTO_INCREMENT,
   `CompatibilityName` VARCHAR(99) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`CompatibilityID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -48,6 +52,8 @@ CREATE TABLE if not exists `AdminCredentials` (
   `AdminID` INT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(200) NOT NULL,
   `PasswordHash` VARCHAR(255) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`AdminID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -60,6 +66,8 @@ CREATE TABLE if not exists `AdminCredentials` (
 CREATE TABLE if not exists `Categories` (
   `CategoryID` INT NOT NULL AUTO_INCREMENT,
   `CategoryName` VARCHAR(200) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`CategoryID`),
   UNIQUE KEY `CategoryName` (`CategoryName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -80,6 +88,8 @@ CREATE TABLE if not exists `Products` (
   `Stock` INT NOT NULL,
   `Description` VARCHAR(200) NOT NULL,
   `CategoryID` INT NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ProductID`),
   UNIQUE KEY `Name` (`Name`),
   FOREIGN KEY (`CategoryID`) REFERENCES `Categories` (`CategoryID`)
@@ -96,6 +106,8 @@ CREATE TABLE if not exists `ProductCompatibility` (
   `ProductID` INT NOT NULL,
   `CompatibilityID` INT NOT NULL,
   `SlotType` VARCHAR(50) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ProductID`, `CompatibilityID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`),
   FOREIGN KEY (`CompatibilityID`) REFERENCES `Compatibility` (`CompatibilityID`)
@@ -114,6 +126,8 @@ CREATE TABLE if not exists `ProductImages` (
   `ProductID` INT NOT NULL,
   `FileName` VARCHAR(255) NOT NULL,
   `MainImage` BOOLEAN NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ImageID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -132,6 +146,8 @@ CREATE TABLE if not exists `Customers` (
   `Username` VARCHAR(200) NOT NULL,
   `CustomerAddress` VARCHAR(200) NOT NULL,
   `PasswordHash` VARCHAR(255) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`CustomerID`),
   UNIQUE KEY `Email` (`Email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -148,10 +164,27 @@ CREATE TABLE if not exists `Orders` (
   `CustomerID` INT NOT NULL,
   `TotalAmount` DECIMAL(10,2) NOT NULL,
   `OrderStatusID` INT NOT NULL,
+  -- CheckedOut is automatically set to the current timestamp when OrderStatusID is set to 2 (ready)
+  `CheckedOutAt` TIMESTAMP NULL DEFAULT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`OrderID`),
   FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`),
   FOREIGN KEY (`OrderStatusID`) REFERENCES `OrderStatus` (`OrderStatusID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+DELIMITER //
+
+CREATE TRIGGER `update_checkedout_at` BEFORE UPDATE ON `Orders`
+FOR EACH ROW
+BEGIN
+  IF NEW.OrderStatusID = 2 THEN
+    SET NEW.CheckedOutAt = CURRENT_TIMESTAMP;
+  END IF;
+END;
+//
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 -- Table for Order Lines (Items in an Order) with a composite key
@@ -164,6 +197,8 @@ CREATE TABLE if not exists `OrderLines` (
   `OrderID` INT NOT NULL,
   `ProductID` INT NOT NULL,
   `Quantity` INT NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`OrderID`, `ProductID`),
   FOREIGN KEY (`OrderID`) REFERENCES `Orders` (`OrderID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`)
@@ -178,6 +213,8 @@ CREATE TABLE if not exists `OrderLines` (
 CREATE TABLE if not exists `ProductSlots` (
   `ProductID` INT NOT NULL,
   `SlotType` VARCHAR(50) NOT NULL,
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ProductID`, `SlotType`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -194,8 +231,24 @@ CREATE TABLE if not exists `ProductReviews` (
   `CustomerID` INT NOT NULL,
   `Rating` INT NOT NULL,
   `Review` VARCHAR(200),
+  `CreatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ProductID`, `CustomerID`),
   FOREIGN KEY (`ProductID`) REFERENCES `Products` (`ProductID`),
   FOREIGN KEY (`CustomerID`) REFERENCES `Customers` (`CustomerID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
+-- --------------------------------------------------------
+-- Table for API Tokens
+-- The `Token` is the unique identifier for each token,
+-- The `ExpiresAt` field is the timestamp for when it will expire
+-- --------------------------------------------------------
+CREATE TABLE if not exists `APITokens` (
+  `AdminID` INT NOT NULL,
+  `Token` VARCHAR(16) NOT NULL,
+  `ExpiresAt` TIMESTAMP NULL DEFAULT NULL,
+  `TokenName` VARCHAR(200) NOT NULL,
+  `CreatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Token`),
+  FOREIGN KEY (`AdminID`) REFERENCES `AdminCredentials` (`AdminID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

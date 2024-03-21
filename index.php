@@ -106,51 +106,63 @@ switch ($requestPath) {
         break;
     
     case '/admin':
-        require __DIR__ . '/view/admin/dashboard.php';
+        handleDashboardRequest();
+        break;
+
+    case '/adminLogin':
+        handleAdminLogin();
+        break;
+    
+    case '/adminLogout':
+        handleAdminLogout();
         break;
 
     case '/api/updateOrderStatus':
-        require __DIR__ . '/api/updateOrderStatus.php';
+        handleAPIRequest('updateOrderStatus');
         break;
 
     case '/api/getProduct':
-        require __DIR__ . '/api/getProduct.php';
+        handleAPIRequest('getProduct');
         break;
 
     case '/api/addProduct':
-        require __DIR__ . '/api/addProduct.php';
+        handleAPIRequest('addProduct');
         break;
 
     case '/api/editProduct':
-        require __DIR__ . '/api/editProduct.php';
+        handleAPIRequest('editProduct');
         break;
     
     case '/api/deleteProduct':
-        require __DIR__ . '/api/deleteProduct.php';
+        handleAPIRequest('deleteProduct');
         break;
     
     case '/api/getCustomer':
-        require __DIR__ . '/api/getCustomer.php';
+        handleAPIRequest('getCustomer');
         break;
     
     case '/api/editCustomer':
-        require __DIR__ . '/api/editCustomer.php';
+        handleAPIRequest('editCustomer');
         break;
 
     case '/api/deleteCustomer':
-        require __DIR__ . '/api/deleteCustomer.php';
+        handleAPIRequest('deleteCustomer');
         break;
 
     case '/api/getAdmin':
-        require __DIR__ . '/api/getAdmin.php';
+        handleAPIRequest('getAdmin');
         break;
 
     case '/api/editAdmin':
-        require __DIR__ . '/api/editAdmin.php';
+        handleAPIRequest('editAdmin');
         break;
 
     case '/api/addAdmin':
-        require __DIR__ . '/api/addAdmin.php';
+        handleAPIRequest('addAdmin');
+        break;
+
+    case '/api/refreshToken':
+        handleAPIRequest('refreshToken');
         break;
 
     default:
@@ -489,6 +501,123 @@ function handleChangePasswordRequest(){
     }
 
 
+}
+
+/**
+ * Handles requests to view the dashboard
+ */
+function handleDashboardRequest() {
+    PruneTokens();
+    if (CheckAdminLoggedIn()) {
+        if (VerfiyToken($_SESSION["adminToken"])) {
+            require __DIR__ . '/view/admin/dashboard.php';
+        } 
+        else {
+            // Logouut admin
+            unset($_SESSION);
+            header("Location:/adminLogin");
+        }
+    } 
+    else { 
+        header("Location:/adminLogin"); //redirect to login page
+    }
+}
+
+/**
+ * Handles admin logins
+ */
+function handleAdminLogin() {
+    if (!isset($_POST["username"])) {
+        require __DIR__ . '/view/AdminLogin.php';
+    }
+    else {
+        if (!isset($_POST["password"])) header("Location:/adminLogin");
+        else {
+            $result = AttemptAdminLogin($_POST["username"], $_POST["password"]);
+            if (empty($result)) header("Location:/admin");
+            //TODO show error message on adminLogin page
+            else header("Location:/adminLogin");
+        }
+    }
+}
+
+/**
+ * Handles admin logouts
+ */
+function handleAdminLogout() {
+    unset($_SESSION);
+    session_destroy();
+    header("Location:/admin");
+}
+
+/**
+ * Handles API requests
+ * 
+ * @param string $path Path to request
+ */
+function handleAPIRequest($path) {
+    PruneTokens();
+    if (!isset($_POST["Token"])) {
+        $result = VerfiyToken($_SESSION["adminToken"]);
+        if (!$result) http_response_code(403);
+    }
+    else {
+        $result = VerfiyToken($_POST["Token"]);
+        if (!$result) http_response_code(403);
+    }
+
+    switch ($path) {
+        case 'updateOrderStatus':
+            require __DIR__ . '/api/updateOrderStatus.php';
+            break;
+        case 'getProduct':
+            require __DIR__ . '/api/getProduct.php';
+            break;
+        
+        case 'addProduct':
+            require __DIR__ . '/api/addProduct.php';
+            break;
+        
+        case 'editProduct':
+            require __DIR__ . '/api/editProduct.php';
+            break;
+            
+        case 'deleteProduct':
+            require __DIR__ . '/api/deleteProduct.php';
+            break;
+            
+        case 'getCustomer':
+            require __DIR__ . '/api/getCustomer.php';
+            break;
+            
+        case 'editCustomer':
+            require __DIR__ . '/api/editCustomer.php';
+            break;
+        
+        case 'deleteCustomer':
+            require __DIR__ . '/api/deleteCustomer.php';
+            break;
+        
+        case 'getAdmin':
+            require __DIR__ . '/api/getAdmin.php';
+            break;
+        
+        case 'editAdmin':
+            require __DIR__ . '/api/editAdmin.php';
+            break;
+        
+        case 'addAdmin':
+            require __DIR__ . '/api/addAdmin.php';
+            break;
+
+        case 'refreshToken':
+            require __DIR__ . '/api/refreshToken.php';
+            break;
+            
+        default:
+            handle404Request();
+            break;
+    }
 }
 
 

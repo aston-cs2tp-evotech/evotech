@@ -1,12 +1,12 @@
 @font-face {
     font-family: allianceNo2;
-    src: url(/view/fonts/allianceno2.woff) format('woff');
-  }
-  
-/* login.css */
+    src: url(/view/fonts/alliaceno2.woff) format('woff');
+    }
+
+/* register.css */
 p {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
-    text-align: left;
+    font-family: allianceNo2, Arial, Helvetica, sans-serif!important;
+    text-align: left; 
 }
 
 input[type="text"],
@@ -28,22 +28,8 @@ input[type="submit"] {
     font-size: 16px;
 }
 
-.login-form-button {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
-    background-color: #000;
-    color: #fff;
-    text-decoration: none;
-    transition: 0.4s background-color;
-    border-radius: 10px;
-    padding: 12px 45%;
-}
-
-.login-form-button:hover {
-    background-color: #aaa;
-}
-
-.register-button {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+.register-form-button {
+    font-family: allianceNo2, Arial, Helvetica, sans-serif!important;
     background-color: #000;
     color: #fff;
     text-decoration: none;
@@ -52,12 +38,26 @@ input[type="submit"] {
     padding: 12px 41.75%;
 }
 
-.register-button:hover {
+.register-form-button:hover {
+    background-color: #aaa;
+}
+
+.register-login-button {
+    font-family: allianceNo2, Arial, Helvetica, sans-serif!important;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.4s background-color;
+    border-radius: 10px;
+    padding: 12px 45%;
+}
+
+.register-login-button:hover {
     background-color: #aaa;
 }
 
 body {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    font-family: allianceNo2, Arial, Helvetica, sans-serif!important;
     margin: 0;
     padding: 0;
     background-color: #f8f8f8;
@@ -71,7 +71,7 @@ h2 {
     text-align: center;
 }
 
-.login {
+.register {
     max-width: 100%;
     max-height: 100%;
     min-height: 95dvh;
@@ -81,17 +81,17 @@ h2 {
     color: #f8f8f8;
 }
 
-.login-image {
+.register-image {
     width: 65%;
     margin: 0px auto;
     padding: 0px;
-    background-color: #534B62;
+    background-color: #543B62;
     text-align: center;
     box-sizing: border-box;
     object-fit: contain;
 }
 
-.login-form {
+.register-form {
     width: 35%;
     margin: 0px auto;
     padding: 25px;

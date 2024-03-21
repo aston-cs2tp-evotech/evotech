@@ -133,14 +133,17 @@ class CustomerModel {
     /**
      * Count the number of customers in the database.
      * 
-     * @return int The number of customers in the database.
+     * @return int|null The number of customers in the database, or null if failed.
      */
     
     public function getCustomerCount() {
         $query = "SELECT COUNT(*) FROM `Customers`";
         $statement = $this->database->prepare($query);
-        $statement->execute();
-        return $statement->fetchColumn();
+        if ($statement->execute()) {
+            return $statement->fetchColumn();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -179,6 +182,8 @@ class Customer {
     private $username;
     private $address;
     private $passwordHash;
+    private $createdAt;
+    private $updatedAt;
 
     /**
      * Construct a new Customer object.
@@ -191,6 +196,8 @@ class Customer {
         $this->username = $customerData['Username'];
         $this->address = $customerData['CustomerAddress'];
         $this->passwordHash = $customerData['PasswordHash'];
+        $this->createdAt = $customerData['CreatedAt'];
+        $this->updatedAt = $customerData['UpdatedAt'];
     }
 
 
@@ -291,6 +298,24 @@ class Customer {
      */
     public function setPasswordHash($passwordHash) {
         $this->passwordHash = $passwordHash;
+    }
+
+    /**
+     * Retrieve the customer's creation date.
+     *
+     * @return string The customer's creation date.
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Retrieve the customer's last update date.
+     *
+     * @return string The customer's last update date.
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
     }
 }
 ?>

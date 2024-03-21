@@ -1,3 +1,15 @@
+// Set the adminToken
+var adminToken = document.querySelector('meta[name="adminToken"]').content;
+
+var lastTokenRefresh = 0;
+lastTokenRefresh = setInterval(function() {
+  lastTokenRefresh++;
+}, 1000);
+
+// Call the function to show the last visited page on page load
+showLastVisitedPage();
+
+
 // Function to show the page based on the ID
 function showPage(pageId, productID = null, customerID = null, adminID = null, customerIDforOrder = null) {
   // Hide all pages
@@ -69,6 +81,12 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     });
   }
 
+  // If navigating to orders 
+  if (pageId === "orders") {
+    var ordersTable = $('#ordersTable').DataTable();
+    ordersTable.order([5, 'desc']).draw();
+  }
+
   // If navigating to orders and the customerIDforOrder is not null, filter the orders by customerID
   if (pageId === "orders" && customerIDforOrder !== null) {
     // Filter the orders table by customerID
@@ -76,9 +94,12 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     ordersTable.column(1).search(customerIDforOrder).draw();
     var resetButton = document.getElementById('resetTableFiltersButton');
     resetButton.style.display = 'block';
+    // Sort by column heading 'Checked Out Date' (column index 5) in descending order
+    ordersTable.order([5, 'desc']).draw();
 
     function resetTableFilters() {
       ordersTable.search('').columns().search('').draw();
+      ordersTable.order([5, 'desc']).draw();
       resetButton.style.display = 'none';
     }
 
@@ -102,9 +123,6 @@ function showLastVisitedPage() {
   }
 }
 
-// Call the function to show the last visited page on page load
-showLastVisitedPage();
-
 $(document).ready(function () {
   $('#ordersTable').DataTable({
     // Enable select extension
@@ -126,6 +144,10 @@ $(document).ready(function () {
   });
   $('#customersTable').DataTable();
   $('#adminsTable').DataTable();
+  $('#apiKeysTable').DataTable();
+
+  inactivityTime();
+  
 });
 
 // Get ordersMessage element
@@ -140,7 +162,7 @@ $('select[name="status"]').change(function() {
   $.ajax({
     url: '/api/updateOrderStatus', // Update the URL with the actual endpoint
     method: 'POST',
-    data: { orderID: orderID, newStatusID: newStatusID },
+    data: { orderID: orderID, newStatusID: newStatusID , Token : adminToken},
     success: function(response) {
       // Update UI if necessary
       ordersMessage.innerHTML = response;
@@ -202,11 +224,12 @@ function getProductDetails(productID, callback) {
   $.ajax({
     url: '/api/getProduct',
     method: 'POST',
-    data: { productID: productID },
+    data: { productID: productID , Token : adminToken},
     success: function(response) {
       callback(response);
     },
     error: function(xhr, status, error) {
+      console.log(error + ': ' + xhr.responseText);
       callback(null);
     }
   });
@@ -217,7 +240,7 @@ function getAdminDetails(adminID, callback) {
   $.ajax({
     url: '/api/getAdmin',
     method: 'POST',
-    data: { adminID: adminID },
+    data: { adminID: adminID , Token : adminToken},
     success: function(response) {
       callback(response);
     },
@@ -232,7 +255,7 @@ function getCustomerDetails(customerID, callback) {
   $.ajax({
     url: '/api/getCustomer',
     method: 'POST',
-    data: { customerID: customerID },
+    data: { customerID: customerID , Token : adminToken},
     success: function(response) {
       callback(response);
     },
@@ -249,7 +272,7 @@ function deleteProduct() {
   $.ajax({
     url: '/api/deleteProduct',
     method: 'POST',
-    data: { productID: productID },
+    data: { productID: productID , Token : adminToken},
     success: function(response) {
       // Show success message
       var deleteProductMessage = document.getElementById('productUpdate');
@@ -280,7 +303,7 @@ function deleteCustomer() {
   $.ajax({
     url: '/api/deleteCustomer',
     method: 'POST',
-    data: { customerID: customerID },
+    data: { customerID: customerID , Token : adminToken},
     success: function(response) {
       // Show success message
       var deleteCustomerMessage = document.getElementById('customerUpdate');
@@ -348,7 +371,8 @@ $("#editCustomerForm").submit(function(e) {
       customerUsername: customerUsername,
       customerEmail: customerEmail,
       customerAddress: customerAddress,
-      customerPassword: customerPassword
+      customerPassword: customerPassword,
+      Token : adminToken
     },
     success: function(response) {
       // Show success message
@@ -393,7 +417,8 @@ $("#editAdminForm").submit(function(e) {
     data: {
       adminID: adminID,
       adminUsername: adminUsername,
-      adminPassword: adminPassword
+      adminPassword: adminPassword,
+      Token : adminToken
     },
     success: function(response) {
       // Show success message
@@ -408,6 +433,7 @@ $("#editAdminForm").submit(function(e) {
       showPage("admins");
     },
     error: function(xhr, status, error) {
+      console.log(error + ': ' + xhr.responseText);
       // Show error message
       var editAdminMessage = document.getElementById("adminUpdate");
       editAdminMessage.innerHTML = "Error updating admin";
@@ -419,3 +445,50 @@ $("#editAdminForm").submit(function(e) {
 
 });
 
+// Function to refresh the adminToken asynchronously
+
+function refreshToken() {
+  lastTokenRefresh = 0;
+  $.ajax({
+    url: "/api/refreshToken",
+    method: "POST",
+    data: {
+      Token : adminToken
+    },
+    success: function(response) {
+      response = JSON.parse(response);
+      adminToken = response.token;
+      // Update meta tag with new token
+      document.querySelector('meta[name="adminToken"]').content = adminToken;
+      
+    },
+    error: function(xhr, status, error) {
+      console.log(error + ': ' + xhr.responseText);
+    }
+  });
+}
+
+
+var inactivityTime = function () {
+  var time;
+  window.onload = resetTimer;
+  document.onmousemove = resetTimer;
+  document.onmousedown = resetTimer; 
+  document.ontouchstart = resetTimer;
+  document.onclick = resetTimer;     
+  document.onkeydown = resetTimer;   
+
+  function logout() {
+      alert("You are now logged out due to inactivity");
+      location.href = '/adminLogout'
+  }
+
+  function resetTimer() {
+      clearTimeout(time);
+      // set timeout to 4 minutes
+      time = setTimeout(logout, 4 * 60 * 1000);
+      if (lastTokenRefresh > 10) {
+        refreshToken();
+      }
+  }
+};

@@ -30,7 +30,7 @@ if (isset($_SESSION['uid'])) {
 
         <div class="login-image">
 
-            <img src="view/images/loginimage.jpg" alt="Login image">
+            <img src="view/images/login_register_image.jpg" alt="Login image">
         
         </div>
 
@@ -70,8 +70,6 @@ if (isset($_SESSION['uid'])) {
             <h2>Don't have an account?</h2>
                 <br>
                 <a href="register" class="register-button">Register</a>
-
-            <br>
             
         </div>
 
@@ -80,10 +78,7 @@ if (isset($_SESSION['uid'])) {
     </main>
 
     </body>
-
-    <footer>
+    
     <?php include __DIR__ . '/footer.php'?>
-
-</footer>
 
 </html>

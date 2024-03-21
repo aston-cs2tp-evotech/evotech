@@ -370,13 +370,16 @@ class ProductModel {
     /**
      * Count the number of total products in the database.
      * 
-     * @return int The number of products in the database.
+     * @return int|null The number of products in the database, or null if failed.
      */
     public function getProductCount() {
         $query = "SELECT COUNT(*) FROM `Products`";
         $statement = $this->database->prepare($query);
-        $statement->execute();
-        return $statement->fetchColumn();
+        if ($statement->execute()) {
+            return $statement->fetchColumn();
+        } else {
+            return null;
+        }
     }
     
 }
@@ -392,6 +395,8 @@ class Product {
     private $categoryName;
     private $mainImage;
     private $otherImages;
+    private $createdAt;
+    private $updatedAt;
 
 
     /**
@@ -407,6 +412,8 @@ class Product {
         $this->categoryName = $productDetails['CategoryName'];
         $this->mainImage = $productDetails['MainImage'];
         $this->otherImages = $productDetails['OtherImages'];
+        $this->createdAt = $productDetails['CreatedAt'];
+        $this->updatedAt = $productDetails['UpdatedAt'];
     }
 
 
@@ -568,6 +575,40 @@ class Product {
      */
     public function setOtherImages($otherImages) {
         $this->otherImages = $otherImages;
+    }
+
+    /**
+     * Get the date and time the product was created.
+     * @return string The date and time the product was created.
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the date and time the product was created.
+     * @param string $createdAt The date and time the product was created.
+     * @return void
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Get the date and time the product was last updated.
+     * @return string The date and time the product was last updated.
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the date and time the product was last updated.
+     * @param string $updatedAt The date and time the product was last updated.
+     * @return void
+     */
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
     }
 
 
