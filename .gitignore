@@ -9,3 +9,4 @@ config.php
 
 # Ignore product images
 view/images/products/
+/vendor/
