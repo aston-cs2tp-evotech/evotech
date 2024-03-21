@@ -122,43 +122,47 @@ switch ($requestPath) {
         break;
 
     case '/api/getProduct':
-        handleAPIRequest('getProduct.php');
+        handleAPIRequest('getProduct');
         break;
 
     case '/api/addProduct':
-        handleAPIRequest('addProduct.php');
+        handleAPIRequest('addProduct');
         break;
 
     case '/api/editProduct':
-        handleAPIRequest('editProduct.php');
+        handleAPIRequest('editProduct');
         break;
     
     case '/api/deleteProduct':
-        handleAPIRequest('deleteProduct.php');
+        handleAPIRequest('deleteProduct');
         break;
     
     case '/api/getCustomer':
-        handleAPIRequest('getCustomer.php');
+        handleAPIRequest('getCustomer');
         break;
     
     case '/api/editCustomer':
-        handleAPIRequest('editCustomer.php');
+        handleAPIRequest('editCustomer');
         break;
 
     case '/api/deleteCustomer':
-        handleAPIRequest('deleteCustomer.php');
+        handleAPIRequest('deleteCustomer');
         break;
 
     case '/api/getAdmin':
-        handleAPIRequest('getAdmin.php');
+        handleAPIRequest('getAdmin');
         break;
 
     case '/api/editAdmin':
-        handleAPIRequest('editAdmin.php');
+        handleAPIRequest('editAdmin');
         break;
 
     case '/api/addAdmin':
-        handleAPIRequest('addAdmin.php');
+        handleAPIRequest('addAdmin');
+        break;
+
+    case '/api/refreshToken':
+        handleAPIRequest('refreshToken');
         break;
 
     default:
@@ -509,7 +513,9 @@ function handleDashboardRequest() {
             require __DIR__ . '/view/admin/dashboard.php';
         } 
         else {
-            handle404Request();
+            // Logouut admin
+            unset($_SESSION);
+            header("Location:/adminLogin");
         }
     } 
     else { 
@@ -551,7 +557,7 @@ function handleAdminLogout() {
  */
 function handleAPIRequest($path) {
     PruneTokens();
-    if (!CheckExists($_POST["Token"])) {
+    if (!isset($_POST["Token"])) {
         $result = VerfiyToken($_SESSION["adminToken"]);
         if (!$result) http_response_code(403);
     }
@@ -603,6 +609,11 @@ function handleAPIRequest($path) {
         case 'addAdmin':
             require __DIR__ . '/api/addAdmin.php';
             break;
+
+        case 'refreshToken':
+            require __DIR__ . '/api/refreshToken.php';
+            break;
+            
         default:
             handle404Request();
             break;

@@ -1,1 +1,14 @@
-{}
+{
+    "name": "aston-cs2tp-evotech/evotech",
+    "description": "An e-commerce website for selling computer parts and accessories built using PHP, MariaDB, HTML, CSS and JavaScript. Built as part of the Aston University Computer Science Team Project module.",
+    "type": "project",
+    "require": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "authors": [
+        {
+            "name": "YourKalamity",
+            "email": "kalam@kalam.dev"
+        }
+    ]
+}

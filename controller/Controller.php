@@ -62,6 +62,7 @@ function CheckExists($var) {
 function escapeHTML(&...$params) {
     foreach ($params as &$param) {
         if (!is_array($param) && (gettype($param) == "string")) $param = htmlspecialchars($param);
+        else if (!is_array($param)) continue;
         else {
             foreach ($param as &$p) { 
                 if (gettype($p) == "string") $p = htmlspecialchars($p);
@@ -1064,7 +1065,7 @@ function GetPreviousOrders() {
 /**
  * Check API Token validity & attempt to generate token if expired recently
  * @param string $token API token
- * @return boolean True if valid or valid token has been generated, otherwise false
+ * @return string|boolean Token if valid, otherwise false
  */
 function VerfiyToken($token) {
     global $Admin;
@@ -1086,13 +1087,13 @@ function VerfiyToken($token) {
 
             if ($success && (!empty($newTk)))  {
                 $_SESSION["adminToken"] = $newTk;
-                return true;
+                return $newTk;
             }
             else return false;
         }
         else return false;
     } 
-    else return true;
+    else return $token;
 }
 
 /**
@@ -1227,6 +1228,19 @@ function GetAllAdmins() {
     }
     return $admins;
 }
+
+/**
+ * Get all api tokens in the database
+ * 
+ * @return array|boolean Array of tokens if success, otherwise false
+ */
+function GetAllTokens() {
+    global $Admin;
+    $tokens = $Admin->getAllTokens();
+    if (!$tokens) return false;
+    return $tokens;
+}
+
 
 /**
  * Update Customer details by admin
