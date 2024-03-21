@@ -33,7 +33,7 @@ if (isset($userInfo)) {
   <h1 class="text-center">Products</h1>
 
   <section class="Products">
-    <div class="shadow p-3 mb-5 bg-light body-tertiary rounded">
+    <div class="shadow p-3 mb-5 bg body-tertiary rounded">
       <div class="container">
         <div class="row">
           <div class="col">
@@ -59,7 +59,7 @@ if (isset($userInfo)) {
         <?php
         foreach ($products as $item):
         ?>
-          <div class="card mb-3">
+          <div class="card mb-3 rounded">
             <div class="row no-gutters">
               <div class="col-md-4">
                 <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product Image">
@@ -87,9 +87,9 @@ if (isset($userInfo)) {
       </div>
     </div>
   </section>
+
   <footer>
     <?php include __DIR__ . '/footer.php'?>
-
 </footer>
 
 </body>
