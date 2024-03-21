@@ -1,10 +1,10 @@
 <?php
 use PHPUnit\Framework\TestCase;
-require __DIR__ . "/../model/Admin.php";
-require __DIR__ . "/../model/Customer.php";
-require __DIR__ . "/../model/Orders.php";
-require __DIR__ . "/../model/Products.php";
-require __DIR__ . "/../controller/Controller.php";
+require_once __DIR__ . "/../model/Admin.php";
+require_once __DIR__ . "/../model/Customer.php";
+require_once __DIR__ . "/../model/Orders.php";
+require_once __DIR__ . "/../model/Products.php";
+require_once __DIR__ . "/../controller/Controller.php";
 
 class ControllerTest extends TestCase
 {
