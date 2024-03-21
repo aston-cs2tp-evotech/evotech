@@ -25,7 +25,7 @@
 
           
 
-            <form action="adminLogin" method="POST">
+            <form action="login" method="POST">
                 <p><b>Admin's username:</b></p>
                 <input type="text" name="username" placeholder="Enter username:" required/>
                 <br>
