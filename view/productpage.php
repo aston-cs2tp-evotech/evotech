@@ -20,22 +20,17 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $productDetails->getName(); ?> - EvoTech</title>
     <link rel="stylesheet" href="/view/css/productpage.css">
 </head>
-
 <body>
-  <?php include __DIR__ . '/nav.php'?>
-    <header>
-        <h1> </h1>
-    </header>
+    <?php include __DIR__ . '/nav.php'?>
 
     <main>
-        <div class="product-box">
+        <div class="main-product-box">
             <div class="product-image">
                 <img src="/view/images/products/<?php echo $productDetails->getProductID();?>/<?php echo $productDetails->getMainImage()?>">
             </div>
@@ -62,34 +57,26 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
             </div>
         </div>
 
-
-      
         <div class="recommendation-section">
-            <h2>Recommended Products</h2>
-
-            <div class="recommended-products">
+            <h2>YOU MIGHT ALSO LIKE</h2>
+            <div class="recommended-products-wrapper">
                 <?php foreach ($recommendedProducts as $recommendedProduct) : ?>
-                    <a href="/product?productID=<?php echo $recommendedProduct->getProductID(); ?>" class="product-link">
-                        <div class="product-box">
-                            <div class="product-image ">
+                    <a href="/product?productID=<?php echo $recommendedProduct->getProductID(); ?>" class="recommended-product-link">
+                        <div class="recommended-product-box">
+                            <div class="recommended-product-image">
                                 <img src="/view/images/products/<?php echo $recommendedProduct->getProductID(); ?>/<?php echo $recommendedProduct->getMainImage(); ?>" alt="Recommended Product Image">
                             </div>
-                            <div class="product-details">
+                            <div class="recommended-product-details">
                                 <h5><?php echo $recommendedProduct->getName(); ?></h5>
-                                <p class="product-price">£<?php echo $recommendedProduct->getPrice(); ?></p>
+                                <p class="recommended-product-price">£<?php echo $recommendedProduct->getPrice(); ?></p>
                             </div>
                         </div>
                     </a>
                 <?php endforeach; ?>
             </div>
         </div>
-
     </main>
 
-
-</body>
-<footer>
     <?php include __DIR__ . '/footer.php'?>
-
-</footer>
+</body>
 </html>
