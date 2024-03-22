@@ -164,6 +164,10 @@ switch ($requestPath) {
     case '/api/refreshToken':
         handleAPIRequest('refreshToken');
         break;
+    
+    case '/api/revokeToken':
+        handleAPIRequest('revokeToken');
+        break;
 
     default:
         handle404Request();
@@ -613,7 +617,11 @@ function handleAPIRequest($path) {
         case 'refreshToken':
             require __DIR__ . '/api/refreshToken.php';
             break;
-            
+
+        case 'revokeToken':
+            require __DIR__ . '/api/revokeToken.php';
+            break;
+
         default:
             handle404Request();
             break;
