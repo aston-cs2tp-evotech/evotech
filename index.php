@@ -164,6 +164,10 @@ switch ($requestPath) {
     case '/api/refreshToken':
         handleAPIRequest('refreshToken');
         break;
+    
+    case '/api/revokeToken':
+        handleAPIRequest('revokeToken');
+        break;
 
     default:
         handle404Request();
@@ -559,11 +563,18 @@ function handleAPIRequest($path) {
     PruneTokens();
     if (!isset($_POST["Token"])) {
         $result = VerfiyToken($_SESSION["adminToken"]);
-        if (!$result) http_response_code(403);
+        if (!$result) { 
+            http_response_code(403);
+            echo "Access denied";
+            return;
+        }
     }
     else {
         $result = VerfiyToken($_POST["Token"]);
-        if (!$result) http_response_code(403);
+        if (!$result) { 
+            http_response_code(403);
+            return;
+        }
     }
 
     switch ($path) {
@@ -613,7 +624,11 @@ function handleAPIRequest($path) {
         case 'refreshToken':
             require __DIR__ . '/api/refreshToken.php';
             break;
-            
+
+        case 'revokeToken':
+            require __DIR__ . '/api/revokeToken.php';
+            break;
+
         default:
             handle404Request();
             break;
