@@ -21,7 +21,7 @@
         <div id="page2" class="page">
             <div id="connectionStatus" class="alert" role="alert" display="none"></div>
             <p>Enter your database connection settings below.</p>
-            <form id="dbConfigForm">
+            <form id="dbConfigForm" class="novalidate">
                 <div class="mb-3">
                     <label for="dbUsername" class="form-label">DB Username</label>
                     <input type="text" class="form-control" id="dbUsername" value="root">
@@ -59,13 +59,13 @@
             <form id="adminConfigForm">
                 <div class="mb-3">
                     <label for="adminUsername" class="form-label">Admin Username</label>
-                    <input type="text" class="form-control" id="adminUsername" value="admin">
+                    <input type="text" class="form-control" id="adminUsername" placeholder="Username">
 
                     <label for="adminPassword" class="form-label">Admin Password</label>
-                    <input type="password" class="form-control" id="adminPassword" value="">
+                    <input type="password" class="form-control" id="adminPassword" value="" placeholder="Password" minlength="8">
 
                     <label for="adminConfirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="adminConfirmPassword" value="">
+                    <input type="password" class="form-control" id="adminConfirmPassword" value=""placeholder="Confirm Password" minlength="8">
                 </div>
             </form>
         </div>
@@ -97,7 +97,6 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
             var currentPage = 1;
@@ -140,6 +139,15 @@
                 var dbName = $("#dbName").val();
                 var dbHost = $("#dbHost").val();
 
+                // Check if the data is valid
+                if (dbUsername == "" || dbName == "" || dbHost == "") {
+                    $("#connectionStatus").display = "block";
+                    $("#connectionStatus").removeClass("alert-success");
+                    $("#connectionStatus").addClass("alert-danger");
+                    $("#connectionStatus").text("Please fill in all fields.");
+                    return;
+                }
+
                 $.ajax({
                     url: "/oobe/checkDBConnection",
                     type: "POST",
@@ -172,6 +180,7 @@
 
             // Add event listener for the "Create Database" button
             $("#createDBBtn").click(function() {
+
                 var dummyData = $("#dummyDataCheckbox").is(":checked");
 
                 $.ajax({
@@ -203,11 +212,37 @@
 
             // Add event listener for the "Create Admin" button
             $("#createAdminBtn").click(function() {
+
                 var adminUsername = $("#adminUsername").val();
                 var adminPassword = $("#adminPassword").val();
                 var adminConfirmPassword = $("#adminConfirmPassword").val();
 
-                if (adminPassword != adminConfirmPassword) {
+                // Reset the status message
+                $("#createAdminStatus").display = "none";
+                $("#createAdminStatus").removeClass("alert-danger");
+                $("#createAdminStatus").removeClass("alert-success");
+                $("#createAdminStatus").text("");
+
+                // Validate the data
+                if (adminUsername == "" || adminPassword == "" || adminConfirmPassword == "") {
+                    $("#createAdminStatus").display = "block";
+                    $("#createAdminStatus").removeClass("alert-success");
+                    $("#createAdminStatus").addClass("alert-danger");
+                    $("#createAdminStatus").text("Please fill in all fields.");
+                    return;
+                } else if (adminUsername.length < 5) {
+                    $("#createAdminStatus").display = "block";
+                    $("#createAdminStatus").removeClass("alert-success");
+                    $("#createAdminStatus").addClass("alert-danger");
+                    $("#createAdminStatus").text("Username must be at least 6 characters long");
+                    return;
+                } else if (adminPassword.length < 8) {
+                    $("#createAdminStatus").display = "block";
+                    $("#createAdminStatus").removeClass("alert-success");
+                    $("#createAdminStatus").addClass("alert-danger");
+                    $("#createAdminStatus").text("Password must be at least 8 characters long");
+                    return;
+                } else if (adminPassword != adminConfirmPassword) {
                     $("#createAdminStatus").display = "block";
                     $("#createAdminStatus").removeClass("alert-success");
                     $("#createAdminStatus").addClass("alert-danger");
@@ -259,6 +294,10 @@
                     }
                 });
             });
+        });
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault();
+            e.returnValue = '';
         });
     </script>
 </body>
