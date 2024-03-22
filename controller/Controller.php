@@ -730,7 +730,6 @@ function CreateMultipleSafeOrderLines($details) {
     $orderLines = array();
 
     if (is_null($details)) return null;
-    
     foreach ($details as $detail) {
         $orderLine = CreateSafeOrderLine($detail);
         if (!is_null($orderLine)) array_push($orderLines, $orderLine);
@@ -962,10 +961,12 @@ function CheckoutBasket() {
             return false;
         }
     }
-    $result = $Order->updateOrderDetails($basket->getOrderID(), "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
-    if (!$result) return false;
-    // If all has been successful, return true
-    return true;
+    $result1 = $Order->updateOrderDetails($basket->getOrderID(), "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    $result2 = $Order->updateOrderDetails($basket->getOrderID(), "CheckedOutAt", date("Y-m-d H:i:s"));
+    if ($result1 && $result2) {
+        return true;
+    }
+    return false;
 
 }
 

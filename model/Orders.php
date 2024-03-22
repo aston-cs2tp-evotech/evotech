@@ -167,7 +167,7 @@ class OrdersModel {
       */
     public function updateOrderDetails($orderID, $field, $value) {
         // Validate $field to prevent SQL injection
-        $allowedFields = array('CustomerID', 'TotalAmount', 'OrderStatusID');
+        $allowedFields = array('CustomerID', 'TotalAmount', 'OrderStatusID', 'CheckedOutAt');
         if (!in_array($field, $allowedFields)) {
             return false;
         }
