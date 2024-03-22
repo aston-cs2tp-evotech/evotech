@@ -18,6 +18,26 @@ try {
     die("Failed to load database config file: " . $e->getMessage());
 }
 
+// Check if admin user already exists
+
+$selectQuery = "SELECT * FROM `AdminCredentials` WHERE `Username` = :username";
+$selectStatement = $pdo->prepare($selectQuery);
+$selectStatement->bindParam(':username', $_POST['adminUsername']);
+
+try {
+    $selectStatement->execute();
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo "Failed to check if admin user already exists.";
+    die("Failed to check if admin user already exists: " . $e->getMessage());
+}
+
+if ($selectStatement->rowCount() > 0) {
+    http_response_code(400);
+    
+    die("Admin user already exists." . $selectStatement->rowCount());
+}
+
 // Create Admin user
 
 $insertQuery = "INSERT INTO `AdminCredentials` (
@@ -26,7 +46,7 @@ $insertQuery = "INSERT INTO `AdminCredentials` (
                         ) VALUES (
                             :username,
                             :passwordHash
-                        )";
+                        )"; 
 $insertStatement = $pdo->prepare($insertQuery);
 $insertStatement->bindParam(':username', $_POST['adminUsername']);
 $hashedPassword = password_hash($_POST['adminPassword'], PASSWORD_DEFAULT);

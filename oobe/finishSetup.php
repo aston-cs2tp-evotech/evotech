@@ -3,7 +3,6 @@
 // Verify config.php exists
 if (!file_exists(__DIR__ . "/../config.php")) {
     http_response_code(500);
-    echo "Config file not found. Can't finish setup.";
     die("Config file not found. Can't finish setup.");
 }
 

@@ -2,7 +2,6 @@
 
 if (!isset($_POST['dummyData'])) {
     http_response_code(400);
-    echo "Missing parameters.";
     die("Missing parameters.");
 }
 
@@ -12,7 +11,6 @@ try {
     require_once __DIR__ . "/../config.php";
 } catch (Exception $e) {
     http_response_code(500);
-    echo "config.php file not found.";
     die("Failed to load config file: " . $e->getMessage());
 }
 
@@ -24,7 +22,6 @@ try {
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo "Failed to connect to the database.";
     die("Connection failed: " . $e->getMessage());
 }
 
@@ -32,7 +29,6 @@ try {
 
 if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/setup/evotechDB.sql")) {
     http_response_code(500);
-    echo "SQL file not found.";
     die("SQL file not found.");
 }
 
@@ -46,7 +42,6 @@ try {
     $pdo->exec($sql);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo "Failed to create database.";
     die("Failed to create database: " . $e->getMessage());
 }
 
@@ -57,7 +52,6 @@ if ($_POST['dummyData'] == "true") {
 
     if (!file_exists($_SERVER['DOCUMENT_ROOT'] . "/setup/dummyProductData.sql")) {
         http_response_code(500);
-        echo "Dummy data SQL file not found.";
         die("Dummy data SQL file not found.");
     }
 
@@ -71,7 +65,6 @@ if ($_POST['dummyData'] == "true") {
         $pdo->exec($sql);
     } catch (PDOException $e) {
         http_response_code(500);
-        echo "Failed to create dummy data.";
         die("Failed to create dummy data: " . $e->getMessage());
     }
 
