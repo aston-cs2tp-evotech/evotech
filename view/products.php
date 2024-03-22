@@ -23,15 +23,15 @@
           <div class="col">
             <div class="dropdown m-2">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                Category
+                <?php if (isset($_GET["category"])) {echo $_GET["category"];} else {echo "Category";}?>
               </button>
               <ul class="dropdown-menu" aria-labelledby="categoryDropdown">
-                <li><a class="dropdown-item" href="/products?category=Motherboards">Motherboards</a></li>
-                <li><a class="dropdown-item" href="/products?category=CPUs">CPUs</a></li>
-                <li><a class="dropdown-item" href="/products?category=Graphics%20Cards">Graphics Cards</a></li>
-                <li><a class="dropdown-item" href="/products?category=Cases">Cases</a></li>
-                <li><a class="dropdown-item" href="/products?category=Memory">Memory</a></li>
-                <li><a class="dropdown-item" href="/products?category=Storage">Storage</a></li>
+                <li><a class="dropdown-item <?php echo isset($_GET["category"]) && $_GET["category"] == "Components" ? "active" : ""; ?>" href="/products?category=Components">Components</a></li>
+                <li><a class="dropdown-item <?php echo isset($_GET["category"]) && $_GET["category"] == "CPUs" ? "active" : ""; ?>" href="/products?category=CPUs">CPUs</a></li>
+                <li><a class="dropdown-item <?php echo isset($_GET["category"]) && $_GET["category"] == "Graphics Cards" ? "active" : ""; ?>" href="/products?category=Graphics%20Cards">Graphics Cards</a></li>
+                <li><a class="dropdown-item <?php echo isset($_GET["category"]) && $_GET["category"] == "Cases" ? "active" : ""; ?>" href="/products?category=Cases">Cases</a></li>
+                <li><a class="dropdown-item <?php echo isset($_GET["category"]) && $_GET["category"] == "Memory" ? "active" : ""; ?>" href="/products?category=Memory">Memory</a></li>
+                <li><a class="dropdown-item <?php echo isset($_GET["category"]) && $_GET["category"] == "Storage" ? "active" : ""; ?>" href="/products?category=Storage">Storage</a></li>
               </ul>
             </div>
           </div>
@@ -42,7 +42,7 @@
           <?php
           foreach ($products as $item):
           ?>
-            <div class="card mb-3 rounded">
+            <div class="card mb-3 rounded product-card" data-name="<?php echo strtolower($item->getName()); ?>" data-description="<?php echo strtolower($item->getDescription()); ?>">
               <div class="row no-gutters">
                 <div class="col-md-4">
                   <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product Image">
@@ -76,7 +76,6 @@
     <?php include __DIR__ . '/footer.php'?>
   </footer>
 
-  <!-- JavaScript to handle category change and redirection -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Get the category dropdown
@@ -91,16 +90,26 @@
         window.location.href = `/products?category=${selectedCategory}`;
       });
       
-      // Highlight the current category
-      const currentCategory = '<?php echo isset($_GET["category"]) ? $_GET["category"] : "" ?>';
-      const dropdownItems = categoryDropdown.querySelectorAll('.dropdown-item');
-      dropdownItems.forEach(item => {
-        if (item.textContent === currentCategory) {
-          item.classList.add('active');
-        } else {
-          item.classList.remove('active');
-        }
+      // Live search functionality
+      const searchInput = document.getElementById('search');
+      const productCards = document.querySelectorAll('.product-card');
+
+      searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+
+        productCards.forEach(card => {
+          const name = card.getAttribute('data-name');
+          const description = card.getAttribute('data-description');
+
+          if (name.includes(searchTerm) || description.includes(searchTerm)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
       });
+
+      
     });
   </script>
 
