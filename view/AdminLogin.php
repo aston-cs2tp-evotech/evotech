@@ -55,7 +55,7 @@ if (isset($_SESSION['uid'])) {
             <h2>Login in as an admin</h2>
 
             <form id="login" action="adminLogin" method="POST">
-                <input type="text" name="usernameOrEmail" placeholder="Username / email address" reqeuired/>
+                <input type="text" name="username" placeholder="Username" reqeuired/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
             </form>
