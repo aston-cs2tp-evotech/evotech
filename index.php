@@ -559,11 +559,18 @@ function handleAPIRequest($path) {
     PruneTokens();
     if (!isset($_POST["Token"])) {
         $result = VerfiyToken($_SESSION["adminToken"]);
-        if (!$result) http_response_code(403);
+        if (!$result) { 
+            http_response_code(403);
+            echo "Access denied";
+            return;
+        }
     }
     else {
         $result = VerfiyToken($_POST["Token"]);
-        if (!$result) http_response_code(403);
+        if (!$result) { 
+            http_response_code(403);
+            return;
+        }
     }
 
     switch ($path) {
