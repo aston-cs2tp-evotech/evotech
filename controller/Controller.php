@@ -1098,6 +1098,23 @@ function VerfiyToken($token) {
 }
 
 /**
+ * Retrieves the Admin object related to a token
+ * 
+ * @param string $token The token to check
+ * @return Admin|boolean Admin object if success, otherwise false
+ */
+function GetAdminByToken($token) {
+    global $Admin;
+    escapeHTML($token);
+    $tk = VerfiyToken($token);
+    if (!$tk) return false;
+
+    $admin = CreateSafeAdmin($Admin->getAdminByToken($tk));
+    if ($admin) return $admin;
+    else return false;
+}
+
+/**
  * Create a token
  * @param int $adminID The admin to associate to (defaults to $_SESSION["adminID"])
  * @param DateTime $expiry The expiry time for the token (defaults to now+20mins)
