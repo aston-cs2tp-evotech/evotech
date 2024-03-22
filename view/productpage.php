@@ -46,13 +46,14 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
 
                 <form action="/add-to-basket" method="post" class="mt-3">
                     <input type="hidden" name="productID" value="<?php echo $productDetails->getProductID(); ?>">
-                    <div class="mb-3">
+                    <div class="input-group mb-3">
                         <label for="quantity" class="form-label">Quantity:</label>
                         <input type="number" name="quantity" value="1" min="1" class="form-control">
+                        <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['uid']) ? '' : 'disabled'; ?>>
+                            <?php echo isset($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
+                        </button>                           
                     </div>
-                    <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['uid']) ? '' : 'disabled'; ?>>
-                        <?php echo isset($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
-                    </button>
+                    
                 </form>
             </div>
         </div>
