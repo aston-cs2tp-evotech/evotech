@@ -698,7 +698,7 @@ function CreateSafeOrderLine($details) {
     global $Product;
     $badOrderLine = false;
     //only keys passed from db when fetching orderLines
-    $keys = array('ProductID', 'Quantity', 'OrderID');
+    $keys = array('ProductID', 'Quantity', 'OrderID', 'CreatedAt', 'UpdatedAt');
 
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badOrderLine = true;
