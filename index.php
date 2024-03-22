@@ -1,5 +1,39 @@
 <?php
 
+// Routing
+$request = $_SERVER['REQUEST_URI'];
+$requestPath = parse_url($request, PHP_URL_PATH);
+
+// Check if OOBE has been run and if not, display OOBE page and exit
+if (!file_exists(__DIR__ . "/config/oobeHasRun")) {
+    switch ($requestPath) {
+        case '/oobe':
+            require __DIR__ . '/oobe/oobe.php';
+            break;
+        case '/oobe/checkDBConnection':
+            require __DIR__ . '/oobe/checkDBConnection.php';
+            break;
+        case '/oobe/setupDatabase':
+            require __DIR__ . '/oobe/setupDatabase.php';
+            break;
+        case '/oobe/setupAdmin':
+            require __DIR__ . '/oobe/setupAdmin.php';
+            break;
+        case '/oobe/finishSetup':
+            require __DIR__ . '/oobe/finishSetup.php';
+            break;
+        case '/oobe/style.css':
+            header('Content-Type: text/css');
+            require __DIR__ . '/oobe/style.css';
+            break;
+        default:
+            require __DIR__ . '/oobe/oobe.php';
+            break;
+    }
+    exit();
+}
+
+
 // Start session
 session_start();
 
@@ -29,10 +63,6 @@ if (isset($userInfo)) {
     $username = $userInfo->getUsername();
 }
 
-
-// Routing
-$request = $_SERVER['REQUEST_URI'];
-$requestPath = parse_url($request, PHP_URL_PATH);
 
 switch ($requestPath) {
 

@@ -3,10 +3,13 @@
 
 # Ignore config.php
 config.php
+/config/oobeHasRun
 
 # Ignore macOS hidden file
 .DS_Store
 
 # Ignore product images
 view/images/products/
+
+# Ignore vendor folder
 /vendor/

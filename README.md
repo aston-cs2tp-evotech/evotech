@@ -44,19 +44,26 @@ These instructions will guide you through setting up the project to run locally 
     cd evotech
     ```
 
-3. Run the setup script for Windows
+3. Open XAMPP and start Apache and MySQL
+
+4. Run the setup script for Windows
     ```powershell
     .\setup\setupWindows.ps1
     ```
-    - This will also start Apache and MySQL in XAMPP and launch the sites
+
+5. Open the following links in your browser:
+    - http://localhost
+    - http://localhost/phpmyadmin
+
+6. Complete the evotech; setup in your browser
 
 The script will have configured everything so in the future if you need to run locally again:
 
 1. Start Apache and MySQL in XAMPP
 
 2. Open the following links in your browser:
-    - http://localhost/phpmyadmin
     - http://localhost
+    - http://localhost/phpmyadmin
 
 To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
 
@@ -80,19 +87,26 @@ To use the website, you will need to construct the database as per the instructi
     ```bash
     cd evotech
     ```
-5. Run the setup script for macOS
+5. Start Apache and MySQL in XAMPP (manager-osx)
+
+6. Run the setup script for macOS
     ```bash
     ./setup/setupMac.sh
     ```
-    - This will also start Apache and MySQL in XAMPP and launch the sites
+
+7. Open the following links in your browser:
+    - http://localhost/phpmyadmin
+    - http://localhost
+
+8. Complete the evotech; setup in your browser
 
 The script will have configured everything so in the future if you need to run locally again:
 
 1. Start Apache and MySQL in XAMPP
 
 2. Open the following links in your browser:
-    - http://localhost/phpmyadmin
     - http://localhost
+    - http://localhost/phpmyadmin
 
 To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
 
@@ -107,24 +121,41 @@ To use the website, you will need to construct the database as per the instructi
 
 2. Clone the repository using `git clone`
 
-3. Run the setup script for Linux
+3. Change directory to the root of the repository
+    ```bash
+    cd evotech
+    ```
+
+4. Start Apache and MySQL in XAMPP
+    ```bash
+    sudo /opt/lampp/lampp start
+    ```
+
+5. Run the setup script for Linux
     ```bash
     ./setup/setupLinux.sh
     ```
-    - This will also start Apache and MySQL in XAMPP and launch the sites
+
+6. Open the following links in your browser:
+    - http://localhost
+    - http://localhost/phpmyadmin
+
+7. Complete the evotech; setup in your browser
 
 The script will have configured everything so in the future if you need to run locally again:
 
 1. Start Apache and MySQL in XAMPP
 
 2. Open the following links in your browser:
-    - http://localhost/phpmyadmin
     - http://localhost
+    - http://localhost/phpmyadmin
 
 To use the website, you will need to construct the database as per the instructions in [Constructing the database](#constructing-the-database).
 
 ## Constructing the database
 The database needs to be constructed before the website can be used.
+
+[!TIP] The OOBE evotech; setup will automatically construct the database for you. If you have not used the OOBE setup, follow the instructions below.
 
 1. Open the following link in your browser:
     - http://localhost/phpmyadmin
@@ -141,6 +172,8 @@ The database needs to be constructed before the website can be used.
 
 ## Using supplied dummy data
 The database can be populated with dummy data to test the website.
+
+[!TIP] The OOBE evotech; setup will automatically populate the database with dummy data for you if you choose to do so. If you have not used the OOBE setup, follow the instructions below.
 
 ### SQL Product Data
 
@@ -173,11 +206,11 @@ Whilst not necessary for the site to function, it will make the site look more r
 
 ## Credits
 
-- [220064521 - Mohammed Kalam](https://github.com/YourKalamity)
-- [220073925 - Viktor Dvornik](https://github.com/ToadallyStupid)
-- [220043504 - Aaron Dosanjh](https://github.com/Aaron3455454)
-- [220095086 - Thomas Evans](https://github.com/TomE134)
-- [220216876 - Reece Edwards](https://github.com/Reece-Edwards)
-- [220164359 - Gurjot Dhillon](https://github.com/gurjotsd)
-- [220070614 - Hanzalah Naguthane](https://github.com/realhanzalah)
-- [220098548 - Mahdi Egal](https://github.com/PhantomCodeing)
+- [220064521 - Mohammed Kalam](https://github.com/YourKalamity) - Team Leader | Project Manager | Full Stack Developer
+- [220073925 - Viktor Dvornik](https://github.com/ToadallyStupid) - Backend Lead | Backend Code Review | Backend Developer
+- [220043504 - Aaron Dosanjh](https://github.com/Aaron3455454) - Frontend Lead | Frontend Code Review | Frontend Developer
+- [220070614 - Hanzalah Naguthane](https://github.com/realhanzalah) - UI/UX Lead | UI/UX Design | Frontend Developer
+- [220216876 - Reece Edwards](https://github.com/Reece-Edwards) - Backend Developer | Documentation
+- [220095086 - Thomas Evans](https://github.com/TomE134) - Frontend Developer 
+- [220164359 - Gurjot Dhillon](https://github.com/gurjotsd) - Frontend Developer
+- [220098548 - Mahdi Egal](https://github.com/PhantomCodeing) - Frontend Developer

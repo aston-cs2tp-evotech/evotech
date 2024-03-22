@@ -1,0 +1,119 @@
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+
+body {
+    background-color: #A499B3;
+    font-family: allianceNo2, Arial, Helvetica, sans-serif !important;
+}
+
+/* Center the container vertically and horizontally, add rounded corners, and slight shadow */
+#container {
+    background-color: #fbfbfb;
+    max-width: 800px;
+    min-height: 600px;
+    margin: auto;
+    border: 1px solid #ccc; /* Add border */
+    padding: 20px; /* Add padding for better spacing */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.7); /* Slight shadow */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Add custom styles here */
+.page {
+    display: none;
+    padding: 20px; /* Add padding to all pages */
+}
+
+.page.active {
+    display: block;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+}
+
+.form-check {
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #container {
+        max-width: 95%;
+        padding: 0 20px;
+        min-height: 80vh;
+    }
+}
+
+/* Additional styling for labels and form controls */
+label {
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Bottom right corner button container */
+.button-right {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.button-left {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+/* Hide all buttons initially */
+.button-right button {
+    display: none;
+}
+
+/* Show only the active button */
+.button-right button.active {
+    display: block;
+}
+
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    background-color: #8064A2 !important;
+    color: white;
+    border: none;
+}
+
+
+.btn-outline-primary {
+    background-color: white;
+    color: #8064A2;
+    border: 1px solid #8064A2;
+}
+
+.btn-outline-primary:hover {
+    background-color: #8064A2;
+    color: white;
+    border: 1px solid #8064A2;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 576px) {
+    input[type="text"],
+    input[type="password"] {
+        width: calc(100% - 20px);
+    }
+}

@@ -18,7 +18,7 @@ CREATE TABLE if not exists `OrderStatus` (
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
-INSERT INTO `OrderStatus` (`Name`) VALUES
+INSERT IGNORE INTO `OrderStatus` (`Name`) VALUES
 ('basket'),
 ('ready'),
 ('processing'),
@@ -71,6 +71,15 @@ CREATE TABLE if not exists `Categories` (
   PRIMARY KEY (`CategoryID`),
   UNIQUE KEY `CategoryName` (`CategoryName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- Insert Categories
+INSERT IGNORE INTO `Categories` (`CategoryName`) VALUES
+('Components'),
+('CPUs'),
+('Graphics Cards'),
+('Cases'),
+('Storage'),
+('Memory');
 
 -- --------------------------------------------------------
 -- Table for Products
@@ -173,18 +182,6 @@ CREATE TABLE if not exists `Orders` (
   FOREIGN KEY (`OrderStatusID`) REFERENCES `OrderStatus` (`OrderStatusID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
-DELIMITER //
-
-CREATE TRIGGER `update_checkedout_at` BEFORE UPDATE ON `Orders`
-FOR EACH ROW
-BEGIN
-  IF NEW.OrderStatusID = 2 THEN
-    SET NEW.CheckedOutAt = CURRENT_TIMESTAMP;
-  END IF;
-END;
-//
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 -- Table for Order Lines (Items in an Order) with a composite key
