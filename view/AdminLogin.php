@@ -3,12 +3,6 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (isset($_SESSION['uid'])) {
-    // Redirect to home page
-    header("Location:/");
-    exit();
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +49,7 @@ if (isset($_SESSION['uid'])) {
             <h2>Login in as an admin</h2>
 
             <form id="login" action="adminLogin" method="POST">
-                <input type="text" name="username" placeholder="Username" reqeuired/>
+                <input type="text" name="username" placeholder="Username" required/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
             </form>
