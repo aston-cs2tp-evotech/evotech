@@ -5,6 +5,13 @@ $tokenName = $_SESSION["TokenName"];
 $tokenAdmin = $_SESSION["TokenAdminID"];
 $tokenExp = $_SESSION["TokenExpiry"];
 
+try {
+    $tokenExp = new DateTime($tokenExp);
+}
+catch (Exception $e) {
+    //don't worry about it :)
+}
+
 
 //GenerateToken handles all the checks, no type checks needed
 $tk = GenerateToken($tokenAdmin, $tokenExp,  $tokenName);
