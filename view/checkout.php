@@ -84,7 +84,12 @@ $basketItems = GetCustomerBasket();
                 <h2>Your Basket</h2>
                 
                 <?php
-                $totalPrice = $basketItems->getTotalAmount();
+                $totalPrice = 0;
+                if ($basketItems) {
+                    foreach ($basketItems->getOrderLines() as $item) :
+                        $totalPrice += $item->getTotalPrice();
+                    endforeach;
+                }
                 ?>
                 <div class="card mt-4">
                     <div class="card-body">

@@ -44,8 +44,9 @@ if (isset($userInfo)) {
                     $totalPrice = null; //totalPrice is assigned after the check that basketItems exists
 
                     if ($basketItems) {
-                        $totalPrice = $basketItems->getTotalAmount();
+                        $totalPrice = 0;
                         foreach ($basketItems->getOrderLines() as $item) :
+                            $totalPrice += $item->getTotalPrice();
                     ?>
                             <div class="card mb-3">
                                 <div class="row no-gutters">
