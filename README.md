@@ -206,11 +206,11 @@ Whilst not necessary for the site to function, it will make the site look more r
 
 ## Credits
 
-- [220064521 - Mohammed Kalam](https://github.com/YourKalamity)
-- [220073925 - Viktor Dvornik](https://github.com/ToadallyStupid)
-- [220043504 - Aaron Dosanjh](https://github.com/Aaron3455454)
-- [220095086 - Thomas Evans](https://github.com/TomE134)
-- [220216876 - Reece Edwards](https://github.com/Reece-Edwards)
-- [220164359 - Gurjot Dhillon](https://github.com/gurjotsd)
-- [220070614 - Hanzalah Naguthane](https://github.com/realhanzalah)
-- [220098548 - Mahdi Egal](https://github.com/PhantomCodeing)
+- [220064521 - Mohammed Kalam](https://github.com/YourKalamity) - Team Leader | Project Manager | Full Stack Developer
+- [220073925 - Viktor Dvornik](https://github.com/ToadallyStupid) - Backend Lead | Backend Code Review | Backend Developer
+- [220043504 - Aaron Dosanjh](https://github.com/Aaron3455454) - Frontend Lead | Frontend Code Review | Frontend Developer
+- [220070614 - Hanzalah Naguthane](https://github.com/realhanzalah) - UI/UX Lead | UI/UX Design | Frontend Developer
+- [220216876 - Reece Edwards](https://github.com/Reece-Edwards) - Backend Developer | Documentation
+- [220095086 - Thomas Evans](https://github.com/TomE134) - Frontend Developer 
+- [220164359 - Gurjot Dhillon](https://github.com/gurjotsd) - Frontend Developer
+- [220098548 - Mahdi Egal](https://github.com/PhantomCodeing) - Frontend Developer
