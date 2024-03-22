@@ -445,6 +445,35 @@ $("#editAdminForm").submit(function(e) {
 
 });
 
+// Function to revoke an API token asynchronously
+function revokeAPIToken(removalToken) {
+  $.ajax({
+    url: "/api/revokeToken",
+    method: "POST",
+    data: {
+      removalToken: removalToken,
+      Token : adminToken
+    },
+    success: function(response) {
+      // Show success message
+      var revokeAPITokenMessage = document.getElementById("apiTokenUpdate");
+      revokeAPITokenMessage.innerHTML = "API token revoked successfully";
+      revokeAPITokenMessage.style.display = "block";
+      revokeAPITokenMessage.classList.add("alert-success", "alert-dismissible");
+
+      // Refresh the page to show the updated table
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var revokeAPITokenMessage = document.getElementById("apiTokenUpdate");
+      revokeAPITokenMessage.innerHTML = "Error " + error + ": " + xhr.responseText;
+      revokeAPITokenMessage.style.display = "block";
+      revokeAPITokenMessage.classList.add("alert-danger", "alert-dismissible");
+    }
+  });
+}
+
 // Function to refresh the adminToken asynchronously
 
 function refreshToken() {

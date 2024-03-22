@@ -796,7 +796,7 @@
             <h1 class="h2">API Tokens</h1>
           </div>
 
-          <div id="apiKeysUpdate" class="alert" style="display: none;"></div>
+          <div id="apiTokenUpdate" class="alert" style="display: none;"></div>
 
           <table id="apiKeysTable" class="table table-striped table-hover" style="width: 100%;">
             <thead>
@@ -811,7 +811,7 @@
             </thead>
             <tbody>
               <?php foreach ($tokens as $token) : ?>
-              <tr class=<?php $token["AdminID"]?>>
+              <tr class=<?php $token["AdminID"]?> id="apiTokensTableRow<?php echo $token["Token"]?>">
                 <td>
                   <?php echo $token["AdminID"]; ?>
                 </td>
@@ -828,11 +828,12 @@
                   <?php echo $token["CreatedAt"]; ?>
                 </td>
                 <td>
-                  <a href="#" class="btn btn-danger" onclick="deleteToken(<?php echo $token["AdminID"]?>)">Revoke</a>
+                  <button href="#" class="btn btn-danger" onclick="revokeAPIToken(&quot;<?php echo $token["Token"]?>&quot;)" <?php  if (strcmp($token["Token"], $_SESSION["adminToken"])==0) {echo "disabled";} ?>>Delete</button>
                 </td>
               </tr>
               <?php endforeach; ?>
             </tbody>
+          </table>
     </div>
 
     </main>
