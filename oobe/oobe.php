@@ -230,11 +230,11 @@
                     $("#createAdminStatus").addClass("alert-danger");
                     $("#createAdminStatus").text("Please fill in all fields.");
                     return;
-                } else if (adminUsername.length < 5) {
+                } else if (adminUsername.length < 4) {
                     $("#createAdminStatus").display = "block";
                     $("#createAdminStatus").removeClass("alert-success");
                     $("#createAdminStatus").addClass("alert-danger");
-                    $("#createAdminStatus").text("Username must be at least 6 characters long");
+                    $("#createAdminStatus").text("Username must be at least 5 characters long");
                     return;
                 } else if (adminPassword.length < 8) {
                     $("#createAdminStatus").display = "block";
