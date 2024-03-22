@@ -1160,6 +1160,27 @@ function PruneTokens() {
 }
 
 /**
+ * Deletes token from database
+ * @param string $token The token to remove
+ * @return boolean True if succeeded, otherwise false
+ */
+function RevokeToken($token) {
+    global $Admin;
+    escapeHTML($token);
+
+    //check token is valid and exists
+    if (!(CheckExists($token)) or !(gettype($token) == "string")) return false;
+
+    $tk = $Admin->getTokenByID($token);
+    if (is_null($tk)) return false;
+
+    //delete token
+    $result = $Admin->deleteToken($tk["Token"]);
+
+    return $result;
+}
+
+/**
  * Add an admin to the database
  * 
  * @param array $details Associative array containing key as field to update and value as new value
