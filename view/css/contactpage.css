@@ -1,46 +1,59 @@
 @font-face {
-    font-family: allianceNo2;
-    src: url(/view/fonts/allianceno2.woff) format('woff');
-  }
+    font-family: 'allianceNo2';
+    src: url('/view/fonts/allianceno2.woff') format('woff');
+}
 
 body {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
-    background-color: #ffffff;
+    font-family: 'allianceNo2', Arial, Helvetica, sans-serif !important;
+    background-color: #29890c;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 header {
-    background-color: #323131;
-    color: #fff;
+    color: #d8d3d3;
+    background-color: #534B62;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    
+    font-size: 2.5rem; /* Responsive font size */
     text-align: center;
-    padding: 1em;
+    color: #d8d3d3; /* Changed for better visibility */
+    margin: 0;
 }
 
 .contact-container {
+    background-color: #534B62; /* Changed to brown */
     display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 20px auto;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    justify-content: center; /* Centers the boxes horizontally */
+    gap: 20px; /* Specifies the gap between the boxes */
+    max-width: auto;
+    margin: auto;
+    padding: 20px; /* Added padding around the inside of the container */
+    box-sizing: border-box; /* Ensures padding is included in the width calculation */
 }
 
 .contact-form, .contact-info {
-    width: 48%;
-    box-sizing: border-box;
-    padding: 20px;
-    background-color: #ffffff;
+    flex: auto; /* Adjusts based on screen size */
+    padding: 30px;
+    background-color: #A499B3; /* Keeps the original background color */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    margin-bottom: 20px; /* Adds space between stacked elements on small screens */
+    max-width: 600px; /* Increased from 300px to make the boxes wider */
 }
 
-label {
+label, input, textarea, button {
     display: block;
-    margin-bottom: 8px;
+    width: 100%;
 }
 
 input, textarea {
-    width: 100%;
     padding: 8px;
     margin-bottom: 16px;
     box-sizing: border-box;
@@ -56,37 +69,146 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
+:root {
+    /* Adjustments for FAQ section styling */
+    --faq-box-max-width: 1500px; /* Maximum width for the FAQ container */
+    --faq-box-padding: 20px; /* Padding inside the FAQ container */
+    --faq-item-bg-color: #A499B3; /* Background color for accordion items */
+    --faq-header-bg-color: #A499B3 ; /* Background color for accordion headers and buttons */
+    --faq-body-bg-color: #ffffff ; /* Background color for accordion body */
+    --faq-text-color: #000; /* Text color for the FAQ content */
+    --faq-border-radius: 5px; /* Border radius for accordion items */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    
+}
 
-
-.customer-reviews-section {
-    text-align: center;
-    background-color: #f4f4f4;
-    padding: 20px;
+#Faq .container {
+    border-color: #000;
+    max-width: var(--faq-box-max-width);
+    margin: auto;
+    padding: var(--faq-box-padding);
+    background-color:  #A499B3;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+}
+
+#Faq h2 {
+    border-color: #000;
+    color: var(--faq-text-color);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.accordion-item {
+    border-color: #000 !important;
+    background-color: var(--faq-item-bg-color);
+    border: 1px solid #000;
+    border-radius: var(--faq-border-radius);
+    margin-bottom: 10px;
+}
+
+.accordion-header,
+.accordion-button,
+.accordion-button:not(.collapsed),
+.accordion-button:focus {
+    background-color: var(--faq-header-bg-color);
+    color: var(--faq-text-color);
+    border-color: #000;
+}
+
+.accordion-button {
+    font-weight: bold;
+    border-color: #000;
+}
+
+.accordion-button:focus {
+    box-shadow: none; /* Removes focus outline for a cleaner look */
+    border-color: #000;
+}
+
+.accordion-body {
+    background-color: var(--faq-body-bg-color);
+    color: var(--faq-text-color);
+    border-color: #000;
+}
+.contact-container {
+    background-color: #534B62; /* Changed to brown */
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    justify-content: center; /* Centers the boxes horizontally */
+    gap: 20px; /* Specifies the gap between the boxes */
+    max-width: auto;
+    margin: auto;
+    padding: 20px; /* Added padding around the inside of the container */
+    box-sizing: border-box; 
+    /* Ensures padding is included in the width calculation */
+}
+.p-4{
+   
+    background-color: #534B62;
 }
 
 .customer-reviews {
+    background-color: #A499B3; /* Changed to black */
     display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    text-align: center;
+    border-radius: 8px;
 }
 
-.review-box {
-    width: 30%;
-    box-sizing: border-box;
-    padding: 20px;
-    background-color: #fff;
+
+
+.row {
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to stack on smaller screens */
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background-color: yellow; /* Background color of the cards changed to yellow */
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+    flex: 0 1 calc(33.333% - 20px);
+    box-sizing: border-box;
     text-align: center;
 }
 
-.review-box img {
-    width: 80px;
-    height: 80px;
+.card img {
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .contact-form, .contact-info {
+        flex: 1 1 100%; /* Makes form and info stack on smaller screens */
+    }
+    
+    .card {
+        flex: 0 1 calc(50% - 20px); /* Adjusts cards to take 50% of the container on medium screens */
+    }
+}
+
+@media (max-width: 576px) {
+    h1 {
+        font-size: 2rem; /* Adjusts font size for very small screens */
+    }
+    
+    .card {
+        flex: 0 1 100%; /* Stacks cards vertically on small screens */
+    }
 }
