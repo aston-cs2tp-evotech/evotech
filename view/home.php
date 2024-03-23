@@ -69,8 +69,10 @@ foreach ($categories as $category) {
         <div class="container">
             <div class="d-sm-flex allign-items-center justify-content-between">
                 <div>
+
+
                     <h1>evotech; Evolving your tech</h1>
-                    <h1 >
+                    <h1>
                         Shop the latest technology at evotech;
                     </h1>
                     
@@ -82,7 +84,7 @@ foreach ($categories as $category) {
     
         <!--List of different categories-->
     
-    <section class="p-5">
+    <section class="py-5">
       <div class="card " id="largeCard">
         <div class="card-body">
           <?php for ($i = 0; $i < count($categories); $i += 3): ?>

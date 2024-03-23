@@ -127,21 +127,22 @@
 
 .card{
   background-color: #A499B3!important; /*Requires important to change color */
-
-
+  
+  
 }
 
   #largeCard{
-    width: 90%;
+    width: 70vw;
+    padding-left: 20px;
     margin-left: auto;
     margin-right: auto;
     background-color: #A499B3;
     border-radius: 15px;
 }
 
-
 .largeCard .card {
     margin: 0;
+    
 }
 
 hr {
@@ -160,4 +161,73 @@ hr {
 
 footer{
   width: 100%;
+}
+
+
+
+@media (max-width: 768px) {
+
+  #largeCard {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card-container .Components-text {
+    font-size: 25px !important;
+  }
+
+  .card-container .Cases-text {
+    font-size: 25px !important;
+  }
+  .card-container .CPUs-text {
+    font-size: 25px !important;
+  
+  }
+  
+  .card-container .Memory-text {
+    font-size: 25px !important;
+  }
+
+  .card-container .Cards-text {
+    font-size: 25px !important;
+  }
+  
+  .card-container .Storage-text {
+    font-size: 25px !important;
+  
+  }
+
+  .card-container .Components-card-img-top {
+    width: 160px;
+   
+  }
+  
+  .card-container .CPUs-card-img-top {
+    width: 160px;
+     
+  }
+
+  .card-container .Cards-card-img-top {
+    width: 165px;
+     
+  }
+  
+  
+  .card-container .Cases-card-img-top {
+    width: 150px;
+   
+  }
+  
+  
+  .card-container .Memory-card-img-top {
+    width: 200px ;
+    
+  }
+  
+  
+  .card-container .Storage-card-img-top {
+    width: 200px;
+  }
+
+  
 }
