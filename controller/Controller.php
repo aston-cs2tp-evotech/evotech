@@ -19,6 +19,9 @@
 /**
  * @var Customer Global variable to store customer info (username, address etc)
  */
+
+use function PHPUnit\Framework\isNull;
+
 global $userInfo;
 
 /**
@@ -759,6 +762,7 @@ function GetAllOrderStatuses() {
  *  @return Order|null Order with all required info, or null if failed
  */ 
 function CreateSafeOrder($details) {
+    echo "Creating safe order";
     global $Order;
     $badOrder = false;
     $keys = array('OrderID', 'CustomerID', 'TotalAmount', 'OrderStatusID', 'CheckedOutAt','CreatedAt', 'UpdatedAt');
@@ -995,9 +999,14 @@ function GetCustomerBasket() {
     if (!CheckLoggedIn()) {
         return false;
     }
-
+    
     // Retrieve first (should be only) order with status "basket"
-    $basket = CreateSafeOrder($Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0]);
+    $basketOrders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
+    if ($basketOrders == null) {
+        return false;
+    }
+    $basketOrder = $basketOrders[0];
+    $basket = CreateSafeOrder($basketOrder);
     // Check if any orders are found
     if (is_null($basket)) {
         return false;
