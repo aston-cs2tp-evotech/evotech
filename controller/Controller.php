@@ -20,7 +20,6 @@
  * @var Customer Global variable to store customer info (username, address etc)
  */
 
-use function PHPUnit\Framework\isNull;
 
 global $userInfo;
 
