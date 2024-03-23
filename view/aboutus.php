@@ -22,8 +22,15 @@ if (isset($userInfo)) {
     <link rel="stylesheet" href="/view/css/aboutus.css">
     
 </head>
+
+<nav>
+    <?php 
+    $currentPage = "aboutus";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
+
 <body>
-  <?php include __DIR__ . '/nav.php'?>
 
   <section class="bg-success p-5  py-4">
 
@@ -36,11 +43,11 @@ if (isset($userInfo)) {
     <div class="container">
         <!-- <img src="" alt=""> -->
       
-        <h2>Our Story, the Evotech Effect</h2>
-        <p>Evotech began after our team struggled to find the best technology components and accessories to help our daily problems. That's why we made Evotech, an e-commerce store with a wide range of products chosen by our team, and a community like no other.</p>
+        <h2>Our Story, the evotech; Effect</h2>
+        <p>evotech; began after our team struggled to find the best technology components and accessories to help our daily problems. That's why we made evotech;, an e-commerce store with a wide range of products chosen by our team, and a community like no other.</p>
 
         <h2>Our Team/Contributors</h2>
-        <p>We have the best engineers, designers and product specialists in our team. That's what helps us stay a cut above the rest in selecting and providing the best technology to help you work hard and play harder. Our team regularly reviews products we use on a daily basis, and updates these to Evotech. For any further questions about our opinions on products or Evotech as a collective, contact us below.</p>
+        <p>We have the best engineers, designers and product specialists in our team. That's what helps us stay a cut above the rest in selecting and providing the best technology to help you work hard and play harder. Our team regularly reviews products we use on a daily basis, and updates these to evotech;. For any further questions about our opinions on products or evotech; as a collective, contact us below.</p>
         <div class="row">
             <div class="column">
               <div class="card">
@@ -74,7 +81,7 @@ if (isset($userInfo)) {
                 <div class="container">
                   <h2>Tom</h2>
                   <p class="title">Architect Engineer</p>
-                  <p>Running CAD/CAM software is resource intensive, and a lot of my working time. That's why Evotech exists, to improve efficiency and ergonomics at work.</p>
+                  <p>Running CAD/CAM software is resource intensive, and a lot of my working time. That's why evotech; exists, to improve efficiency and ergonomics at work.</p>
                   <p>tom@evotech.com</p>
                   <p><button class="button">Contact</button></p>
                 </div>
@@ -82,7 +89,7 @@ if (isset($userInfo)) {
             </div>
           </div>
         <h2>Get In Touch</h2>
-        <p>If you have any questions or concerns, <a href="contactpage">contact us</a>. Evotech is for Everyone.</p>
+        <p>If you have any questions or concerns, <a href="contactpage">contact us</a>. evotech; is for Everyone.</p>
     </div>
 
     <footer>

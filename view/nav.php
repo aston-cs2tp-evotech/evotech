@@ -10,7 +10,12 @@
     <link rel="stylesheet" type="text/css" href="/view/css/nav.css">
     <title>EvoTech</title>
     <ion-icon name="desktop-outline"></ion-icon>
-
+    <?php
+    // Check if current page is set, if not set it to home
+    if (!isset($currentPage)) {
+        $currentPage = "home";
+    }
+    ?>
 
 </head>
 
@@ -21,26 +26,26 @@
             <div class="offcanvas offcanvas-dark bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color:white">Evotech</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel" style="color:white">evotech;</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="home">Home</a>
+                            <a class="nav-link <?php if ($currentPage == "home") {echo "active";}?> aria-current="page" href="home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="aboutus">About</a>
+                            <a class="nav-link <?php if ($currentPage == "aboutus") {echo "active";}?>" href="aboutus">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="products">Products</a>
+                            <a class="nav-link <?php if ($currentPage == "products") {echo "active";}?>" href="products">Products</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contactpage">Contact</a>
+                            <a class="nav-link <?php if ($currentPage == "contactpage") {echo "active";}?>" href="contactpage">Contact</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="basket">
-                                <i class="bi bi-basket">
+                            <a class="nav-link <?php if ($currentPage == "basket") {echo "active";}?>" href="basket">
+                                <i class="nav-link bi bi-basket">
                                     Basket
                                 </i>
                             </a>

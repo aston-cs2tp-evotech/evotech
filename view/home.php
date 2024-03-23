@@ -49,7 +49,10 @@ foreach ($categories as $category) {
 </head>
 
 <nav>
-    <?php include __DIR__ . '/nav.php'?>
+    <?php 
+    $currentPage = "home";
+    include __DIR__ . '/nav.php';
+    ?>
 </nav>
 
 <body>
@@ -66,9 +69,11 @@ foreach ($categories as $category) {
         <div class="container">
             <div class="d-sm-flex allign-items-center justify-content-between">
                 <div>
-                    <h1>Evotech; Slogan</h1>
-                    <h1 >
-                        Shop the latest technology at evotech
+
+
+                    <h1>evotech; Evolving your tech</h1>
+                    <h1>
+                        Shop the latest technology at evotech;
                     </h1>
                     
                 </div>
@@ -79,7 +84,7 @@ foreach ($categories as $category) {
     
         <!--List of different categories-->
     
-    <section class="p-5">
+    <section class="py-5">
       <div class="card " id="largeCard">
         <div class="card-body">
           <?php for ($i = 0; $i < count($categories); $i += 3): ?>
@@ -117,19 +122,19 @@ foreach ($categories as $category) {
       <hr>
       <section id="statements">
       <h1>
-      Evotech: Making hardware accessible to all <br> users, prioritising inclusivity in technology solutions
+      evotech : Making hardware accessible to all <br> users, prioritising inclusivity in technology solutions
         <div class="container p-3">
             <div class="row justify-content-between">
               <div class=" col-sm-4">
               <br>  
               <h2>
-                Evotech: Guiding hardware needs, with online shopping and support services.
+                evotech : Guiding hardware needs, with online shopping and support services.
               </h2> 
               </div>
               <div class="col-sm-6">
               <br>  
-              <h3>For further details on Evotech and its wide range of products, simply click the link below </h3>
-                <a id="LearnMore-Link" href="aboutus">Learn more about evotech <i class="bi bi-arrow-right" style="color: white;"></i>
+              <h3>For further details on evotech; and its wide range of products, simply click the link below </h3>
+                <a id="LearnMore-Link" href="aboutus">Learn more about evotech; <i class="bi bi-arrow-right" style="color: white;"></i>
                 <hr>
                 </a>
               </div>

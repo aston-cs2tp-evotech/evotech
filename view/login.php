@@ -9,6 +9,11 @@ if (isset($_SESSION['uid'])) {
     exit();
 }
 
+if (isset($_SESSION["loginMessage"])) {
+    $loginMessage = $_SESSION["loginMessage"];
+    unset($_SESSION["loginMessage"]);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +53,10 @@ if (isset($_SESSION['uid'])) {
             <?php
             // Check if loginResult is False
             if (isset($loginResult) && $loginResult === False) {
-                echo "<div class='alert alert-danger'>Incorrect username or password</div>";
+                $loginMessage = "Invalid username or password";
+            }
+            if (isset($loginMessage) && $loginMessage !== "") {
+                echo "<div class='alert alert-danger'>$loginMessage</div>";
             }
             ?>
 

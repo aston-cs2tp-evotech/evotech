@@ -199,6 +199,10 @@ switch ($requestPath) {
         handleAPIRequest('revokeToken');
         break;
 
+    case '/api/addToken':
+        handleAPIRequest('addToken');
+        break;
+
     default:
         handle404Request();
         break;
@@ -436,7 +440,8 @@ function handleUpdateBasketRequest() {
 */
 function handleBasketPageRequest(){
     if (!isset($_SESSION['uid'])){
-        header("Location:/");
+        $_SESSION['loginMessage'] = "You must be logged in to view your basket";
+        header("Location:/login");
     } else{
         require __DIR__ . '/view/basket.php';
     }
@@ -657,6 +662,10 @@ function handleAPIRequest($path) {
 
         case 'revokeToken':
             require __DIR__ . '/api/revokeToken.php';
+            break;
+        
+        case 'addToken':
+            require __DIR__ . '/api/addToken.php';
             break;
 
         default:

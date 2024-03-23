@@ -233,6 +233,25 @@ class AdminModel {
 
         return $statement->execute();
     }
+
+    /**
+     * Get an admin by a token associated with them
+     * 
+     * @param string $token the token
+     * @return array|null The admin associated with the token, or null if not found.
+     */
+    public function getAdminByToken($token) {
+        $query = "SELECT * FROM `APITokens` WHERE `Token` = :token";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':token', $token, PDO::PARAM_STR);
+
+        if ($statement->execute()) {
+            $tk = $statement->fetch(PDO::FETCH_ASSOC);
+            return $tk ? $this->getAdminByUID($tk['AdminID']) : null;
+        } else {
+            return null;
+        }
+    }
 }
 
 class Admin {

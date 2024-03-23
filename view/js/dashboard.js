@@ -29,7 +29,7 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
   }
 
   // Add 'active' class to the clicked navigation link except for if the page is an edit page
-  if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin" && pageId !== "addAdmin") {
+  if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin" && pageId !== "addAdmin" && pageId !== "addAPIToken") {
     var clickedNavLink = document.querySelector('a[href="#"][onclick="showPage(\'' + pageId + '\')"]');
     clickedNavLink.classList.add("active");
 
@@ -440,6 +440,80 @@ $("#editAdminForm").submit(function(e) {
       editAdminMessage.style.display = "block";
       editAdminMessage.classList.add("alert-danger", "alert-dismissible");
       showPage("admins");
+    }
+  });
+
+});
+
+// Function to revoke an API token asynchronously
+function revokeAPIToken(removalToken) {
+  $.ajax({
+    url: "/api/revokeToken",
+    method: "POST",
+    data: {
+      removalToken: removalToken,
+      Token : adminToken
+    },
+    success: function(response) {
+      // Show success message
+      var revokeAPITokenMessage = document.getElementById("apiTokenUpdate");
+      revokeAPITokenMessage.innerHTML = "API token revoked successfully";
+      revokeAPITokenMessage.style.display = "block";
+      revokeAPITokenMessage.classList.add("alert-success", "alert-dismissible");
+
+      // Refresh the page to show the updated table
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var revokeAPITokenMessage = document.getElementById("apiTokenUpdate");
+      revokeAPITokenMessage.innerHTML = "Error " + error + ": " + xhr.responseText;
+      revokeAPITokenMessage.style.display = "block";
+      revokeAPITokenMessage.classList.add("alert-danger", "alert-dismissible");
+    }
+  });
+}
+
+// Function to add an API token asynchronously
+
+$("#addAPITokenForm").submit(function(e) {
+  e.preventDefault();
+
+  // Get form data
+  var tokenName = $("#tokenName").val();
+  var tokenExpiresAt = $("#tokenExpiresAt").val();
+
+  // Format the date to be a string in the format YYYY-MM-DD hh:mm:ss
+  var date = new Date(tokenExpiresAt);
+  var formattedDate = date.toISOString().slice(0, 19).replace('T', ' ');
+
+  // Make AJAX request\
+  $.ajax({
+    url: "/api/addToken",
+    method: "POST",
+    data: {
+      TokenName: tokenName,
+      TokenExpiry: formattedDate,
+      Token : adminToken
+    },
+    success: function(response) {
+      // Show success message
+      var addAPITokenMessage = document.getElementById("apiTokenUpdate");
+      addAPITokenMessage.innerHTML = "API token added successfully";
+      addAPITokenMessage.style.display = "block";
+      addAPITokenMessage.classList.add("alert-success", "alert-dismissible");
+
+      // Refresh the page to show the updated table
+      location.reload();
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var addAPITokenMessage = document.getElementById("apiTokenUpdate");
+      addAPITokenMessage.innerHTML = "Error " + error + ": " + xhr.responseText;
+      addAPITokenMessage.style.display = "block";
+      addAPITokenMessage.classList.add("alert-danger", "alert-dismissible");
+
+      showPage("apiTokens");
     }
   });
 
