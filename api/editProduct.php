@@ -1,12 +1,22 @@
 <?php
 
+$message = "";
+$keys = array("productID", "productName", "productPrice", "productStock", "productDescription", "productCategory");
+
+foreach ($keys as $key) {
+    if (!isset($_POST[$key])) {
+        $message = $key . " not specified";
+        echo $message;
+        exit();
+    }
+}
+
 $productID = $_POST['productID'];
 $productName = $_POST["productName"];
 $productPrice = $_POST["productPrice"];
 $productStock = $_POST["productStock"];
 $productDescription = $_POST["productDescription"];
 $productCategory = $_POST["productCategory"];
-$message = "";
 
 // Check if product exists
 

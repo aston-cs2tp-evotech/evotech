@@ -1,5 +1,11 @@
 <?php
 
+if (!isset($_POST["productID"])) {
+    http_response_code(418);
+    echo json_encode(array("message" => "productID not specified"));
+    exit();
+}
+
 $productID = $_POST['productID'];
 
 // Get product details from database
