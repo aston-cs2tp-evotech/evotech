@@ -11,11 +11,12 @@ body {
 }
 
 header {
-    background-color: #D0BCD5;
+    background-color: #1B1725;;
     color: #fff;
     text-align: center;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     padding: 1em;
+    border-radius: 8px;
     
 }
 
@@ -44,10 +45,13 @@ h2 {
     max-height: 200px; 
     object-fit: scale-down;
     border-radius: 8px;
+    
 }
 
 .card-body {
     padding: 1.25rem;
+    text-align: right;
+    margin-right: 5px;
 }
 
 .card-title {
@@ -69,13 +73,20 @@ h2 {
 }
 
 .btn-danger {
-    background-color: #dc3545;
+    background-color: #A00000!important;
+    /*background-color: #880808 !important;*/
     color: #fff;
+    border: #1b1725!important; ;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
+.btn-primary, .btn-primary:active {
+    background-color: #1b1725 !important;
+    color: white !important;
+    border: #1b1725 !important;
+}
+
+.btn-primary:hover {
+    background-color: #534B62 !important;
 }
 
 .btn-success {
