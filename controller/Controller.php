@@ -151,13 +151,14 @@ function AttemptLogin($user, $pass) {
     if (!CheckExists($user) || !(gettype($user) == "string")) return false;
     if (!CheckExists($pass) || !(gettype($pass) == "string")) return false;
     //attempts to fetch details via username
-    $details = CreateSafeCustomer($Customer->getCustomerByUsername($user));
-    if (!CheckExists($details)) {
+    $customerArray = $Customer->getCustomerByUsername($user);
+    if (!CheckExists($customerArray)) {
         //falls back to fetching via email
         if (!filter_var($user, FILTER_VALIDATE_EMAIL)) return false;
-        $details = CreateSafeCustomer($Customer->getCustomerByEmail($user));
-        if (!CheckExists($details)) return false;
+        $customerArray = $Customer->getCustomerByEmail($user);
+        if (!CheckExists($customerArray)) return false;
     }
+    $details = CreateSafeCustomer($customerArray);
     //checks passwords match
     if (password_verify($pass, $details->getPasswordHash())) {
         $_SESSION["uid"] = $details->getUID();

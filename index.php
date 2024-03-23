@@ -574,8 +574,8 @@ function handleAdminLogin() {
         else {
             $result = AttemptAdminLogin($_POST["username"], $_POST["password"]);
             if (empty($result)) header("Location:/admin");
-            //TODO show error message on adminLogin page
-            else header("Location:/adminLogin");
+            $_SESSION["loginMessage"] = "Your username or password is incorrect";
+            require __DIR__ . '/view/AdminLogin.php';
         }
     }
 }
@@ -586,7 +586,8 @@ function handleAdminLogin() {
 function handleAdminLogout() {
     unset($_SESSION);
     session_destroy();
-    header("Location:/admin");
+    $_SESSION['loginMessage'] = "You have been logged out";
+    header("Location:/adminLogin");
 }
 
 /**
