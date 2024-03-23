@@ -1,5 +1,13 @@
 <?php
 
+//  --------------------------------------------------
+//
+//
+//              CUSTOMER FUNCTIONS
+//
+//
+//  --------------------------------------------------
+
 //TODO: add function to check contact form data
 
 // ---------------------------------------------
@@ -11,6 +19,8 @@
 /**
  * @var Customer Global variable to store customer info (username, address etc)
  */
+
+
 global $userInfo;
 
 /**
@@ -34,6 +44,11 @@ $Product = new ProductModel($pdo);
 $Order = new OrdersModel($pdo);
 
 /**
+ * @var AdminModel The admin model for interacting with the database
+ */
+$Admin = new AdminModel($pdo);
+
+/**
  * Check if a variable is safe to evaluate
  * @param mixed $var Variable to check
  * @return boolean True if $var is safe and exists, otherwise false
@@ -43,13 +58,29 @@ function CheckExists($var) {
 }
 
 /**
+ * Converts html chars to prevent html injection (supports up to 1d arrays)
+ * @param $params Any param to escape html injection 
+ */
+function escapeHTML(&...$params) {
+    foreach ($params as &$param) {
+        if (!is_array($param) && (gettype($param) == "string")) $param = htmlspecialchars($param);
+        else if (!is_array($param)) continue;
+        else {
+            foreach ($param as &$p) { 
+                if (gettype($p) == "string") $p = htmlspecialchars($p);
+            }
+        }
+    }
+}
+
+/**
  * Iterates through details from db to ensure every key exists for the Customer object
  * @param array $details Details array from the database
  * @return Customer|null A customer object with all details, or null if any didn't exist 
  */
 function CreateSafeCustomer($details) {
     $badCustomer = false;
-    $keys = array('CustomerID', 'Email', 'Username', 'CustomerAddress', 'PasswordHash');
+    $keys = array('CustomerID', 'Email', 'Username', 'CustomerAddress', 'PasswordHash', 'CreatedAt', 'UpdatedAt');
 
     //check every key
     foreach ($details as $key => $detail) {
@@ -57,10 +88,31 @@ function CreateSafeCustomer($details) {
         else unset($keys[array_search($key, $keys)]); //removes key, to check all necessary fields exist
     }
 
-    echo count($keys);
     //create customer
     if (!$badCustomer && empty($keys)) {
         return new Customer($details);
+    }
+    else return null;
+}
+
+/**
+ * Iterates through details from db to ensure every key exists for the Admin object
+ * @param array $details Details array from the database
+ * @return Admin|null An admin object with all details, or null if any didn't exist 
+ */
+function CreateSafeAdmin($details) {
+    $badAdmin = false;
+    $keys = array('AdminID', 'Username', 'PasswordHash', 'CreatedAt', 'UpdatedAt');
+
+    //check every key
+    foreach ($details as $key => $detail) {
+        if (!in_array($key, $keys)) $badAdmin = true;
+        else unset($keys[array_search($key, $keys)]); //removes key, to check all necessary fields exist
+    }
+
+    //create admin
+    if (!$badAdmin && empty($keys)) {
+        return new Admin($details);
     }
     else return null;
 }
@@ -95,6 +147,7 @@ function CheckLoggedIn() {
  */
 function AttemptLogin($user, $pass) {
     global $Customer;
+    escapeHTML($user, $pass);
     if (!CheckExists($user) || !(gettype($user) == "string")) return false;
     if (!CheckExists($pass) || !(gettype($pass) == "string")) return false;
     //attempts to fetch details via username
@@ -122,6 +175,7 @@ function AttemptLogin($user, $pass) {
  */
 function RegisterUser($details) {
     global $Customer;
+    escapeHTML($details);
     if (!CheckExists($details["email"]) || !filter_var($details["email"], FILTER_VALIDATE_EMAIL)) return "Invalid Email";
     if (!CheckExists($details["username"]) || !preg_match("/[a-zA-Z0-9]+/", $details["username"])) return "Invalid Username";
     if (!CheckExists($details["customer_address"]) || !preg_match("/[a-zA-Z0-9.,]+/", $details["customer_address"])) return "Invalid address";
@@ -139,12 +193,42 @@ function RegisterUser($details) {
 }
 
 /**
+ * Get count of all customers in the database
+ * 
+ * @return int|boolean The count of customers if success, otherwise false
+ */
+function GetCustomerCount() {
+    global $Customer;
+    $count = $Customer->getCustomerCount();
+    if (!is_null($count)) return $count;
+    else return false;
+}
+
+/**
+ * Get all customers in the database
+ * 
+ * @return array|boolean Array of customers if success, otherwise false
+ */
+function GetAllCustomers() {
+    global $Customer;
+    $customers = $Customer->getAllCustomers();
+    if (!$customers) return false;
+    foreach ($customers as &$customer) {
+        $cust = CreateSafeCustomer($customer);
+        if ($cust == null) return false;
+        $customer = $cust;
+    }
+    return $customers;
+}
+
+/**
  * Updates a specified field in the database for a customer 
  * @param array $details Associative array containing field to change, new value and other relevant info
  * @return string Empty if succeeded, or a string to indicate where it failed
  */
 function UpdateCustomerDetail($details) {
     global $Customer;
+    escapeHTML($details);
     $details["field"] = strtolower($details["field"]);
     //preliminary checks
     if (!CheckLoggedIn()) return "Not logged in";
@@ -200,6 +284,20 @@ function UpdateCustomerDetail($details) {
     }
 }
 
+/** 
+ * Gets customer by their ID
+ * 
+ * @param int $customerID The ID of the customer
+ * @return Customer|boolean The customer if success, otherwise false
+ */
+function GetCustomerByID($customerID) {
+    global $Customer;
+    escapeHTML($customerID);
+    $customer = CreateSafeCustomer($Customer->getCustomerByUID($customerID));
+    if ($customer) return $customer;
+    else return false;
+}
+
 /**
  * Unsets both global arrays and destroys the session
  */
@@ -224,7 +322,7 @@ function LogOut() {
  */
 function CreateSafeProduct($details) {
     $badProd = false;
-    $keys = array('ProductID', 'Name', 'Price', 'Stock', 'Description', 'CategoryID');
+    $keys = array('ProductID', 'Name', 'Price', 'Stock', 'Description', 'CategoryID', 'CreatedAt', 'UpdatedAt');
 
     //check each required key
     foreach ($details as $key => $detail) {
@@ -280,6 +378,13 @@ function AddProductImagesToProduct(&$product) {
  */
 function GetProductByID($productID) {
     global $Product;
+    escapeHTML($productID);
+    try {
+        // convert to int
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return false;
+    }
     if (!checkExists($productID) || !(gettype($productID) == "integer")) return false;
     $prod = CreateSafeProduct($Product->getProductByID($productID));
     if ($prod == null) return false;
@@ -325,6 +430,18 @@ function GetAllProducts() {
 }
 
 /**
+ * Get count of all products in the database
+ * 
+ * @return int|boolean The count of products if success, otherwise false
+ */
+function GetProductCount() {
+    global $Product;
+    $count = $Product->getProductCount();
+    if (!is_null($count)) return $count;
+    else return false;
+}
+
+/**
  * Gets every product in the database where stock > 0
  * @return array|boolean 2d array if succeeded, otherwise false
  */
@@ -332,6 +449,16 @@ function GetAllStockedProducts() {
     $products = GetAllProducts();
     if (!FilterStockedProducts($products)) return false;
     else return $products;
+}
+/**
+ * Gets all categories from the database
+ * @return array|boolean Array of categories if succeeded, otherwise false
+ */
+function GetAllCategories() {
+    global $Product;
+    $categories = $Product->getCategories();
+    if (!$categories) return false;
+    return $categories;
 }
 
 /**
@@ -404,6 +531,7 @@ function AddCategoriesToProducts(&$products) {
  */
 function GetAllByCategory($category){
     global $Product;
+    escapeHTML($category);
     //Input validation
     $categories = array("Components", "CPUs", "Graphics Cards", "Cases", "Storage", "Memory");
     if (!CheckExists($category) || !(gettype($category) == "string") || !(in_array($category, $categories))) {
@@ -443,6 +571,7 @@ function GetAllByCategory($category){
  * @return array|string Array of products succeeded, otherwise string for failure
  */
 function GetAllStockedByCategory($category) {
+    escapeHTML($category);
     $products = GetAllByCategory($category);
     $err = FilterStockedProducts($products);
     if (!$err) { 
@@ -490,7 +619,7 @@ function RemoveProductFromArrayByID(&$products, $productID) {
 */
 function GetRecommendedProducts($productID) {
    global $Product;
-   
+   escapeHTML($productID);
    // ID check
    if (!CheckExists($productID)) {
        return "Invalid productID";
@@ -571,7 +700,7 @@ function CreateSafeOrderLine($details) {
     global $Product;
     $badOrderLine = false;
     //only keys passed from db when fetching orderLines
-    $keys = array('ProductID', 'Quantity', 'OrderID');
+    $keys = array('ProductID', 'Quantity', 'OrderID', 'CreatedAt', 'UpdatedAt');
 
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badOrderLine = true;
@@ -603,7 +732,6 @@ function CreateMultipleSafeOrderLines($details) {
     $orderLines = array();
 
     if (is_null($details)) return null;
-    
     foreach ($details as $detail) {
         $orderLine = CreateSafeOrderLine($detail);
         if (!is_null($orderLine)) array_push($orderLines, $orderLine);
@@ -617,14 +745,26 @@ function CreateMultipleSafeOrderLines($details) {
 }
 
 /**
+ * Get all order statuses
+ * @return array|boolean Array of order statuses if success, otherwise false
+ */
+function GetAllOrderStatuses() {
+    global $Order;
+    $statuses = $Order->getAllOrderStatuses();
+    if (is_null($statuses)) return false;
+    return $statuses;
+}
+
+/**
  * Iterates through every detail from db to ensure every needed key exists
  *  @param array $details the array from the db query
  *  @return Order|null Order with all required info, or null if failed
  */ 
 function CreateSafeOrder($details) {
+    echo "Creating safe order";
     global $Order;
     $badOrder = false;
-    $keys = array('OrderID', 'CustomerID', 'TotalAmount', 'OrderStatusID');
+    $keys = array('OrderID', 'CustomerID', 'TotalAmount', 'OrderStatusID', 'CheckedOutAt','CreatedAt', 'UpdatedAt');
 
     foreach ($details as $key => $detail) {
         if (!in_array($key, $keys)) $badOrder = true;
@@ -675,6 +815,7 @@ function CreateMultipleSafeOrders($details) {
  */
 function ProductAndQuantityCheck($productID, $quantity){
     global $Product;
+    escapeHTML($productID, $quantity);
     //check legitimate quantity
     if (!isset($quantity) || !(gettype($quantity) == "integer") || !($quantity >= 0)) return false;
     //check PID is int (no SQL injection allowed here sorry)
@@ -696,6 +837,7 @@ function ProductAndQuantityCheck($productID, $quantity){
  */
 function AddProductToBasket($productID, $quantity) {
     global $Order;
+    escapeHTML($productID, $quantity);
 
     // Check login
     if (!CheckLoggedIn()) {
@@ -761,6 +903,7 @@ function AddProductToBasket($productID, $quantity) {
  */
 function ModifyProductQuantityInBasket($productID, $quantity) {
     global $Order;
+    escapeHTML($productID, $quantity);
     //check login
     if (!CheckLoggedIn()) return false;
     //init array for product
@@ -804,7 +947,30 @@ function CheckoutBasket() {
     $basket = CreateSafeOrder($Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0]);
     if (is_null($basket)) return false;
 
-    return $Order->updateOrderDetails($basket->getOrderID(), "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    $orderID = $basket->getOrderID();
+    $basket = GetOrderByID($orderID);
+    // For each orderLine, reduce the stock of the product by the quantity in the orderLine
+    $orderLines = $basket -> getOrderLines();
+    foreach ($orderLines as $orderLine) {
+        $productID = $orderLine -> getProductID();
+        $quantity = $orderLine -> getQuantity();
+        $product = GetProductByID($productID);
+        $updatedStock = $product -> getStock() - $quantity;
+        if ($product -> getStock() < $quantity) {
+            return false;
+        }
+        $result = UpdateProductDetail($productID, "Stock", $updatedStock);
+        if ($result == 0) {
+            return false;
+        }
+    }
+    $result1 = $Order->updateOrderDetails($basket->getOrderID(), "OrderStatusID", $Order->getOrderStatusIDByName("ready"));
+    $result2 = $Order->updateOrderDetails($basket->getOrderID(), "CheckedOutAt", date("Y-m-d H:i:s"));
+    if ($result1 && $result2) {
+        return true;
+    }
+    return false;
+
 }
 
 /**
@@ -832,9 +998,14 @@ function GetCustomerBasket() {
     if (!CheckLoggedIn()) {
         return false;
     }
-
+    
     // Retrieve first (should be only) order with status "basket"
-    $basket = CreateSafeOrder($Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0]);
+    $basketOrders = $Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"]);
+    if ($basketOrders == null) {
+        return false;
+    }
+    $basketOrder = $basketOrders[0];
+    $basket = CreateSafeOrder($basketOrder);
     // Check if any orders are found
     if (is_null($basket)) {
         return false;
@@ -892,6 +1063,275 @@ function GetPreviousOrders() {
     return $orders;
 }
 
+//  --------------------------------------------------
+//
+//
+//              ADMIN FUNCTIONS
+//
+//
+//  --------------------------------------------------
+
+/**
+ * Check API Token validity & attempt to generate token if expired recently
+ * @param string $token API token
+ * @return string|boolean Token if valid, otherwise false
+ */
+function VerfiyToken($token) {
+    global $Admin;
+    escapeHTML($token);
+    //preliminary token checks
+    if (!(CheckExists($token)) || (!(gettype($token) == "string"))) return false;
+    $tk = $Admin->getTokenByID($token);
+    if (is_null($tk)) return false;
+
+    $tkDate = new DateTime($tk["ExpiresAt"]);
+
+    //check if token has expired
+    if ($tkDate < new DateTime()) {
+        //check token expired in the last 5 mins
+        if ($tkDate->add(new DateInterval("PT5M")) >= new DateTime()) {
+            //generate new token and delete old one
+            $newTk = GenerateToken($tk["AdminID"]);
+            $success = $Admin->deleteToken($tk["Token"]);
+
+            if ($success && (!empty($newTk)))  {
+                $_SESSION["adminToken"] = $newTk;
+                return $newTk;
+            }
+            else return false;
+        }
+        else return false;
+    } 
+    else return $token;
+}
+
+/**
+ * Retrieves the Admin object related to a token
+ * 
+ * @param string $token The token to check
+ * @return Admin|boolean Admin object if success, otherwise false
+ */
+function GetAdminByToken($token) {
+    global $Admin;
+    escapeHTML($token);
+    $tk = VerfiyToken($token);
+    if (!$tk) return false;
+
+    $admin = CreateSafeAdmin($Admin->getAdminByToken($tk));
+    if ($admin) return $admin;
+    else return false;
+}
+
+/**
+ * Create a token
+ * @param int $adminID The admin to associate to (defaults to $_SESSION["adminID"])
+ * @param DateTime $expiry The expiry time for the token (defaults to now+20mins)
+ * @param string $name The name for token access type
+ * @return string The token, or an empty string if failed
+ */
+function GenerateToken($adminID = null, $expiry=null, $name="ADMIN_DASHBOARD_ACCESS") {
+    global $Admin;
+    //assign current admin as adminID if not supplied
+    if (is_null($adminID)) {
+        if (!CheckAdminLoggedIn()) return "";
+        else $adminID = $_SESSION["adminUID"];
+    }
+    else {
+        //check adminID
+        try {
+            $adminID = (int) $adminID;
+        }
+        catch (Exception $e) {
+            return "";
+        }
+
+        $ad = $Admin->getAdminByUID($adminID);
+        if (is_null($ad)) return "";
+    }
+
+    //create DateTime and add 20 mins to it
+    if (is_null($expiry)) {
+        $expiry = new DateTime();
+        $expiry->add(new DateInterval("PT20M"));
+    }
+    else {
+        //check expiry is actually DateTime
+        try {
+            $expiry->add(new DateInterval("PT0M"));
+        }
+        catch (Exception $e) {
+            return "";
+        }
+    }
+    if (!(CheckExists($name)) || !(gettype($name) == "string")) return "";
+
+    $tk = $Admin->createToken($adminID, $expiry, $name);
+    if (is_null($tk)) return "";
+    else return $tk["Token"];
+}
+
+/**
+ * Checks all tokens, and deletes ones that have expired more than 5 mins ago
+ */
+function PruneTokens() {
+    global $Admin;
+    $tokens = $Admin->getAllTokens();
+    $currTime = new DateTime();
+    foreach ($tokens as $token) {
+        $tkTime = new DateTime($token["ExpiresAt"]);
+        $tkTime->add(new DateInterval("PT5M"));
+
+        if ($tkTime < $currTime) $Admin->deleteToken($token["Token"]);
+    }
+}
+
+/**
+ * Deletes token from database
+ * @param string $token The token to remove
+ * @return boolean True if succeeded, otherwise false
+ */
+function RevokeToken($token) {
+    global $Admin;
+    escapeHTML($token);
+
+    //check token is valid and exists
+    if (!(CheckExists($token)) or !(gettype($token) == "string")) return false;
+
+    $tk = $Admin->getTokenByID($token);
+    if (is_null($tk)) return false;
+
+    //delete token
+    $result = $Admin->deleteToken($tk["Token"]);
+
+    return $result;
+}
+
+/**
+ * Add an admin to the database
+ * 
+ * @param array $details Associative array containing key as field to update and value as new value
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function AddAdmin($details) {
+    global $Admin;
+    escapeHTML($details);
+    if (!CheckExists($details["Username"]) || !CheckExists($details["Password"])) return "Invalid request";
+    if (!preg_match("/[a-zA-Z0-9]+/", $details["Username"])) return "Invalid username";
+    if (strlen($details["Password"]) < 7) return "Password should be longer than 7 characters";
+    $details["Password_hash"] = password_hash($details["Password"], PASSWORD_DEFAULT);
+    $err = $Admin->addAdmin($details);
+    if (!$err) return "Error creating admin";
+    return "";
+}
+
+/**
+ * Get Admin by their ID
+ * 
+ * @param int $adminID The ID of the admin
+ */
+function GetAdminByID($adminID) {
+    global $Admin;
+    escapeHTML($adminID);
+    $admin = CreateSafeAdmin($Admin->getAdminByUID($adminID));
+    if ($admin) return $admin;
+    else return false;
+}
+
+/**
+ * Update the details of an admin by an admin
+ * 
+ * @param array $details Associative array containing key as field to update and value as new value
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function UpdateAdminByAdmin($details) {
+    global $Admin;
+    escapeHTML($details);
+    foreach ($details as $key => $value) {
+        if ($key == "AdminID") {
+            continue;
+        }
+        $err = $Admin->updateAdmin($details["AdminID"], $key, $value);
+        if (!$err) {
+            return "Error updating " . $key . " for admin " . $details["AdminID"];
+        }
+    }
+    return "";
+}
+
+/**
+ * Get all admins in the database
+ * 
+ * @return array|boolean Array of admins if success, otherwise false
+ */
+function GetAllAdmins() {
+    global $Admin;
+    $admins = $Admin->getAllAdmins();
+    
+    if (!$admins) return false;
+    foreach ($admins as &$admin) {
+        $adm = CreateSafeAdmin($admin);
+        if ($adm == null) return false;
+        $admin = $adm;
+    }
+    return $admins;
+}
+
+/**
+ * Get all api tokens in the database
+ * 
+ * @return array|boolean Array of tokens if success, otherwise false
+ */
+function GetAllTokens() {
+    global $Admin;
+    $tokens = $Admin->getAllTokens();
+    if (!$tokens) return false;
+    return $tokens;
+}
+
+
+/**
+ * Update Customer details by admin
+ * 
+ * @param array $details Associative array containing key as field to update and value as new value
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function UpdateCustomerByAdmin($details) {
+    global $Customer;
+    escapeHTML($details);
+    foreach ($details as $key => $value) {
+        if ($key == "CustomerID") {
+            continue;
+        }
+        $err = $Customer->updateCustomerDetail($details["CustomerID"], $key, $value);
+        if (!$err) {
+            return "Error updating " . $key . " for customer " . $details["CustomerID"];
+        }
+    }
+    return "";
+}
+
+/**
+ * Deletes a customer from the database by their ID if there are no orders associated with them
+ * 
+ * @param int $customerID The ID of the customer
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function DeleteCustomerByAdmin($customerID) {
+    global $Customer;
+    global $Order;
+    escapeHTML($customerID);
+    $orders = $Order->getAllOrdersByCustomerID($customerID);
+    if ($orders) {
+        return "Customer has orders associated with them";
+    }
+    $err = $Customer->deleteCustomer($customerID);
+    if (!$err) {
+        return "Error deleting customer";
+    }
+    return "";
+}
+
+
 /**
  * Retrieves all orders, with orderLines attached
  * @return array|boolean array of Order objects if success, otherwise false
@@ -905,7 +1345,7 @@ function GetAllOrders() {
 
     //add orderLines to each order
     foreach ($allOrders as &$order) {
-        $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderByID()));
+        $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderID()));
         if (is_null($orderLines)) return false;
         $err = AddOrderLinesToOrder($orderLines, $order);
         if (!$err) return false;
@@ -914,4 +1354,394 @@ function GetAllOrders() {
     return $allOrders;
 }
 
-?>
+/**
+ * Retrieves an order by orderID
+ * @param int $orderID The ID of the order
+ * @return Order|boolean Order object if success, otherwise false
+ */
+function GetOrderByID($orderID) {
+    global $Order;
+    escapeHTML($orderID);
+    // Retrieve the order by orderID
+    $order = CreateSafeOrder($Order->getOrderByID($orderID));
+    if (is_null($order)) {
+        return false;
+    }
+
+    // Retrieve order lines for the order
+    $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($order->getOrderID()));
+    if (is_null($orderLines)) {
+        return false;
+    }
+
+    // Format order lines
+    if (!AddOrderLinesToOrder($orderLines, $order)) {
+        return false;
+    }
+
+    return $order;
+}
+
+
+/**
+ * Updates the status of an order
+ * @param int $orderID The ID of the order
+ * @param int $newStatusID The new status ID of the order
+ * @return boolean True if succeeded, otherwise false
+ */
+function UpdateOrderStatus($orderID, $newStatusID) {
+    global $Order;
+    escapeHTML($orderID, $newStatusID);
+
+    // Update the status of the order
+    return $Order->updateOrderDetails($orderID, "OrderStatusID", $newStatusID);
+}
+
+
+/**
+ * Attempts to log in an admin with the supplied credentials, storing it in $_SESSION
+ * @param string $user Admin's username
+ * @param string $pass Admin's password
+ * @return string Empty if success, otherwise false
+ */
+function AttemptAdminLogin($user, $pass) {
+    global $Admin;
+    escapeHTML($user, $pass);
+    if (!CheckExists($user) || !(gettype($user) == "string")) return "Invalid Username";
+    if (!CheckExists($pass) || !(gettype($pass) == "string")) return "Invalid password";
+    //attempts to fetch details via username
+    $details = $Admin->getAdminByUsername($user);
+    if (is_null($details)) return "Incorrect password or username";
+    //checks passwords match
+    if (password_verify($pass, $details["PasswordHash"])) {
+        $_SESSION["adminUID"] = $details["AdminID"];
+        $_SESSION["adminName"] = $details["Username"];
+        //assign token
+        $token = $Admin->getTokensByAdmin($_SESSION["AdminUID"]);
+        if (is_null($token)) $_SESSION["adminToken"] = GenerateToken($_SESSION["AdminUID"]);
+        else $_SESSION["adminToken"] = $token[0]["Token"];
+        return "";
+    }
+    else return "Incorrect password or username";
+}
+/**
+ * Checks if an admin is logged in
+ * @return boolean True if logged in, otherwise false
+ */
+function CheckAdminLoggedIn() {
+    if (isset($_SESSION["adminUID"]) && !(is_null($_SESSION["adminUID"]))) return true;
+    else return false;
+}
+
+/**
+ * Updates the specified field of a product in db
+ * @param int $productID the ID of the product to update
+ * @param string $field the field to update
+ * @param mixed $value the value to change to
+ * @return string Empty if success, otherwise an err message
+ */
+function UpdateProductDetail($productID, $field, $value) {
+    global $Product;
+    escapeHTML($productID, $field, $value);
+    $fields = array("Name", "Price", "Stock", "Description", "CategoryID");
+
+    try {
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return "Invalid productID";
+    }
+    if (!CheckExists($productID)) return "Invalid productID";
+    if (!CheckExists($field) || !(gettype($field) == "string") || !(in_array($field, $fields)))  return "Invalid field";
+    if (!CheckExists($value)) return "Empty value";
+
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+
+    switch ($field){
+        case ("Name"):
+            if (!(gettype($value) == "string")) return "Invalid name";
+            $err = $Product->updateProductDetail($productID, 'Name', $value);
+            if (!$err) return "Error changing name";
+            else return "";
+
+        case ("Price"):
+            try {
+                $value = (double)$value;
+            } catch (Exception $e) {
+                return "Invalid price";
+            }
+            if (!(gettype($value) == "double")) return "Invalid price";
+            $err = $Product->updateProductDetail($productID, 'Price', $value);
+            if (!$err) return "Error updating price";
+            else return "";
+
+        case ("Stock"):
+            try {
+                $value = (int)$value;
+            } catch (Exception $e) {
+                return "Invalid stock";
+            }
+            if (!(gettype($value) == "integer")) return "Invalid stock";
+            $err = $Product->updateProductDetail($productID, 'Stock', $value);
+            if (!$err) return "Error updating stock";
+            return "";
+
+        case ("Description"):
+            if (!(gettype($value) == "string")) return "Invalid description";
+            $err = $Product->updateProductDetail($productID, 'Description', $value);
+            if (!$err) return "Error updating description";
+            else return "";
+
+        case ("CategoryID"):
+            try {
+                $value = (int)$value;
+            } catch (Exception $e) {
+                return "Invalid CategoryID";
+            }
+            if (!(gettype($value) == "integer")) return "Invalid CategoryID";
+            $cats = $Product->getCategories();
+            if (is_null($cats)) return "Database error";
+
+            $catFound = false;
+            foreach ($cats as $cat) {
+                if ($cat["CategoryID"] == $value) {
+                    $catFound = true;
+                    break;
+                }
+            }
+            if (!$catFound) return "Category does not exist";
+
+            $err = $Product->updateProductDetail($productID, 'CategoryID', $value);
+            if (!$err) return "Error updating category";
+            else return "";
+
+        default:
+            return "Invalid category";
+        }
+}
+
+/**
+ * Add a product to the database
+ * @param array $details array with all necessary info
+ * @return string empty if success, otherwise false
+ */
+function AddProduct($details) {
+    global $Product;
+    escapeHTML($details);
+    if (!(gettype($details) == "array")) return "Invalid details";
+    $fields = array('name', 'price', 'stock', 'description', 'categoryID');
+
+    //check each field and value
+    foreach ($details as $key => $detail) {
+        if (in_array($key, $fields)) unset($fields[array_search($key, $fields)]);
+        else return "Invalid data";
+
+        switch ($key) {
+            case "name":
+                if (!(gettype($detail) == "string")) return "Invalid name";
+                break;
+
+            case "price":
+                try {
+                    $detail = (int)$detail;
+                } catch (Exception $e) {
+                    return "Invalid price";
+                }
+                if (!(gettype($detail) == "integer")) return "Invalid price";
+                break;
+
+            case "stock":
+                try {
+                    $detail = (int)$detail;
+                } catch (Exception $e) {
+                    return "Invalid price";
+                }
+                if (!(gettype($detail) == "integer")) return "Invalid stock";
+                break;
+
+            case "description":
+                if (!(gettype($detail) == "string")) return "Invalid description";
+                break;
+
+            case "categoryID":
+                try {
+                    $detail = (int)$detail;
+                } catch (Exception $e) {
+                    return "Invalid price";
+                }
+                if (!(gettype($detail) == "integer")) return "Invalid categoryID";
+                $cats = $Product->getCategories();
+                if (is_null($cats)) return "Database error";
+                // Check if category exists
+                foreach ($cats as $cat) {
+                    if ($cat["CategoryID"] == $detail) {
+                        unset($cats[array_search($cat, $cats)]);
+                    }
+                }
+                break;
+
+            default:
+                return "Invalid field specified";
+        }
+    }
+
+    if (!empty($fields)) return "Not all required fields have been filled";
+
+    $err = $Product->addProduct($details);
+    if (is_null($err)) return "Database error";
+    else return $err['ProductID'];
+}
+
+/**
+ * Deletes specified customer from db only if no orders are associated with it
+ * 
+ * @param int $customerID the customer to delete
+ * @return string empty if success, otherwise false
+ */
+
+
+/**
+ * Deletes the specified product from db only if no orders are associated with it
+ * @param int $productID the product to delete
+ * @return string empty if success, otherwise false
+ */
+function DeleteProduct($productID) {
+    global $Product;
+    escapeHTML($productID);
+    try {
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return "Invalid productID";
+    }
+    $debug_msg = "";
+    
+    if (!(gettype($productID) == "integer")) return "Invalid productID";
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+
+    $isInOrder = false;
+    $orders = GetAllOrders();
+    // if no orders are associated with the product, delete it
+    foreach ($orders as $order) {
+        foreach ($order->getOrderLines() as $orderLine) {
+            if ($orderLine->getProductID() == $productID) {
+                $isInOrder = true;
+                break;
+            }
+        }
+    }
+    if ($isInOrder) return "Product is associated with an existing order. Remove it from all orders before deleting it.";
+
+    $err = $Product->deleteProduct($productID);
+
+    if (!$err) return $err;
+    else return "";
+}
+
+/** */
+
+/**
+ * Update the specified field in a customer's details
+ * @param int $customerID the ID of the customer
+ * @param string $field the field to update
+ * @param mixed $value the new value for the field
+ * @return string Empty if success, otherwise false
+ */
+function UpdateCustomerInfo($customerID, $field, $value) {
+    global $Customer;
+    escapeHTML($customerID, $field, $value);
+    $fields = array('Username', 'Email', 'CustomerAddress', 'PasswordHash');
+
+    if (!(CheckExists($customerID) || !(gettype($customerID) == "int"))) return "Invalid customerID";
+    if (!(CheckExists($field)) || !(gettype($field) == "string") || !(in_array($field, $fields))) return "Invalid field";
+    if (!(CheckExists($value))) return "Invalid value";
+    
+    $cust = $Customer->getCustomerByUID($customerID);
+    if (is_null($cust)) return "Customer does not exist";
+
+    switch ($field){
+        case "Username":
+            if (!(gettype($value) == "string")) return "Invalid username";
+            $err = $Customer->updateCustomerDetail($customerID, "Username", $value);
+            if (!$err) return "Database error";
+            else return "";
+        case "Email":
+            if (!(gettype($value) == "string") || !(filter_var($value, FILTER_VALIDATE_EMAIL))) return "Invalid email";
+            $err = $Customer->updateCustomerDetail($customerID, "Email", $value);
+            if (!$err) return "Database error";
+            else return "";
+        case "CustomerAddress":
+            if (!(gettype($value) == "string")) return "Invalid address";
+            $err = $Customer->updateCustomerDetail($customerID, "CustomerAddress", $value);
+            if (!$err) return "Database error";
+            else return "";
+        case "PasswordHash":
+            if (!(gettype($value) == "string")) return "Invalid password";
+            $hash = password_hash($value, PASSWORD_DEFAULT);
+            $err = $Customer->updateCustomerDetail($customerID, "PasswordHash", $hash);
+            if (!$err) return "Database error";
+            else return "";
+        default:
+            return "Invalid category";
+    }
+}
+
+/**
+ * Add an image to the product
+ * @param int $productID The ID of the product
+ * @param string $fileName The name of the file
+ * @param boolean $mainImage Whether the image is the main image
+ * @return string Empty if success, otherwise false
+ */
+function AddProductImage($productID, $fileName, $mainImage) {
+    global $Product;
+    escapeHTML($productID, $fileName, $mainImage);
+    try {
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return "Invalid productID";
+    }
+    if (!(gettype($fileName) == "string")) return "Invalid fileName";
+    if (!(gettype($mainImage) == "boolean")) return "Invalid mainImage";
+
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+
+    $err = $Product->addProductImage($productID, $fileName);
+    if (!$err) return "Database error";
+    $err = $Product->updateProductImage($productID, $fileName, "MainImage", $mainImage);
+    if (!$err) return "Database error";
+    else return "";
+}
+
+/**
+ * Update Image for a product
+ * 
+ * @param int $productID The ID of the product
+ * @param string $fileName The name of the file
+ * @param boolean $mainImage Whether the image is the main image
+ * @return string Empty if success, otherwise false
+ */
+function UpdateProductImage($productID, $fileName, $mainImage) {
+    global $Product;
+    escapeHTML($productID, $fileName, $mainImage);
+    try {
+        $productID = (int)$productID;
+    } catch (Exception $e) {
+        return "Invalid productID";
+    }
+    if (!(gettype($fileName) == "string")) return "Invalid fileName";
+    if (!(gettype($mainImage) == "boolean")) return "Invalid mainImage";
+
+    $prod = $Product->getProductByID($productID);
+    if (is_null($prod)) return "Product does not exist";
+    $imageName = GetProductByID($productID)->getMainImage();
+
+
+    $err = $Product->updateProductImage($productID, $imageName, "FileName", $fileName);
+    if (!$err) return "Database error";
+    $err = $Product->updateProductImage($productID, $imageName, "MainImage", $mainImage);
+    if (!$err) return "Database error";
+    else return "";
+}
+

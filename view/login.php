@@ -9,6 +9,11 @@ if (isset($_SESSION['uid'])) {
     exit();
 }
 
+if (isset($_SESSION["loginMessage"])) {
+    $loginMessage = $_SESSION["loginMessage"];
+    unset($_SESSION["loginMessage"]);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -18,13 +23,11 @@ if (isset($_SESSION['uid'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Log in - EvoTech</title>
         <link rel="stylesheet" type="text/css" href="/view/css/login.css">
-        
+        <script src="/view/js/login.js"></script>     
     </head>
     <body>
         
-    <section class="bg-success p-5  py-4">
     <?php include __DIR__ . '/nav.php'?>
-    </section>
 
     <main>
 
@@ -32,13 +35,16 @@ if (isset($_SESSION['uid'])) {
 
         <div class="login-image">
 
-            <img src="view/images/loginimage.jpg" alt="Login image">
+            <img src="view/images/loginRegisterImage.jpg" alt="Login image">
         
         </div>
 
         <div class="login-form">
 
-            <h2>Welcome to Evotech</h2>
+            <br>
+            <br>
+
+            <h2 class="welcome">Welcome to Evotech</h2>
 
             <br>
             <br>
@@ -47,32 +53,31 @@ if (isset($_SESSION['uid'])) {
             <?php
             // Check if loginResult is False
             if (isset($loginResult) && $loginResult === False) {
-                echo "<div class='alert alert-danger'>Incorrect username or password</div>";
+                $loginMessage = "Invalid username or password";
+            }
+            if (isset($loginMessage) && $loginMessage !== "") {
+                echo "<div class='alert alert-danger'>$loginMessage</div>";
             }
             ?>
 
             <h2>Log in</h2>
-            <form action="login" method="POST">
+            <form id="login" action="login" method="POST">
                 <input type="text" name="usernameOrEmail" placeholder="Username / email address" required/>
                 <br>
                 <input type="password" name="password" placeholder="Password" required/>
-            <br>
-            <br>
-            <br>
-            <br>
-                <input type="submit" value="Log in"/>
-            <br>
             </form>
-
+            <br>
+            <br>
+            <br>
+            <br>
+                <a href="#" onclick="submitForm();" class="login-form-button">Login</a>
+            <br>
             <br>
             <br>
             
             <h2>Don't have an account?</h2>
-            <form action="/register">
-                <input type="submit" value="Register"/>
-            </form>
-
-            <br>
+                <br>
+                <a href="register" class="register-button">Register</a>
             
         </div>
 
@@ -81,10 +86,7 @@ if (isset($_SESSION['uid'])) {
     </main>
 
     </body>
-
-    <footer>
+    
     <?php include __DIR__ . '/footer.php'?>
-
-</footer>
 
 </html>

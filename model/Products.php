@@ -78,16 +78,22 @@ class ProductModel {
         $insertQuery = "INSERT INTO `Products` (
                             `Name`, 
                             `Price`, 
-                            `Stock`
+                            `Stock`,
+                            `Description`,
+                            `CategoryID`
                         ) VALUES (
                             :name, 
                             :price, 
-                            :stock
+                            :stock,
+                            :desc,
+                            :cat
                         )";
         $insertStatement = $this->database->prepare($insertQuery);
         $insertStatement->bindParam(':name', $productData['name'], PDO::PARAM_STR);
         $insertStatement->bindParam(':price', $productData['price'], PDO::PARAM_STR);
         $insertStatement->bindParam(':stock', $productData['stock'], PDO::PARAM_INT);
+        $insertStatement->bindParam(':desc', $productData['description'], PDO::PARAM_STR);
+        $insertStatement->bindParam(':cat', $productData['categoryID'], PDO::PARAM_INT);
 
         return $insertStatement->execute() ? $this->getProductByName($productData['name']) : null;
     }
@@ -102,7 +108,7 @@ class ProductModel {
      */
     public function updateProductDetail($productID, $field, $value) {
         // Validate $field to prevent SQL injection
-        $allowedFields = ['Name', 'Price', 'Stock'];
+        $allowedFields = ['Name', 'Price', 'Stock', 'Description', 'CategoryID'];
         if (!in_array($field, $allowedFields)) {
             return false; 
         }
@@ -126,12 +132,27 @@ class ProductModel {
      * @return bool True if the deletion is successful, false otherwise.
      */
     public function deleteProduct($productID) {
-        $query = "DELETE FROM `Products` WHERE `ProductID` = :productID";
-        $statement = $this->database->prepare($query);
-        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $statements = array();
+        // Delete from ProductImages\
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductImages` WHERE `ProductID` = :productID"));
+        // Delete from ProductCompatibility
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductCompatibility` WHERE `ProductID` = :productID"));
+        // Delete from ProductSlots
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductSlots` WHERE `ProductID` = :productID"));
+        // Delete from Products
+        array_push($statements, $this->database->prepare("DELETE FROM `Products` WHERE `ProductID` = :productID"));
+        
+        foreach ($statements as $statement) {
+            $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        }
 
         try {
-            return $statement->execute();
+            foreach ($statements as $statement) {
+                if (!$statement->execute()) {
+                    return false;
+                }
+            }
+            return true;
         } catch (PDOException $e) {
             return false;
         }
@@ -242,6 +263,34 @@ class ProductModel {
     }
 
     /**
+     * Update a field for an image
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @param string $imageName The current name of the image file.
+     * @param string $field The field to update.
+     * @param mixed $value The new value for the $field.
+     * @return bool True if changed successfully, false otherwise
+     */
+    public function updateProductImage($productID, $imageName, $field, $value){
+        $allowedFields = ['ProductID', 'FileName', 'MainImage'];
+        if (!in_array($field, $allowedFields)) {
+            return false;
+        }
+
+        $query = "UPDATE `ProductImages` SET `$field` = :val WHERE `ProductID` = :productID AND `FileName` = :fileName";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':val', $value);
+        $statement->bindParam(':productID', $productID, PDO::PARAM_INT);
+        $statement->bindParam(':fileName', $imageName, PDO::PARAM_STR);
+
+        try {
+            return $statement->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
      * Delete an image for a product.
      *
      * @param int $productID The unique identifier of the product.
@@ -317,6 +366,21 @@ class ProductModel {
             return null;
         }
     }
+
+    /**
+     * Count the number of total products in the database.
+     * 
+     * @return int|null The number of products in the database, or null if failed.
+     */
+    public function getProductCount() {
+        $query = "SELECT COUNT(*) FROM `Products`";
+        $statement = $this->database->prepare($query);
+        if ($statement->execute()) {
+            return $statement->fetchColumn();
+        } else {
+            return null;
+        }
+    }
     
 }
 
@@ -331,6 +395,8 @@ class Product {
     private $categoryName;
     private $mainImage;
     private $otherImages;
+    private $createdAt;
+    private $updatedAt;
 
 
     /**
@@ -346,6 +412,8 @@ class Product {
         $this->categoryName = $productDetails['CategoryName'];
         $this->mainImage = $productDetails['MainImage'];
         $this->otherImages = $productDetails['OtherImages'];
+        $this->createdAt = $productDetails['CreatedAt'];
+        $this->updatedAt = $productDetails['UpdatedAt'];
     }
 
 
@@ -507,6 +575,40 @@ class Product {
      */
     public function setOtherImages($otherImages) {
         $this->otherImages = $otherImages;
+    }
+
+    /**
+     * Get the date and time the product was created.
+     * @return string The date and time the product was created.
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the date and time the product was created.
+     * @param string $createdAt The date and time the product was created.
+     * @return void
+     */
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Get the date and time the product was last updated.
+     * @return string The date and time the product was last updated.
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set the date and time the product was last updated.
+     * @param string $updatedAt The date and time the product was last updated.
+     * @return void
+     */
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
     }
 
 

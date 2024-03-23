@@ -1,54 +1,75 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Admin login- Evotech</title>
-        <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
-    
+        <title>Admin login - EvoTech</title>
+        <link rel="stylesheet" type="text/css" href="/view/css/login.css">
+        <script src="/view/js/login.js"></script>
     </head>
     <body>
-      <?php include __DIR__ . '/nav.php'?>
-      <section class="bg-success p-5  py-4">
+    
+    <?php include __DIR__ . '/nav.php'?>
 
-       </section>
+    <main>
 
-        <header>
-            <h1>Admin Login</h1>
-        </header>
+    <div class="login">
 
-        <main>
+        <div class="login-image">
 
-        <div class="container">
+            <img src="view/images/loginRegisterImage.jpg" alt="Login image">
 
-	    <h2>Login in as Admin.</h2>
+        </div>
 
-          
+        <div class="login-form">
 
-            <form action="login" method="POST">
-                <p><b>Admin's username:</b></p>
-                <input type="text" name="username" placeholder="Enter username:" required/>
+            <br>
+            <br>
+
+            <h2 class="welcome">Welcome to evotech;</h2>
+
+            <br>
+            <br>
+            <br>
+
+            <?php
+            // Check if loginResult is False
+            if (isset($loginResult) && $loginResult === False) {
+                echo "<div class='alert alert-danger'>Incorrect username or password</div>";
+            }
+            ?>
+
+            <h2>Login in as an admin</h2>
+
+            <form id="login" action="adminLogin" method="POST">
+                <input type="text" name="username" placeholder="Username" required/>
                 <br>
-                <p><b>Enter your password</b></p>
-                <input type="password" name="password" placeholder="Enter Password:" required/>
-            <br>
-            <br>
-            <br>
-                <input class="btn btn-success" type="submit" value="Log in"/>
-            <br>
+                <input type="password" name="password" placeholder="Password" required/>
             </form>
-
             <br>
-            
+            <br>
+            <br>
+            <br>
+                <a href="#" onclick="submitForm();" class="login-form-button">Login</a>
+            <br>
+            <br>
+            <br>
 
-            </div>
+        </div>
 
-        </main>
+    </div>
+
+    </main>
 
     </body>
-    <footer>
-    <?php include __DIR__ . '/footer.php'?>
 
-</footer>
+    <?php include __DIR__ . '/footer.php'?>
 
 </html>

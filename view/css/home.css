@@ -14,15 +14,12 @@
       
     }
   
-    
- 
-  
+      
   .flex-equal > * {
     flex: 1;
   }
   
   
-
 
   .card-container {
     display: flex;
@@ -33,21 +30,93 @@
   flex: 1 0 auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   height: 275px; 
-  overflow: auto; 
+  overflow: hidden; 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.card-container .card img {
+.card-container .Components-card-img-top {
   display: block; 
   margin-left: auto;
   margin-right: auto;
-  margin-top: 50px;
-  width: 100%; 
+  margin-top: 30px;
+  padding: 5px;
+  width: 130px; 
   height: auto; 
 }
+
+.card-container .CPUs-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 130px; 
+  height: auto; 
+}
+
+.card-container .CPUs-text {
+  margin-top: 28px;
+
+}
+
+.card-container .Cards-text {
+  margin-top: 18px;
+
+}
+
+.card-container .Storage-text {
+  margin-top: 30px;
+
+}
+
+
+
+.card-container .Cards-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 135px; 
+  height: auto; 
+}
+
+
+.card-container .Cases-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 130px; 
+  height: auto; 
+}
+
+
+.card-container .Memory-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  padding: 5px;
+  width: 175px; 
+  height: auto; 
+}
+
+
+.card-container .Storage-card-img-top {
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
+  padding: 5px;
+  width: 175px; 
+  height: auto; 
+}
+
 
 
 .card-container .card:hover {
@@ -58,21 +127,22 @@
 
 .card{
   background-color: #A499B3!important; /*Requires important to change color */
-
-
+  
+  
 }
 
   #largeCard{
-    width: 90%;
+    width: 70vw;
+    padding-left: 20px;
     margin-left: auto;
     margin-right: auto;
     background-color: #A499B3;
     border-radius: 15px;
 }
 
-
 .largeCard .card {
     margin: 0;
+    
 }
 
 hr {
@@ -91,4 +161,73 @@ hr {
 
 footer{
   width: 100%;
+}
+
+
+
+@media (max-width: 768px) {
+
+  #largeCard {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .card-container .Components-text {
+    font-size: 25px !important;
+  }
+
+  .card-container .Cases-text {
+    font-size: 25px !important;
+  }
+  .card-container .CPUs-text {
+    font-size: 25px !important;
+  
+  }
+  
+  .card-container .Memory-text {
+    font-size: 25px !important;
+  }
+
+  .card-container .Cards-text {
+    font-size: 25px !important;
+  }
+  
+  .card-container .Storage-text {
+    font-size: 25px !important;
+  
+  }
+
+  .card-container .Components-card-img-top {
+    width: 160px;
+   
+  }
+  
+  .card-container .CPUs-card-img-top {
+    width: 160px;
+     
+  }
+
+  .card-container .Cards-card-img-top {
+    width: 165px;
+     
+  }
+  
+  
+  .card-container .Cases-card-img-top {
+    width: 150px;
+   
+  }
+  
+  
+  .card-container .Memory-card-img-top {
+    width: 200px ;
+    
+  }
+  
+  
+  .card-container .Storage-card-img-top {
+    width: 200px;
+  }
+
+  
 }

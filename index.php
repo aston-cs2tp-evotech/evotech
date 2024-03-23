@@ -1,5 +1,39 @@
 <?php
 
+// Routing
+$request = $_SERVER['REQUEST_URI'];
+$requestPath = parse_url($request, PHP_URL_PATH);
+
+// Check if OOBE has been run and if not, display OOBE page and exit
+if (!file_exists(__DIR__ . "/config/oobeHasRun")) {
+    switch ($requestPath) {
+        case '/oobe':
+            require __DIR__ . '/oobe/oobe.php';
+            break;
+        case '/oobe/checkDBConnection':
+            require __DIR__ . '/oobe/checkDBConnection.php';
+            break;
+        case '/oobe/setupDatabase':
+            require __DIR__ . '/oobe/setupDatabase.php';
+            break;
+        case '/oobe/setupAdmin':
+            require __DIR__ . '/oobe/setupAdmin.php';
+            break;
+        case '/oobe/finishSetup':
+            require __DIR__ . '/oobe/finishSetup.php';
+            break;
+        case '/oobe/style.css':
+            header('Content-Type: text/css');
+            require __DIR__ . '/oobe/style.css';
+            break;
+        default:
+            require __DIR__ . '/oobe/oobe.php';
+            break;
+    }
+    exit();
+}
+
+
 // Start session
 session_start();
 
@@ -10,6 +44,7 @@ include __DIR__ . "/config/database.php";
 include __DIR__ . "/model/Customer.php";
 include __DIR__ . "/model/Products.php";
 include __DIR__ . "/model/Orders.php";
+include __DIR__ . "/model/Admin.php";
 
 // Include the controller
 require __DIR__ . '/controller/Controller.php';
@@ -28,10 +63,6 @@ if (isset($userInfo)) {
     $username = $userInfo->getUsername();
 }
 
-
-// Routing
-$request = $_SERVER['REQUEST_URI'];
-$requestPath = parse_url($request, PHP_URL_PATH);
 
 switch ($requestPath) {
 
@@ -102,6 +133,74 @@ switch ($requestPath) {
     
     case '/change-password':
         handleChangePasswordRequest();
+        break;
+    
+    case '/admin':
+        handleDashboardRequest();
+        break;
+
+    case '/adminLogin':
+        handleAdminLogin();
+        break;
+    
+    case '/adminLogout':
+        handleAdminLogout();
+        break;
+
+    case '/api/updateOrderStatus':
+        handleAPIRequest('updateOrderStatus');
+        break;
+
+    case '/api/getProduct':
+        handleAPIRequest('getProduct');
+        break;
+
+    case '/api/addProduct':
+        handleAPIRequest('addProduct');
+        break;
+
+    case '/api/editProduct':
+        handleAPIRequest('editProduct');
+        break;
+    
+    case '/api/deleteProduct':
+        handleAPIRequest('deleteProduct');
+        break;
+    
+    case '/api/getCustomer':
+        handleAPIRequest('getCustomer');
+        break;
+    
+    case '/api/editCustomer':
+        handleAPIRequest('editCustomer');
+        break;
+
+    case '/api/deleteCustomer':
+        handleAPIRequest('deleteCustomer');
+        break;
+
+    case '/api/getAdmin':
+        handleAPIRequest('getAdmin');
+        break;
+
+    case '/api/editAdmin':
+        handleAPIRequest('editAdmin');
+        break;
+
+    case '/api/addAdmin':
+        handleAPIRequest('addAdmin');
+        break;
+
+    case '/api/refreshToken':
+        handleAPIRequest('refreshToken');
+        break;
+    
+    case '/api/revokeToken':
+        handleAPIRequest('revokeToken');
+        break;
+
+    case '/api/addToken':
+        handleAPIRequest('addToken');
         break;
 
     default:
@@ -341,7 +440,8 @@ function handleUpdateBasketRequest() {
 */
 function handleBasketPageRequest(){
     if (!isset($_SESSION['uid'])){
-        header("Location:/");
+        $_SESSION['loginMessage'] = "You must be logged in to view your basket";
+        header("Location:/login");
     } else{
         require __DIR__ . '/view/basket.php';
     }
@@ -440,6 +540,138 @@ function handleChangePasswordRequest(){
     }
 
 
+}
+
+/**
+ * Handles requests to view the dashboard
+ */
+function handleDashboardRequest() {
+    PruneTokens();
+    if (CheckAdminLoggedIn()) {
+        if (VerfiyToken($_SESSION["adminToken"])) {
+            require __DIR__ . '/view/admin/dashboard.php';
+        } 
+        else {
+            // Logouut admin
+            unset($_SESSION);
+            header("Location:/adminLogin");
+        }
+    } 
+    else { 
+        header("Location:/adminLogin"); //redirect to login page
+    }
+}
+
+/**
+ * Handles admin logins
+ */
+function handleAdminLogin() {
+    if (!isset($_POST["username"])) {
+        require __DIR__ . '/view/AdminLogin.php';
+    }
+    else {
+        if (!isset($_POST["password"])) header("Location:/adminLogin");
+        else {
+            $result = AttemptAdminLogin($_POST["username"], $_POST["password"]);
+            if (empty($result)) header("Location:/admin");
+            //TODO show error message on adminLogin page
+            else header("Location:/adminLogin");
+        }
+    }
+}
+
+/**
+ * Handles admin logouts
+ */
+function handleAdminLogout() {
+    unset($_SESSION);
+    session_destroy();
+    header("Location:/admin");
+}
+
+/**
+ * Handles API requests
+ * 
+ * @param string $path Path to request
+ */
+function handleAPIRequest($path) {
+    PruneTokens();
+    if (!isset($_POST["Token"])) {
+        $result = VerfiyToken($_SESSION["adminToken"]);
+        if (!$result) { 
+            http_response_code(403);
+            echo "Access denied";
+            return;
+        }
+    }
+    else {
+        $result = VerfiyToken($_POST["Token"]);
+        if (!$result) { 
+            http_response_code(403);
+            return;
+        }
+    }
+
+    switch ($path) {
+        case 'updateOrderStatus':
+            require __DIR__ . '/api/updateOrderStatus.php';
+            break;
+        case 'getProduct':
+            require __DIR__ . '/api/getProduct.php';
+            break;
+        
+        case 'addProduct':
+            require __DIR__ . '/api/addProduct.php';
+            break;
+        
+        case 'editProduct':
+            require __DIR__ . '/api/editProduct.php';
+            break;
+            
+        case 'deleteProduct':
+            require __DIR__ . '/api/deleteProduct.php';
+            break;
+            
+        case 'getCustomer':
+            require __DIR__ . '/api/getCustomer.php';
+            break;
+            
+        case 'editCustomer':
+            require __DIR__ . '/api/editCustomer.php';
+            break;
+        
+        case 'deleteCustomer':
+            require __DIR__ . '/api/deleteCustomer.php';
+            break;
+        
+        case 'getAdmin':
+            require __DIR__ . '/api/getAdmin.php';
+            break;
+        
+        case 'editAdmin':
+            require __DIR__ . '/api/editAdmin.php';
+            break;
+        
+        case 'addAdmin':
+            require __DIR__ . '/api/addAdmin.php';
+            break;
+
+        case 'refreshToken':
+            require __DIR__ . '/api/refreshToken.php';
+            break;
+
+        case 'revokeToken':
+            require __DIR__ . '/api/revokeToken.php';
+            break;
+        
+        case 'addToken':
+            require __DIR__ . '/api/addToken.php';
+            break;
+
+        default:
+            handle404Request();
+            break;
+    }
 }
 
 

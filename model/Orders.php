@@ -25,7 +25,7 @@ class OrdersModel {
         $statement = $this->database->prepare($query);
 
         if ($statement->execute()) {
-            $orders = $statement->fetch(PDO::FETCH_ASSOC);
+            $orders = $statement->fetchAll(PDO::FETCH_ASSOC);
             return $orders ? $orders : null;
         } else {
             return null; // Failed to execute query
@@ -167,7 +167,7 @@ class OrdersModel {
       */
     public function updateOrderDetails($orderID, $field, $value) {
         // Validate $field to prevent SQL injection
-        $allowedFields = array('CustomerID', 'TotalAmount', 'OrderStatusID');
+        $allowedFields = array('CustomerID', 'TotalAmount', 'OrderStatusID', 'CheckedOutAt');
         if (!in_array($field, $allowedFields)) {
             return false;
         }
@@ -331,6 +331,23 @@ class OrdersModel {
             return $statement->execute();
         } catch (PDOException $e) {
             return false;
+        }
+    }
+
+    /**
+     * Get count of all Orders.
+     * 
+     * @return int|null The count of Orders or null if failed to retrieve.
+     */
+    public function getOrderCount() {
+        $query = "SELECT COUNT(*) AS count FROM `Orders`";
+        $statement = $this->database->prepare($query);
+
+        if ($statement->execute()) {
+            $orderCount = $statement->fetch(PDO::FETCH_ASSOC);
+            return $orderCount ? (int)$orderCount['count'] : 0; // Cast count to int
+        } else {
+            return null; // Failed to execute query
         }
     }
 }
@@ -530,6 +547,7 @@ class Order {
     private $orderStatusID;
     private $orderStatusName;
     private $orderLines;
+    private $checkedOutAt;
 
 
     /**
@@ -544,6 +562,7 @@ class Order {
         $this->orderStatusID = $orderDetails['OrderStatusID'];
         $this->orderStatusName = $orderDetails['OrderStatusName'];
         $this->orderLines = array();
+        $this->checkedOutAt = $orderDetails['CheckedOutAt'];
     }
 
 
@@ -677,6 +696,24 @@ class Order {
                 break;
             }
         }
+    }
+
+    /**
+     * Get the CheckedOutAt timestamp of the Order.
+     * 
+     * @return string|null The CheckedOutAt timestamp or null if not found.
+     */
+    public function getCheckedOutAt() {
+        return $this->checkedOutAt;
+    }
+
+    /**
+     * Set the CheckedOutAt timestamp of the Order.
+     * 
+     * @param string $checkedOutAt The CheckedOutAt timestamp.
+     */
+    public function setCheckedOutAt($checkedOutAt) {
+        $this->checkedOutAt = $checkedOutAt;
     }
 
 }

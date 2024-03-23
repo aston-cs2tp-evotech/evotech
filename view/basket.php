@@ -25,9 +25,15 @@ if (isset($userInfo)) {
     <link rel="stylesheet" type="text/css" href="/view/css/basket.css">
 </head>
 
+<nav>
+    <?php 
+    $currentPage = "basket";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
+
 <body>
 
-    <?php include __DIR__ . '/nav.php' ?>
     <div class="container">
         <header class="mt-4">
             <h1>Basket</h1>
@@ -44,8 +50,9 @@ if (isset($userInfo)) {
                     $totalPrice = null; //totalPrice is assigned after the check that basketItems exists
 
                     if ($basketItems) {
-                        $totalPrice = $basketItems->getTotalAmount();
+                        $totalPrice = 0;
                         foreach ($basketItems->getOrderLines() as $item) :
+                            $totalPrice += $item->getTotalPrice();
                     ?>
                             <div class="card mb-3">
                                 <div class="row no-gutters">

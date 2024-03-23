@@ -23,8 +23,15 @@ if (isset($userInfo)) {
     <link rel="stylesheet" href="/view/css/contactpage.css">
 </head>
 
+<nav>
+    <?php 
+    $currentPage = "contactpage";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
+
 <body>
-    <?php include __DIR__ . '/nav.php' ?>
+    
 
     <section class="bg-success p-5  py-4">
 
@@ -63,28 +70,84 @@ if (isset($userInfo)) {
         </div>
     </section>
 
-    <section class="customer-reviews-section">
-        <h2>Customer Reviews</h2>
-        <div class="customer-reviews">
-            <div class="review-box">
-                <img src="view/images/ginge.jpg" alt="Customer 1">
-                <p>"Evotexh goes beyond selling; their customer support is stellar. Quick responses, knowledgeable staff – they make tech troubleshooting a breeze, setting a gold standard for customer care."</p>
-                <p>Date: 01/01/2023</p>
-            </div>
 
-            <div class="review-box">
-                <img src="view/images/mrbean.jpg" alt="Customer 2">
-                <p>Responsive team and excellent communication. We are satisfied with their work.</p>
-                <p>Date: 15/02/2023</p>
-            </div>
-
-            <div class="review-box">
-                <img src="view/images/danny.webp" alt="Customer 3">
-                <p>"EvoTech went above and beyond our expectations. Will definitely will buy there products again."</p>
-                <p>Date: 13/06/2023</p>
+    <section id="customer-reviews" class="p-5 bg-light">
+        <div class="container">
+            <h2 class="text-center text-dark">Customer Reviews</h2>
+            <p class="lead text-center text-dark mb-5">
+                See what our customers have to say about us 
+            </p>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card bg-light h-100"> 
+                        <div class="card-body text-center">
+                            <img src="view/images/ginge.jpg" alt="Customer 1" width="150px" class="rounded-circle mb-3" alt=""/>
+                            <p class="card-text">Evotech goes beyond selling; their customer support is stellar. Quick responses, 
+                                knowledgeable staff – they make tech troubleshooting a breeze, 
+                                setting a gold standard for customer care. </p>
+                            <p>Date: 01/01/2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card bg-light h-100"> 
+                        <div class="card-body text-center">
+                            <img src="view/images/mrbean.jpg" width="150px" height="150px" class="rounded-circle mb-3" alt=""/>
+                            <p class="card-text">Responsive team and excellent 
+                                communication. We are satisfied with their work</p>
+                            <p>Date: 15/02/2023</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card bg-light h-100">
+                        <div class="card-body text-center">
+                            <img src="view/images/danny.webp" width="150px" class="rounded-circle mb-3" alt=""/>
+                            <p class="card-text">EvoTech went above and beyond our expectations. 
+                                Will definitely will buy there products again.</p>
+                            <p>Date: 13/06/2023</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+
+    <!--
+    <section class="customer-reviews-section">
+        <h2>Customer Reviews</h2>
+        <div class="row">
+            <div class="col-sm">
+                <div class="customer-reviews">
+                    <div class="review-box">
+                        <img src="view/images/ginge.jpg" alt="Customer 1">
+                        <p>"Evotech goes beyond selling; their customer support is stellar. Quick responses, knowledgeable staff – they make tech troubleshooting a breeze, setting a gold standard for customer care."</p>
+                        <p>Date: 01/01/2023</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="customer-reviews">
+                    <div class="review-box">
+                        <img src="view/images/mrbean.jpg" alt="Customer 2">
+                        <p>Responsive team and excellent communication. We are satisfied with their work.</p>
+                        <p>Date: 15/02/2023</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="customer-reviews">
+                    <div class="review-box">
+                        <img src="view/images/danny.webp" alt="Customer 3">
+                        <p>"EvoTech went above and beyond our expectations. Will definitely will buy there products again."</p>
+                        <p>Date: 13/06/2023</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+        !-->
 
     <footer>
     <?php include __DIR__ . '/footer.php'?>

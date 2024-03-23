@@ -1,14 +1,5 @@
--- Insert Categories
-INSERT INTO `Categories` (`CategoryName`) VALUES
-('Components'),
-('CPUs'),
-('Graphics Cards'),
-('Cases'),
-('Storage'),
-('Memory');
-
 -- Insert Products
-INSERT INTO `Products` (`Name`, `Price`, `Stock`, `CategoryID`, `Description`)
+INSERT IGNORE INTO `Products` (`Name`, `Price`, `Stock`, `CategoryID`, `Description`)
 VALUES
 ('Intel Core i9-9900K CPU', 499.99, 50, 2, '8 cores, 16 threads, 3.6GHz base clock'),
 ('AMD Ryzen 7 5800X CPU', 449.99, 50, 2, '8 cores, 16 threads, 3.8GHz base clock'),
@@ -44,7 +35,7 @@ VALUES
 ('ADATA XPG SX8200 Pro 1TB NVMe SSD', 119.99, 35, 5, 'Read speed up to 3500 MB/s, Write speed up to 3000 MB/s');
 
 -- Insert Compatibility
-INSERT INTO `Compatibility` (`CompatibilityID`, `CompatibilityName`) VALUES
+INSERT IGNORE INTO `Compatibility` (`CompatibilityID`, `CompatibilityName`) VALUES
 (1, 'ATX'),
 (2, 'LGA 1151'),
 (3, 'PCIe x16'),
@@ -55,7 +46,7 @@ INSERT INTO `Compatibility` (`CompatibilityID`, `CompatibilityName`) VALUES
 (8, 'Micro ATX');
 
 -- Insert Product Compatibility
-INSERT INTO `ProductCompatibility` (`ProductID`, `CompatibilityID`, `SlotType`) VALUES
+INSERT IGNORE INTO `ProductCompatibility` (`ProductID`, `CompatibilityID`, `SlotType`) VALUES
 (1, 2, 'LGA 1151'),
 (2, 2, 'AM4'),
 (3, 3, 'PCIe x16'),
@@ -88,7 +79,7 @@ INSERT INTO `ProductCompatibility` (`ProductID`, `CompatibilityID`, `SlotType`) 
 (30, 6, '3.5" SATA');
 
 -- Insert statements for ProductImages table
-INSERT INTO `ProductImages` (`ProductID`, `FileName`, `MainImage`) VALUES
+INSERT IGNORE INTO `ProductImages` (`ProductID`, `FileName`, `MainImage`) VALUES
 (1, 'corei9.webp', TRUE),
 (2, '100-100000063WOF_4_Supersize.webp', TRUE),
 (3, '71Tmx-qnp-L._AC_UF1000_1000_QL80_.webp', TRUE),

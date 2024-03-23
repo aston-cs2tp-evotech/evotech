@@ -17,24 +17,33 @@ if (isset($_SESSION['uid'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Register - EvoTech</title>
-        <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout_customer.css">
-
+        <link rel="stylesheet" type="text/css" href="/view/css/register.css">
+        <script src="/view/js/register.js"></script>
     </head>
     <body>
+
     <?php include __DIR__ . '/nav.php'?>
 
-    <section class="bg-success p-5  py-4">
+    <main>
 
-    </section>
-        <header>
-            <h1>Register</h1>
-        </header>
+    <div class="register">
 
-        <main>
+        <div class="register-image">
 
-        <div class="container">
+            <img src="view/images/loginRegisterImage.jpg" alt="Register image">
 
-        <h2>Register an Evotech account</h2>
+        </div>
+
+        <div class="register-form">
+
+            <br>
+            <br>
+
+            <h2 class="welcome">Start evolving your tech today</h2>
+
+            <br>
+            <br>
+            <br>
 
             <?php
             // Check if there are any errors to display
@@ -43,37 +52,40 @@ if (isset($_SESSION['uid'])) {
             }
             ?>
 
-            <form action="register" method="POST">
-            <label for="email">Enter your email address</label>
-            <input type="email" name="email" placeholder="Email" required/>
-            <br>
-            <label for="username">Enter a username</label>
-            <input type="text" name="username" placeholder="Username" required/>
-            <br>
-            <label for="customer_address">Enter your address</label>
-            <textarea name="customer_address" placeholder="Address" rows="6" required></textarea>
-            <br>
-            <label for="password">Enter your password</label>
-            <input type="password" name="password" placeholder="Password" required/>
-            <br>
-            <label for="confirmpass">Re-enter password</label>
-            <input id="password_confirmation" type="password" name="confirmpass" placeholder="Confirm password" required/>
-
-            <br>
-            <br>
-            <br>
-                <input class="btn btn-success" type="submit" value="Register"/>
-            <br>
+            <h2>Register</h2>
+            <form id="register" action="register" method="POST">
+                <input type="email" name="email" placeholder="Email" required/>
+                <br>
+                <input type="text" name="username" placeholder="Username" required/>
+                <br>
+                <textarea name="customer_address" placeholder="Address" rows="6" required></textarea>
+                <br>
+                <br>
+                <input type="password" name="password" placeholder="Password" required/>
+                <br>
+                <input id="password_confirmation" type="password" name="confirmpass" placeholder="Confirm password" required/>
             </form>
-
             <br>
+            <br>
+            <br>
+            <br>
+                <a href="#" onclick="submitForm();" class="register-form-button">Register</a>
+            <br>
+            <br>
+            <br>
+            
             <h2>Already have an account?</h2>
-            <a href="login">Log in</a>
+                <br>
+                <a href="login" class="register-login-button">Log in</a>
 
-            </div>
-            <footer>
-             <?php include __DIR__ . '/footer.php'?>
+        </div>
+    
+    </div>
 
-            </footer>
+    </main>
 
-        </main>
+    </body>
+
+    <?php include __DIR__ . '/footer.php'?>
+
+</html>

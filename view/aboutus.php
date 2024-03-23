@@ -22,8 +22,15 @@ if (isset($userInfo)) {
     <link rel="stylesheet" href="/view/css/aboutus.css">
     
 </head>
+
+<nav>
+    <?php 
+    $currentPage = "aboutus";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
+
 <body>
-  <?php include __DIR__ . '/nav.php'?>
 
   <section class="bg-success p-5  py-4">
 

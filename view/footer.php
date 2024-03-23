@@ -15,7 +15,7 @@
 <body>
   <footer>
     <div class="footer-content">
-        <p class="copyright"> Copyright &copy; <?php echo date("Y"); ?> Evotech - All rights reserved</p>  
+        <p class="copyright"> Copyright &copy; <?php echo date("Y"); ?> evotech; - All rights reserved</p>  
         <p class="country"> United Kingdom</p>
       </div>
   </footer>
