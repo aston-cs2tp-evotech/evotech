@@ -761,7 +761,6 @@ function GetAllOrderStatuses() {
  *  @return Order|null Order with all required info, or null if failed
  */ 
 function CreateSafeOrder($details) {
-    echo "Creating safe order";
     global $Order;
     $badOrder = false;
     $keys = array('OrderID', 'CustomerID', 'TotalAmount', 'OrderStatusID', 'CheckedOutAt','CreatedAt', 'UpdatedAt');
