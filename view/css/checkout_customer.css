@@ -53,3 +53,7 @@ header {
 .error {
     color: #ff0000;
 }
+
+.card{
+    background-color: #A499B3 !important;
+}
