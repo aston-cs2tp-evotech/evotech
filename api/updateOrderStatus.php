@@ -1,5 +1,14 @@
 <?php
 
+$keys = array("orderID", "newStatusID");
+
+foreach ($keys as $key) {
+    if (!isset($_POST[$key])) {
+        http_response_code(418);
+        echo $key . " not specified";
+    }
+}
+
 $orderID = $_POST['orderID'];
 $newStatusID = $_POST['newStatusID'];
 
