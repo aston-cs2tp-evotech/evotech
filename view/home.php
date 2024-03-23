@@ -71,10 +71,9 @@ foreach ($categories as $category) {
                 <div>
 
 
-                    <h1>evotech; Evolving your tech</h1>
-                    <h1>
-                        Shop the latest technology at evotech;
-                    </h1>
+                    <h1>evotech; 
+                    <br>evolving your tech</h1>
+                    
                     
                 </div>
                
@@ -122,19 +121,19 @@ foreach ($categories as $category) {
       <hr>
       <section id="statements">
       <h1>
-      evotech : Making hardware accessible to all <br> users, prioritising inclusivity in technology solutions
+      making hardware accessible to all <br> users, prioritising inclusivity in technology solutions
         <div class="container p-3">
             <div class="row justify-content-between">
               <div class=" col-sm-4">
               <br>  
               <h2>
-                evotech : Guiding hardware needs, with online shopping and support services.
+                we guide hardware needs, with curated products and support services.
               </h2> 
               </div>
               <div class="col-sm-6">
               <br>  
-              <h3>For further details on evotech; and its wide range of products, simply click the link below </h3>
-                <a id="LearnMore-Link" href="aboutus">Learn more about evotech; <i class="bi bi-arrow-right" style="color: white;"></i>
+              <h2>for further details on evotech; and our selection of products, find out about us</h2>
+                <a id="LearnMore-Link" href="aboutus">learn more about evotech; <i class="bi bi-arrow-right" style="color: white;"></i>
                 <hr>
                 </a>
               </div>
