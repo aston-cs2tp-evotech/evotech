@@ -35,7 +35,7 @@ if (isset($userInfo)) {
 <body>
 
     <div class="container" style= "background-color: #A499B3">
-        <header class="mt-2">
+        <header class="mt-3">
             <h1>Basket</h1>
         </header>
 

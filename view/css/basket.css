@@ -11,10 +11,12 @@ body {
 }
 
 header {
-    background-color: #A499B3;
+    background-color: #D0BCD5;
     color: #fff;
     text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     padding: 1em;
+    
 }
 
 .container {
