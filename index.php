@@ -440,7 +440,8 @@ function handleUpdateBasketRequest() {
 */
 function handleBasketPageRequest(){
     if (!isset($_SESSION['uid'])){
-        header("Location:/");
+        $_SESSION['loginMessage'] = "You must be logged in to view your basket";
+        header("Location:/login");
     } else{
         require __DIR__ . '/view/basket.php';
     }

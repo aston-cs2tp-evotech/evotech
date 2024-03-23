@@ -33,7 +33,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <br>
             <br>
 
-            <h2 class="welcome">Welcome to Evotech</h2>
+            <h2 class="welcome">Welcome to evotech;</h2>
 
             <br>
             <br>
