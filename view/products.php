@@ -26,8 +26,14 @@ if (isset($userInfo)) {
   <title><?php if (isset($_GET["category"])) {echo $_GET["category"];} else {echo "Products";}?> - EvoTech</title>
 </head>
 
+<nav>
+    <?php 
+    $currentPage = "products";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
+
 <body>
-  <?php include __DIR__ . '/nav.php' ?>
 
   <h1 class="text-center">Products</h1>
 

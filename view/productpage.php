@@ -26,8 +26,15 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
     <title><?php echo $productDetails->getName(); ?> - EvoTech</title>
     <link rel="stylesheet" href="/view/css/productpage.css">
 </head>
+
+<nav>
+    <?php 
+    $currentPage = "products";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
 <body>
-    <?php include __DIR__ . '/nav.php'?>
+    
 
     <main>
         <div class="main-product-box">

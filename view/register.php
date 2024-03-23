@@ -39,7 +39,7 @@ if (isset($_SESSION['uid'])) {
             <br>
             <br>
 
-            <h2 class="welcome">Welcome to Evotech</h2>
+            <h2 class="welcome">Start evolving your tech today</h2>
 
             <br>
             <br>
