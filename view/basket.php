@@ -25,9 +25,15 @@ if (isset($userInfo)) {
     <link rel="stylesheet" type="text/css" href="/view/css/basket.css">
 </head>
 
+<nav>
+    <?php 
+    $currentPage = "home";
+    include __DIR__ . '/nav.php';
+    ?>
+</nav>
+
 <body>
 
-    <?php include __DIR__ . '/nav.php' ?>
     <div class="container">
         <header class="mt-4">
             <h1>Basket</h1>

@@ -49,7 +49,10 @@ foreach ($categories as $category) {
 </head>
 
 <nav>
-    <?php include __DIR__ . '/nav.php'?>
+    <?php 
+    $currentPage = "home";
+    include __DIR__ . '/nav.php';
+    ?>
 </nav>
 
 <body>
