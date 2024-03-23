@@ -32,7 +32,7 @@ if (isset($userInfo)) {
         <div class="container">
             <section class="about-section">
                 <h2>What is Evotech?</h2>
-                <p>Evotech's for all. The ones that create, work and play. We know that sometimes not having the right gear can hold you back, that's why we created Evotech.
+                <p>evotech; is for all. The ones that create, work and play. We know that sometimes not having the right gear can hold you back, that's why we created evotech;
                    Find selected hardware options and filter through categories, upgrade your gear based on the reviews of experts and our community. We're glad you're here. </p>
             </section>
 
