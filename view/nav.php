@@ -45,7 +45,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?php if ($currentPage == "basket") {echo "active";}?>" href="basket">
-                                <i class="bi bi-basket">
+                                <i class="nav-link bi bi-basket">
                                     Basket
                                 </i>
                             </a>

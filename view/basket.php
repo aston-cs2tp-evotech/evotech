@@ -27,7 +27,7 @@ if (isset($userInfo)) {
 
 <nav>
     <?php 
-    $currentPage = "home";
+    $currentPage = "basket";
     include __DIR__ . '/nav.php';
     ?>
 </nav>
