@@ -7,11 +7,11 @@ body {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #534B62 !important;
 }
 
 header {
-    background-color: #333;
+    background-color: #1B1725;
     color: #fff;
     text-align: center;
     padding: 1em;
@@ -32,6 +32,7 @@ h2 {
 }
 
 .card {
+    background-color: #A499B3!important;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
