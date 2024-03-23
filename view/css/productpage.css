@@ -19,13 +19,12 @@ main {
 .main-product-box, .recommended-product-box {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    background-color: #534B62;
+    background-color: #A499B3 ;
+    max-width: 1000px;
     padding: 20px;
-    margin-top: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
+    margin: 20px auto;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 1);
 }
@@ -33,16 +32,14 @@ main {
 .product-image {
     flex: 0 1 350px;
     margin-right: 20px;
-    background-color: #A499B3;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .product-image img {
     width: 100%;
     max-width: 350px;
-    height: auto;
+    max-height: 350px;
     border-radius: 8px;
 }
 
@@ -51,25 +48,40 @@ main {
     background-color: #534B62;
     padding: 20px;
     border-radius: 8px;
-    color: #FAF0CA;
+    color: white;
     text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .product-details h2, .product-details p, .product-price {
     margin: 0 0 10px 0;
 }
 
+.product-details h4, .product-details p {
+    color: #d8d3d3;
+}
+
 .product-price {
     font-size: 24px;
-    color: #6E6E73;
-    border-bottom: 1px solid #6E6E73;
+    color: white;
+    border-bottom: 1px solid white;
     padding-bottom: 10px;
+}
+
+.product-stock {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: auto;
 }
 
 .add-to-basket-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
+    margin-top: auto;
 }
 
 .form-group {
@@ -78,34 +90,25 @@ main {
     width: 100%;
 }
 
-.quantity-input {
-    width: 100px; /* Adjusted width */
-    padding: 8px;
-    margin-right: 10px;
-    border: 1px solid #a1a1a1;
-    border-radius: 4px;
+#quantityInput {
     text-align: right;
+    padding-right : 10px;
 }
 
-.add-to-basket-btn {
-    padding: 10px 15px;
-    background-color: #0071e3;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    background-color: #1b1725 !important;
+    color: white !important;
+    border: #1b1725 !important;
 }
 
-.add-to-basket-btn:hover {
-    background-color: #0056b3;
+.btn-primary:hover {
+    background-color: #534B62 !important;
 }
 
 .recommendation-section {
     text-align: center;
-   margin-top: 40px; 
-   margin-bottom: 10px;
-    padding: 40px;
+    margin-bottom: 10px;
+    padding: 10px;
     background-color: #534B62;
     display: flex;
     flex-direction: column;
@@ -119,13 +122,14 @@ main {
     display: inline-flex; /* Change from flex to inline-flex */
     align-items: center;
     position: relative;
+    margin-top: 10px;
 }
 
 .recommendation-section h2::before,
 .recommendation-section h2::after {
     content: "";
-    background-color: #FAF0CA; /* Line color */
-    height: 4px; /* Line thickness */
+    background-color: #fff; /* Line color */
+    height: 2px; /* Line thickness */
     width: 40%;
      /* Adjust the width to control the line length */
     position: absolute;
@@ -148,7 +152,7 @@ main {
 }
 
     .recommended-product-box {
-        background-color: #534B62;
+        background-color: #A499B3;
         padding: 11px;
         border-radius: 8px;
         margin: 10px;
@@ -159,15 +163,13 @@ main {
 
     .recommended-product-image img {
         width: 200px;
-        height: 190px;
+        max-height: 190px;
         border-radius: 8px;
-        background-color: #D0BCD5;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
     }
 
     .recommended-product-details {
         text-align: center;
-        color: #FAF0CA; /* Ensures text color matches the "You Might Also Like" title */
+        color: #111;
         margin: 10px 0;
     }
 
@@ -186,6 +188,7 @@ main {
         .main-product-box, .recommended-product-box {
             flex-direction: column;
             align-items: center;
+            width : 80vw;
         }
 
         .product-image, .product-details {
@@ -195,8 +198,7 @@ main {
 
         .recommendation-section h2::before,
         .recommendation-section h2::after {
-            width: 30px; /* Adjust for smaller screens */
-            margin: 0 10px; /* Closer to the text */
+            width: 30%;
         }
     }
 
