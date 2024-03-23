@@ -55,21 +55,22 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
                 </p>
 
                 <div class="product-description">
-                    <h3>Description</h3>
-                    <p>
-                        <?php echo $productDetails->getDescription(); ?>
-                    </p>
+                    <h4><?php echo $productDetails->getDescription(); ?></h4>
                 </div>
 
-                <form action="/add-to-basket" method="post" class="add-to-basket-form">
+                <div class="product-stock">
+                    <p>Available Stock: <?php echo $productDetails->getStock(); ?></p>
+                </div>
+
+                <form action="/add-to-basket" method="post" class="add-to-basket-form" id="add-to-basket-form">
                     <input type="hidden" name="productID" value="<?php echo $productDetails->getProductID(); ?>">
-                    <div class="form-group">
-                        <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" name="quantity" value="1" min="1" class="form-control quantity-input">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="quantity">Quantity</label>
+                        <input id="quantityInput" type="number" name="quantity" class="form-control" value="1" min="1" max="<?php echo $productDetails->getStock(); ?>" placeholder="Quantity" aria-label="Quantity" aria-describedby="quantiy-addon">
+                        <button type="submit" class="btn btn-<?= isset ($_SESSION['uid']) ? 'primary' : 'secondary'; ?>"type="button" id="button-addon2" <?php echo isset ($_SESSION['uid']) ? '' : 'disabled'; ?>>
+                            <?php echo isset ($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
+                        </button>
                     </div>
-                    <button type="submit" class="btn btn-primary add-to-basket-btn" <?php echo isset ($_SESSION['uid']) ? '' : 'disabled'; ?>>
-                        <?php echo isset ($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
-                    </button>
                 </form>
             </div>
         </div>
@@ -104,6 +105,15 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
     </main>
 
     <?php include __DIR__ . '/footer.php' ?>
+    <script>
+        window.addEventListener('load', function() {
+        var productImage = document.querySelector('.product-image img');
+        var productDetails = document.querySelector('.product-details');
+
+        // Set the height of product details to match the height of the image
+        productDetails.style.height = productImage.offsetHeight + 'px';
+});
+    </script>
 </body>
 
 </html>
