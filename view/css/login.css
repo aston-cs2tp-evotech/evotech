@@ -81,6 +81,7 @@ h2 {
     position: absolute; /* Position splash absolutely */
     top: 0; /* Align splash to the top */
     width: 100vw; /* Take full width */
+    height: 100vh; /* Take full height */
     max-width: none; /* Remove max-width */ 
     max-height: 100%;
     background-size: cover!important;

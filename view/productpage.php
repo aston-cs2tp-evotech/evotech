@@ -66,7 +66,7 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
                     <input type="hidden" name="productID" value="<?php echo $productDetails->getProductID(); ?>">
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="quantity">Quantity</label>
-                        <input id="quantityInput" type="number" name="quantity" class="form-control" value="1" min="1" max="<?php echo $productDetails->getStock(); ?>" placeholder="Quantity" aria-label="Quantity" aria-describedby="quantiy-addon">
+                        <input id="quantityInput" type="number" name="quantity" class="form-control flex-nowrap" value="1" min="1" max="<?php echo $productDetails->getStock(); ?>" placeholder="Quantity" aria-label="Quantity" aria-describedby="quantiy-addon">
                         <button type="submit" class="btn btn-<?= isset ($_SESSION['uid']) ? 'primary' : 'secondary'; ?>"type="button" id="button-addon2" <?php echo isset ($_SESSION['uid']) ? '' : 'disabled'; ?>>
                             <?php echo isset ($_SESSION['uid']) ? 'Add to Basket' : 'Log in to Add to Basket'; ?>
                         </button>
@@ -102,31 +102,6 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
                 <?php endforeach; ?>
             </div>
         </div>
-        <section class="p-4"><div class="customer-reviews" >
-        <div class="container" >
-            <h2>Customer Reviews</h2>
-            <p>See what our customers have to say about us</p>
-            <div class="row">
-                <div class="card">
-                    <img src="view/images/ginge.jpg" alt="Customer 1"/>
-                    <p>Evotech goes beyond selling; their customer support is stellar...</p>
-                    <p>Date: 01/01/2023</p>
-                </div>
-                <div class="card">
-                    <img src="view/images/mrbean.jpg" alt="Customer 2"/>
-                    <p>Responsive team and excellent communication...</p>
-                    <p>Date: 15/02/2023</p>
-                </div>
-                <div class="card">
-                    <img src="view/images/danny.webp" alt="Customer 3"/>
-                    <p>EvoTech went above and beyond our expectations...</p>
-                    <p>Date: 13/06/2023</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </section>
     
     </main>
 

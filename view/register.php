@@ -30,7 +30,6 @@ if (isset($_SESSION['uid'])) {
 
         <div class="splash">
 
-            <img src="view/images/loginRegisterImage.jpg" alt="splash">
 
         </div>
 
