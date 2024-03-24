@@ -35,6 +35,7 @@ main {
     justify-content: center;
     background-color: #A499B3 ;
     max-width: 1000px;
+    min-height: 400px;
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
@@ -57,6 +58,7 @@ main {
 .product-details {
     flex: 1 1 200px;
     background-color: #534B62;
+    min-height: 400px;
     padding: 20px;
     border-radius: 8px;
     color: white;
