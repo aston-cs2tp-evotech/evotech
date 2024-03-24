@@ -42,7 +42,6 @@ if (isset ($_SESSION["loginMessage"])) {
 
             <div class="splash">
 
-                <img src="view/images/loginRegisterImage.jpg" alt="splash">
 
             </div>
 

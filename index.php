@@ -135,6 +135,18 @@ switch ($requestPath) {
         handleChangePasswordRequest();
         break;
     
+    case '/leaveReview':
+        handleLeaveReviewRequest();
+        break;
+    
+    case '/removeReview':
+        handleRemoveReviewRequest();
+        break;
+
+    case '/updateReview':
+        handleUpdateReviewRequest();
+        break;
+    
     case '/admin':
         handleDashboardRequest();
         break;
@@ -201,6 +213,33 @@ switch ($requestPath) {
 
     case '/api/addToken':
         handleAPIRequest('addToken');
+        break;
+
+    case '/api/deleteCustomerReviews':
+        handleAPIRequest('deleteCustomerReviews');
+        break;
+    
+    case '/api/deleteProductReviews':
+        handleAPIRequest('deleteProductReviews');
+        break;
+    
+    case '/api/deleteReview':
+        handleAPIRequest('deleteReview');
+        break;
+
+    case '/api/editReview':
+        handleAPIRequest('editReview');
+
+    case '/api/getAllReviews':
+        handleAPIRequest('getAllReviews');
+        break;
+    
+    case '/api/getCustomerReviews':
+        handleAPIRequest('getCustomerReviews');
+        break;
+
+    case '/api/getProductReviews':
+        handleAPIRequest('getProductReviews');
         break;
 
     default:
@@ -543,6 +582,52 @@ function handleChangePasswordRequest(){
 }
 
 /**
+ * Handles request to leave a review
+ */
+function handleLeaveReviewRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+    //check passed info
+    if (!CheckExists($_POST["ProductID"])) header("Location:/home");
+    if (!CheckExists($_POST["Rating"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+    if (!CheckExists($_POST["Review"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+
+    //check if allowed to leave review
+    if (!CheckCanLeaveReview($_SESSION["uid"], $_POST["ProductID"])) header("Location:/home");
+
+    $success = CreateReview($_POST["ProductID"], $_SESSION["uid"], $_POST["Rating"], $_POST["Review"]);
+    if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
+    else header("Location:/product?productID=" . $_POST["ProductID"]);
+}
+
+/**
+ * Handles request to remove a review
+ */
+function handleRemoveReviewRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+
+    if (!CheckExists($_POST["ProductID"])) header("Location:/home");
+
+    $success = DeleteReview($_POST["ProductID"], $_SESSION["uid"]);
+    if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
+    else header("Location:/product?productID=" . $_POST["ProductID"]);
+}
+
+/**
+ * Handles request to update a review
+ */
+function handleUpdateReviewRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+    //check passed info
+    if (!CheckExists($_POST["ProductID"])) header("Location:/home");
+    if (!CheckExists($_POST["Rating"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+    if (!CheckExists($_POST["Review"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+
+    $success = UpdateReview($_POST["ProductID"], $_SESSION["CustomerID"], $_POST["Rating"], $_POST["Review"]);
+    if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
+    else header("Location:/product?productID=" . $_POST["ProductID"]);
+}
+
+/**
  * Handles requests to view the dashboard
  */
 function handleDashboardRequest() {
@@ -669,6 +754,34 @@ function handleAPIRequest($path) {
             require __DIR__ . '/api/addToken.php';
             break;
 
+        case 'deleteCustomerReviews':
+            require __DIR__ . '/api/deleteCustomerReviews.php';
+            break;
+
+        case 'deleteProductReviews':
+            require __DIR__ . '/api/deleteProductReviews.php';
+            break;
+
+        case 'deleteReview':
+            require __DIR__ . '/api/deleteReview.php';
+            break;
+
+        case 'editReview':
+            require __DIR__ . '/api/editReview.php';
+            break;
+
+        case 'getAllReviews':
+            require __DIR__ . '/api/getAllReviews.php';
+            break;
+
+        case 'getCustomerReviews':
+            require __DIR__ . '/api/getCustomerReviews.php';
+            break;
+
+        case 'getProductReviews':
+            require __DIR__ . '/api/getProductReviews.php';
+            break;
+            
         default:
             handle404Request();
             break;

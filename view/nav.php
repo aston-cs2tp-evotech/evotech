@@ -21,7 +21,7 @@
 
 <nav class="navbar navbar-dark navbar-expand-lg fixed-top py-1">
         <div class="container-fluid">
-            <a class="navbar-brand me-auto" href=home> <img src="view/images/evotechLogoCropped.png" style="width: 100px; height: 25px;" alt="Evotech Logo"> </a>
+            <a class="navbar-brand me-auto" href=home> <img src="view/images/evotechLogoCropped.webp" style="width: 100px; height: 25px;" alt="Evotech Logo"> </a>
             <!-- <a class="navbar-brand me-auto" href="home">Evotech</a> -->
             <div class="offcanvas offcanvas-dark bg-dark offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
