@@ -325,3 +325,59 @@ main {
     .main-product-box:hover, .recommended-product-box:hover , .customer-reviews:hover ,.card:hover {
         transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
     }
+    @media (max-width: 768px) {
+        .product-details h2, .product-details h4, .product-details p, .product-price {
+            font-size: smaller; /* Adjust font size for readability */
+        }
+    
+        .product-image img, .recommended-product-image img {
+            max-width: 100%; /* Allows image to resize within its container */
+            height: auto; /* Maintains aspect ratio */
+            max-height: 200px; /* Limits the height on smaller screens */
+        }
+    
+        .main-product-box, .recommended-product-box, .customer-reviews, .card {
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center-align the content */
+            padding: 10px; /* Reduce padding */
+        }
+    
+        .product-details, .recommended-product-details {
+            text-align: center; /* Center-align text for better readability */
+        }
+    
+        .product-image, .product-details {
+            margin: 0 0 10px 0; /* Adjust margin for stacked layout */
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .product-details h2, .product-details h4, .product-details p, .product-price {
+            font-size: smaller; /* Further reduce font size */
+        }
+    
+        .main-product-box, .recommended-product-box, .customer-reviews, .card {
+            margin: 10px 0; /* Adjust margin for tighter spacing */
+        }
+    
+        .add-to-basket-form, .form-group, #quantityInput {
+            width: 100%; /* Full-width forms and inputs */
+            text-align: center; /* Center-align form elements */
+        }
+    
+        .btn-primary {
+            padding: 10px; /* Increase padding for easier tapping on touchscreens */
+        }
+    }
+    
+    /* General adjustments to ensure content fits well */
+    .card-text, .product-details p, .recommended-product-details p {
+        overflow: hidden; /* Prevent text overflow */
+        text-overflow: ellipsis; /* Add ellipsis to overflowed text */
+        white-space: nowrap; /* Keep the text in a single line */
+    }
+    
+    .card-img, .product-image img, .recommended-product-image img {
+        object-fit: cover; /* Cover the area without losing aspect ratio */
+    }
+    
