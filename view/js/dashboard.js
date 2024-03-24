@@ -358,6 +358,35 @@ function deleteCustomer() {
   });
 }
 
+// Function to delete an admin asynchronously
+function deleteAdmin(adminID) {
+  $.ajax({
+    url: '/api/deleteAdmin',
+    method: 'POST',
+    data: { adminID: adminID , Token : adminToken},
+    success: function(response) {
+      // Show success message
+      var deleteAdminMessage = document.getElementById('adminUpdate');
+      deleteAdminMessage.innerHTML = 'Admin ' + adminID + ' deleted successfully';
+      deleteAdminMessage.style.display = 'block';
+      deleteAdminMessage.classList.add('alert-success', 'alert-dismissible');
+      // Remove the admin row from the table
+      var row = document.getElementById('adminsTableRow' + adminID);
+      row.remove();
+      showPage('admins');
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var deleteAdminMessage = document.getElementById('adminUpdate');
+      deleteAdminMessage.innerHTML = error + ': ' + xhr.responseText;
+      deleteAdminMessage.style.display = 'block';
+      deleteAdminMessage.classList.add('alert-danger', 'alert-dismissible');
+      showPage('admins');
+    }
+  });
+
+}
+
 
 // When page is loaded, and either editProductSuccess or addProductSuccess is set as a GET parameter, show the product page
 $(document).ready(function() {

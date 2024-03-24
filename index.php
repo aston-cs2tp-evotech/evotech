@@ -202,6 +202,10 @@ switch ($requestPath) {
     case '/api/addAdmin':
         handleAPIRequest('addAdmin');
         break;
+    
+    case '/api/deleteAdmin':
+        handleAPIRequest('deleteAdmin');
+        break;
 
     case '/api/refreshToken':
         handleAPIRequest('refreshToken');
@@ -740,6 +744,10 @@ function handleAPIRequest($path) {
         
         case 'addAdmin':
             require __DIR__ . '/api/addAdmin.php';
+            break;
+        
+        case 'deleteAdmin':
+            require __DIR__ . '/api/deleteAdmin.php';
             break;
 
         case 'refreshToken':

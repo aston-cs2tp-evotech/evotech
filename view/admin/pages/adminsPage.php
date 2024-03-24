@@ -31,7 +31,7 @@
         </thead>
         <tbody>
             <?php foreach ($admins as $admin): ?>
-                <tr>
+                <tr id="adminsTableRow<?php echo $admin->getUID(); ?>">
                     <td>
                         <?php echo $admin->getUID(); ?>
                     </td>
@@ -45,8 +45,13 @@
                         <?php echo $admin->getUpdatedAt(); ?>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-primary"
-                            onclick="showPage('editAdmin', null, null, <?php echo $admin->getUID(); ?>)">Edit</a>
+                        <button href="#" class="btn btn-primary"
+                            onclick="showPage('editAdmin', null, null, <?php echo $admin->getUID(); ?>)">
+                                Edit
+                        </button>
+                        <button href="#" class="btn btn-danger" onclick="deleteAdmin(<?php echo $admin->getUID(); ?>)" <?php echo $admin->getUID() == $_SESSION['adminUID'] ? 'disabled' : ''; ?>>
+                            Delete
+                        </button>
                     </td>
                 </tr>
             <?php endforeach; ?>

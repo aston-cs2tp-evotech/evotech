@@ -252,6 +252,20 @@ class AdminModel {
             return null;
         }
     }
+
+    /**
+     * Deletes an admin
+     * 
+     * @param int $adminID the AdminID to delete
+     * @return boolean True if success, otherwise false
+     */
+    public function deleteAdmin($adminID) {
+        $query = "DELETE FROM `AdminCredentials` WHERE `AdminID` = :adminID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(':adminID', $adminID, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
 }
 
 class Admin {
