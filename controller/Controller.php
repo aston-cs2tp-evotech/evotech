@@ -1629,6 +1629,22 @@ function DeleteCustomerByAdmin($customerID) {
     return "";
 }
 
+/**
+ * Delete an admin from the database by their ID
+ * 
+ * @param int $adminID The ID of the admin
+ * @return string Empty if success, otherwise a string to indicate where it failed
+ */
+function DeleteAdminByAdmin($adminID) {
+    global $Admin;
+    escapeHTML($adminID);
+    $err = $Admin->deleteAdmin($adminID);
+    if (!$err) {
+        return "Error deleting admin";
+    }
+    return "";
+}
+
 
 /**
  * Retrieves all orders, with orderLines attached

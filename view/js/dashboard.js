@@ -28,6 +28,42 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     navLinks[i].classList.remove("active");
   }
 
+  if (pageId === "report") {
+    console.log(categoryChartDataPoints);
+
+    var categoryChart = new CanvasJS.Chart("categoryChart", {
+      title : {
+        fontFamily: "allianceNo2",
+        text: "Products by Category"
+      },
+
+        animationEnabled: true,
+        data: [
+            {
+                type: "pie",
+                dataPoints: categoryChartDataPoints
+            }
+        ]
+    });
+    categoryChart.render();
+
+    var statusChart = new CanvasJS.Chart("statusChart", {
+      title : {
+        fontFamily: "allianceNo2",
+        text: "Orders by Status"
+      },
+
+        animationEnabled: true,
+        data: [
+            {
+                type: "pie",
+                dataPoints: orderStatusChartDataPoints
+            }
+        ]
+    });
+    statusChart.render();
+  }
+
   // Add 'active' class to the clicked navigation link except for if the page is an edit page
   if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin" && pageId !== "addAdmin" && pageId !== "addAPIToken") {
     var clickedNavLink = document.querySelector('a[href="#"][onclick="showPage(\'' + pageId + '\')"]');
@@ -81,12 +117,6 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     });
   }
 
-  // If navigating to orders 
-  if (pageId === "orders") {
-    var ordersTable = $('#ordersTable').DataTable();
-    ordersTable.order([5, 'desc']).draw();
-  }
-
   // If navigating to orders and the customerIDforOrder is not null, filter the orders by customerID
   if (pageId === "orders" && customerIDforOrder !== null) {
     // Filter the orders table by customerID
@@ -125,6 +155,7 @@ function showLastVisitedPage() {
 
 $(document).ready(function () {
   $('#ordersTable').DataTable({
+    order: [[5, 'desc']],
     // Enable select extension
     select: true,
     // Define columnDefs to customize the status column
@@ -145,10 +176,11 @@ $(document).ready(function () {
   $('#customersTable').DataTable();
   $('#adminsTable').DataTable();
   $('#apiKeysTable').DataTable();
-
+  $('#productReviewsTable').DataTable();
   inactivityTime();
   
 });
+
 
 // Get ordersMessage element
 var ordersMessage = document.getElementById('orderUpdate');
@@ -322,6 +354,62 @@ function deleteCustomer() {
       deleteCustomerMessage.style.display = 'block';
       deleteCustomerMessage.classList.add('alert-danger', 'alert-dismissible');
       showPage('customers');
+    }
+  });
+}
+
+// Function to delete an admin asynchronously
+function deleteAdmin(adminID) {
+  $.ajax({
+    url: '/api/deleteAdmin',
+    method: 'POST',
+    data: { adminID: adminID , Token : adminToken},
+    success: function(response) {
+      // Show success message
+      var deleteAdminMessage = document.getElementById('adminUpdate');
+      deleteAdminMessage.innerHTML = 'Admin ' + adminID + ' deleted successfully';
+      deleteAdminMessage.style.display = 'block';
+      deleteAdminMessage.classList.add('alert-success', 'alert-dismissible');
+      // Remove the admin row from the table
+      var row = document.getElementById('adminsTableRow' + adminID);
+      row.remove();
+      showPage('admins');
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var deleteAdminMessage = document.getElementById('adminUpdate');
+      deleteAdminMessage.innerHTML = error + ': ' + xhr.responseText;
+      deleteAdminMessage.style.display = 'block';
+      deleteAdminMessage.classList.add('alert-danger', 'alert-dismissible');
+      showPage('admins');
+    }
+  });
+}
+
+// Function to delete a product review asynchronously
+function deleteProductReview(productID, customerID) {
+  $.ajax({
+    url: '/api/deleteReview',
+    method: 'POST',
+    data: { productID: productID, customerID: customerID , Token : adminToken},
+    success: function(response) {
+      // Show success message
+      var deleteReviewMessage = document.getElementById('productReviewsUpdate');
+      deleteReviewMessage.innerHTML = 'Review deleted successfully';
+      deleteReviewMessage.style.display = 'block';
+      deleteReviewMessage.classList.add('alert-success', 'alert-dismissible');
+      // Remove the review row from the table
+      var row = document.getElementById('reviewsTableRow' + productID + '_' + customerID);
+      row.remove();
+      showPage('reviews');
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var deleteReviewMessage = document.getElementById('productReviewsUpdate');
+      deleteReviewMessage.innerHTML = error + ': ' + xhr.responseText;
+      deleteReviewMessage.style.display = 'block';
+      deleteReviewMessage.classList.add('alert-danger', 'alert-dismissible');
+      showPage('reviews');
     }
   });
 }
