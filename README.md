@@ -28,10 +28,17 @@ Built as part of the Aston University Computer Science Team Project module.
 
 
 ## Contributing
+
 For information on how to contribute to the project, please see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
+## Documentation
+
+Documentation for the project can be found in the project's [Wiki](https://github.com/aston-cs2tp-evotech/evotech/wiki).
+
 ## Running locally
+
 These instructions will guide you through setting up the project to run locally on your machine for development and testing purposes.
+
 ### Windows
 
 1. Install XAMPP
