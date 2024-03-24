@@ -176,7 +176,7 @@ $(document).ready(function () {
   $('#customersTable').DataTable();
   $('#adminsTable').DataTable();
   $('#apiKeysTable').DataTable();
-
+  $('#productReviewsTable').DataTable();
   inactivityTime();
   
 });
@@ -384,7 +384,34 @@ function deleteAdmin(adminID) {
       showPage('admins');
     }
   });
+}
 
+// Function to delete a product review asynchronously
+function deleteProductReview(productID, customerID) {
+  $.ajax({
+    url: '/api/deleteReview',
+    method: 'POST',
+    data: { productID: productID, customerID: customerID , Token : adminToken},
+    success: function(response) {
+      // Show success message
+      var deleteReviewMessage = document.getElementById('productReviewsUpdate');
+      deleteReviewMessage.innerHTML = 'Review deleted successfully';
+      deleteReviewMessage.style.display = 'block';
+      deleteReviewMessage.classList.add('alert-success', 'alert-dismissible');
+      // Remove the review row from the table
+      var row = document.getElementById('reviewsTableRow' + productID + '_' + customerID);
+      row.remove();
+      showPage('reviews');
+    },
+    error: function(xhr, status, error) {
+      // Show error message
+      var deleteReviewMessage = document.getElementById('productReviewsUpdate');
+      deleteReviewMessage.innerHTML = error + ': ' + xhr.responseText;
+      deleteReviewMessage.style.display = 'block';
+      deleteReviewMessage.classList.add('alert-danger', 'alert-dismissible');
+      showPage('reviews');
+    }
+  });
 }
 
 

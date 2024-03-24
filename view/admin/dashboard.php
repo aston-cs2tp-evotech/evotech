@@ -19,6 +19,8 @@
   }
 
   $tokens = GetAllTokens();
+
+  $productReviews = GetAllReviews();
   ?>
 
   <meta charset="utf-8">
@@ -122,6 +124,8 @@ foreach ($orderStatuses as $status) {
 
         <?php require 'pages/addProductPage.php'; ?>
 
+        <?php require 'pages/productReviewsPage.php'; ?>
+
         <?php require 'pages/customersPage.php'; ?>
 
         <?php require 'pages/editCustomerPage.php'; ?>
@@ -135,6 +139,8 @@ foreach ($orderStatuses as $status) {
         <?php require 'pages/apiTokensPage.php'; ?>
 
         <?php require 'pages/addAPITokenPage.php'; ?>
+
+        
         
       </main>
     </div>

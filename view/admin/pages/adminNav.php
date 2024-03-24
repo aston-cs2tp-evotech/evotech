@@ -31,6 +31,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="#" onclick="showPage('productReviews')"> 
+                <span data-feather="plus-square"></span>
+                Product Reviews
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="#" onclick="showPage('customers')"> 
                 <span data-feather="users"></span>
                 Customers
