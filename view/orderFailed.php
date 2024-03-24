@@ -17,21 +17,23 @@ if (isset($_SESSION["uid"])) {
     <!-- Link to Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <!-- Link to your custom CSS -->
-    <link rel="stylesheet" type="text/css" href="/view/css/login_register_checkout.css"/>
+    <link rel="stylesheet" type="text/css" href="/view/css/orderFailed.css"/>
 </head>
 
 <body>
     <?php include __DIR__ . '/nav.php'?>
-    <header class="bg-dark text-white text-center py-4">
-        <h1>Order Failed</h1>
-    </header>
+    <div class="container" style= "background-color: #A499B3">
+        <header class="mt-3">
+            <h1>Order Failure...</h1>
+        </header>
+
 
     <main>
         <div class="container mt-4">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2>Your order has failed</h2>
-                    <p>We're sorry, but there was an issue processing your order. Please try again later or contact customer support.</p>
+                    <h2>Your Order Has Failed</h2>
+                    <p>We're sorry, but there was an issue processing your order. Please try again later or contact Customer Support.</p>
 
                     <a href="/checkout" class="btn btn-danger">Go Back to Checkout</a>
                 </div>
