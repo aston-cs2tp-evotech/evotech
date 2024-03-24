@@ -549,6 +549,7 @@ function handleCancelRequest() {
     if (!CheckExists($_POST["OrderID"])) header("Location:/");
 
     $returned = CancelOrReturnOrder($_POST["OrderID"], "cancelled");
+    
     if ($returned) header("Location:/customer");
     else header("Location:/");
 }

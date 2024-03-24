@@ -89,9 +89,9 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                    
                     <div class="card mb-5">
                         <div class="card-body ">
-                        <h3>Order <?php echo $order->getOrderID(); ?></h3>
+                        <h3>Order reference ID: #<?php echo $order->getOrderID(); ?></h3>
                         <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
-                        <h4>Date: <?php echo $order->getCheckedOutAt(); ?></h4>
+                        <h4>Created at: <?php echo $order->getCheckedOutAt(); ?></h4>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -111,13 +111,16 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <div class="col text-center"> 
+                                <div class="col text-right"> 
                                     <h3>Total: £<?php echo $totalPrice; ?></h3>
-                                    <?php if ($order->getOrderStatusName() === "Delivered") : ?>
-                                        <button class="btn btn-primary mt-3">Return</button>
-                                    <?php else : ?>
-                                        <button class="btn btn-danger mt-3">Cancel Order</button>
+                                    <form action="/cancelOrder" method="POST">
+                                        <input type="hidden" name="OrderID" value="<?php echo $order->getOrderID(); ?>">
+                                    <?php if ($order->getOrderStatusName() === "delivered") : ?>
+                                        <button class="btn btn-primary mt-3" style="width: 200px;">Return</button>
+                                    <?php elseif (!in_array($order->getOrderStatusName(), ["cancelled", "returned"])) : ?>
+                                        <button type="submit" class="btn btn-danger mt-3" style="width: 200px;">Cancel Order</button>
                                     <?php endif; ?>
+                                    </form>
                                 </div>
                             </div>
                         </div>
