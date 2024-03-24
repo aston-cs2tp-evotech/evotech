@@ -119,6 +119,9 @@ switch ($requestPath) {
         handleCheckoutProcessRequest();
         break;
 
+    case '/cancelOrder':
+        handleCancelRequest();
+        break;
     case '/orderSuccess':
         require __DIR__ . '/view/orderConfirmation.php';
         break;
@@ -244,6 +247,14 @@ switch ($requestPath) {
 
     case '/api/getProductReviews':
         handleAPIRequest('getProductReviews');
+        break;
+
+    case '/api/returnOrder':
+        handleAPIRequest('returnOrder');
+        break;
+
+    case '/api/cancelOrder':
+        handleAPIRequest('cancelOrder');
         break;
 
     default:
@@ -531,6 +542,18 @@ function handleCheckoutProcessRequest(){
 }
 
 /**
+ * Handles cancelling or returning orders
+ */
+function handleCancelRequest() {
+    if (!CheckLoggedIn()) header("Location:/");
+    if (!CheckExists($_POST["OrderID"])) header("Location:/");
+
+    $returned = CancelOrReturnOrder($_POST["OrderID"], "cancelled");
+    if ($returned) header("Location:/customer");
+    else header("Location:/");
+}
+
+/**
  * Handle requests to the customer page
  * 
  * @return void
@@ -788,6 +811,14 @@ function handleAPIRequest($path) {
 
         case 'getProductReviews':
             require __DIR__ . '/api/getProductReviews.php';
+            break;
+
+        case 'returnOrder':
+            require __DIR__ . '/api/returnOrder.php';
+            break;
+
+        case 'cancelOrder':
+            require __DIR__ . '/api/cancelOrder.php';
             break;
             
         default:

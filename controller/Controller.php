@@ -1320,6 +1320,49 @@ function GetPreviousOrders() {
     return $orders;
 }
 
+/**
+ * Returns stock to product and sets order status to Cancelled or Returned
+ * @param int $orderID The unique identifier of the order
+ * @param string $status canclled or returned
+ * @return boolean True if success, otherwise false
+ */
+function CancelOrReturnOrder($orderID, $status) {
+    global $Order, $Product;
+    //check fields
+    $fields = array("cancelled", "returned");
+    if (!CheckExists($status) || !(gettype($status) == "string") || !in_array($status, $fields)) return false;
+    if (!CheckExists($orderID)) return false;
+    try {
+        $orderID = (int)$orderID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    //fetch order and orderlines
+    $order = CreateSafeOrder($Order->getOrderByID($orderID));
+    if (is_null($order)) return false;
+
+    $orderLines = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($orderID));
+    if (is_null($orderLines)) return false;
+
+    foreach ($orderLines as $orderLine) {
+        $quantity = $orderLine->getQuantity();
+        $prod = CreateSafeProduct($Product->getProductByID($orderLine->getProductID()));
+        if (is_null($prod)) return false;
+
+        //update stock
+        $newQuantity = $prod->getStock() + $quantity;
+        $success = $Product->updateProductDetail($orderLine->getProductID(), "Stock", $newQuantity);
+        if (!$success) return false;
+    }
+
+    $statusID = $Order->getOrderStatusIDByName($status);
+    if (is_null($statusID)) return false;
+
+    return $Order->updateOrderDetails($order->getOrderID(), "OrderStatusID", $statusID);
+}
+
 //  --------------------------------------------------
 //
 //

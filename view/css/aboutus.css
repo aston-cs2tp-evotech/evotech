@@ -9,9 +9,7 @@ body {
     padding: 0;
     background-color: #534B62!important;
     background-image: url(/view/images/wireframe.webp);
-    /* Transform background image up 50px */
     background-position: right 0px top 200px;
-    /* Don't repeat the background image */
     background-repeat: no-repeat;
 }
 

@@ -109,11 +109,11 @@ h2 {
     background-color: #534B62;
     text-align: center;
     box-sizing: border-box;
-    position: absolute; /* Position splash absolutely */
-    top: 0; /* Align splash to the top */
-    width: 100vw; /* Take full width */
-    height: 100vh; /* Take full height */
-    max-width: none; /* Remove max-width */ 
+    position: absolute; 
+    top: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    max-width: none; 
     max-height: 100%;
     background-size: cover!important;
     overflow: hidden;
