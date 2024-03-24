@@ -23,6 +23,9 @@ main {
     justify-content: center;
     background-color: #A499B3 ;
     max-width: 1000px;
+    max-height: auto;
+    height: 95%;
+    width: 95%;
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
@@ -30,21 +33,26 @@ main {
 }
 
 .product-image {
-    flex: 0 1 350px;
+    flex: 1; /* Adjusted for flexibility */
+    max-width: 350px; /* Maximum width for large screens */
     margin-right: 20px;
     padding: 10px;
     border-radius: 8px;
+    align-self: flex-start; /* Aligns image at the top */
 }
+
 
 .product-image img {
     width: 100%;
+    height: auto;
     max-width: 350px;
     max-height: 350px;
     border-radius: 8px;
 }
 
 .product-details {
-    flex: 1 1 200px;
+    flex: 1; /* Adjusted for flexibility */
+    min-width: 200px; /* Ensures text does not get too squeezed */
     background-color: #534B62;
     padding: 20px;
     border-radius: 8px;
@@ -52,7 +60,29 @@ main {
     text-align: right;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+}
+@media only screen and (max-width: 768px) {
+    .main-product-box {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-image, .product-details {
+        max-width: 90%; /* Allows content to fit within smaller screens */
+        margin: 0 auto; /* Center-aligns content for better presentation */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .product-details {
+        text-align: center; /* Adjusts text alignment for better readability */
+    }
+
+    .btn-primary {
+        padding: 10px 20px; /* Adjusts for easier interaction */
+        font-size: 1em; /* Ensures text within buttons is readable */
+    }
 }
 
 .product-details h2, .product-details p, .product-price {
@@ -72,7 +102,7 @@ main {
 
 .product-stock {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: flex-end;
     margin-top: auto;
 }
@@ -165,12 +195,17 @@ main {
         width: 200px;
         max-height: 190px;
         border-radius: 8px;
+        justify-content: center;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .recommended-product-details {
         text-align: center;
         color: #111;
         margin: 10px 0;
+        justify-content: center;
     }
 
 
@@ -380,4 +415,3 @@ main {
     .card-img, .product-image img, .recommended-product-image img {
         object-fit: cover; /* Cover the area without losing aspect ratio */
     }
-    
