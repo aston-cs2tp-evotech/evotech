@@ -723,6 +723,225 @@ function GetRecommendedProducts($productID) {
    return $returnProds;
 }
 
+/**
+ * Checks if a customer has bought the product, and has not already left a review
+ * @param int $customerID The unqiue identifier of the customer
+ * @param int $productID The unique identifier of the product
+ * @return boolean True if they are allowed to, otherwise false
+ */
+function CheckCanLeaveReview($customerID, $productID) {
+    global $Product;
+    $bought = false;
+    //check ids
+    if (!CheckExists($customerID)) return false;
+    if (!CheckExists($productID)) return false;
+    try {
+        $customerID = (int)$customerID;
+    } 
+    catch (Exception $e) {
+        return false;
+    }
+    try {
+        $customerID = (int)$customerID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    //check if bought product
+    $prev = GetPreviousOrders();
+    if (!$prev) return false;
+
+    foreach ($prev as $order) {
+        foreach ($order->getOrderLines as $ol) {
+            if ($ol->getProductID() == $productID) {
+                $bought = true;
+                break;
+            }
+        }
+    }
+
+    if (!$bought) return false;
+
+    //check if has left review
+    if (is_null($Product->getProductReview($productID, $customerID))) return true;
+    else return false;
+}
+
+/**
+ * --INTERNAL USE ONLY-- Checks all vars for leaving a review
+ * @param int $productID The product's ID
+ * @param int $customerID The customer's ID
+ * @param int $rating The rating value
+ * @param string $review The review
+ * @return string Empty if ok, otherwise an error message
+ */
+function ReviewVarChecks($productID, $customerID, $rating, $review) {
+    if (!CheckExists($productID)) return "Missing productID";
+    if (!CheckExists($customerID)) return "Missing customerID";
+    if (!CheckExists($rating)) return "Missing rating";
+    if (!(CheckExists($review)) || !(gettype($review) == "string")) return "Invalid review";
+    try {
+        $productID = (int)$productID;
+    }
+    catch (Exception $e) {
+        return "Invalid productID";
+    }
+    try {
+        $customerID = (int)$customerID;
+    }
+    catch (Exception $e) {
+        return "Invalid customerID";
+    }
+    try {
+        $rating = (int)$rating;
+    }
+    catch (Exception $e) {
+        return "Invalid rating";
+    }
+    if (!($rating > 0 && $rating < 6)) return "Rating must be between 1 and 5";
+    if (strlen($review) > 200) return "Review must be 200 characters or less";
+    return "";
+}
+
+/**
+ * Creates a rating for a product
+ * @param int $productID The product's ID
+ * @param int $customerID The customer's ID
+ * @param int $rating The rating value
+ * @param string $review The review
+ * @return string Empty if success, otherwise an error message
+ */
+function CreateReview($productID, $customerID, $rating, $review) {
+    global $Product;
+    escapeHTML($review);
+
+    //param checks
+    $err = ReviewVarChecks($productID, $customerID, $rating, $review);
+    if (!$err) return $err;
+
+    $success = $Product->addProductReview(array("ProductID" => $productID, "CustomerID" => $customerID, "Rating" => $rating, "Review" => $review));
+    if (is_null($success)) return "Failed adding review to database";
+    else return "";
+
+}
+
+/**
+ * Updates a rating for a product
+ * @param int $productID The product's ID
+ * @param int $customerID The customer's ID
+ * @param int $rating The rating value
+ * @param string $review The review
+ * @return string Empty if success, otherwise an error message
+ */
+function UpdateReview($productID, $customerID, $rating, $review) {
+    global $Product;
+    escapeHTML($review);
+
+    //param checks
+    $err = ReviewVarChecks($productID, $customerID, $rating, $review);
+    if (!$err) return $err;
+
+    if (!$Product->updateProductReview($productID, $customerID, "Rating", $rating)) return "Error updating review";
+    if (!$Product->updateProductReview($productID, $customerID, "Review", $review)) return "Error updating review";
+    
+    return "";
+}
+
+/**
+ * Deletes a product review
+ * @param int $productID The product's ID
+ * @param int $customerID The customer's ID
+ * @return boolean True if success, otherwise false
+ */
+function DeleteReview($productID, $customerID) {
+    global $Product;
+    //id checks
+    if (!CheckExists($customerID)) return false;
+    if (!CheckExists($productID)) return false;
+    try {
+        $customerID = (int)$customerID;
+    } 
+    catch (Exception $e) {
+        return false;
+    }
+    try {
+        $customerID = (int)$customerID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    return $Product->deleteProductReview($productID, $customerID);
+}
+
+/**
+ * Gets all productReviews by a customer
+ * @param int $customerID The customer's ID
+ * @return array|boolean Array of ProductReview objects, or false
+ */
+function GetAllReviewsByCustomer($customerID) {
+    global $Product;
+
+    if (!CheckExists($customerID)) return false;
+    try {
+        $customerID = (int)$customerID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    $reviews = array();
+    $revs = $Product->getProductReviewsByCustomer($customerID);
+    if (is_null($revs)) return false;
+
+    foreach ($revs as $rev) {
+        $review = CreateSafeProductReview($rev);
+        if (is_null($review)) return false;
+        array_push($reviews, $review);
+    }
+
+    return $reviews;
+}
+
+/**
+ * Gets all reviews on a product with a certain rating
+ * @param int $productID The product's ID
+ * @param int $rating The rating value
+ * @return array|boolean Array of ProductReview objects, or false
+ */
+function GetAllReviewsByRating($productID, $rating) {
+    global $Product;
+
+    //type checks
+    if (!CheckExists($productID)) return false;
+    if (!CheckExists($rating)) return false;
+    try {
+        $productID = (int)$productID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+    try {
+        $rating = (int)$rating;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    $reviews = array();
+    $revs = $Product->getProductReviewsByProductRating($productID, $rating);
+    if (is_null($revs)) return false;
+
+    foreach ($revs as $rev) {
+        $review = CreateSafeProductReview($rev);
+        if (is_null($review)) return false;
+        array_push($reviews, $review);
+    }
+
+    return $reviews;
+}
+
 
 // ---------------------------------------------
 //
@@ -1783,3 +2002,44 @@ function UpdateProductImage($productID, $fileName, $mainImage) {
     else return "";
 }
 
+/**
+ * Gets all productReviews
+ * @return array|boolean Array of ProductReview objects, or false
+ */
+function GetAllReviews() {
+    global $Product;
+
+    $reviews = array();
+    $revs = $Product->getAllProductReviews();
+    if (is_null($revs)) return false;
+
+    foreach ($revs as $rev) {
+        $review = CreateSafeProductReview($rev);
+        if (is_null($review)) return false;
+        array_push($reviews, $review);
+    }
+
+    return $reviews;
+}
+
+/**
+ * Gets all reviews on a product
+ * --API USE ONLY, PRODUCTS HAVE ALL REVIEWS ATTACHED--
+ * @param int $productID The product's ID
+ * @return array|boolean Array of ProductReview objects, or false
+ */
+function GetAllReviewsByProduct($productID) {
+    global $Product;
+
+    $reviews = array();
+    $revs = $Product->getProductReviewsByProduct($productID);
+    if (is_null($revs)) return false;
+
+    foreach ($revs as $rev) {
+        $review = CreateSafeProductReview($rev);
+        if (is_null($review)) return false;
+        array_push($reviews, $review);
+    }
+
+    return $reviews;
+}
