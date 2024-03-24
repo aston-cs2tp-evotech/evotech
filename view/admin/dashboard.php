@@ -58,7 +58,9 @@ foreach($categories as $category) {
   $percentage = ($categoryProductCount / $totalProductCount) * 100;
   // Round the percentage to 2 decimal places
   $percentage = round($percentage, 2);
-  $categoryChartDatapoints[] = array("label" => $category['CategoryName'] . " (" . $categoryProductCount . ")", "y" => $percentage);
+  $categoryChartDatapoints[] = array(
+    "label" => $category['CategoryName'] . " (" . $categoryProductCount . ")",
+    "y" => $percentage);
 }
 
 $orderStatusChartDatapoints = array();
@@ -74,7 +76,10 @@ foreach ($orders as $order) {
   }
 }
 foreach ($orderStatuses as $status) {
-  $orderStatusChartDatapoints[] = array("label" => $status['Name'] . " (" . ($ordersByStatus[$status['Name']] ?? 0) . ")", "y" => $ordersByStatus[$status['Name']] ?? 0);
+  $orderStatusChartDatapoints[] = array(
+    "label" => $status['Name'] . " (" . ($ordersByStatus[$status['Name']] ?? 0) . ")",
+    "y" => $ordersByStatus[$status['Name']] ?? 0
+  );
 }
 ?>
 <script>
