@@ -35,7 +35,7 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
 <body>
     <?php include __DIR__ . '/nav.php' ?>
     
-    <header class="bg-dark text-white text-center py-4">
+    <header class="bg-dark text-white text-center my-5 py-4">
         <h1>Welcome, <?php echo $username; ?>!</h1>
         <h4>Not <?php echo $username; ?>? <a href="/logout">Log Out</a></h4>
     </header>

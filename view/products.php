@@ -66,7 +66,7 @@ if (isset($userInfo)) {
             <div class="card mb-3 rounded product-card" data-name="<?php echo strtolower($item->getName()); ?>" data-description="<?php echo strtolower($item->getDescription()); ?>">
               <div class="row no-gutters">
                 <div class="col-md-4">
-                  <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product Image">
+                  <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img mx-auto d-block py-1 " style="max-width: 60%; margin-top: 30px;" alt="Product Image">
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
@@ -82,7 +82,7 @@ if (isset($userInfo)) {
                     <p class="card-text">Price: £
                       <?php echo $item->getPrice(); ?>
                     </p>
-                    <a href="/product?productID=<?php echo $item->getProductID(); ?>" class='btn btn-primary'>Product Page</a>
+                    <a href="/product?productID=<?php echo $item->getProductID(); ?>" class='btn btn-primary stretched-link'>View Product</a>
                   </div>
                 </div>
               </div>

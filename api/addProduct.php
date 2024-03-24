@@ -1,11 +1,21 @@
 <?php
+$message = "";
+
+$keys = array("productName", "productPrice", "productStock", "productDescription", "productCategory");
+
+foreach ($keys as $key) {
+    if (!isset($_POST[$key])) {
+        $message = $key ." not specified";
+        header("Location: /admin?editProductError=" . urlencode($message));
+        exit();
+    }    
+}
 
 $productName = $_POST["productName"];
 $productPrice = $_POST["productPrice"];
 $productStock = $_POST["productStock"];
 $productDescription = $_POST["productDescription"];
 $productCategory = $_POST["productCategory"];
-$message = "";
 
 // Create new product
 $details = array(

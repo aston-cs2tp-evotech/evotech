@@ -1,66 +1,55 @@
-@font-face {
+
+  @font-face {
     font-family: allianceNo2;
     src: url(/view/fonts/allianceno2.woff) format('woff');
   }
   
-/* login.css */
 p {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     text-align: left;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea {
-    width: 100%;
-    box-sizing: border-box;
-    margin-bottom: 15px;
-}
+.form-signin {
+    max-width: 330px;
+    padding: 1rem;
+  }
+  
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+  
+  .form-signin input[type="text"] {
+    background-color: #464052;
+    color : #f8f8f8;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 
-input[type="submit"] {
-    height: 40px;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #000;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
-}
+  .form-signin input[type="text"]:focus {
+    border-color: #D0BCD5;
+    box-shadow : 0 0 0 0.25rem rgb(208 188 213 / 25%)
+  }
+  
+  .form-signin input[type="password"] {
+    background-color: #464052;
+    color : #f8f8f8;
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 
-.login-form-button {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
-    background-color: #000;
-    color: #fff;
-    text-decoration: none;
-    transition: 0.4s background-color;
-    border-radius: 10px;
-    padding: 12px 45%;
-}
-
-.login-form-button:hover {
-    background-color: #aaa;
-}
-
-.register-button {
-    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
-    background-color: #000;
-    color: #fff;
-    text-decoration: none;
-    transition: 0.4s background-color;
-    border-radius: 10px;
-    padding: 12px 41.75%;
-}
-
-.register-button:hover {
-    background-color: #aaa;
-}
+    .form-signin input[type="password"]:focus {
+        border-color: #D0BCD5;
+        box-shadow : 0 0 0 0.25rem rgb(208 188 213 / 25%)
+    }
 
 body {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     margin: 0;
     padding: 0;
     background-color: #f8f8f8;
+    height : 100vh;
 }
 
 h2 {
@@ -74,32 +63,83 @@ h2 {
 .login {
     max-width: 100%;
     max-height: 100%;
-    min-height: 95dvh;
     display: flex;
     justify-content: space-between;
     margin: 0px auto;
     color: #f8f8f8;
+    position: relative; /* Set position to relative */
+    min-height: 100vh; /* Set min-height to 100vh */
 }
 
-.login-image {
-    width: 65%;
+.splash {
+    background-image: url('/view/images/loginRegisterImage.jpg');
     margin: 0px auto;
     padding: 0px;
     background-color: #534B62;
     text-align: center;
     box-sizing: border-box;
-    object-fit: contain;
+    position: absolute; /* Position splash absolutely */
+    top: 0; /* Align splash to the top */
+    width: 100vw; /* Take full width */
+    height: 100vh; /* Take full height */
+    max-width: none; /* Remove max-width */ 
+    max-height: 100%;
+    background-size: cover!important;
+    overflow: hidden;
 }
 
-.login-form {
-    width: 35%;
+.login-box {
     margin: 0px auto;
     padding: 25px;
     background-color: #534B62;
     text-align: center;
     box-sizing: border-box;
-}
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+    position: absolute; /* Position login-box absolutely */
+    bottom: 0; /* Align login-box to the bottom */
+    align-items: center; /* Align items to center */
+    width: 100%; /* Take full width */
+    height : 100vh;
+    max-width: none; /* Remove max-width */
+    background: linear-gradient(to bottom, rgba(83, 75, 98, 0.5), rgba(83, 75, 98, 1)); /* Background gradient with opacity */
+    padding-bottom: 0; 
+    margin-bottom: 0;
+  }
+
 
 .error {
     color: #ff0000;
 }
+
+.register {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+#signInButton {
+    background-color: #1b1725;
+    color: #f8f8f8;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-color: #441350;
+}
+
+#signInButton:hover {
+    background-color: #362c4d;
+    color: #f8f8f8;
+}
+
+#signInButton:active {
+    border: none;
+}
+
+#registerButton {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+
+/* Rest of your CSS remains unchanged */

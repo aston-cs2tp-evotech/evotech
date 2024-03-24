@@ -1,9 +1,15 @@
 <?php
+
+if (!isset($_POST["Token"])) {
+    http_response_code(418);
+    echo "Invalid token";
+    return;
+}
 // only TokenAdminID is required for a valid response, as the 
 // default values for the other fields don't terminate GenerateToken
-$tokenName = $_POST["TokenName"];
+$tokenName = (isset($_POST["TokenName"])) ? $_POST["TokenName"] : null;
 $tokenAdmin = $_POST["Token"];
-$tokenExp = $_POST["TokenExpiry"];
+$tokenExp = isset($_POST["TokenExpiry"]) ? $_POST["TokenExpiry"] : null;
 
 // Try get admin ID from token
 $tokenAdmin = GetAdminByToken($tokenAdmin);

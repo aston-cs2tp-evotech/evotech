@@ -1,4 +1,21 @@
 <?php
+function copyFolderStructure($source, $destination) {
+    if (!file_exists($destination)) {
+        mkdir($destination, 0777, true);
+    }
+
+    $dir = opendir($source);
+    while (false !== ($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
+            if (is_dir($source . '/' . $file)) {
+                copyFolderStructure($source . '/' . $file, $destination . '/' . $file);
+            } else {
+                copy($source . '/' . $file, $destination . '/' . $file);
+            }
+        }
+    }
+    closedir($dir);
+}
 
 if (!isset($_POST['dummyData'])) {
     http_response_code(400);
@@ -73,19 +90,7 @@ if ($_POST['dummyData'] == "true") {
     $source = $_SERVER['DOCUMENT_ROOT'] . "/setup/examplePhotos/products";
     $destination = $_SERVER['DOCUMENT_ROOT'] . "/view/images/products";
 
-    if (!file_exists($destination)) {
-        mkdir($destination, 0777, true);
-    }
-
-    $files = scandir($source);
-
-    foreach ($files as $file) {
-        if ($file == "." || $file == "..") {
-            continue;
-        }
-
-        copy($source . "/" . $file, $destination . "/" . $file);
-    }
+    copyFolderStructure($source, $destination);
 }
 
 // Disconnect from the database

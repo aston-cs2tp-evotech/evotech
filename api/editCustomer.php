@@ -1,11 +1,21 @@
 <?php
 
+$message = "";
+$keys = array("customerID", "customerUsername", "customerEmail", "customerAddress", "customerPassword");
+
+foreach ($keys as $key) {
+    if (!isset($_POST[$key])) {
+        $message = $key . " not specified";
+        echo $message;
+        exit();
+    }
+}
+
 $customerID = $_POST['customerID'];
 $customerUsername = $_POST["customerUsername"];
 $customerEmail = $_POST["customerEmail"];
 $customerAddress = $_POST["customerAddress"];
 $custommerPassword = $_POST["customerPassword"];
-$message = "";
 $updateList = array();
 $updateList["CustomerID"] = $customerID;
 // Check if customer exists

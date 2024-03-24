@@ -34,15 +34,15 @@ if (isset($userInfo)) {
 
 <body>
 
-    <div class="container">
-        <header class="mt-4">
+    <div class="container" style= "background-color: #A499B3">
+        <header class="mt-3">
             <h1>Basket</h1>
         </header>
 
         <main class="mt-4">
             <div class="row">
                 <div class="col-lg-8">
-                    <h2>Your basket</h2>
+                    <h2>Your Items</h2>
 
                     <?php
                     // Get basket items using the GetCustomerBasket function
@@ -57,23 +57,29 @@ if (isset($userInfo)) {
                             <div class="card mb-3">
                                 <div class="row no-gutters">
                                     <div class="col-md-4">
-                                        <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img" alt="Product image">
+                                        <img src="/view/images/products/<?php echo $item->getProductID();?>/<?php echo $item->getMainImage();?>" class="card-img mx-auto d-block py-1 " style="margin-top: 5px;" alt="Product image">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h3 class="card-title"><?php echo $item->getProductName(); ?></h3>
                                             <p class="card-text">Price: £<?php echo number_format($item->getUnitPrice(), 2); ?></p>
                                             <p class="card-text">Total Stock: <?php echo $item->getTotalStock(); ?></p>
+                                            <h5 class="card-text">Subtotal: £<?php echo number_format($item->getTotalPrice(), 2); ?></h4>
                                             <form action="/update-basket" method="post">
                                                 <input type="hidden" name="productID" value="<?php echo $item->getProductID(); ?>">
                                                 <div class="form-group">
-                                                    <label for="quantity">Quantity</label>
-                                                    <input type="number" class="form-control" name="quantity" value="<?php echo $item->getQuantity(); ?>" min="0" max="<?php echo $item->getTotalStock(); ?>" required />
+                                                    <div class="input-group">
+                                                        <span class="input-group-text" id="basic-addon1">Quantity</span>
+                                                        <input type="number" class="form-control" name="quantity" value="<?php echo $item->getQuantity(); ?>" min="0" max="<?php echo $item->getTotalStock(); ?>" required />
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-primary text-light" style="background-color: #1b1725">Update</button>
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                                <input type="submit" class="btn btn-primary" value="Update">
+                                                
                                             </form>
-                                            <h5 class="card-text">Subtotal: £<?php echo number_format($item->getTotalPrice(), 2); ?></h4>
+                                            
                                         </div>
                                     </div>
                                 </div>

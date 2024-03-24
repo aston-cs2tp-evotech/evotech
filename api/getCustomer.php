@@ -1,5 +1,11 @@
 <?php
 
+if (!isset($_POST["customerID"])) {
+    http_response_code(418);
+    echo json_encode(array("message" => "customerID not specified"));
+    exit();
+}
+
 $customerID = $_POST['customerID'];
 
 // Get customer details from database
