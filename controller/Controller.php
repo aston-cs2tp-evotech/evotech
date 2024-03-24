@@ -2043,3 +2043,41 @@ function GetAllReviewsByProduct($productID) {
 
     return $reviews;
 }
+
+/**
+ * Deletes all reviews associated with a product
+ * @param int $productID The product's ID
+ * @return boolean True if success, otherwise false
+ */
+function DeleteReviewsByProduct($productID) {
+    global $Product;
+
+    if (!CheckExists($productID)) return false;
+    try {
+        $productID = (int)$productID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    return $Product->deleteProductReviewsByProduct($productID);
+}
+
+/**
+ * Deletes all reviews associated with a customer
+ * @param int $customerID The customer's ID
+ * @return boolean True if success, otherwise false
+ */
+function DeleteReviewsByCustomer($customerID) {
+    global $Product;
+
+    if (!CheckExists($customerID)) return false;
+    try {
+        $customerID = (int)$customerID;
+    }
+    catch (Exception $e) {
+        return false;
+    }
+
+    return $Product->deleteProductReviewsByCustomer($customerID);
+}
