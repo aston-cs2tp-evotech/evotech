@@ -54,9 +54,7 @@
   padding-right: 20px;
 }
 
-/*
- * Remove padding for when class is nav-link AND bi
- */
+
 .nav-link.bi{
   padding: 0;
 }

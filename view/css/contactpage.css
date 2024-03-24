@@ -20,32 +20,32 @@ header {
 
 h1 {
     
-    font-size: 2.5rem; /* Responsive font size */
+    font-size: 2.5rem; 
     text-align: center;
-    color: #d8d3d3; /* Changed for better visibility */
+    color: #d8d3d3; 
     margin: 0;
 }
 
 .contact-container {
-    background-color: #534B62; /* Changed to brown */
+    background-color: #534B62; 
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-    justify-content: center; /* Centers the boxes horizontally */
-    gap: 20px; /* Specifies the gap between the boxes */
+    flex-wrap: wrap;
+    justify-content: center; 
+    gap: 20px; 
     max-width: auto;
     margin: auto;
-    padding: 20px; /* Added padding around the inside of the container */
-    box-sizing: border-box; /* Ensures padding is included in the width calculation */
+    padding: 20px; 
+    box-sizing: border-box; 
 }
 
 .contact-form, .contact-info {
-    flex: auto; /* Adjusts based on screen size */
+    flex: auto;
     padding: 30px;
-    background-color: #A499B3; /* Keeps the original background color */
+    background-color: #A499B3; 
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     margin-bottom: 20px; /* Adds space between stacked elements on small screens */
-    max-width: 600px; /* Increased from 300px to make the boxes wider */
+    max-width: 600px; 
 }
 
 label, input, textarea, button {
@@ -70,14 +70,13 @@ button {
     cursor: pointer;
 }
 :root {
-    /* Adjustments for FAQ section styling */
-    --faq-box-max-width: 1500px; /* Maximum width for the FAQ container */
-    --faq-box-padding: 20px; /* Padding inside the FAQ container */
-    --faq-item-bg-color: #A499B3; /* Background color for accordion items */
-    --faq-header-bg-color: #A499B3 ; /* Background color for accordion headers and buttons */
-    --faq-body-bg-color: #ffffff ; /* Background color for accordion body */
-    --faq-text-color: #000; /* Text color for the FAQ content */
-    --faq-border-radius: 5px; /* Border radius for accordion items */
+    --faq-box-max-width: 1500px; 
+    --faq-box-padding: 20px; 
+    --faq-item-bg-color: #A499B3; 
+    --faq-header-bg-color: #A499B3 ; 
+    --faq-body-bg-color: #ffffff ; 
+    --faq-text-color: #000; 
+    --faq-border-radius: 5px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     
 }
@@ -122,7 +121,7 @@ button {
 }
 
 .accordion-button:focus {
-    box-shadow: none; /* Removes focus outline for a cleaner look */
+    box-shadow: none; 
     border-color: #000;
 }
 
@@ -132,16 +131,15 @@ button {
     border-color: #000;
 }
 .contact-container {
-    background-color: #534B62; /* Changed to brown */
+    background-color: #534B62;
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-    justify-content: center; /* Centers the boxes horizontally */
-    gap: 20px; /* Specifies the gap between the boxes */
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 20px; 
     max-width: auto;
     margin: auto;
-    padding: 20px; /* Added padding around the inside of the container */
+    padding: 20px; 
     box-sizing: border-box; 
-    /* Ensures padding is included in the width calculation */
 }
 .p-4{
    
@@ -149,7 +147,7 @@ button {
 }
 
 .customer-reviews {
-    background-color: #A499B3; /* Changed to black */
+    background-color: #A499B3; 
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -167,13 +165,13 @@ button {
 
 .row {
     display: flex;
-    flex-wrap: wrap; /* Allows cards to stack on smaller screens */
+    flex-wrap: wrap; 
     justify-content: center;
     gap: 20px;
 }
 
 .card {
-    background-color: #d0bcd5 !important; /* Background color of the cards changed to yellow */
+    background-color: #d0bcd5 !important;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
@@ -192,33 +190,32 @@ button {
     margin-right: auto;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .contact-form, .contact-info {
-        flex: 1 1 100%; /* Makes form and info stack on smaller screens */
+        flex: 1 1 100%; 
     }
     
     .card {
-        flex: 0 1 calc(50% - 20px); /* Adjusts cards to take 50% of the container on medium screens */
+        flex: 0 1 calc(50% - 20px); 
     }
 }
 
 @media (max-width: 576px) {
     h1 {
-        font-size: 2rem; /* Adjusts font size for very small screens */
+        font-size: 2rem; 
     }
     
     .card {
-        flex: 0 1 100%; /* Stacks cards vertically on small screens */
+        flex: 0 1 100%;
     }
 }
 
 .contact-form:hover, .contact-info:hover {
-    border-color: #ffffff; /* Changes border color to white on hover */
+    border-color: #ffffff; 
     background-color: #B3A4C9;
      transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
      transform: scale(1.03); 
-} /* Slightly lighter shade on hover */
+} 
 
 
 
@@ -229,16 +226,16 @@ button {
 }
 
 .card:hover {
-    background-color: #C5B6D0; /* Slightly lighter shade on hover */
-    transform: scale(1.03); /* Slightly scale up the card to give feedback */
+    background-color: #C5B6D0; 
+    transform: scale(1.03); 
+    
 }
 
 .customer-reviews:hover {
     background-color: #B3A4C9;
-    transform: scale(1.03);  /* Slightly lighter shade for hover */
+    transform: scale(1.03);  
 }
 
-/* Ensure hover effects are smooth */
 .contact-form:hover, .contact-info:hover,  .card:hover, .customer-reviews:hover, #faq .container:hover {
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
