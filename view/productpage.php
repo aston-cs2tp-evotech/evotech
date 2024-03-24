@@ -16,6 +16,7 @@ if (isset ($userInfo)) {
 // Get recommended products
 $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
 
+$reviews = $productDetails->getProductReviews();
 ?>
 
 <!DOCTYPE html>
@@ -75,60 +76,52 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
             </div>
         </div>
         <section class="p-4">
+    <?php if (CheckCanLeaveReview($_SESSION["uid"], $productDetails->getProductID())) { ?>
         <h3>Submit a Review</h3>
-    <!--KALAM CHANGE THIS TO THE PHP -->
-    <form action="/submit-review.php"  method="post">
+    <form action="/leaveReview"  method="post">
         <div class="form-group">
-            <label for="rating">Rating:</label>
+            <label for="Rating">Rating:</label>
             <div class="star-rating">
-                <input type="radio" id="star5" name="rating" value="5" required>
+                <input type="radio" id="star5" name="Rating" value="5" required>
                 <label for="star5" title="5 stars">&#9733;</label>
-                <input type="radio" id="star4" name="rating" value="4">
+                <input type="radio" id="star4" name="Rating" value="4">
                 <label for="star4" title="4 stars">&#9733;</label>
-                <input type="radio" id="star3" name="rating" value="3">
+                <input type="radio" id="star3" name="Rating" value="3">
                 <label for="star3" title="3 stars">&#9733;</label>
-                <input type="radio" id="star2" name="rating" value="2">
+                <input type="radio" id="star2" name="Rating" value="2">
                 <label for="star2" title="2 stars">&#9733;</label>
-                <input type="radio" id="star1" name="rating" value="1">
+                <input type="radio" id="star1" name="Rating" value="1">
                 <label for="star1" title="1 star">&#9733;</label>
             </div>
         </div>
         <div class="form-group">
             <label for="review">Your Review:</label>
-            <textarea id="review" name="review" rows="3" required></textarea>
+            <textarea id="review" name="Review" rows="3" required></textarea>
         </div>
         <div class="form-group">
-            <label for="name">Your Name:</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
+            <input type="hidden" name="ProductID" value="<?php echo $productDetails->getProductID(); ?>">
             <button type="submit" class="btn btn-primary">Submit Review</button>
         </div>
     </form>
+    <?php } ?>
 </div>
+    <?php if (count($reviews) > 0) { ?>
     <div class="customer-reviews">
         <div class="container">
             <h2>Product Reviews</h2>
             <p>See what our customers have to say about the product </p>
             <div class="row">
+            <?php foreach ($reviews as $review) : ?>
                 <div class="card">
-                    <div class="stars">★★★★★</div>
-                    <p>Product review </p>
-                    <p>Date: 01/01/2023</p>
+                    <div class="stars"><?= str_repeat("★", $review->getRating()) ?></div>
+                    <p><?= $review->getReview() ?></p>
+                    <p>Date: <?= $review->getUpdatedAt() ?></p>
                 </div>
-                <div class="card">
-                    <div class="stars">★★★★★</div>
-                    <p>Product review </p>
-                    <p>Date: 15/02/2023</p>
-                </div>
-                <div class="card">
-                    <div class="stars">★★★★★</div>
-                    <p>Product review </p>
-                    <p>Date: 13/06/2023</p>  
-                </div>
+            <?php endforeach; ?>
             </div>
         </div>
     </div>
+    <?php } ?>
 </section>
         <div class="recommendation-section">
             <h2 class="recommendation-title">YOU MIGHT ALSO LIKE</h2>

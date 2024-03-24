@@ -816,7 +816,7 @@ function CreateReview($productID, $customerID, $rating, $review) {
 
     //param checks
     $err = ReviewVarChecks($productID, $customerID, $rating, $review);
-    if (!$err) return $err;
+    if (!empty($err)) return $err;
 
     $success = $Product->addProductReview(array("ProductID" => $productID, "CustomerID" => $customerID, "Rating" => $rating, "Review" => $review));
     if (is_null($success)) return "Failed adding review to database";
