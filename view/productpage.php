@@ -102,6 +102,32 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
                 <?php endforeach; ?>
             </div>
         </div>
+        <section class="p-4"><div class="customer-reviews" >
+        <div class="container" >
+            <h2>Customer Reviews</h2>
+            <p>See what our customers have to say about us</p>
+            <div class="row">
+                <div class="card">
+                    <img src="view/images/ginge.jpg" alt="Customer 1"/>
+                    <p>Evotech goes beyond selling; their customer support is stellar...</p>
+                    <p>Date: 01/01/2023</p>
+                </div>
+                <div class="card">
+                    <img src="view/images/mrbean.jpg" alt="Customer 2"/>
+                    <p>Responsive team and excellent communication...</p>
+                    <p>Date: 15/02/2023</p>
+                </div>
+                <div class="card">
+                    <img src="view/images/danny.webp" alt="Customer 3"/>
+                    <p>EvoTech went above and beyond our expectations...</p>
+                    <p>Date: 13/06/2023</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </section>
+    
     </main>
 
     <?php include __DIR__ . '/footer.php' ?>

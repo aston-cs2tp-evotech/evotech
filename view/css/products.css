@@ -40,3 +40,26 @@ body{
     margin: 0 auto;
   }
   
+/* Hover effect for product cards */
+.card:hover {
+  background-color:  #B3A4C9 !important; /* Slightly lighter shade for hover effect */
+  border: 1px solid #000000; /* Optional: adds a subtle border on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19); /* Adds shadow for a lifted effect */
+  transform: scale(1.03);
+  
+}
+
+/* Hover effect for "Product Page" button */
+.btn-primary:hover {
+  background-color: #534B62; /* Darker shade for button hover */
+  color: #ffffff; /* Keep text color white for contrast */
+  border: 1px solid #000000; /* Adds a white border for better visibility */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  transform: scale(1.03);
+  
+}
+
+.card:hover , .btn-primary:hover{
+  transition: background-color 0.3s ease-in-out, transform 0.6s ease-in-out;
+
+}
