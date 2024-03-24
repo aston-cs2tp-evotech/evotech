@@ -779,4 +779,140 @@ class Product {
 
 }
 
+class ProductReview {
+
+    private $productID;
+    private $customerID;
+    private $customerName;
+    private $rating;
+    private $review;
+    private $createdAt;
+    private $updatedAt;
+
+    /**
+     * Create a ProductReview object by providing an associative array of productReview details.
+     */
+    public function __construct($reviewDetails) {
+        $this->productID = $reviewDetails["ProductID"];
+        $this->customerID = $reviewDetails["CustomerID"];
+        $this->customerName = $reviewDetails["CustomerName"];
+        $this->rating = $reviewDetails["Rating"];
+        $this->review = $reviewDetails["Review"];
+        $this->createdAt = $reviewDetails["CreatedAt"];
+        $this->updatedAt = $reviewDetails["UpdatedAt"];
+    }
+
+    /**
+     * Gets the productID of the productReview.
+     * @return int The unique identifier of the product.
+     */
+    public function getProductID() {
+        return $this->productID;
+    }
+
+    /**
+     * Sets the productID of the productReview.
+     * @param int $productID The unique identifier of the product.
+     */
+    public function setProductID($productID) {
+        $this->productID = $productID;
+    }
+
+    /**
+     * Gets the customerID of the productReview.
+     * @return int The unique identifier of the customer.
+     */
+    public function getCustomerID() {
+        return $this->customerID;
+    }
+
+    /**
+     * Sets the customerID of the productReview.
+     * @param int $customerID The unique identifier of the customer.
+     */
+    public function setCustomerID($customerID) {
+        $this->customerID = $customerID;
+    }
+
+    /**
+     * Gets the customer name of the productReview.
+     * @return int The username of the customer.
+     */
+    public function getCustomerName() {
+        return $this->customerName;
+    }
+
+    /**
+     * Sets the customerName of the productReview.
+     * @param int $customerName The username of the customer.
+     */
+    public function setCustomerName($customerName) {
+        $this->customerName = $customerName;
+    }
+
+    /**
+     * Gets the rating of the productReview.
+     * @return int The rating value.
+     */
+    public function getRating() {
+        return $this->rating;
+    }
+
+    /**
+     * Sets the rating of the productReview.
+     * @param int $rating The rating value.
+     */
+    public function setRating($rating) {
+        $this->rating = $rating;
+    }
+
+    /**
+     * Gets the review of the productReview.
+     * @return string The review.
+     */
+    public function getReview() {
+        return $this->review;
+    }
+
+    /**
+     * Sets the review of the productReview.
+     * @param string $review The review.
+     */
+    public function setReview($review) {
+        $this->review = $review;
+    }
+
+    /**
+     * Gets the date and time the productReview was made.
+     * @return string The date and time it was made (YYYY-MM-DD HH:mm:SS).
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
+     * Sets the date and time the productReview was made.
+     * @param string $date The date and time it was made (YYYY-MM-DD HH:mm:SS).
+     */
+    public function setCreatedAt($date) {
+        $this->createdAt = $date;
+    }
+
+    /**
+     * Gets the date and time the productReview was last updated.
+     * @return string The date and time it was last updated (YYYY-MM-DD HH:mm:SS).
+     */
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Sets the date and time the productReview was last updated.
+     * @param string $date The date and time it was last updated (YYYY-MM-DD HH:mm:SS).
+     */
+    public function setUpdatedAt($date) {
+        $this->updatedAt = $date;
+    }
+}
+
 ?>
