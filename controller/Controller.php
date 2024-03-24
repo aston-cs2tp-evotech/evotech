@@ -322,6 +322,7 @@ function LogOut() {
  * @return Product|null Product with required details, or null
  */
 function CreateSafeProduct($details) {
+    global $Product;
     $badProd = false;
     $keys = array('ProductID', 'Name', 'Price', 'Stock', 'Description', 'CategoryID', 'CreatedAt', 'UpdatedAt');
 
@@ -336,12 +337,49 @@ function CreateSafeProduct($details) {
         $details['CategoryName'] = null;
         $details['MainImage'] = null;
         $details['OtherImages'] = null;
+        //add all reviews to product
+        $revs = array();
+        $reviews = $Product->getProductReviewsByProduct($details['ProductID']);
+        if (is_null($reviews)) return null;
+        
+        foreach ($reviews as $review) {
+            $rev = CreateSafeProductReview($review);
+            if (is_null($rev)) return null;
+            array_push($revs, $rev);
+        }
+
+        $details['Reviews'] = $revs;
 
         $temp = new Product($details);
         AddProductImagesToProduct($temp);
         $err = AddCategoryToProduct($temp);
         if (!$err) return $temp;
         else return null;
+    }
+    else return null;
+}
+
+/**
+ * Creates a productReview object with all details if exists
+ * @param array $details Details array from db
+ * @return ProductReview|null Product with required details, or null
+ */
+function CreateSafeProductReview($details) {
+    global $Customer;
+    $badRev = false;
+    $keys = array('ProductID', 'CustomerID', 'Rating', 'Review', 'CreatedAt', 'UpdatedAt');
+
+    //check each required key
+    foreach ($details as $key => $detail) {
+        if (!in_array($key, $keys)) $badRev = true;
+        else unset($keys[array_search($key, $keys)]);
+    }
+
+    if (!$badRev && (empty($keys))) {
+        $cust = CreateSafeCustomer($Customer->getCustomerByUID($details['CustomerID']));
+        if (is_null($cust)) return null;
+        $details["CustomerName"] = $cust->getUsername();
+        return new ProductReview($details);
     }
     else return null;
 }
