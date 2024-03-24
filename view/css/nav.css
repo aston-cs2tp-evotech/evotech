@@ -9,16 +9,19 @@
 }
 
 .login-button{
-  background-color: rgb(122, 122, 122);
+  background-color: #3b2d5e;
   color: white;
   font-size: 12px;
   padding: 10px 20px;
-  border-radius: 40px;
+  border-radius: 5px;
   transition: 0.4s background-color;;
+  text-decoration: none;
 }
 .login-button:hover{
   background-color: rgb(27, 27, 27);
+  color: white;
 }
+
 
 .navbar-toggler{
   border: none;
