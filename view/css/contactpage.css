@@ -173,7 +173,7 @@ button {
 }
 
 .card {
-    background-color: yellow; /* Background color of the cards changed to yellow */
+    background-color: #d0bcd5 !important; /* Background color of the cards changed to yellow */
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
@@ -211,4 +211,34 @@ button {
     .card {
         flex: 0 1 100%; /* Stacks cards vertically on small screens */
     }
+}
+
+.contact-form:hover, .contact-info:hover {
+    border-color: #ffffff; /* Changes border color to white on hover */
+    background-color: #B3A4C9;
+     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+     transform: scale(1.03); 
+} /* Slightly lighter shade on hover */
+
+
+
+#Faq .container:hover {
+    background-color: #B3A4C9 !important;
+    transform: scale(1.03);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    background-color: #C5B6D0; /* Slightly lighter shade on hover */
+    transform: scale(1.03); /* Slightly scale up the card to give feedback */
+}
+
+.customer-reviews:hover {
+    background-color: #B3A4C9;
+    transform: scale(1.03);  /* Slightly lighter shade for hover */
+}
+
+/* Ensure hover effects are smooth */
+.contact-form:hover, .contact-info:hover,  .card:hover, .customer-reviews:hover, #faq .container:hover {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }

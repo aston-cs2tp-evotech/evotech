@@ -240,3 +240,88 @@ main {
             max-width: 190px;
         }
     }
+    .customer-reviews {
+        background-color: #A499B3; /* Changed to black */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+        box-sizing: border-box;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+        text-align: center;
+        border-radius: 8px;
+    }
+    
+    
+    
+    .row {
+        display: flex;
+        flex-wrap: wrap; /* Allows cards to stack on smaller screens */
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .card {
+        background-color: #d0bcd5 !important; /* Background color of the cards changed to yellow */
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+        flex: 0 1 calc(33.333% - 20px);
+        box-sizing: border-box;
+        text-align: center;
+    }
+    
+    .card img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .contact-form, .contact-info {
+            flex: 1 1 100%; /* Makes form and info stack on smaller screens */
+        }
+        
+        .card {
+            flex: 0 1 calc(50% - 20px); /* Adjusts cards to take 50% of the container on medium screens */
+        }
+    }
+    
+    @media (max-width: 576px) {
+        h1 {
+            font-size: 2rem; /* Adjusts font size for very small screens */
+        }
+        
+        .card {
+            flex: 0 1 100%; /* Stacks cards vertically on small screens */
+        }
+    }
+    .main-product-box:hover, .recommended-product-box:hover {
+        background-color: #B3A4C9 !important; /* Slightly lighter shade on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2);
+       
+    }
+    
+    .customer-reviews:hover {
+        background-color: #B3A4C9 !important; /* Slightly lighter shade on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2);
+        
+    }
+    
+    .card:hover {
+        background-color: #C5B6D0 !important; /* Slightly lighter shade on hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 0 12px 24px rgba(0, 0, 0, 0.25);
+        transform: translateY(-5px); /* Slightly raise the card */
+        
+    }
+    .main-product-box:hover, .recommended-product-box:hover , .customer-reviews:hover ,.card:hover {
+        transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
