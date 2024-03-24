@@ -23,9 +23,6 @@ main {
     justify-content: center;
     background-color: #A499B3 ;
     max-width: 1000px;
-    max-height: auto;
-    height: 95%;
-    width: 95%;
     padding: 20px;
     margin: 20px auto;
     border-radius: 8px;
@@ -33,26 +30,21 @@ main {
 }
 
 .product-image {
-    flex: 1; /* Adjusted for flexibility */
-    max-width: 350px; /* Maximum width for large screens */
+    flex: 0 1 350px;
     margin-right: 20px;
     padding: 10px;
     border-radius: 8px;
-    align-self: flex-start; /* Aligns image at the top */
 }
-
 
 .product-image img {
     width: 100%;
-    height: auto;
     max-width: 350px;
     max-height: 350px;
     border-radius: 8px;
 }
 
 .product-details {
-    flex: 1; /* Adjusted for flexibility */
-    min-width: 200px; /* Ensures text does not get too squeezed */
+    flex: 1 1 200px;
     background-color: #534B62;
     padding: 20px;
     border-radius: 8px;
@@ -60,29 +52,7 @@ main {
     text-align: right;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-}
-@media only screen and (max-width: 768px) {
-    .main-product-box {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .product-image, .product-details {
-        max-width: 90%; /* Allows content to fit within smaller screens */
-        margin: 0 auto; /* Center-aligns content for better presentation */
-    }
-}
-
-@media only screen and (max-width: 480px) {
-    .product-details {
-        text-align: center; /* Adjusts text alignment for better readability */
-    }
-
-    .btn-primary {
-        padding: 10px 20px; /* Adjusts for easier interaction */
-        font-size: 1em; /* Ensures text within buttons is readable */
-    }
+    justify-content: space-between;
 }
 
 .product-details h2, .product-details p, .product-price {
@@ -102,7 +72,7 @@ main {
 
 .product-stock {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-end;
     margin-top: auto;
 }
@@ -195,17 +165,12 @@ main {
         width: 200px;
         max-height: 190px;
         border-radius: 8px;
-        justify-content: center;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
     }
 
     .recommended-product-details {
         text-align: center;
         color: #111;
         margin: 10px 0;
-        justify-content: center;
     }
 
 
@@ -274,144 +239,4 @@ main {
             width: 100%;
             max-width: 190px;
         }
-    }
-    .customer-reviews {
-        background-color: #A499B3; /* Changed to black */
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-        max-width: 1000px;
-        margin: auto;
-        padding: 20px;
-        box-sizing: border-box;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-        text-align: center;
-        border-radius: 8px;
-    }
-    
-    
-    
-    .row {
-        display: flex;
-        flex-wrap: wrap; /* Allows cards to stack on smaller screens */
-        justify-content: center;
-        gap: 20px;
-    }
-    
-    .card {
-        background-color: #d0bcd5 !important; /* Background color of the cards changed to yellow */
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
-        flex: 0 1 calc(33.333% - 20px);
-        box-sizing: border-box;
-        text-align: center;
-    }
-    
-    .card img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        margin-bottom: 20px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .contact-form, .contact-info {
-            flex: 1 1 100%; /* Makes form and info stack on smaller screens */
-        }
-        
-        .card {
-            flex: 0 1 calc(50% - 20px); /* Adjusts cards to take 50% of the container on medium screens */
-        }
-    }
-    
-    @media (max-width: 576px) {
-        h1 {
-            font-size: 2rem; /* Adjusts font size for very small screens */
-        }
-        
-        .card {
-            flex: 0 1 100%; /* Stacks cards vertically on small screens */
-        }
-    }
-    .main-product-box:hover, .recommended-product-box:hover {
-        background-color: #B3A4C9 !important; /* Slightly lighter shade on hover */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2);
-        transform: scale(1.03); 
-    }
-    
-    .customer-reviews:hover {
-        background-color: #B3A4C9 !important; /* Slightly lighter shade on hover */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 24px rgba(0, 0, 0, 0.2);
-        transform: scale(1.03); 
-    }
-    
-    .card:hover {
-        background-color: #C5B6D0 !important; /* Slightly lighter shade on hover */
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25), 0 12px 24px rgba(0, 0, 0, 0.25);
-        transform: scale(1.03);  /* Slightly raise the card */
-        
-    }
-    .main-product-box:hover, .recommended-product-box:hover , .customer-reviews:hover ,.card:hover {
-        transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-    }
-    @media (max-width: 768px) {
-        .product-details h2, .product-details h4, .product-details p, .product-price {
-            font-size: smaller; /* Adjust font size for readability */
-        }
-    
-        .product-image img, .recommended-product-image img {
-            max-width: 100%; /* Allows image to resize within its container */
-            height: auto; /* Maintains aspect ratio */
-            max-height: 200px; /* Limits the height on smaller screens */
-        }
-    
-        .main-product-box, .recommended-product-box, .customer-reviews, .card {
-            flex-direction: column; /* Stack elements vertically */
-            align-items: center; /* Center-align the content */
-            padding: 10px; /* Reduce padding */
-        }
-    
-        .product-details, .recommended-product-details {
-            text-align: center; /* Center-align text for better readability */
-        }
-    
-        .product-image, .product-details {
-            margin: 0 0 10px 0; /* Adjust margin for stacked layout */
-        }
-    }
-    
-    @media (max-width: 576px) {
-        .product-details h2, .product-details h4, .product-details p, .product-price {
-            font-size: smaller; /* Further reduce font size */
-        }
-    
-        .main-product-box, .recommended-product-box, .customer-reviews, .card {
-            margin: 10px 0; /* Adjust margin for tighter spacing */
-        }
-    
-        .add-to-basket-form, .form-group, #quantityInput {
-            width: 100%; /* Full-width forms and inputs */
-            text-align: center; /* Center-align form elements */
-        }
-    
-        .btn-primary {
-            padding: 10px; /* Increase padding for easier tapping on touchscreens */
-        }
-    }
-    
-    /* General adjustments to ensure content fits well */
-    .card-text, .product-details p, .recommended-product-details p {
-        overflow: hidden; /* Prevent text overflow */
-        text-overflow: ellipsis; /* Add ellipsis to overflowed text */
-        white-space: nowrap; /* Keep the text in a single line */
-    }
-    
-    .card-img, .product-image img, .recommended-product-image img {
-        object-fit: cover; /* Cover the area without losing aspect ratio */
     }
