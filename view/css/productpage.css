@@ -188,7 +188,7 @@ main {
         .main-product-box, .recommended-product-box {
             flex-direction: column;
             align-items: center;
-            width : 80vw;
+            width : 90vw;
         }
 
         .product-image, .product-details {
