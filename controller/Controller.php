@@ -747,13 +747,11 @@ function CheckCanLeaveReview($customerID, $productID) {
     catch (Exception $e) {
         return false;
     }
-
     //check if bought product
     $prev = GetPreviousOrders();
     if (!$prev) return false;
-
     foreach ($prev as $order) {
-        foreach ($order->getOrderLines as $ol) {
+        foreach ($order->getOrderLines() as $ol) {
             if ($ol->getProductID() == $productID) {
                 $bought = true;
                 break;
@@ -764,7 +762,7 @@ function CheckCanLeaveReview($customerID, $productID) {
     if (!$bought) return false;
 
     //check if has left review
-    if (is_null($Product->getProductReview($productID, $customerID))) return true;
+    if (!($Product->getProductReview($productID, $customerID))) return true;
     else return false;
 }
 
@@ -818,7 +816,7 @@ function CreateReview($productID, $customerID, $rating, $review) {
 
     //param checks
     $err = ReviewVarChecks($productID, $customerID, $rating, $review);
-    if (!$err) return $err;
+    if (!empty($err)) return $err;
 
     $success = $Product->addProductReview(array("ProductID" => $productID, "CustomerID" => $customerID, "Rating" => $rating, "Review" => $review));
     if (is_null($success)) return "Failed adding review to database";
