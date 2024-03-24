@@ -562,6 +562,8 @@ class Product {
     private $createdAt;
     private $updatedAt;
 
+    private $productReviews;
+
 
     /**
      * Construct a new Product object by providing an associative array of product details.
@@ -578,6 +580,7 @@ class Product {
         $this->otherImages = $productDetails['OtherImages'];
         $this->createdAt = $productDetails['CreatedAt'];
         $this->updatedAt = $productDetails['UpdatedAt'];
+        $this->productReviews = $productDetails['Reviews'];
     }
 
 
@@ -773,6 +776,22 @@ class Product {
      */
     public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * Get the reviews associated with the product.
+     * @return array An array of ProductReviews.
+     */
+    public function getProductReviews() {
+        return $this->productReviews;
+    }
+
+    /**
+     * Sets the reviews associated with the product.
+     * @param array $reviews An array of ProductReviews.
+     */
+    public function setProductReviews($reviews) {
+        $this->productReviews = $reviews;
     }
 
 
