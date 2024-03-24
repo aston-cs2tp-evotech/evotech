@@ -16,7 +16,25 @@ if (isset ($userInfo)) {
 // Get recommended products
 $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
 
-$reviews = $productDetails->getProductReviews();
+//get reviews and choose 3
+$revs = $productDetails->getProductReviews();
+$reviews = array();
+if (count($revs) > 3) {
+    for ($i = 0; $i < 3; $i++) {
+        //choose review
+        $randIndex = random_int(0, count($revs)-1);
+        array_push($reviews, $revs[$randIndex]);
+        //fix array
+        unset($revs[$randIndex]);
+        $revsNew = array();
+        foreach ($revs as $rev) array_push($revsNew, $rev);
+        $revs = $revsNew;
+    }
+}
+else {
+    $reviews = $revs;
+}
+
 ?>
 
 <!DOCTYPE html>
