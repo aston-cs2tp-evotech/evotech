@@ -75,6 +75,37 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
             </div>
         </div>
         <section class="p-4">
+        <h3>Submit a Review</h3>
+    <!--KALAM CHANGE THIS TO THE PHP -->
+    <form action="/submit-review.php"  method="post">
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" required>
+                <label for="star5" title="5 stars">&#9733;</label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4" title="4 stars">&#9733;</label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" title="3 stars">&#9733;</label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2" title="2 stars">&#9733;</label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1" title="1 star">&#9733;</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="review">Your Review:</label>
+            <textarea id="review" name="review" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </div>
+    </form>
+</div>
     <div class="customer-reviews">
         <div class="container">
             <h2>Product Reviews</h2>
