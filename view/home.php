@@ -57,12 +57,6 @@ foreach ($categories as $category) {
 
 <body>
      
-    <!--Empty box to fix formatting error 
-        Creates an empty above content to prevent main content  being covered by navbar
-    -->
-    <!-- <section class="bg-dark text-light p-5 text-center text-sm-start py-5">
-
-    </section> -->
     
 
     <section class="bg text-light p-5 my text-center text-sm-start py-5" style="background-color:#534B62; margin-top: 20px;">
