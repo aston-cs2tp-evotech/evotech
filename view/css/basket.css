@@ -21,7 +21,7 @@ header {
 }
 
 .container {
-    max-width: 800px; /* Adjusted max-width for better responsiveness */
+    max-width: 800px; 
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
@@ -74,7 +74,6 @@ h2 {
 
 .btn-danger {
     background-color: #A00000!important;
-    /*background-color: #880808 !important;*/
     color: #fff;
     border: #1b1725!important; ;
 }

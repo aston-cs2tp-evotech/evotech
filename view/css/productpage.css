@@ -132,7 +132,7 @@ main {
     font-size: 36px;
     color: #d8d3d3;
     margin-bottom: 6px;
-    display: inline-flex; /* Change from flex to inline-flex */
+    display: inline-flex; 
     align-items: center;
     position: relative;
     margin-top: 10px;
@@ -141,10 +141,9 @@ main {
 .recommendation-section h2::before,
 .recommendation-section h2::after {
     content: "";
-    background-color: #fff; /* Line color */
-    height: 2px; /* Line thickness */
+    background-color: #fff; 
+    height: 2px; 
     width: 40%;
-     /* Adjust the width to control the line length */
     position: absolute;
 }
 
@@ -273,13 +272,13 @@ main {
     
     .row {
         display: flex;
-        flex-wrap: wrap; /* Allows cards to stack on smaller screens */
+        flex-wrap: wrap; 
         justify-content: center;
         gap: 20px;
     }
     
     .card {
-        background-color: #d0bcd5 !important; /* Background color of the cards changed to yellow */
+        background-color: #d0bcd5 !important; 
         border-radius: 8px;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
@@ -298,30 +297,29 @@ main {
         margin-right: auto;
     }
     
-    /* Responsive adjustments */
     @media (max-width: 768px) {
         .contact-form, .contact-info {
-            flex: 1 1 100%; /* Makes form and info stack on smaller screens */
+            flex: 1 1 100%; 
         }
         
         .card {
-            flex: 0 1 calc(50% - 20px); /* Adjusts cards to take 50% of the container on medium screens */
+            flex: 0 1 calc(50% - 20px); 
         }
     }
     
     @media (max-width: 576px) {
         h1 {
-            font-size: 2rem; /* Adjusts font size for very small screens */
+            font-size: 2rem; 
         }
         
         .card {
-            flex: 0 1 100%; /* Stacks cards vertically on small screens */
+            flex: 0 1 100%; 
         }
     }
     
     .stars {
-        font-size: 24px; /* Adjust to fit the design */
-        color: #FFD700; /* Yellow color for stars */
+        font-size: 24px; 
+        color: #FFD700; 
         margin-bottom: 20px; 
     }
     
