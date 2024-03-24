@@ -104,7 +104,7 @@ h2 {
     width: 100%; /* Take full width */
     height : 100vh;
     max-width: none; /* Remove max-width */
-    background: linear-gradient(to bottom, rgba(83, 75, 98, 0.3), rgba(83, 75, 98, 1)); /* Background gradient with opacity */
+    background: linear-gradient(to bottom, rgba(83, 75, 98, 0.5), rgba(83, 75, 98, 1)); /* Background gradient with opacity */
     padding-bottom: 0; 
     margin-bottom: 0;
   }
