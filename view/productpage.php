@@ -74,6 +74,31 @@ $recommendedProducts = GetRecommendedProducts($productDetails->getProductID());
                 </form>
             </div>
         </div>
+        <section class="p-4">
+    <div class="customer-reviews">
+        <div class="container">
+            <h2>Product Reviews</h2>
+            <p>See what our customers have to say about the product </p>
+            <div class="row">
+                <div class="card">
+                    <div class="stars">★★★★★</div>
+                    <p>Product review </p>
+                    <p>Date: 01/01/2023</p>
+                </div>
+                <div class="card">
+                    <div class="stars">★★★★★</div>
+                    <p>Product review </p>
+                    <p>Date: 15/02/2023</p>
+                </div>
+                <div class="card">
+                    <div class="stars">★★★★★</div>
+                    <p>Product review </p>
+                    <p>Date: 13/06/2023</p>  
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
         <div class="recommendation-section">
             <h2 class="recommendation-title">YOU MIGHT ALSO LIKE</h2>
         </div>
