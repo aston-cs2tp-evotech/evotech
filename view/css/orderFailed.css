@@ -1,0 +1,99 @@
+@font-face {
+    font-family: allianceNo2;
+    src: url(/view/fonts/allianceno2.woff) format('woff');
+  }
+
+body {
+    font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
+    margin: 0;
+    padding: 0;
+    background-color: #534B62 !important;
+}
+
+header {
+    background-color: #1B1725;;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    padding: 1em;
+    border-radius: 8px;
+    
+}
+
+.container {
+    max-width: 800px; 
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #A499B3;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+}
+
+.card {
+    background-color: #A499B3!important;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img {
+    width: 100%;
+    max-height: 200px; 
+    object-fit: scale-down;
+    border-radius: 8px;
+    
+}
+
+.card-body {
+    padding: 1.25rem;
+    text-align: right;
+    margin-right: 5px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+.card-text {
+    margin-bottom: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #A00000!important;
+    color: #fff;
+    border: #1b1725!important; ;
+}
+
+.btn-primary, .btn-primary:active {
+    background-color: #1b1725 !important;
+    color: white !important;
+    border: #1b1725 !important;
+}
+
+.btn-primary:hover {
+    background-color: #534B62 !important;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.btn-block {
+    width: 100%;
+}
+
