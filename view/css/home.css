@@ -26,6 +26,11 @@
     justify-content: space-between;
 }
 
+h1 {
+  color: #1b1725!important;   
+}
+
+
 .card-container .card {
   flex: 1 0 auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
