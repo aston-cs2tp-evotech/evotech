@@ -215,6 +215,33 @@ switch ($requestPath) {
         handleAPIRequest('addToken');
         break;
 
+    case '/api/deleteCustomerReviews':
+        handleAPIRequest('deleteCustomerReviews');
+        break;
+    
+    case '/api/deleteProductReviews':
+        handleAPIRequest('deleteProductReviews');
+        break;
+    
+    case '/api/deleteReview':
+        handleAPIRequest('deleteReview');
+        break;
+
+    case '/api/editReview':
+        handleAPIRequest('editReview');
+
+    case '/api/getAllReviews':
+        handleAPIRequest('getAllReviews');
+        break;
+    
+    case '/api/getCustomerReviews':
+        handleAPIRequest('getCustomerReviews');
+        break;
+
+    case '/api/getProductReviews':
+        handleAPIRequest('getProductReviews');
+        break;
+
     default:
         handle404Request();
         break;
@@ -727,6 +754,34 @@ function handleAPIRequest($path) {
             require __DIR__ . '/api/addToken.php';
             break;
 
+        case 'deleteCustomerReviews':
+            require __DIR__ . '/api/deleteCustomerReviews.php';
+            break;
+
+        case 'deleteProductReviews':
+            require __DIR__ . '/api/deleteProductReviews.php';
+            break;
+
+        case 'deleteReview':
+            require __DIR__ . '/api/deleteReview.php';
+            break;
+
+        case 'editReview':
+            require __DIR__ . '/api/editReview.php';
+            break;
+
+        case 'getAllReviews':
+            require __DIR__ . '/api/getAllReviews.php';
+            break;
+
+        case 'getCustomerReviews':
+            require __DIR__ . '/api/getCustomerReviews.php';
+            break;
+
+        case 'getProductReviews':
+            require __DIR__ . '/api/getProductReviews.php';
+            break;
+            
         default:
             handle404Request();
             break;
