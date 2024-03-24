@@ -47,6 +47,41 @@
 
   <link href="/view/css/dashboard.css" rel="stylesheet">
 </head>
+<?php
+
+$categoryChartDatapoints = array();
+$categories = GetAllCategories();
+foreach($categories as $category) {
+  $categoryProducts = GetAllByCategory($category['CategoryName']);
+  $categoryProductCount = count($categoryProducts);
+  $totalProductCount = count($products);
+  $percentage = ($categoryProductCount / $totalProductCount) * 100;
+  // Round the percentage to 2 decimal places
+  $percentage = round($percentage, 2);
+  $categoryChartDatapoints[] = array("label" => $category['CategoryName'] . " (" . $categoryProductCount . ")", "y" => $percentage);
+}
+
+$orderStatusChartDatapoints = array();
+$orderStatuses = GetAllOrderStatuses();
+// Group orders by status
+$ordersByStatus = array();
+foreach ($orders as $order) {
+  $status = $order->getOrderStatusName();
+  if (!array_key_exists($status, $ordersByStatus)) {
+    $ordersByStatus[$status] = 1;
+  } else {
+    $ordersByStatus[$status]++;
+  }
+}
+foreach ($orderStatuses as $status) {
+  $orderStatusChartDatapoints[] = array("label" => $status['Name'] . " (" . ($ordersByStatus[$status['Name']] ?? 0) . ")", "y" => $ordersByStatus[$status['Name']] ?? 0);
+}
+?>
+<script>
+  let categoryChartDataPoints = <?php echo json_encode($categoryChartDatapoints, JSON_NUMERIC_CHECK); ?>;
+  let orderStatusChartDataPoints = <?php echo json_encode($orderStatusChartDatapoints, JSON_NUMERIC_CHECK); ?>;
+  console.log(orderStatusChartDataPoints);
+</script>
 
 <body>
 
@@ -248,6 +283,9 @@
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Report</h1>
+
+            <!-- Print Button with print icon -->
+            <a href="#" class="btn btn-secondary" onclick="printDiv('reportPage')">Print</a>
           </div>
           <div class="row">
             <div class="col-md-4">
@@ -283,8 +321,58 @@
               </div>
             </div>
           </div>
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h3">Low Stock Products</h1>
+          </div>
+          <table id="lowStockProductsTable" class="table table-striped table-hover" style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th>Product Name</th>
+                  <th>Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($lowStockProducts as $product): 
+                    // Determine the stock level class based on the stock level
+                    $stockLevelClass = '';
+                    $stock = $product->getStock();
+                    if ($stock >= 10 && $stock <= 15) {
+                        $stockLevelClass = 'table-warning'; 
+                    } elseif ($stock >= 1 && $stock <= 10) {
+                        $stockLevelClass = 'table-danger'; 
+                    } else {
+                        $stockLevelClass = 'table-dark'; 
+                    }
+                ?>
+                  <tr class="<?php echo $stockLevelClass; ?>">
+                    <td>
+                      <?php echo $product->getProductID(); ?>
+                    </td>
+                    <td>
+                      <?php echo $product->getName(); ?>
+                    </td>
+                    <td>
+                      <b><?php echo $product->getStock(); ?></b>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h3">Charts</h1>
+          </div>
 
-           
+          <div class="row">
+            <div class="col-md-6">
+              <div id="categoryChart" width="400" height="400"></div>
+            </div>
+            <div class="col-md-6">
+              <div id="statusChart" width="400" height="400"></div>
+            </div>
+          </div>
+    
 
         </div>
         <div id="ordersPage" class="page" style="display: none;">
@@ -432,6 +520,7 @@
                 <th>Product Photo</th>
                 <th>Product ID</th>
                 <th>Product Name</th>
+                <th>Category</th>
                 <th>Price</th>
                 <th>Stock</th>
                 <th>Description</th>
@@ -458,6 +547,7 @@
                       <td id="columnProductImage_<?php echo $item->getProductID(); ?>" style="max-width: 120px;"><img src="/view/images/products/<?php echo $item->getProductID(); ?>/<?php echo $item->getMainImage(); ?>" class="card-img" alt="Product Image" style="width: 100px; height: 100px;"></td>
                       <td id="columnProductID_<?php echo $item->getProductID(); ?>" style="text-align: center;"><?php echo $item->getProductID(); ?></td>
                       <td id="columnProductName_<?php echo $item->getProductID(); ?>"><?php echo $item->getName(); ?></td>
+                      <td id="columnProductCategory_<?php echo $item->getProductID(); ?>"><?php echo $item->getCategoryName(); ?></td>
                       <td id="columnProductPrice_<?php echo $item->getProductID(); ?>">£<?php echo $item->getPrice(); ?></td>
                       <td id="columnProductStock_<?php echo $item->getProductID(); ?>"><?php echo $item->getStock(); ?></td>
                       <td id="columnProductDescription_<?php echo $item->getProductID(); ?>"><?php echo $item->getDescription(); ?></td>
@@ -872,7 +962,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
   <script src="/view/js/dashboard.js"></script>
+
 </body>
 
 </html>

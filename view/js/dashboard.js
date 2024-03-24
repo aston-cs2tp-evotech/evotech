@@ -28,6 +28,42 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     navLinks[i].classList.remove("active");
   }
 
+  if (pageId === "report") {
+    console.log(categoryChartDataPoints);
+
+    var categoryChart = new CanvasJS.Chart("categoryChart", {
+      title : {
+        fontFamily: "allianceNo2",
+        text: "Products by Category"
+      },
+
+        animationEnabled: true,
+        data: [
+            {
+                type: "pie",
+                dataPoints: categoryChartDataPoints
+            }
+        ]
+    });
+    categoryChart.render();
+
+    var statusChart = new CanvasJS.Chart("statusChart", {
+      title : {
+        fontFamily: "allianceNo2",
+        text: "Orders by Status"
+      },
+
+        animationEnabled: true,
+        data: [
+            {
+                type: "pie",
+                dataPoints: orderStatusChartDataPoints
+            }
+        ]
+    });
+    statusChart.render();
+  }
+
   // Add 'active' class to the clicked navigation link except for if the page is an edit page
   if (pageId !== "editProduct" && pageId !== "editCustomer" && pageId !== "editAdmin" && pageId !== "addAdmin" && pageId !== "addAPIToken") {
     var clickedNavLink = document.querySelector('a[href="#"][onclick="showPage(\'' + pageId + '\')"]');
@@ -81,12 +117,6 @@ function showPage(pageId, productID = null, customerID = null, adminID = null, c
     });
   }
 
-  // If navigating to orders 
-  if (pageId === "orders") {
-    var ordersTable = $('#ordersTable').DataTable();
-    ordersTable.order([5, 'desc']).draw();
-  }
-
   // If navigating to orders and the customerIDforOrder is not null, filter the orders by customerID
   if (pageId === "orders" && customerIDforOrder !== null) {
     // Filter the orders table by customerID
@@ -125,6 +155,7 @@ function showLastVisitedPage() {
 
 $(document).ready(function () {
   $('#ordersTable').DataTable({
+    order: [[5, 'desc']],
     // Enable select extension
     select: true,
     // Define columnDefs to customize the status column
@@ -149,6 +180,7 @@ $(document).ready(function () {
   inactivityTime();
   
 });
+
 
 // Get ordersMessage element
 var ordersMessage = document.getElementById('orderUpdate');
