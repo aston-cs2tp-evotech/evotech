@@ -233,7 +233,7 @@ main {
         }
 
         .quantity-input {
-            width: 50%; /* Adjust the width for very small screens */
+            width: 50%;
             margin-bottom: 15px;
         }
 
@@ -255,7 +255,7 @@ main {
     }
 
     .customer-reviews {
-        background-color: #A499B3; /* Changed to black */
+        background-color: #A499B3; 
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -322,22 +322,62 @@ main {
     .stars {
         font-size: 24px; /* Adjust to fit the design */
         color: #FFD700; /* Yellow color for stars */
-        margin-bottom: 20px; /* Keeps spacing consistent with your design */
+        margin-bottom: 20px; 
     }
     
-    /* Continue with your existing styles */
    
     .card:hover {
-        background-color: #C5B6D0; /* Slightly lighter shade on hover */
-        transform: scale(1.03); /* Slightly scale up the card to give feedback */
+        background-color: #C5B6D0; 
+        transform: scale(1.03); 
     }
     .recommended-product-box:hover{
-        background-color: #C5B6D0; /* Slightly lighter shade on hover */
+        background-color: #C5B6D0; 
         transform: scale(1.03); 
     }
     
-    /* Ensure hover effects are smooth */
   .card:hover, .customer-reviews:hover, .recommended-product-box:hover{
         transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
     }
         
+
+
+
+.review-section {
+    background-color: #A499B3;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.review-section h3 {
+    color: #1D1D1F;
+    margin-bottom: 15px;
+}
+
+.star-rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #ccc;
+}
+
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffcc00;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffcc00;
+}
