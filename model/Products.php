@@ -381,7 +381,169 @@ class ProductModel {
             return null;
         }
     }
+
+    /**
+     * Retrieves all ProductReviews in the database.
+     * 
+     * @return array|null The ProductReviews in the database, or null if failed.
+     */
+    public function getAllProductReviews() {
+        $query = "SELECT * FROM `ProductReviews`";
+        $statement = $this->database->prepare($query);
+        if ($statement->execute()) {
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Retrieves a ProductReview associated with a product and customer
+     * 
+     * @param int $productID The unique identifier of the product
+     * @param int $customerID The unique identifier of the customer
+     * @return array|null The ProductReview if successful, otherwise null
+     */
+    public function getProductReview($productID, $customerID) {
+        $query = "SELECT * FROM `ProductReviews` WHERE `ProductID` = :prodID AND `CustomerID` = :custID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":prodID", $productID, PDO::PARAM_INT);
+        $statement->bindParam(":custID", $customerID, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Retreives all ProductReviews associated with a product in the database.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @return array|null The ProductReviews in the database, or null if failed.
+     */
+    public function getProductReviewsByProduct($productID) {
+        $query = "SELECT * FROM `ProductReviews` WHERE `ProductID` = :productID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":productID", $productID, PDO::PARAM_INT);
+        if ($statement->execute()) {
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Retreives all ProductReviews associated with a customer in the database.
+     * 
+     * @param int $customerID The unique identifier of the customer.
+     * @return array|null The ProductReviews in the database, or null if failed.
+     */
+    public function getProductReviewsByCustomer($customerID) {
+        $query = "SELECT * FROM `ProductReviews` WHERE `CustomerID` = :customerID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":customerID", $customerID, PDO::PARAM_INT);
+        if ($statement->execute()) {
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
     
+    /**
+     * Retreives all ProductReviews for a product with a certain rating value from the database.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @param int $rating The rating value of the product.
+     * @return array|null The ProductReviews in the database, or null if failed.
+     */
+    public function getProductReviewsByProductRating($productID, $rating) {
+        $query = "SELECT * FROM `ProductReviews` WHERE `ProductID` = :productID AND `Rating` = :rating";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":productID", $productID, PDO::PARAM_INT);
+        $statement->bindParam(":rating", $rating, PDO::PARAM_INT);
+        if ($statement->execute()) {
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Adds a productReview to the database.
+     * 
+     * @param array $reviewDetails The required review details.
+     * @return array|null The productReview if successful, otherwise null.
+     */
+    public function addProductReview($reviewDetails) {
+        $insertQuery = "INSERT INTO `ProductReviews` (
+            `ProductID`, 
+            `CustomerID`, 
+            `Rating`,
+            `Review`
+        ) VALUES (
+            :prodID, 
+            :custID, 
+            :rating,
+            :review
+        )";
+        $statement = $this->database->prepare($insertQuery);
+        $statement->bindParam(":prodID", $reviewDetails["ProductID"], PDO::PARAM_INT);
+        $statement->bindParam(":custID", $reviewDetails["CustomerID"], PDO::PARAM_INT);
+        $statement->bindParam(":rating", $reviewDetails["Rating"], PDO::PARAM_INT);
+        $statement->bindParam(":review", $reviewDetails["Review"], PDO::PARAM_STR);
+
+        if ($statement->execute()) {
+            return $this->getProductReview($reviewDetails["ProductID"], $reviewDetails["CustomerID"]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Removes a ProductReview from the database.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @param int $customerID The unique identifier of the customer.
+     * @return boolean True if successful, otherwise false.
+     */
+    public function deleteProductReview($productID, $customerID) {
+        $query = "DELETE FROM `ProductReviews` WHERE `ProductID` = :prodID AND `CustomerID` = :custID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":prodID", $productID, PDO::PARAM_INT);
+        $statement->bindParam(":custID", $customerID, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
+
+    /**
+     * Deletes all ProductReviews associated with a product in the database.
+     * 
+     * @param int $productID The unique identifier of the product.
+     * @return boolean True if successful, otherwise false.
+     */
+    public function deleteProductReviewsByProduct($productID) {
+        $query = "DELETE FROM `ProductReviews` WHERE `ProductID` = :prodID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":prodID", $productID, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
+
+    /**
+     * Deletes all ProductReviews associated with a customer in the database.
+     * 
+     * @param int $customerID The unique identifier of the customer.
+     * @return boolean True if successful, otherwise false.
+     */
+    public function deleteProductReviewsByCustomer($customerID) {
+        $query = "DELETE FROM `ProductReviews` WHERE `CustomerID` = :custID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":custID", $customerID, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
 }
 
 class Product {
