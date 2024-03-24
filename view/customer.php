@@ -75,40 +75,52 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                         <label for="confirm_password">Confirm New Password</label>
                         <input type="password" class="form-control" name="confirm_password" required/>
                     </div>
-                    <input type="submit" class="btn btn-primary" value="Change Password"/>
+                    <input type="submit" class="btn btn-primary mb-5" value="Change Password"/>
                 </form>
             </div>
         </div>
 
         <div class="mt-4">
-            <h2>Past Orders</h2>
+            <h2 class="mb-5">Past Orders</h2>
             <?php if (!empty($orders)) : ?>
                 <?php $orders = array_reverse($orders, true); ?>
                 <?php foreach ($orders as $order) : ?>
                     <?php $totalPrice = $order->getTotalAmount(); ?>
-                    <h3>Order <?php echo $order->getOrderID(); ?></h3>
-                    <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
-                    <h4>Date: <?php echo $order->getCheckedOutAt(); ?></h4>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    <th>Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($order->getOrderLines() as $product) : ?>
-                                    <tr>
-                                        <td><?php echo $product->getProductName(); ?></td>
-                                        <td><?php echo $product->getQuantity(); ?></td>
-                                        <td>£<?php echo $product->getTotalPrice(); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                        <h3 class="text-right">Total: £<?php echo $totalPrice; ?></h3>
+                   
+                    <div class="card mb-5">
+                        <div class="card-body ">
+                        <h3>Order <?php echo $order->getOrderID(); ?></h3>
+                        <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
+                        <h4>Date: <?php echo $order->getCheckedOutAt(); ?></h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($order->getOrderLines() as $product) : ?>
+                                            <tr>
+                                                <td><?php echo $product->getProductName(); ?></td>
+                                                <td><?php echo $product->getQuantity(); ?></td>
+                                                <td>£<?php echo $product->getTotalPrice(); ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                                <div class="col text-center"> 
+                                    <h3>Total: £<?php echo $totalPrice; ?></h3>
+                                    <?php if ($order->getOrderStatusName() === "Delivered") : ?>
+                                        <button class="btn btn-primary mt-3">Return</button>
+                                    <?php else : ?>
+                                        <button class="btn btn-danger mt-3">Cancel Order</button>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>
