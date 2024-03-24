@@ -128,7 +128,7 @@ h2 {
 }
 
 /* Add a media query for smaller screens */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 2000px) {
   .login {
     position: relative; /* Set position to relative */
     min-height: 100vh; /* Set min-height to 100vh */
@@ -139,6 +139,7 @@ h2 {
     top: 0; /* Align splash to the top */
     width: 100%; /* Take full width */
     max-width: none; /* Remove max-width */ 
+    max-height: 100vh;
     background-size: contain;
     overflow: hidden;
   }

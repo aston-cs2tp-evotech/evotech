@@ -158,7 +158,7 @@ h2 {
 }
 
 /* Add a media query for smaller screens */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 2000px) {
     .login,
     .register {
         position: relative;
@@ -172,6 +172,7 @@ h2 {
         max-width: none;
         background-size: contain;
         overflow: hidden;
+        max-height: 100vh;
     }
 
     .login-box,

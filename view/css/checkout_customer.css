@@ -30,7 +30,7 @@ body {
     font-family: allianceNo2,  Arial, Helvetica, sans-serif!important;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    background-color: #534B62 !important;
 }
 
 header {
@@ -44,7 +44,7 @@ header {
     max-width: 400px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #A499B3 ;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     text-align: center;
@@ -52,4 +52,8 @@ header {
 
 .error {
     color: #ff0000;
+}
+
+.card{
+    background-color: #A499B3 !important;
 }

@@ -1,10 +1,20 @@
 <?php
 
+$message = "";
+$keys = array("adminID", "adminUsername", "adminPassword");
+
+foreach ($keys as $key) {
+    if (!isset($_POST[$key])) {
+        $message = $key . " not specified";
+        echo $message;
+        exit();
+    }
+}
+
 $adminID = $_POST['adminID'];
 $adminUsername = $_POST["adminUsername"];
 $adminPassword = $_POST["adminPassword"];
 
-$message = "";
 $updateList = array();
 $updateList["AdminID"] = $adminID;
 
