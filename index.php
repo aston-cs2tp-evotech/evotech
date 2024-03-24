@@ -135,6 +135,18 @@ switch ($requestPath) {
         handleChangePasswordRequest();
         break;
     
+    case '/leaveReview':
+        handleLeaveReviewRequest();
+        break;
+    
+    case '/removeReview':
+        handleRemoveReviewRequest();
+        break;
+
+    case '/updateReview':
+        handleUpdateReviewRequest();
+        break;
+    
     case '/admin':
         handleDashboardRequest();
         break;
@@ -540,6 +552,52 @@ function handleChangePasswordRequest(){
     }
 
 
+}
+
+/**
+ * Handles request to leave a review
+ */
+function handleLeaveReviewRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+    //check passed info
+    if (!CheckExists($_POST["ProductID"])) header("Location:/home");
+    if (!CheckExists($_POST["Rating"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+    if (!CheckExists($_POST["Review"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+
+    //check if allowed to leave review
+    if (!CheckCanLeaveReview($_SESSION["uid"], $_POST["ProductID"])) header("Location:/home");
+
+    $success = CreateReview($_POST["ProductID"], $_SESSION["uid"], $_POST["Rating"], $_POST["Review"]);
+    if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
+    else header("Location:/product?productID=" . $_POST["ProductID"]);
+}
+
+/**
+ * Handles request to remove a review
+ */
+function handleRemoveReviewRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+
+    if (!CheckExists($_POST["ProductID"])) header("Location:/home");
+
+    $success = DeleteReview($_POST["ProductID"], $_SESSION["uid"]);
+    if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
+    else header("Location:/product?productID=" . $_POST["ProductID"]);
+}
+
+/**
+ * Handles request to update a review
+ */
+function handleUpdateReviewRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+    //check passed info
+    if (!CheckExists($_POST["ProductID"])) header("Location:/home");
+    if (!CheckExists($_POST["Rating"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+    if (!CheckExists($_POST["Review"])) header("Location:/product?productID=" . $_POST["ProductID"]);
+
+    $success = UpdateReview($_POST["ProductID"], $_SESSION["CustomerID"], $_POST["Rating"], $_POST["Review"]);
+    if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
+    else header("Location:/product?productID=" . $_POST["ProductID"]);
 }
 
 /**
