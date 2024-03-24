@@ -19,7 +19,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Contact Us - EvoTech</title>
+        <title>Contact Us - Evotech</title>
         <link rel="stylesheet" href="/view/css/contactpage.css">
     </head>
 
@@ -37,7 +37,7 @@
 
         </section>
         <header>
-            <h1>Contact EvoTech</h1>
+            <h1>Contact Evotech</h1>
         </header>
 
         <section class="contact-container" >
@@ -128,18 +128,18 @@
             <p>See what our customers have to say about us</p>
             <div class="row">
                 <div class="card">
-                    <img src="view/images/ginge.jpg" alt="Customer 1"/>
+                    <img src="view/images/Review1.png" alt="Customer 1"/>
                     <p>Evotech goes beyond selling; their customer support is stellar...</p>
                     <p>Date: 01/01/2023</p>
                 </div>
                 <div class="card">
-                    <img src="view/images/mrbean.jpg" alt="Customer 2"/>
+                    <img src="view/images/Review2.JPG" alt="Customer 2"/>
                     <p>Responsive team and excellent communication...</p>
                     <p>Date: 15/02/2023</p>
                 </div>
                 <div class="card">
-                    <img src="view/images/danny.webp" alt="Customer 3"/>
-                    <p>EvoTech went above and beyond our expectations...</p>
+                    <img src="view/images/Review3.jpg" alt="Customer 3"/>
+                    <p>Evotech went above and beyond our expectations...</p>
                     <p>Date: 13/06/2023</p>
                 </div>
             </div>
