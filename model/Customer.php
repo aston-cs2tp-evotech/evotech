@@ -167,9 +167,17 @@ class CustomerModel {
      * @param int $customerID The unique identifier of the customer.
      */
     public function deleteCustomer($customerID) {
+        // Remove ProductReviews assoc with Customer first
+        $revQuery = "DELETE FROM `ProductReviews` WHERE `CustomerID` = :customerID";
+        $revStatement = $this->database->prepare($revQuery);
+        $revStatement->bindParam(':customerID', $customerID, PDO::PARAM_INT);
+        
+        if (!($revStatement->execute())) return false;
+
         $query = "DELETE FROM `Customers` WHERE `CustomerID` = :customerID";
         $statement = $this->database->prepare($query);
         $statement->bindParam(':customerID', $customerID, PDO::PARAM_INT);
+
         return $statement->execute();
     }
 }

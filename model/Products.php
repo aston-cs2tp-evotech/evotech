@@ -139,6 +139,8 @@ class ProductModel {
         array_push($statements, $this->database->prepare("DELETE FROM `ProductCompatibility` WHERE `ProductID` = :productID"));
         // Delete from ProductSlots
         array_push($statements, $this->database->prepare("DELETE FROM `ProductSlots` WHERE `ProductID` = :productID"));
+        // Delete from ProductReviews
+        array_push($statements, $this->database->prepare("DELETE FROM `ProductReviews` WHERE `ProductID` = :productID"));
         // Delete from Products
         array_push($statements, $this->database->prepare("DELETE FROM `Products` WHERE `ProductID` = :productID"));
         
