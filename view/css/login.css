@@ -63,28 +63,31 @@ h2 {
 .login {
     max-width: 100%;
     max-height: 100%;
-    min-height: 95dvh;
     display: flex;
     justify-content: space-between;
     margin: 0px auto;
     color: #f8f8f8;
+    position: relative; /* Set position to relative */
+    min-height: 100vh; /* Set min-height to 100vh */
 }
 
 .splash {
-  background-image: url('/view/images/loginRegisterImage.jpg');
-    width: 65vw;
-    max-width: 65vw;
+    background-image: url('/view/images/loginRegisterImage.jpg');
     margin: 0px auto;
     padding: 0px;
     background-color: #534B62;
     text-align: center;
     box-sizing: border-box;
-    background-size: cover;
+    position: absolute; /* Position splash absolutely */
+    top: 0; /* Align splash to the top */
+    width: 100vw; /* Take full width */
+    max-width: none; /* Remove max-width */ 
+    max-height: 100%;
+    background-size: cover!important;
+    overflow: hidden;
 }
 
 .login-box {
-    width: 35vw;
-    max-width: 35vw;
     margin: 0px auto;
     padding: 25px;
     background-color: #534B62;
@@ -94,7 +97,17 @@ h2 {
     flex-direction: column;
     justify-content: center;
     gap: 40px;
-}
+    position: absolute; /* Position login-box absolutely */
+    bottom: 0; /* Align login-box to the bottom */
+    align-items: center; /* Align items to center */
+    width: 100%; /* Take full width */
+    height : 100vh;
+    max-width: none; /* Remove max-width */
+    background: linear-gradient(to bottom, rgba(83, 75, 98, 0.5), rgba(83, 75, 98, 1)); /* Background gradient with opacity */
+    padding-bottom: 0; 
+    margin-bottom: 0;
+  }
+
 
 .error {
     color: #ff0000;
@@ -126,37 +139,6 @@ h2 {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
-
-/* Add a media query for smaller screens */
-@media screen and (max-width: 2000px) {
-  .login {
-    position: relative; /* Set position to relative */
-    min-height: 100vh; /* Set min-height to 100vh */
-  }
-
-  .splash {
-    position: absolute; /* Position splash absolutely */
-    top: 0; /* Align splash to the top */
-    width: 100%; /* Take full width */
-    max-width: none; /* Remove max-width */ 
-    max-height: 100vh;
-    background-size: contain;
-    overflow: hidden;
-  }
-
-  .login-box {
-    position: absolute; /* Position login-box absolutely */
-    bottom: 0; /* Align login-box to the bottom */
-    align-items: center; /* Align items to center */
-    width: 100%; /* Take full width */
-    height : 100vh;
-    max-width: none; /* Remove max-width */
-    background: linear-gradient(to bottom, rgba(83, 75, 98, 0.5), rgba(83, 75, 98, 1)); /* Background gradient with opacity */
-    padding-bottom: 0; 
-    margin-bottom: 0;
-  }
-}
-
 
 
 /* Rest of your CSS remains unchanged */
