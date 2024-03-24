@@ -650,7 +650,7 @@ function handleUpdateReviewRequest() {
     if (!CheckExists($_POST["Rating"])) header("Location:/product?productID=" . $_POST["ProductID"]);
     if (!CheckExists($_POST["Review"])) header("Location:/product?productID=" . $_POST["ProductID"]);
 
-    $success = UpdateReview($_POST["ProductID"], $_SESSION["CustomerID"], $_POST["Rating"], $_POST["Review"]);
+    $success = UpdateReview($_POST["ProductID"], $_SESSION["uid"], $_POST["Rating"], $_POST["Review"]);
     if (empty($success)) header("Location:/product?productID=" . $_POST["ProductID"]);
     else header("Location:/product?productID=" . $_POST["ProductID"]);
 }
