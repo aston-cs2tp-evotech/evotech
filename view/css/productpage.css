@@ -16,7 +16,7 @@ main {
     padding-top: 80px;
 }
 
-.main-product-box, .recommended-product-box {
+.main-product-box {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -28,7 +28,18 @@ main {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 1);
 }
-
+.recommended-product-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: #A499B3 ;
+    max-width: 1000px;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 1);
+}
 .product-image {
     flex: 0 1 350px;
     margin-right: 20px;
@@ -240,3 +251,91 @@ main {
             max-width: 190px;
         }
     }
+
+    .customer-reviews {
+        background-color: #A499B3; /* Changed to black */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+        box-sizing: border-box;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+        text-align: center;
+        border-radius: 8px;
+    }
+    
+    
+    
+    .row {
+        display: flex;
+        flex-wrap: wrap; /* Allows cards to stack on smaller screens */
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .card {
+        background-color: #d0bcd5 !important; /* Background color of the cards changed to yellow */
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+        flex: 0 1 calc(33.333% - 20px);
+        box-sizing: border-box;
+        text-align: center;
+    }
+    
+    .card img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .contact-form, .contact-info {
+            flex: 1 1 100%; /* Makes form and info stack on smaller screens */
+        }
+        
+        .card {
+            flex: 0 1 calc(50% - 20px); /* Adjusts cards to take 50% of the container on medium screens */
+        }
+    }
+    
+    @media (max-width: 576px) {
+        h1 {
+            font-size: 2rem; /* Adjusts font size for very small screens */
+        }
+        
+        .card {
+            flex: 0 1 100%; /* Stacks cards vertically on small screens */
+        }
+    }
+    
+    .stars {
+        font-size: 24px; /* Adjust to fit the design */
+        color: #FFD700; /* Yellow color for stars */
+        margin-bottom: 20px; /* Keeps spacing consistent with your design */
+    }
+    
+    /* Continue with your existing styles */
+   
+    .card:hover {
+        background-color: #C5B6D0; /* Slightly lighter shade on hover */
+        transform: scale(1.03); /* Slightly scale up the card to give feedback */
+    }
+    .recommended-product-box:hover{
+        background-color: #C5B6D0; /* Slightly lighter shade on hover */
+        transform: scale(1.03); 
+    }
+    
+    /* Ensure hover effects are smooth */
+  .card:hover, .customer-reviews:hover, .recommended-product-box:hover{
+        transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+        
