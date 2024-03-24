@@ -504,6 +504,30 @@ class ProductModel {
     }
 
     /**
+     * Update an existing productReview.
+     * 
+     * @param int $productID The unqiue identifier of the product.
+     * @param int $customerID The unique identifier of the customer.
+     * @param string $field The field to update.
+     * @param mixed $val The new value.
+     * @return boolean True if success, otherwise false.
+     */
+    public function updateProductReview($productID, $customerID, $field, $val) {
+        $allowedFields = ['ProductID', 'CustomerID', 'Rating', 'Review'];
+        if (!in_array($field, $allowedFields)) {
+            return false; 
+        }
+
+        $query = "UPDATE `ProductReviews` SET `$field` = :val WHERE `ProductID` = :prodID AND `CustomerID` = :custID";
+        $statement = $this->database->prepare($query);
+        $statement->bindParam(":val", $value, PDO::PARAM_STR);
+        $statement->bindParam(":prodID", $productID, PDO::PARAM_INT);
+        $statement->bindParam(":custID", $customerID, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
+
+    /**
      * Removes a ProductReview from the database.
      * 
      * @param int $productID The unique identifier of the product.
