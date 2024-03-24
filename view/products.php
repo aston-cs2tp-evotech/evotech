@@ -82,7 +82,7 @@ if (isset($userInfo)) {
                     <p class="card-text">Price: £
                       <?php echo $item->getPrice(); ?>
                     </p>
-                    <a href="/product?productID=<?php echo $item->getProductID(); ?>" class='btn btn-primary'>Product Page</a>
+                    <a href="/product?productID=<?php echo $item->getProductID(); ?>" class='btn btn-primary stretched-link'>View Product</a>
                   </div>
                 </div>
               </div>
