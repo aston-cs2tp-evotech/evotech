@@ -292,7 +292,7 @@ function UpdateCustomerDetail($details) {
  */
 function DeleteCustomer($customerID) {
     global $Customer, $Order, $Product;
-    $statuses = array("basket", "ready");
+    $statuses = array("processing", "ready");
 
     //check ID
     if (!CheckExists($customerID)) return "Customer ID not specified";
@@ -337,14 +337,6 @@ function DeleteCustomer($customerID) {
     }
     else if ($basket) {
         foreach ($basket->getOrderLines() as $ol) {
-            //determine new product stock
-            $quantity = $ol->getQuantity();
-            $prod = CreateSafeProduct($Product->getProductByID($ol->getProductID()));
-            if (is_null($prod)) return "Failed retrieving product in basket";
-
-            $newQuantity = $quantity + $prod->getStock();
-            $success = $Product->updateProductDetail($ol->getProductID(), "Stock", $newQuantity);
-            if (!$success) return "Error returning stock to a product in basket";
             //delete orderline
             $success = $Order->deleteOrderLine($basket->getOrderID(), $ol->getProductID());
             if (!$success) return "Error deleting an item in basket";
