@@ -1268,6 +1268,13 @@ function CheckoutBasket() {
     $basket = CreateSafeOrder($Order->getAllOrdersByOrderStatusNameAndCustomerID("basket", $_SESSION["uid"])[0]);
     if (is_null($basket)) return false;
 
+    //fetch orderlines
+    $ol = CreateMultipleSafeOrderLines($Order->getAllOrderLinesByOrderID($basket->getOrderID()));
+    if (is_null($ol)) return false;
+
+    //add orderlines to order
+    if (!AddOrderLinesToOrder($ol, $basket)) return false;
+
     $orderID = $basket->getOrderID();
     $basket = GetOrderByID($orderID);
     // For each orderLine, reduce the stock of the product by the quantity in the orderLine
