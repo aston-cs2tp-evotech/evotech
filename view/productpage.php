@@ -94,7 +94,7 @@ else {
             </div>
         </div>
         <section class="p-4">
-    <?php if (CheckCanLeaveReview($_SESSION["uid"], $productDetails->getProductID())) { ?>
+    <?php if (isset($_SESSION["uid"]) && CheckCanLeaveReview($_SESSION["uid"], $productDetails->getProductID())) { ?>
         <h3>Submit a Review</h3>
     <form action="/leaveReview"  method="post">
         <div class="form-group">
@@ -104,7 +104,7 @@ else {
                 <label for="star5" title="5 stars">&#9733;</label>
                 <input type="radio" id="star4" name="Rating" value="4">
                 <label for="star4" title="4 stars">&#9733;</label>
-                <input type="radio" id="star3" name="Rating" value="3">
+                <input type="radio" id="star3" name="Rating" value="3"> 
                 <label for="star3" title="3 stars">&#9733;</label>
                 <input type="radio" id="star2" name="Rating" value="2">
                 <label for="star2" title="2 stars">&#9733;</label>
