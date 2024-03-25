@@ -520,7 +520,7 @@ class ProductModel {
 
         $query = "UPDATE `ProductReviews` SET `$field` = :val WHERE `ProductID` = :prodID AND `CustomerID` = :custID";
         $statement = $this->database->prepare($query);
-        $statement->bindParam(":val", $value, PDO::PARAM_STR);
+        $statement->bindParam(":val", $val, PDO::PARAM_STR);
         $statement->bindParam(":prodID", $productID, PDO::PARAM_INT);
         $statement->bindParam(":custID", $customerID, PDO::PARAM_INT);
 

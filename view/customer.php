@@ -42,12 +42,17 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
 
     <main class="container mt-4">
         <div class="row">
-            <div class="col-lg-6">
-                <h2>Customer Details</h2>
+        <div class="col-lg-6 d-flex flex-column justify-content-between pb-5">
+            <h2>Customer Details</h2>
+            <div>
                 <p><strong>Username:</strong> <?php echo $username; ?></p>
                 <p><strong>Email:</strong> <?php echo $email; ?></p>
                 <p><strong>Address:</strong> <?php echo $addr; ?></p>
             </div>
+            <a href="/editCustomer" class="btn btn-primary mt-auto newPrimary">Edit Details</a>
+            <a href="/deleteCustomer" class="btn btn-danger mt-auto">Delete Account</a>
+        </div>
+
             
             <div class="col-lg-6">
                 <h2>Change Password</h2>
@@ -63,19 +68,19 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                     <?php endif; ?>
                 <?php endif; ?>
                 <form action="/change-password" method="POST">
-                    <div class="form-group">
+                    <div class="form-group form-floating">
+                        <input type="password" class="form-control" name="current_password" placeholder="Current Password" required/>
                         <label for="current_password">Current Password</label>
-                        <input type="password" class="form-control" name="current_password" required/>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-floating">
+                        <input type="password" class="form-control" name="new_password" placeholder="New Password" required/>
                         <label for="new_password">New Password</label>
-                        <input type="password" class="form-control" name="new_password" required/>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group form-floating">
+                        <input type="password" class="form-control" name="confirm_password" placeholder="Confirm new Password" required/>
                         <label for="confirm_password">Confirm New Password</label>
-                        <input type="password" class="form-control" name="confirm_password" required/>
                     </div>
-                    <input type="submit" class="btn btn-primary mb-5" value="Change Password"/>
+                    <input type="submit" class="btn btn-primary newPrimary mb-5" value="Change Password"/>
                 </form>
             </div>
         </div>
@@ -89,9 +94,9 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                    
                     <div class="card mb-5">
                         <div class="card-body ">
-                        <h3>Order <?php echo $order->getOrderID(); ?></h3>
+                        <h3>Order reference ID: #<?php echo $order->getOrderID(); ?></h3>
                         <h4>Status: <?php echo $order->getOrderStatusName(); ?></h4>
-                        <h4>Date: <?php echo $order->getCheckedOutAt(); ?></h4>
+                        <h4>Created at: <?php echo $order->getCheckedOutAt(); ?></h4>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -111,13 +116,16 @@ $orders = GetPreviousOrders(); // Assuming $orders is a 3D array: $orders[order]
                                         <?php endforeach; ?>
                                     </tbody>
                                 </table>
-                                <div class="col text-center"> 
+                                <div class="col text-right"> 
                                     <h3>Total: £<?php echo $totalPrice; ?></h3>
-                                    <?php if ($order->getOrderStatusName() === "Delivered") : ?>
-                                        <button class="btn btn-primary mt-3">Return</button>
-                                    <?php else : ?>
-                                        <button class="btn btn-danger mt-3">Cancel Order</button>
+                                    <form action="/cancelOrder" method="POST">
+                                        <input type="hidden" name="OrderID" value="<?php echo $order->getOrderID(); ?>">
+                                    <?php if ($order->getOrderStatusName() === "delivered") : ?>
+                                        <button class="btn btn-primary mt-3" style="width: 200px;">Return</button>
+                                    <?php elseif (!in_array($order->getOrderStatusName(), ["cancelled", "returned"])) : ?>
+                                        <button type="submit" class="btn btn-danger mt-3" style="width: 200px;">Cancel Order</button>
                                     <?php endif; ?>
+                                    </form>
                                 </div>
                             </div>
                         </div>

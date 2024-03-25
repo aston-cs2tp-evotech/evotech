@@ -103,6 +103,10 @@ switch ($requestPath) {
         handleProductsPageRequest();
         break;
 
+    case '/editCustomer':
+        require __DIR__ . '/view/editCustomer.php';
+        break;
+    
     case '/add-to-basket':
         handleAddToBasketRequest();
         break;
@@ -204,6 +208,10 @@ switch ($requestPath) {
 
     case '/api/addAdmin':
         handleAPIRequest('addAdmin');
+        break;
+    
+    case '/api/deleteAdmin':
+        handleAPIRequest('deleteAdmin');
         break;
 
     case '/api/refreshToken':
@@ -545,6 +553,7 @@ function handleCancelRequest() {
     if (!CheckExists($_POST["OrderID"])) header("Location:/");
 
     $returned = CancelOrReturnOrder($_POST["OrderID"], "cancelled");
+    
     if ($returned) header("Location:/customer");
     else header("Location:/");
 }
@@ -763,6 +772,10 @@ function handleAPIRequest($path) {
         
         case 'addAdmin':
             require __DIR__ . '/api/addAdmin.php';
+            break;
+        
+        case 'deleteAdmin':
+            require __DIR__ . '/api/deleteAdmin.php';
             break;
 
         case 'refreshToken':
