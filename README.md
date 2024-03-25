@@ -18,6 +18,8 @@ Built as part of the Aston University Computer Science Team Project module.
 
 ## Table of Contents
 - [Contributing](#contributing)
+- [Documentation](#documentation)
+- [Testing](#testing)
 - [Running locally](#running-locally)
     - [Windows](#windows)
     - [macOS](#macos)
@@ -34,6 +36,29 @@ For information on how to contribute to the project, please see the [CONTRIBUTIN
 ## Documentation
 
 Documentation for the project can be found in the project's [Wiki](https://github.com/aston-cs2tp-evotech/evotech/wiki).
+
+## Testing
+
+The project uses PHPUnit for testing. To run the tests, follow the instructions below.
+
+Ensure you have PHP and Composer installed on your machine.
+You can check if you have PHP installed by running `php -v` in your terminal.
+You can check if you have Composer installed by running `composer -v` in your terminal.
+
+1. Clone the repository using `git clone` and change directory to the root of the repository
+    ```bash
+    cd evotech
+    ```
+2. Install PHPUnit
+    ```bash
+    composer install
+    ```
+
+3. Run the tests
+    ```bash
+    ./vendor/bin/phpunit tests
+    ```
+
 
 ## Running locally
 
