@@ -60,7 +60,7 @@ if (isset($userInfo)) {
             </section>
 
             <section class="contact-section">
-                <h2><a href="contactspage.php" class="contact-link">Support Team</a></h2>
+                <h2><a href="/contactpage" class="contact-link">Support Team</a></h2>
                 <div class="contact-info">
                     <div class="contact-person">
                         <h4>Aaron</h4>
