@@ -107,13 +107,12 @@ if (count($revs) > 3) {
                     <p>Let us know what you think of the product!</p>
                     <form action="/leaveReview" method="post">
                         <div class="form-group stars">
-                            <label id="ratingText" for="Rating">Star Rating:</label>
                             <div class="star-rating">
                                 <input type="radio" id="star5" name="Rating" value="5" required>
                                 <label for="star5" title="5 stars">&#9733;</label>
                                 <input type="radio" id="star4" name="Rating" value="4">
                                 <label for="star4" title="4 stars">&#9733;</label>
-                                <input type="radio" id="star3" name="Rating" value="3">
+                                <input type="radio" id="star3" name="Rating" value="3" checked>
                                 <label for="star3" title="3 stars">&#9733;</label>
                                 <input type="radio" id="star2" name="Rating" value="2">
                                 <label for="star2" title="2 stars">&#9733;</label>

@@ -388,6 +388,14 @@ main {
     display: flex;
     flex-direction: column;
 }
+
+.review-form:hover {
+    background-color: #C5B6D0;
+    transition: background-color 0.3s ease-in-out;
+    transform: scale(1.03);
+    transition: transform 0.3s ease-in-out;
+}
+
 .form-group.stars {
     display: flex;
     justify-content: center;
@@ -424,7 +432,7 @@ main {
     display: inline-block;
     margin: 0 5px;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 40px;
     color: #ccc;
 }
 
