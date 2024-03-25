@@ -337,9 +337,6 @@ main {
         transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
     }
         
-
-
-
 .review-section {
     background-color: #A499B3;
     padding: 20px;
@@ -378,4 +375,108 @@ main {
 .star-rating label:hover,
 .star-rating label:hover ~ label {
     color: #ffcc00;
+}
+
+.review-form {
+    background-color: #A499B3;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form:hover {
+    background-color: #C5B6D0;
+    transition: background-color 0.3s ease-in-out;
+    transform: scale(1.03);
+    transition: transform 0.3s ease-in-out;
+}
+
+.form-group.stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.form-group.button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#ratingText {
+    color: #1D1D1F;
+}
+
+
+.review-form h3 {
+    color: #1D1D1F;
+    margin-bottom: 15px;
+}
+
+.star-rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 40px;
+    color: #ccc;
+}
+
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffcc00;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffcc00;
+}
+
+.review-form textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.review-form button[type="submit"] {
+    background-color: #1b1725;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.review-form button[type="submit"]:hover {
+    background-color: #534B62;
+}
+
+@media only screen and (max-width: 768px) {
+    .review-form {
+        padding: 10px;
+    }
+
+    .review-form textarea {
+        height: 100px;
+    }
+
+    .review-form button[type="submit"] {
+        width: 100%;
+    }
 }
