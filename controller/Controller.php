@@ -285,6 +285,80 @@ function UpdateCustomerDetail($details) {
     }
 }
 
+/**
+ * Deletes a customer and their associated orders
+ * @param int $customerID The customer's ID
+ * @return string Empty if success, otherwise err message
+ */
+function DeleteCustomer($customerID) {
+    global $Customer, $Order, $Product;
+    $statuses = array("basket", "ready");
+
+    //check ID
+    if (!CheckExists($customerID)) return "Customer ID not specified";
+    try {
+        $customerID = (int)$customerID;
+    }
+    catch (Exception $e) {
+        return "Customer ID is not an integer";
+    }
+
+    //fetch Customer
+    $customer = CreateSafeCustomer($Customer->getCustomerByUID($customerID));
+    if (is_null($customer)) return "Customer does not exist";
+
+    //fetch Orders
+    $allOrders = GetPreviousOrders();
+    $basket = GetCustomerBasket();
+    if ($allOrders) {
+        //append basket to orders
+        if ($basket) array_push($allOrders, $basket);
+        foreach ($allOrders as $order) {
+            foreach ($order->getOrderLines() as $ol) {
+                //check if stock needs to be returned to product
+                if (in_array($order->getOrderStatusName(), $statuses)) {
+                    //determine new product stock
+                    $quantity = $ol->getQuantity();
+                    $prod = CreateSafeProduct($Product->getProductByID($ol->getProductID()));
+                    if (is_null($prod)) return "Failed retrieving product in an order";
+
+                    $newQuantity = $quantity + $prod->getStock();
+                    $success = $Product->updateProductDetail($ol->getProductID(), "Stock", $newQuantity);
+                    if (!$success) return "Error returning stock to a product in an order";
+                }
+                //delete orderline
+                $success = $Order->deleteOrderLine($order->getOrderID(), $ol->getProductID());
+                if (!$success) return "Error deleting an item in an order";
+            }
+            //delete order
+            $success = $Order->deleteOrder($order->getOrderID());
+            if (!$success) return "Error deleting an order";
+        }
+    }
+    else if ($basket) {
+        foreach ($basket->getOrderLines() as $ol) {
+            //determine new product stock
+            $quantity = $ol->getQuantity();
+            $prod = CreateSafeProduct($Product->getProductByID($ol->getProductID()));
+            if (is_null($prod)) return "Failed retrieving product in basket";
+
+            $newQuantity = $quantity + $prod->getStock();
+            $success = $Product->updateProductDetail($ol->getProductID(), "Stock", $newQuantity);
+            if (!$success) return "Error returning stock to a product in basket";
+            //delete orderline
+            $success = $Order->deleteOrderLine($basket->getOrderID(), $ol->getProductID());
+            if (!$success) return "Error deleting an item in basket";
+        }
+        //delete order
+        $success = $Order->deleteOrder($basket->getOrderID());
+        if (!$success) return "Error deleting basket";
+    }
+
+    $success = $Customer->deleteCustomer($customerID);
+    if (!$success) return "Error deleting customer";
+    else return "";
+}
+
 /** 
  * Gets customer by their ID
  * 

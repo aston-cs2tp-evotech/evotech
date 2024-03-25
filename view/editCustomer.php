@@ -52,7 +52,7 @@ $user = GetCustomerByID($_SESSION['uid']);
                 }
                 ?>
 
-                <form action="/editCustomer" method="POST" id="registerForm">
+                <form action="/processEditCustomer" method="POST" id="registerForm">
                     <div class="form-floating">
                         <input name="email" type="email" class="form-control" id="floatingEmail" placeholder="Email" value="<?php echo $user->getEmail(); ?>" required>
                         <label for="floatingEmail">Email</label>

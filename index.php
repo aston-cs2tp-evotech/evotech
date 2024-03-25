@@ -104,7 +104,15 @@ switch ($requestPath) {
         break;
 
     case '/editCustomer':
-        require __DIR__ . '/view/editCustomer.php';
+        handleEditCustomerPageRequest();
+        break;
+
+    case '/processEditCustomer':
+        handleEditCustomerRequest();
+        break;
+
+    case '/deleteCustomer':
+        handleDeleteCustomerRequest();
         break;
     
     case '/add-to-basket':
@@ -426,6 +434,47 @@ function handleProductsPageRequest(){
     }
 
     require __DIR__ . '/view/products.php';
+}
+
+/**
+ * Handles request to edit customer page
+ */
+function handleEditCustomerPageRequest() {
+    if (!CheckLoggedIn()) header("Location:/login");
+
+    require __DIR__ . '/view/editCustomer.php';
+}
+/**
+ * Handles requests to edit customer
+ */
+function handleEditCustomerRequest() {
+    if (!CheckLoggedIn()) header("Location:/");
+
+    $deets = array();
+    $fields = array("email", "username", "address");
+
+    array_push($deets, isset($_POST["email"]) ? $_POST["email"] : null);
+    array_push($deets, isset($_POST["username"]) ? $_POST["username"] : null);
+    array_push($deets, isset($_POST["customer_address"]) ? $_POST["customer_address"] : null);
+
+    for ($i = 0; $i < 3; $i++) {
+        $err = UpdateCustomerDetail(array("field" => $fields[$i], "value" => $deets[$i]));
+        if ($err) header("Location:/");
+    }
+
+    header("Location:/customer");
+
+}
+
+/**
+ * Handles requests to delete customer
+ */
+function handleDeleteCustomerRequest() {
+    if (!CheckLoggedIn()) header("Location:/");
+
+    $err = DeleteCustomer($_SESSION["uid"]);
+    if (!$err) header("Location:/logout");
+    else header ("Location:/");
 }
 
 /**
