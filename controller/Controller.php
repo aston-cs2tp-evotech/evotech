@@ -310,15 +310,15 @@ function DeleteCustomer($customerID) {
     //fetch Orders
     $allOrders = GetPreviousOrders();
     $basket = GetCustomerBasket();
-    if (!$allOrders) {
+    if ($allOrders) {
         //append basket to orders
-        if (!$basket) array_push($allOrders, $basket);
+        if ($basket) array_push($allOrders, $basket);
         foreach ($allOrders as $order) {
             foreach ($order->getOrderLines() as $ol) {
                 //check if stock needs to be returned to product
                 if (in_array($order->getOrderStatusName(), $statuses)) {
                     //determine new product stock
-                    $quantity = $ol->quantity();
+                    $quantity = $ol->getQuantity();
                     $prod = CreateSafeProduct($Product->getProductByID($ol->getProductID()));
                     if (is_null($prod)) return "Failed retrieving product in an order";
 
@@ -335,10 +335,10 @@ function DeleteCustomer($customerID) {
             if (!$success) return "Error deleting an order";
         }
     }
-    else if (!$basket) {
+    else if ($basket) {
         foreach ($basket->getOrderLines() as $ol) {
             //determine new product stock
-            $quantity = $ol->quantity();
+            $quantity = $ol->getQuantity();
             $prod = CreateSafeProduct($Product->getProductByID($ol->getProductID()));
             if (is_null($prod)) return "Failed retrieving product in basket";
 

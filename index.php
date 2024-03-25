@@ -467,6 +467,18 @@ function handleEditCustomerRequest() {
 }
 
 /**
+ * Handles requests to delete customer
+ */
+function handleDeleteCustomerRequest() {
+    if (!CheckLoggedIn()) header("Location:/");
+
+    $err = DeleteCustomer($_SESSION["uid"]);
+    echo $err;
+    if (!$err) header("Location:/logout");
+    else header ("Location:/");
+}
+
+/**
  * Handle requests to add a product to the basket
  *
  * @return void
