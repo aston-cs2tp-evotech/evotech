@@ -103,6 +103,10 @@ switch ($requestPath) {
         handleProductsPageRequest();
         break;
 
+    case '/editCustomer':
+        require __DIR__ . '/view/editCustomer.php';
+        break;
+    
     case '/add-to-basket':
         handleAddToBasketRequest();
         break;

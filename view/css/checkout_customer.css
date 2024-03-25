@@ -58,6 +58,20 @@ header {
     background-color: #A499B3 !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    
 
+}
+
+.newPrimary {
+    background-color: #1b1725!important;
+    color: #f8f8f8 !important;
+    border-color: #441350 !important;
+}
+
+.newPrimary:hover {
+    background-color: #362c4d !important;
+    color: #f8f8f8;
+}
+
+.newPrimary :active{
+    border: none;
 }
