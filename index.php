@@ -473,7 +473,6 @@ function handleDeleteCustomerRequest() {
     if (!CheckLoggedIn()) header("Location:/");
 
     $err = DeleteCustomer($_SESSION["uid"]);
-    echo $err;
     if (!$err) header("Location:/logout");
     else header ("Location:/");
 }
