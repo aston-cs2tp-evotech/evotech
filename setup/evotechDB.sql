@@ -18,14 +18,14 @@ CREATE TABLE if not exists `OrderStatus` (
   UNIQUE KEY `Name` (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
-INSERT IGNORE INTO `OrderStatus` (`Name`) VALUES
-('basket'),
-('ready'),
-('processing'),
-('delivering'),
-('delivered'),
-('cancelled'),
-('returned');
+INSERT IGNORE INTO `OrderStatus` (`OrderStatusID`, `Name`) VALUES
+(1, 'basket'),
+(2, 'ready'),
+(3, 'processing'),
+(4, 'delivering'),
+(5, 'delivered'),
+(6, 'cancelled'),
+(7, 'returned');
 
 -- --------------------------------------------------------
 -- Table for Compatibility
@@ -73,13 +73,13 @@ CREATE TABLE if not exists `Categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- Insert Categories
-INSERT IGNORE INTO `Categories` (`CategoryName`) VALUES
-('Components'),
-('CPUs'),
-('Graphics Cards'),
-('Cases'),
-('Storage'),
-('Memory');
+INSERT IGNORE INTO `Categories` (`CategoryID`, `CategoryName`) VALUES
+(1,'Components'),
+(2, 'CPUs'),
+(3, 'Graphics Cards'),
+(4, 'Cases'),
+(5, 'Storage'),
+(6, 'Memory');
 
 -- --------------------------------------------------------
 -- Table for Products
