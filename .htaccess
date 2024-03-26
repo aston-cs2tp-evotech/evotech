@@ -13,7 +13,6 @@ RedirectMatch 403 ^/setup/.*$
 RedirectMatch 403 ^/.github/.*$
 RedirectMatch 403 ^/tests/.*$
 RedirectMatch 403 ^/.git/.*$
-RedirectMatch 403 ^/oobe/.*$
 RedirectMatch 403 ^/vendor/.*$
 
 #Forbid access to indivdiual files within the server
