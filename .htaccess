@@ -10,7 +10,10 @@ ErrorDocument 404 /view/404.php
 #Forbid access to any file under the following folders
 RedirectMatch 403 ^/config/.*$
 RedirectMatch 403 ^/setup/.*$
-
+RedirectMatch 403 ^/.github/.*$
+RedirectMatch 403 ^/tests/.*$
+RedirectMatch 403 ^/.git/.*$
+RedirectMatch 403 ^/vendor/.*$
 
 #Forbid access to indivdiual files within the server
 <FilesMatch "^\.">
@@ -24,6 +27,11 @@ RedirectMatch 403 ^/setup/.*$
 </FilesMatch>
 
 <FilesMatch "^composer.json">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "^composer.lock">
     Order allow,deny
     Deny from all
 </FilesMatch>
